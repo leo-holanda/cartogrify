@@ -1,0 +1,62 @@
+@import "../../shared/variables.scss";
+
+main {
+  height: 100vh;
+  background: $background;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+}
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+  margin-bottom: 3rem;
+}
+
+h1 {
+  font-family: "Lilita One", cursive;
+  font-size: 5rem;
+  font-weight: normal;
+  margin-bottom: 0;
+}
+
+img {
+  width: 10rem;
+  margin: 1.5rem;
+}
+
+.logo-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45%;
+}
+
+.spotify-logo {
+  background: $spotify-color;
+  border-radius: $border-radius;
+}
+
+.lastfm-logo {
+  background: $lastfm-color;
+  border-radius: $border-radius;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+}
+
+.hint {
+  text-align: center;
+}
