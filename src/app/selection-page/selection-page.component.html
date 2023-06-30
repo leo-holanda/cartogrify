@@ -1,1 +1,19 @@
-<p>selection-page works!</p>
+<main>
+  <div>
+    <div class="title-wrapper">
+      <h1>MusicMap</h1>
+      <h3>Explore the worldwide origins of your music taste.</h3>
+    </div>
+    <div>
+      <p class="hint">Connect your account to start</p>
+      <div class="logo-wrapper">
+        <button class="logo spotify-logo" (click)="onSpotifyButtonClick()">
+          <img src="assets/images/spotify_logo.svg" alt="Spotify logo" />
+        </button>
+        <button class="logo lastfm-logo" (click)="onLastfmButtonClick()">
+          <img src="assets/images/lastfm_logo.svg" alt="Last.fm logo" />
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
