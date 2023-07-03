@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, from, map, tap } from "rxjs";
+import { Observable, from, map, of, tap } from "rxjs";
 
 interface SpotifyAccessTokenData {
   access_token: string;
@@ -61,7 +61,7 @@ export class SpotifyService {
   requestAuthorization(): Observable<string> {
     const codeChallenge$ = this.generateCodeChallenge();
     const state = this.generateRandomString(16);
-    const scope = "user-read-private user-read-email";
+    const scope = "user-top-read";
 
     return codeChallenge$.pipe(
       tap((codeChallenge) => {
@@ -102,5 +102,15 @@ export class SpotifyService {
           localStorage.setItem("access_token", this.accessToken);
         })
       );
+  }
+
+  getTopArtistsNames(): Observable<string[]> {
+    return this.http
+      .get<SpotifyApi.UsersTopArtistsResponse>("https://api.spotify.com/v1/me/top/artists", {
+        headers: {
+          Authorization: "Bearer " + this.accessToken,
+        },
+      })
+      .pipe(map((response) => response.items.map((artist) => artist.name)));
   }
 }

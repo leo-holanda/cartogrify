@@ -20,7 +20,7 @@ export class AuthorizationGateComponent implements OnInit {
       const code = paramMap.get("code");
       if (code) {
         this.spotifyService.requestAccessToken(code).subscribe(() => {
-          console.log("token requested");
+          this.router.navigate(["/worldmap"]);
         });
       }
     });
