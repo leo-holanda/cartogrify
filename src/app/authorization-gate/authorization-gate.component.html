@@ -1,1 +1,35 @@
-<p>authorization-gate works!</p>
+<main>
+  <div *ngIf="isStateUnequal">
+    <i class="bx bxs-error"></i>
+    <h1>ERROR</h1>
+    <p>
+      There has been a mistmatch between the state parameter received in the redirect URI and the
+      state parameter provided to Spotify.
+    </p>
+    <p>
+      According to the Spotify API documentation, the state parameter "provides protection against
+      attacks such as cross-site request forgery". The recommendation is to stop the authorization
+      flow.
+    </p>
+    <p>
+      More info at:
+      <a href="https://developer.spotify.com/documentation/web-api/tutorials/code-flow"
+        >https://developer.spotify.com/documentation/web-api/tutorials/code-flow</a
+      >
+    </p>
+  </div>
+
+  <div *ngIf="isAuthorized">
+    <i class="bx bx-check"></i>
+    <h1>ACCEPTED</h1>
+    <p>You are going to be redirect. Wait a few seconds.</p>
+  </div>
+
+  <div *ngIf="hasError">
+    <i class="bx bxs-sad"> </i>
+    <h1>REJECTED</h1>
+    <p>You have chosen to not connect your Spotify account.</p>
+  </div>
+
+  <button routerLink="/">Return to initial page</button>
+</main>

@@ -22,8 +22,10 @@ export class SpotifyService {
 
   requestAuthorization(): void {
     const codeChallenge$ = this.generateCodeChallenge();
-    const state = this.generateRandomString(16);
     const scope = "user-top-read";
+
+    const state = this.generateRandomString(16);
+    localStorage.setItem("state", state);
 
     codeChallenge$.subscribe((codeChallenge) => {
       const args = new URLSearchParams({
