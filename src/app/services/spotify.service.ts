@@ -8,6 +8,7 @@ interface SpotifyAccessTokenData {
   refresh_token: string;
   scope: string;
   token_type: string;
+  expires_at: Date;
 }
 
 @Injectable({
@@ -16,22 +17,8 @@ interface SpotifyAccessTokenData {
 export class SpotifyService {
   clientId = "c8201434fef4436fb83dfa7bb2a7128d";
   redirectUri = "http://localhost:4200/authorization";
-  codeVerifier = "";
-  accessToken = "";
 
-  constructor(private http: HttpClient) {
-    const storedCodeVerifier = localStorage.getItem("code_verifier");
-    const storedAccessToken = localStorage.getItem("access_token");
-
-    if (storedCodeVerifier) {
-      this.codeVerifier = storedCodeVerifier;
-    } else {
-      this.codeVerifier = this.generateRandomString(128);
-      localStorage.setItem("code_verifier", this.codeVerifier);
-    }
-
-    if (storedAccessToken) this.accessToken = storedAccessToken;
-  }
+  constructor(private http: HttpClient) {}
 
   generateRandomString(length: number): string {
     let text = "";
@@ -51,42 +38,49 @@ export class SpotifyService {
   }
 
   generateCodeChallenge(): Observable<string> {
+    const codeVerifier = this.generateRandomString(128);
+    localStorage.setItem("code_verifier", codeVerifier);
+
     const encoder = new TextEncoder();
-    const data = encoder.encode(this.codeVerifier);
+    const data = encoder.encode(codeVerifier);
     const digest = from(window.crypto.subtle.digest("SHA-256", data));
 
     return digest.pipe(map((code) => this.base64encode(code)));
   }
 
-  requestAuthorization(): Observable<string> {
+  requestAuthorization(): void {
     const codeChallenge$ = this.generateCodeChallenge();
     const state = this.generateRandomString(16);
     const scope = "user-top-read";
 
-    return codeChallenge$.pipe(
-      tap((codeChallenge) => {
-        const args = new URLSearchParams({
-          response_type: "code",
-          client_id: this.clientId,
-          scope: scope,
-          redirect_uri: this.redirectUri,
-          state: state,
-          code_challenge_method: "S256",
-          code_challenge: codeChallenge,
-        });
+    codeChallenge$.subscribe((codeChallenge) => {
+      const args = new URLSearchParams({
+        response_type: "code",
+        client_id: this.clientId,
+        scope: scope,
+        redirect_uri: this.redirectUri,
+        state: state,
+        code_challenge_method: "S256",
+        code_challenge: codeChallenge,
+      });
 
-        document.location.href = "https://accounts.spotify.com/authorize?" + args;
-      })
-    );
+      document.location.href = "https://accounts.spotify.com/authorize?" + args;
+    });
   }
 
-  requestAccessToken(code: string): Observable<string> {
+  requestAccessToken(code: string): Observable<SpotifyAccessTokenData> {
+    let codeVerifier = localStorage.getItem("code_verifier");
+    if (!codeVerifier) {
+      codeVerifier = this.generateRandomString(128);
+      localStorage.setItem("code_verifier", codeVerifier);
+    }
+
     const body = new URLSearchParams({
       grant_type: "authorization_code",
       code,
       redirect_uri: this.redirectUri,
       client_id: this.clientId,
-      code_verifier: this.codeVerifier,
+      code_verifier: codeVerifier,
     });
 
     return this.http
@@ -96,21 +90,70 @@ export class SpotifyService {
         },
       })
       .pipe(
-        map((tokenData) => tokenData.access_token),
-        tap((token) => {
-          this.accessToken = token;
-          localStorage.setItem("access_token", this.accessToken);
+        tap((tokenData) => {
+          const expiresAt = new Date();
+          expiresAt.setSeconds(expiresAt.getSeconds() + tokenData.expires_in);
+          tokenData.expires_at = expiresAt;
+          localStorage.setItem("token_data", JSON.stringify(tokenData));
         })
       );
   }
 
   getTopArtistsNames(): Observable<string[]> {
+    const tokenDataItem = localStorage.getItem("token_data") as string;
+    const tokenData = JSON.parse(tokenDataItem) as SpotifyAccessTokenData;
+
     return this.http
       .get<SpotifyApi.UsersTopArtistsResponse>("https://api.spotify.com/v1/me/top/artists", {
         headers: {
-          Authorization: "Bearer " + this.accessToken,
+          Authorization: "Bearer " + tokenData.access_token,
         },
       })
       .pipe(map((response) => response.items.map((artist) => artist.name)));
+  }
+
+  isTokenUndefined(): boolean {
+    const tokenDataItem = localStorage.getItem("token_data");
+    if (!tokenDataItem) return true;
+
+    const tokenData = JSON.parse(tokenDataItem) as SpotifyAccessTokenData;
+    return !tokenData.access_token;
+  }
+
+  isTokenExpired(): boolean {
+    const tokenDataItem = localStorage.getItem("token_data");
+    if (!tokenDataItem) return true;
+
+    const tokenData = JSON.parse(tokenDataItem) as SpotifyAccessTokenData;
+
+    const now = new Date();
+    return now >= new Date(tokenData.expires_at);
+  }
+
+  refreshToken(): Observable<SpotifyAccessTokenData> {
+    const tokenDataItem = localStorage.getItem("token_data") as string;
+    const tokenData = JSON.parse(tokenDataItem) as SpotifyAccessTokenData;
+    const refreshToken = tokenData.refresh_token;
+
+    const body = new URLSearchParams({
+      grant_type: "refresh_token",
+      refreshToken,
+      client_id: this.clientId,
+    });
+
+    return this.http
+      .post<SpotifyAccessTokenData>("https://accounts.spotify.com/api/token", body, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      })
+      .pipe(
+        tap((tokenData) => {
+          const expiresAt = new Date();
+          expiresAt.setSeconds(expiresAt.getSeconds() + tokenData.expires_in);
+          tokenData.expires_at = expiresAt;
+          localStorage.setItem("token_data", JSON.stringify(tokenData));
+        })
+      );
   }
 }

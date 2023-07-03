@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { SpotifyService } from "../services/spotify.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-selection-page",
@@ -7,12 +8,18 @@ import { SpotifyService } from "../services/spotify.service";
   styleUrls: ["./selection-page.component.scss"],
 })
 export class SelectionPageComponent {
-  constructor(private spotifyService: SpotifyService) {}
+  constructor(private spotifyService: SpotifyService, private router: Router) {}
 
   onSpotifyButtonClick(): void {
-    this.spotifyService.requestAuthorization().subscribe((data) => {
-      console.log(data);
-    });
+    if (this.spotifyService.isTokenUndefined()) {
+      this.spotifyService.requestAuthorization();
+    } else if (this.spotifyService.isTokenExpired()) {
+      this.spotifyService.refreshToken().subscribe(() => {
+        this.router.navigate(["/worldmap"]);
+      });
+    } else {
+      this.router.navigate(["/worldmap"]);
+    }
   }
 
   onLastfmButtonClick(): void {
