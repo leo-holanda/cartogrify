@@ -8,6 +8,10 @@ import { SpotifyService } from "../services/spotify.service";
   styleUrls: ["./authorization-gate.component.scss"],
 })
 export class AuthorizationGateComponent implements OnInit {
+  isStateUnequal = false;
+  hasError = false;
+  isAuthorized = false;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private spotifyService: SpotifyService,
@@ -17,11 +21,22 @@ export class AuthorizationGateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       const paramMap = convertToParamMap(params);
-      const code = paramMap.get("code");
-      if (code) {
-        this.spotifyService.requestAccessToken(code).subscribe(() => {
-          this.router.navigate(["/worldmap"]);
-        });
+
+      const state = paramMap.get("state");
+      const storedState = localStorage.getItem("state");
+      if (!storedState || state !== storedState) {
+        this.isStateUnequal = true;
+      } else {
+        const error = paramMap.get("error");
+        if (error) this.hasError = true;
+
+        const code = paramMap.get("code");
+        if (code) {
+          this.isAuthorized = true;
+          this.spotifyService.requestAccessToken(code).subscribe(() => {
+            this.router.navigate(["/worldmap"]);
+          });
+        }
       }
     });
   }

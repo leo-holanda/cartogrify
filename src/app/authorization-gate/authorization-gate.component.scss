@@ -1,0 +1,34 @@
+main {
+  background: black;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+}
+
+div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+}
+
+.bx {
+  font-size: 10rem;
+  color: white;
+}
+
+.bxs-error {
+  color: red;
+}
+
+p,
+h1 {
+  color: white;
+  margin-bottom: 0;
+}
+
+button {
+  margin: 2rem;
+}
