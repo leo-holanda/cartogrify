@@ -111,7 +111,7 @@ export class SpotifyService {
 
     const body = new URLSearchParams({
       grant_type: "refresh_token",
-      refreshToken,
+      refresh_token: refreshToken,
       client_id: this.clientId,
     });
 
