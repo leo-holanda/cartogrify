@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { SpotifyService } from "../services/spotify.service";
 import { ArtistService } from "../services/artist.service";
+import { WebScraperService } from "../services/web-scraper.service";
 
 @Component({
   selector: "app-world-map",
@@ -8,7 +9,11 @@ import { ArtistService } from "../services/artist.service";
   styleUrls: ["./world-map.component.scss"],
 })
 export class WorldMapComponent implements OnInit {
-  constructor(private spotifyService: SpotifyService, private artistService: ArtistService) {}
+  constructor(
+    private spotifyService: SpotifyService,
+    private artistService: ArtistService,
+    private webScraper: WebScraperService
+  ) {}
 
   ngOnInit(): void {
     this.spotifyService.getTopArtistsNames().subscribe((topArtistsNames) => {
@@ -16,7 +21,14 @@ export class WorldMapComponent implements OnInit {
         const artistsWithUndefinedCountry = topArtistsNames.filter((name) =>
           artistsData?.some((artist) => artist.name !== name.toLocaleLowerCase())
         );
-        console.log(artistsWithUndefinedCountry);
+
+        if (artistsWithUndefinedCountry.length > 0) {
+          this.webScraper
+            .getArtistsCountryOfOrigin(artistsWithUndefinedCountry)
+            .subscribe((data) => {
+              console.log(data);
+            });
+        }
       });
     });
   }
