@@ -1,9 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { SpotifyService } from "../services/spotify.service";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: "app-selection-page",
+  selector: "msm-selection-page",
   templateUrl: "./selection-page.component.html",
   styleUrls: ["./selection-page.component.scss"],
 })

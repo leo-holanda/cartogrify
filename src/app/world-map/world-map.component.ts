@@ -4,7 +4,7 @@ import { ArtistService } from "../services/artist.service";
 import { WebScraperService } from "../services/web-scraper.service";
 
 @Component({
-  selector: "app-world-map",
+  selector: "msm-world-map",
   templateUrl: "./world-map.component.html",
   styleUrls: ["./world-map.component.scss"],
 })
