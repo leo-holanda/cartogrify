@@ -3,6 +3,7 @@ import { SpotifyService } from "src/app/shared/spotify.service";
 import { ArtistService } from "./artist.service";
 import { Artist } from "./artist.model";
 import { CountriesService } from "../countries/countries.service";
+import { BehaviorSubject } from "rxjs";
 
 @Component({
   selector: "msm-artists",
@@ -10,7 +11,7 @@ import { CountriesService } from "../countries/countries.service";
   styleUrls: ["./artists.component.scss"],
 })
 export class ArtistsComponent implements OnInit {
-  artists: Artist[] = [];
+  artists$ = new BehaviorSubject<Artist[]>([]);
 
   constructor(
     private spotifyService: SpotifyService,
@@ -28,13 +29,14 @@ export class ArtistsComponent implements OnInit {
           artistsFromDatabase
         );
 
-        console.log(artistsWithoutCountry);
+        this.artists$.next(artistsFromDatabase);
 
         if (artistsWithoutCountry.length > 0) {
           this.countriesService
             .getArtistsCountryOfOrigin(artistsWithoutCountry)
-            .subscribe((data) => {
-              this.artistService.saveArtist(data);
+            .subscribe((scrapedArtists) => {
+              this.artistService.saveArtists(scrapedArtists);
+              this.artists$.next(scrapedArtists);
             });
         }
       });
