@@ -20,13 +20,28 @@ export class ArtistService {
     );
   }
 
-  getArtistsData(artists: string[]): Observable<Artist[] | null> {
+  getArtists(artists: string[]): Observable<Artist[] | null> {
     const normalizedArtistsNames = artists.map((artist) => artist.toLowerCase());
     return from(
       this.supabaseClient.from("artists").select("name, country").in("name", normalizedArtistsNames)
     ).pipe(
       take(1),
       map((response) => response.data)
+    );
+  }
+
+  saveArtist(artists: Artist[]): void {
+    const newArtists = [];
+
+    artists.forEach((artist) => {
+      if (artist.country) {
+        artist.name = artist.name.toLocaleLowerCase();
+        newArtists.push(artist);
+      }
+    });
+
+    from(this.supabaseClient.from("artists").insert(artists)).subscribe((response) =>
+      console.log(response)
     );
   }
 }

@@ -73,17 +73,18 @@ export class SpotifyService {
       );
   }
 
-  getTopArtistsNames(): Observable<string[]> {
+  getUserTopArtists(): Observable<SpotifyApi.UsersTopArtistsResponse> {
     const tokenDataItem = localStorage.getItem("token_data") as string;
     const tokenData = JSON.parse(tokenDataItem) as SpotifyAccessTokenData;
 
-    return this.http
-      .get<SpotifyApi.UsersTopArtistsResponse>("https://api.spotify.com/v1/me/top/artists", {
+    return this.http.get<SpotifyApi.UsersTopArtistsResponse>(
+      "https://api.spotify.com/v1/me/top/artists",
+      {
         headers: {
           Authorization: "Bearer " + tokenData.access_token,
         },
-      })
-      .pipe(map((response) => response.items.map((artist) => artist.name)));
+      }
+    );
   }
 
   isTokenUndefined(): boolean {
