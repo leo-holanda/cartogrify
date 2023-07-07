@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, from, map, tap } from "rxjs";
+import { Observable, from, map, take, tap } from "rxjs";
 
 interface SpotifyAccessTokenData {
   access_token: string;
@@ -64,6 +64,7 @@ export class SpotifyService {
         },
       })
       .pipe(
+        take(1),
         tap((tokenData) => {
           const expiresAt = new Date();
           expiresAt.setSeconds(expiresAt.getSeconds() + tokenData.expires_in);
@@ -77,14 +78,13 @@ export class SpotifyService {
     const tokenDataItem = localStorage.getItem("token_data") as string;
     const tokenData = JSON.parse(tokenDataItem) as SpotifyAccessTokenData;
 
-    return this.http.get<SpotifyApi.UsersTopArtistsResponse>(
-      "https://api.spotify.com/v1/me/top/artists",
-      {
+    return this.http
+      .get<SpotifyApi.UsersTopArtistsResponse>("https://api.spotify.com/v1/me/top/artists", {
         headers: {
           Authorization: "Bearer " + tokenData.access_token,
         },
-      }
-    );
+      })
+      .pipe(take(1));
   }
 
   isTokenUndefined(): boolean {
@@ -123,6 +123,7 @@ export class SpotifyService {
         },
       })
       .pipe(
+        take(1),
         tap((tokenData) => {
           const expiresAt = new Date();
           expiresAt.setSeconds(expiresAt.getSeconds() + tokenData.expires_in);
