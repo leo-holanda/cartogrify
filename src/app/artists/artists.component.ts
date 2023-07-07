@@ -36,7 +36,7 @@ export class ArtistsComponent implements OnInit {
             .getArtistsCountryOfOrigin(artistsWithoutCountry)
             .subscribe((scrapedArtists) => {
               this.artistService.saveArtists(scrapedArtists);
-              this.artists$.next(scrapedArtists);
+              this.artists$.next([...artistsFromDatabase, ...scrapedArtists]);
             });
         }
       });
