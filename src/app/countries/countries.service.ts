@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, map, take } from "rxjs";
+import { Artist, ScrapedArtist } from "../artists/artist.model";
 
 @Injectable({
   providedIn: "root",
@@ -254,17 +255,17 @@ export class CountriesService {
 
   constructor(private http: HttpClient) {}
 
-  getArtistsCountryOfOrigin(artistsName: string[]): Observable<any> {
-    return this.http.post("http://127.0.0.1:5000/coor", artistsName).pipe(
+  getArtistsCountryOfOrigin(artistsName: string[]): Observable<Artist[]> {
+    return this.http.post<ScrapedArtist[]>("http://127.0.0.1:5000/coor", artistsName).pipe(
       take(1),
-      map((artistsData: any) => {
-        return artistsData.map((artist: any) => {
+      map((artistsData: ScrapedArtist[]) =>
+        artistsData.map((artist) => {
           return {
             name: artist.name,
             country: this.determineCountryOfOrigin(artist.page),
-          };
-        });
-      })
+          } as Artist;
+        })
+      )
     );
   }
 
