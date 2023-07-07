@@ -36,8 +36,8 @@ export class ArtistService {
       }
     });
 
-    from(this.supabaseClient.from("artists").insert(artists)).subscribe((response) =>
-      console.log(response)
-    );
+    from(this.supabaseClient.from("artists").insert(artists))
+      .pipe(take(1))
+      .subscribe((response) => console.log(response));
   }
 }

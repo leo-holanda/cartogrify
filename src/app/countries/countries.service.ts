@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, map } from "rxjs";
+import { Observable, map, take } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -256,6 +256,7 @@ export class CountriesService {
 
   getArtistsCountryOfOrigin(artistsName: string[]): Observable<any> {
     return this.http.post("http://127.0.0.1:5000/coor", artistsName).pipe(
+      take(1),
       map((artistsData: any) => {
         return artistsData.map((artist: any) => {
           return {
