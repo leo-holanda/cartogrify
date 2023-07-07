@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { SupabaseClient, createClient } from "@supabase/supabase-js";
 import { Observable, from, map, take } from "rxjs";
-import { Artist } from "./artist.model";
 import { environment } from "src/environments/environment";
+import { Artist } from "./artist.model";
 
 @Injectable({
   providedIn: "root",

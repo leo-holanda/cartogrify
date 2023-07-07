@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { SpotifyService } from "src/app/shared/spotify.service";
 import { ArtistService } from "./artist.service";
-import { Artist } from "./artist.model";
 import { CountriesService } from "../countries/countries.service";
 import { BehaviorSubject } from "rxjs";
+import { SpotifyService } from "../streaming/spotify.service";
+import { Artist } from "./artist.model";
 
 @Component({
   selector: "msm-artists",

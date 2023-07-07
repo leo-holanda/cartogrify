@@ -1,11 +1,11 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { SelectionPageComponent } from "./selection-page/selection-page.component";
-import { AuthorizationGateComponent } from "./authorization-gate/authorization-gate.component";
+import { PostLoginComponent } from "./post-login/post-login.component";
+import { LoginComponent } from "./login/login.component";
 
 const routes: Routes = [
-  { path: "", component: SelectionPageComponent },
-  { path: "authorization", component: AuthorizationGateComponent },
+  { path: "", component: LoginComponent },
+  { path: "authorization", component: PostLoginComponent },
 ];
 
 @NgModule({

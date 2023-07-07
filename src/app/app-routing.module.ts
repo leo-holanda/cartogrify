@@ -3,7 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 
 const routes: Routes = [
   {
-    path: "authorization",
+    path: "",
     loadChildren: () =>
       import("./authorization/authorization.module").then((m) => m.AuthorizationModule),
   },
