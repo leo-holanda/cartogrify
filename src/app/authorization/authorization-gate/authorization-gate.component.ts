@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, convertToParamMap } from "@angular/router";
-import { SpotifyService } from "../services/spotify.service";
+import { SpotifyService } from "src/app/shared/spotify.service";
 
 @Component({
   selector: "msm-authorization-gate",
@@ -34,7 +34,7 @@ export class AuthorizationGateComponent implements OnInit {
         if (code) {
           this.isAuthorized = true;
           this.spotifyService.requestAccessToken(code).subscribe(() => {
-            this.router.navigate(["/worldmap"]);
+            this.router.navigate(["/artists"]);
           });
         }
       }

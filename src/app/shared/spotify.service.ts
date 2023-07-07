@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, from, map, of, tap } from "rxjs";
+import { Observable, from, map, tap } from "rxjs";
 
 interface SpotifyAccessTokenData {
   access_token: string;

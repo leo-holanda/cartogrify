@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
-import { SpotifyService } from "../services/spotify.service";
 import { Router } from "@angular/router";
+import { SpotifyService } from "src/app/shared/spotify.service";
 
 @Component({
   selector: "msm-selection-page",
@@ -15,10 +15,10 @@ export class SelectionPageComponent {
       this.spotifyService.requestAuthorization();
     } else if (this.spotifyService.isTokenExpired()) {
       this.spotifyService.refreshToken().subscribe(() => {
-        this.router.navigate(["/worldmap"]);
+        this.router.navigate(["/artists"]);
       });
     } else {
-      this.router.navigate(["/worldmap"]);
+      this.router.navigate(["/artists"]);
     }
   }
 
