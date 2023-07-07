@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { SupabaseClient, createClient } from "@supabase/supabase-js";
 import { Observable, from, map, take } from "rxjs";
 import { Artist } from "./artist.model";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -10,10 +11,7 @@ export class ArtistService {
   supabaseClient!: SupabaseClient;
 
   constructor() {
-    this.supabaseClient = createClient(
-      "https:vjknjigknvleyfpqwois.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqa25qaWdrbnZsZXlmcHF3b2lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODg0ODAzMjgsImV4cCI6MjAwNDA1NjMyOH0.cO-zjhPoFgpKtD1VXDkbhf_fAn1vic9GFpkL-gm-gyY"
-    );
+    this.supabaseClient = createClient(environment.SUPABASE_URL, environment.SUPABASE_ANON_KEY);
   }
 
   getArtistsByName(artists: string[]): Observable<Artist[]> {
