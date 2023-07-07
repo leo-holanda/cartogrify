@@ -1,11 +1,7 @@
 import { Injectable } from "@angular/core";
-import { PostgrestSingleResponse, SupabaseClient, createClient } from "@supabase/supabase-js";
+import { SupabaseClient, createClient } from "@supabase/supabase-js";
 import { Observable, from, map, take } from "rxjs";
-
-interface Artist {
-  name: string;
-  country: string;
-}
+import { Artist } from "./artist.model";
 
 @Injectable({
   providedIn: "root",

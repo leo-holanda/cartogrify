@@ -3,14 +3,21 @@ import { BrowserModule } from "@angular/platform-browser";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { SelectionPageComponent } from "./selection-page/selection-page.component";
-import { AuthorizationGateComponent } from "./authorization-gate/authorization-gate.component";
 import { HttpClientModule } from "@angular/common/http";
-import { WorldMapComponent } from './world-map/world-map.component';
+import { ArtistsModule } from "./artists/artists.module";
+import { AuthorizationModule } from "./authorization/authorization.module";
+import { CountriesModule } from "./countries/countries.module";
 
 @NgModule({
-  declarations: [AppComponent, SelectionPageComponent, AuthorizationGateComponent, WorldMapComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    AuthorizationModule,
+    ArtistsModule,
+    CountriesModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

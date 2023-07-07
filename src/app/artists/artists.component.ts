@@ -1,20 +1,21 @@
 import { Component, OnInit } from "@angular/core";
-import { SpotifyService } from "../services/spotify.service";
-import { ArtistService } from "../services/artist.service";
-import { WebScraperService } from "../services/web-scraper.service";
+import { SpotifyService } from "src/app/shared/spotify.service";
+import { ArtistService } from "./artist.service";
+import { Artist } from "./artist.model";
+import { CountriesService } from "../countries/countries.service";
 
 @Component({
-  selector: "msm-world-map",
-  templateUrl: "./world-map.component.html",
-  styleUrls: ["./world-map.component.scss"],
+  selector: "msm-artists",
+  templateUrl: "./artists.component.html",
+  styleUrls: ["./artists.component.scss"],
 })
-export class WorldMapComponent implements OnInit {
-  artists: any[] = [];
+export class ArtistsComponent implements OnInit {
+  artists: Artist[] = [];
 
   constructor(
     private spotifyService: SpotifyService,
     private artistService: ArtistService,
-    private webScraper: WebScraperService
+    private countriesService: CountriesService
   ) {}
 
   ngOnInit(): void {
@@ -30,9 +31,11 @@ export class WorldMapComponent implements OnInit {
         console.log(artistsWithoutCountry);
 
         if (artistsWithoutCountry.length > 0) {
-          this.webScraper.getArtistsCountryOfOrigin(artistsWithoutCountry).subscribe((data) => {
-            this.artistService.saveArtist(data);
-          });
+          this.countriesService
+            .getArtistsCountryOfOrigin(artistsWithoutCountry)
+            .subscribe((data) => {
+              this.artistService.saveArtist(data);
+            });
         }
       });
     });
@@ -40,7 +43,7 @@ export class WorldMapComponent implements OnInit {
 
   findArtistsWithoutCountry(
     topArtistsNames: string[],
-    artistsFromDatabase: any[] | null
+    artistsFromDatabase: Artist[] | null
   ): string[] {
     return topArtistsNames.filter(
       (topArtistName) =>

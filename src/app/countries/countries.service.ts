@@ -5,7 +5,7 @@ import { Observable, map } from "rxjs";
 @Injectable({
   providedIn: "root",
 })
-export class WebScraperService {
+export class CountriesService {
   countriesNames = [
     "Afghanistan",
     "Åland Islands",
