@@ -25,17 +25,13 @@ export class ArtistService {
   }
 
   saveArtists(artists: Artist[]): void {
-    const newArtists = [];
-
-    artists.forEach((artist) => {
-      if (artist.country) {
-        artist.name = artist.name.toLocaleLowerCase();
-        newArtists.push(artist);
-      }
+    const newArtists = artists.map((artist) => {
+      return {
+        name: artist.name.toLowerCase(),
+        country: artist.country,
+      };
     });
 
-    from(this.supabaseClient.from("artists").insert(artists))
-      .pipe(take(1))
-      .subscribe((response) => console.log(response));
+    from(this.supabaseClient.from("artists").insert(newArtists)).pipe(take(1)).subscribe();
   }
 }
