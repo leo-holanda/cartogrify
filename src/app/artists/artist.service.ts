@@ -24,7 +24,7 @@ export class ArtistService {
     );
   }
 
-  saveArtist(artists: Artist[]): void {
+  saveArtists(artists: Artist[]): void {
     const newArtists = [];
 
     artists.forEach((artist) => {
