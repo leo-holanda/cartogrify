@@ -1,20 +1,20 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, convertToParamMap } from "@angular/router";
-import { SpotifyService } from "src/app/shared/spotify.service";
+import { SpotifyAuthService } from "../spotify-auth.service";
 
 @Component({
-  selector: "msm-authorization-gate",
-  templateUrl: "./authorization-gate.component.html",
-  styleUrls: ["./authorization-gate.component.scss"],
+  selector: "msm-post-login",
+  templateUrl: "./post-login.component.html",
+  styleUrls: ["./post-login.component.scss"],
 })
-export class AuthorizationGateComponent implements OnInit {
+export class PostLoginComponent implements OnInit {
   isStateUnequal = false;
   hasError = false;
   isAuthorized = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private spotifyService: SpotifyService,
+    private spotifyAuthService: SpotifyAuthService,
     private router: Router
   ) {}
 
@@ -33,7 +33,7 @@ export class AuthorizationGateComponent implements OnInit {
         const code = paramMap.get("code");
         if (code) {
           this.isAuthorized = true;
-          this.spotifyService.requestAccessToken(code).subscribe(() => {
+          this.spotifyAuthService.requestAccessToken(code).subscribe(() => {
             this.router.navigate(["/artists"]);
           });
         }

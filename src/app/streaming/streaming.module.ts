@@ -7,4 +7,4 @@ import { SpotifyService } from "./spotify.service";
   providers: [SpotifyService],
   imports: [CommonModule],
 })
-export class SharedModule {}
+export class StreamingModule {}

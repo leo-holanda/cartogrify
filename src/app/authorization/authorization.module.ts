@@ -1,11 +1,13 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { AuthorizationGateComponent } from "./authorization-gate/authorization-gate.component";
-import { SelectionPageComponent } from "./selection-page/selection-page.component";
 import { AuthorizationRoutingModule } from "./authorization-routing.module";
+import { SpotifyAuthService } from "./spotify-auth.service";
+import { PostLoginComponent } from "./post-login/post-login.component";
+import { LoginComponent } from "./login/login.component";
 
 @NgModule({
-  declarations: [AuthorizationGateComponent, SelectionPageComponent],
+  declarations: [PostLoginComponent, LoginComponent],
   imports: [CommonModule, AuthorizationRoutingModule],
+  providers: [SpotifyAuthService],
 })
 export class AuthorizationModule {}

@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, from, map, take, tap } from "rxjs";
 
-interface SpotifyAccessTokenData {
+export interface SpotifyAccessTokenData {
   access_token: string;
   expires_in: number;
   refresh_token: string;
@@ -14,7 +14,7 @@ interface SpotifyAccessTokenData {
 @Injectable({
   providedIn: "root",
 })
-export class SpotifyService {
+export class SpotifyAuthService {
   clientId = "c8201434fef4436fb83dfa7bb2a7128d";
   redirectUri = "http://localhost:4200/authorization";
 
@@ -72,19 +72,6 @@ export class SpotifyService {
           localStorage.setItem("token_data", JSON.stringify(tokenData));
         })
       );
-  }
-
-  getUserTopArtists(): Observable<SpotifyApi.UsersTopArtistsResponse> {
-    const tokenDataItem = localStorage.getItem("token_data") as string;
-    const tokenData = JSON.parse(tokenDataItem) as SpotifyAccessTokenData;
-
-    return this.http
-      .get<SpotifyApi.UsersTopArtistsResponse>("https://api.spotify.com/v1/me/top/artists", {
-        headers: {
-          Authorization: "Bearer " + tokenData.access_token,
-        },
-      })
-      .pipe(take(1));
   }
 
   isTokenUndefined(): boolean {
