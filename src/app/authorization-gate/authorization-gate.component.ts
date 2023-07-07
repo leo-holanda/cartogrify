@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, convertToParamMap } from "@angular/router";
 import { SpotifyService } from "../services/spotify.service";
 
 @Component({
-  selector: "app-authorization-gate",
+  selector: "msm-authorization-gate",
   templateUrl: "./authorization-gate.component.html",
   styleUrls: ["./authorization-gate.component.scss"],
 })
