@@ -22,7 +22,7 @@ export class ArtistsComponent implements OnInit {
     this.spotifyService.getUserTopArtists().subscribe((topArtists) => {
       const topArtistsNames = topArtists.items.map((artist) => artist.name.toLowerCase());
 
-      this.artistService.getArtists(topArtistsNames).subscribe((artistsFromDatabase) => {
+      this.artistService.getArtistsByName(topArtistsNames).subscribe((artistsFromDatabase) => {
         const artistsWithoutCountry = this.findArtistsWithoutCountry(
           topArtistsNames,
           artistsFromDatabase

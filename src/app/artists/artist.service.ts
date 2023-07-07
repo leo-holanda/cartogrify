@@ -16,13 +16,13 @@ export class ArtistService {
     );
   }
 
-  getArtists(artists: string[]): Observable<Artist[] | null> {
+  getArtistsByName(artists: string[]): Observable<Artist[]> {
     const normalizedArtistsNames = artists.map((artist) => artist.toLowerCase());
     return from(
       this.supabaseClient.from("artists").select("name, country").in("name", normalizedArtistsNames)
     ).pipe(
       take(1),
-      map((response) => response.data)
+      map((response) => response.data || [])
     );
   }
 
