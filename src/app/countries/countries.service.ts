@@ -256,18 +256,24 @@ export class CountriesService {
 
   constructor(private http: HttpClient) {}
 
-  getArtistsCountryOfOrigin(artistsName: string[]): Observable<Artist[]> {
-    return this.http.post<ScrapedArtist[]>(environment.SCRAPER_URL, artistsName).pipe(
-      take(1),
-      map((artistsData: ScrapedArtist[]) =>
-        artistsData.map((artist) => {
-          return {
-            name: artist.name,
-            country: this.determineCountryOfOrigin(artist.page),
-          } as Artist;
-        })
-      )
-    );
+  getArtistsCountryOfOrigin(artistsNames: string[]): Observable<Artist[]> {
+    return this.http
+      .post<ScrapedArtist[]>(environment.PAGE_FINDER_URL, artistsNames, {
+        headers: {
+          Authorization: "Bearer " + environment.SUPABASE_ANON_KEY,
+        },
+      })
+      .pipe(
+        take(1),
+        map((artistsData: ScrapedArtist[]) =>
+          artistsData.map((artist) => {
+            return {
+              name: artist.name,
+              country: this.determineCountryOfOrigin(artist.page),
+            } as Artist;
+          })
+        )
+      );
   }
 
   determineCountryOfOrigin(artistPage: string): string | undefined {
