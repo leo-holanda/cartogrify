@@ -189,6 +189,7 @@ export class CountriesService {
     "Qatar",
     "Reunion",
     "Romania",
+    "Russia",
     "Russian Federation",
     "RWANDA",
     "Saint Helena",
@@ -276,10 +277,8 @@ export class CountriesService {
       );
   }
 
-  determineCountryOfOrigin(artistPage: string): string | undefined {
-    const parser = new DOMParser();
-    const htmlDoc = parser.parseFromString(artistPage, "text/html");
-    const metadataTags = htmlDoc.querySelectorAll("dd.catalogue-metadata-description");
+  findCountryInMetadataTags(document: Document): string | undefined {
+    const metadataTags = document.querySelectorAll("dd.catalogue-metadata-description");
 
     let countryOfOrigin = undefined;
     for (let i = 0; i < metadataTags.length; i++) {
@@ -288,6 +287,39 @@ export class CountriesService {
       );
       if (countryOfOrigin !== undefined) break;
     }
+
+    return countryOfOrigin;
+  }
+
+  findCountryInWikiText(document: Document): string | undefined {
+    const wikiTag = document.querySelector("div.wiki-block-inner-2");
+    if (!wikiTag) return undefined;
+
+    return this.countriesNames.find((countryName) => wikiTag.innerHTML.includes(countryName));
+  }
+
+  findCountryInArtistTags(document: Document): string | undefined {
+    const artistTags = document.querySelectorAll("ul.tags-list tag");
+
+    let countryOfOrigin = undefined;
+    for (let i = 0; i < artistTags.length; i++) {
+      countryOfOrigin = this.countriesNames.find((countryName) =>
+        artistTags.item(i).innerHTML.includes(countryName)
+      );
+      if (countryOfOrigin !== undefined) break;
+    }
+
+    return countryOfOrigin;
+  }
+
+  determineCountryOfOrigin(artistPage: string): string | undefined {
+    const parser = new DOMParser();
+    const htmlDoc = parser.parseFromString(artistPage, "text/html");
+
+    const countryOfOrigin =
+      this.findCountryInMetadataTags(htmlDoc) ||
+      this.findCountryInArtistTags(htmlDoc) ||
+      this.findCountryInWikiText(htmlDoc);
 
     return countryOfOrigin;
   }
