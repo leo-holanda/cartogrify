@@ -25,13 +25,15 @@ export class ArtistService {
   }
 
   saveArtists(artists: Artist[]): void {
-    const newArtists = artists.map((artist) => {
+    const missingArtists = artists.map((artist) => {
       return {
         name: artist.name.toLowerCase(),
         country: artist.country,
       };
     });
 
-    from(this.supabaseClient.from("artists").insert(newArtists)).pipe(take(1)).subscribe();
+    this.supabaseClient.functions.invoke("save-missing-artists", {
+      body: missingArtists,
+    });
   }
 }
