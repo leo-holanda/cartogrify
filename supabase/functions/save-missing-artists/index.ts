@@ -23,7 +23,7 @@ serve(async (req: Request) => {
       }
     );
 
-    const { missingArtists } = await req.json();
+    const missingArtists = await req.json();
     const { error } = await supabaseClient.from("artists").insert(missingArtists);
     if (error) throw error;
 
