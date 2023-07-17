@@ -42,6 +42,7 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "prettier": "2.8.8",
     "prettier-eslint": "15.0.1",
+    "supabase": "^1.77.9",
     "typescript": "~5.1.3"
   }
 }
