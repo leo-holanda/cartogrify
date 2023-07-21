@@ -1,6 +1,8 @@
+import { Country } from "../countries/country.model";
+
 export interface Artist {
   name: string;
-  country: string | undefined;
+  country: Country | undefined;
 }
 
 export interface ScrapedArtist {

@@ -1,1 +1,48 @@
-<div *ngFor="let artist of artists$ | async">{{ artist.name + " " + artist.country }}</div>
+<main>
+  <div class="data-wrapper">
+    <h1>Results</h1>
+    <div class="data">
+      <h2 class="data-title">Top Countries</h2>
+      <div class="data-content-wrapper">
+        <div class="geo-data" *ngFor="let country of countries">
+          <div>
+            <span class="{{ 'flag fi fi-' + country[1].country.code.toLowerCase() }}"></span>
+            <span>{{ country[1].country.name }}</span>
+          </div>
+          <span>{{ country[1].count }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="data">
+      <h2 class="data-title">Top Regions</h2>
+      <div class="data-content-wrapper">
+        <div *ngFor="let region of regions">
+          <div class="geo-data">
+            <span>{{ region[1].regionName }}</span>
+            <span>{{ region[1].count }}</span>
+          </div>
+          <div *ngFor="let subRegion of region[1].subRegions">
+            <div class="geo-data sub-region-data">
+              <span>{{ subRegion.subRegionName }}</span>
+              <span>{{ subRegion.count }}</span>
+            </div>
+            <div
+              class="geo-data intermediate-region-data"
+              *ngFor="let intermediateRegion of subRegion.intermediateRegions"
+            >
+              <span>{{ intermediateRegion.intermediateRegionName }}</span>
+              <span>{{ intermediateRegion.count }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="data">
+      <h2 class="data-title">Top Artists</h2>
+      <div class="data-content-wrapper">
+        <div *ngFor="let artist of artists$ | async">{{ artist.name }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="map-wrapper"></div>
+</main>
