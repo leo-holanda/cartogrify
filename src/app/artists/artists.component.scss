@@ -1,0 +1,55 @@
+main {
+  background-color: #121212;
+  height: 100vh;
+  display: flex;
+}
+
+.data-wrapper {
+  background-color: #121212;
+  padding: 2rem;
+  color: white;
+
+  .data-title {
+    margin: 1rem 0 0 1rem;
+  }
+
+  .data {
+    background-color: #303030;
+    padding: 1rem;
+    margin: 1rem 0 0 0;
+    border-radius: 1rem;
+  }
+
+  .data-content-wrapper {
+    padding: 1rem;
+  }
+
+  .geo-data {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid grey;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    & span:first-child {
+      padding-right: 2rem;
+    }
+  }
+
+  .sub-region-data {
+    padding-left: 1rem;
+  }
+
+  .intermediate-region-data {
+    padding-left: 2rem;
+  }
+
+  .flag {
+    margin-right: 1rem;
+  }
+}
+
+.map-wrapper {
+  padding: 2rem;
+  background-color: #303030;
+}
