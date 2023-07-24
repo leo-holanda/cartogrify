@@ -40,7 +40,23 @@
     <div class="data">
       <h2 class="data-title">Top Artists</h2>
       <div class="data-content-wrapper">
-        <div *ngFor="let artist of artists$ | async">{{ artist.name }}</div>
+        <table>
+          <tr *ngFor="let artist of artists$ | async">
+            <td>
+              {{ artist.name }}
+            </td>
+            <td class="country-row">
+              <span
+                class="{{
+                  'flag fi fi-' +
+                    (artist.country == null ? 'xx' : artist.country?.code?.toLowerCase())
+                }}"
+              >
+              </span>
+              {{ artist.country?.name || "Unknown" }}
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>

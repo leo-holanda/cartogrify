@@ -47,6 +47,27 @@ main {
   .flag {
     margin-right: 1rem;
   }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+
+    td {
+      padding: 0.5rem 0;
+    }
+
+    tr {
+      border-bottom: 1px solid grey;
+    }
+
+    .country-row {
+      padding-left: 1.25rem;
+
+      .flag {
+        margin-right: 0.25rem;
+      }
+    }
+  }
 }
 
 .map-wrapper {
