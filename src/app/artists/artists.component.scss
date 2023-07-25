@@ -5,9 +5,12 @@ main {
 }
 
 .data-wrapper {
+  display: flex;
+  flex-flow: column;
   background-color: #121212;
   padding: 2rem;
   color: white;
+  width: 20%;
 
   .data-selector-wrapper {
     display: flex;
@@ -19,6 +22,11 @@ main {
       border: none;
       cursor: pointer;
       padding: 0.75rem;
+      font-size: 1.125rem;
+
+      &:hover {
+        background-color: grey;
+      }
 
       &:first-child {
         border-radius: 0.5rem 0 0 0.5rem;
@@ -44,6 +52,25 @@ main {
     padding: 1rem;
     margin: 1rem 0 0 0;
     border-radius: 1rem;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      background-color: transparent;
+      width: 0.5rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #babac0;
+      border-radius: 16px;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.808);
+      }
+    }
   }
 
   .data-content-wrapper {
@@ -71,7 +98,7 @@ main {
   }
 
   .flag {
-    margin-right: 1rem;
+    margin-right: 0.5rem;
   }
 
   table {
@@ -83,15 +110,12 @@ main {
     }
 
     tr {
-      border-bottom: 1px solid grey;
+      border-bottom: 1px solid rgba(128, 128, 128, 0.486);
     }
 
     .country-row {
       padding-left: 1.25rem;
-
-      .flag {
-        margin-right: 0.25rem;
-      }
+      display: flex;
     }
   }
 }
