@@ -183,12 +183,18 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       .geoNaturalEarth1()
       .fitSize([width - marginX, height - marginY], countriesGeoData as d3.GeoGeometryObjects);
     const path = d3.geoPath().projection(projection);
+
+    const zoom = d3.zoom().on("zoom", (event) => {
+      d3.select("svg g").attr("transform", event.transform);
+    });
+
     const svg = d3
       .select(".map-wrapper")
       .append("svg")
       .attr("class", "svg")
       .attr("viewBox", [0, 0, width, height])
-      .attr("aspect-ratio", "auto");
+      .attr("aspect-ratio", "auto")
+      .call(zoom as any);
 
     const colorScale = d3
       .scaleThreshold<number, string>()
