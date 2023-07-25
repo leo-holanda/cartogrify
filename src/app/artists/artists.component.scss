@@ -97,6 +97,13 @@ main {
 }
 
 .map-wrapper {
-  padding: 2rem;
-  background-color: #303030;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  width: 100vw;
+
+  .svg {
+    margin: 1rem;
+  }
 }
