@@ -4,13 +4,7 @@ import { CountriesService } from "../countries/countries.service";
 import { BehaviorSubject, skip } from "rxjs";
 import { SpotifyService } from "../streaming/spotify.service";
 import { Artist } from "./artist.model";
-import {
-  CountryData,
-  RegionData,
-  Country,
-  IntermediateRegionData,
-  SubRegionData,
-} from "../countries/country.model";
+import { CountryData, RegionData } from "../countries/country.model";
 import * as d3 from "d3";
 import { countriesGeoData } from "../countries/countries.data";
 
@@ -27,8 +21,8 @@ enum DataTypes {
 })
 export class ArtistsComponent implements OnInit, AfterViewInit {
   artists$ = new BehaviorSubject<Artist[]>([]);
-  countries: [string, CountryData][] = [];
-  regions: [string, RegionData][] = [];
+  countriesData: CountryData[] = [];
+  regionsData: RegionData[] = [];
   selectedData = DataTypes.COUNTRIES;
 
   DataTypes = DataTypes;
@@ -64,8 +58,8 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     });
 
     this.artists$.subscribe((artists) => {
-      this.countries = this.countCountries(artists);
-      this.regions = this.countRegions(artists);
+      this.countriesData = this.countriesService.countCountries(artists);
+      this.regionsData = this.countriesService.countRegions(artists);
     });
   }
 
@@ -73,7 +67,11 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     this.setMap();
   }
 
-  findArtistsWithoutCountry(
+  setSelectedData(dataType: DataTypes): void {
+    this.selectedData = dataType;
+  }
+
+  private findArtistsWithoutCountry(
     topArtistsNames: string[],
     artistsFromDatabase: Artist[] | null
   ): string[] {
@@ -85,103 +83,15 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     );
   }
 
-  countCountries(artists: Artist[]): [string, CountryData][] {
-    const countriesCount = new Map<string, CountryData>();
-    const unknownCountry: Country = {
-      code: "xx",
-      code3: "xxx",
-      name: "Unknown",
-      region: "Unknown",
-      subRegion: "Unknown",
-      intermediateRegion: "Unknown",
-    };
-
-    artists.forEach((artist) => {
-      const country = JSON.parse(artist.country as unknown as string) || unknownCountry;
-      const count = countriesCount.get(country.name)?.count || 0;
-      const countryData = {
-        country: country,
-        count: count + 1,
-      };
-      countriesCount.set(country.name, countryData);
-    });
-
-    const sortedCountriesCount = [...countriesCount].sort((a, b) => b[1].count - a[1].count);
-
-    return sortedCountriesCount;
-  }
-
-  countRegions(artists: Artist[]): [string, RegionData][] {
-    const regionsMap = new Map<string, RegionData>();
-    const unknownRegion: RegionData = {
-      regionName: "Unknown",
-      subRegions: [],
-      count: 0,
-    };
-
-    artists.forEach((artist) => {
-      if (!artist.country) {
-        unknownRegion.count += 1;
-        regionsMap.set(unknownRegion.regionName, unknownRegion);
-      } else {
-        artist.country = JSON.parse(artist.country as unknown as string) as Country;
-        if (!artist.country.region) {
-          unknownRegion.count += 1;
-          regionsMap.set(unknownRegion.regionName, unknownRegion);
-        } else {
-          const artistRegion = regionsMap.get(artist.country.region);
-
-          if (!artistRegion) {
-            const newRegion = this.createRegion(artist);
-            regionsMap.set(artist.country.region, newRegion);
-          } else {
-            artistRegion.count += 1;
-            if (artist.country.subRegion) {
-              const artistSubRegion = artistRegion.subRegions.find(
-                (subRegion) => subRegion.subRegionName === artist.country?.subRegion
-              );
-
-              if (artistSubRegion) {
-                artistSubRegion.count += 1;
-
-                if (artist.country.intermediateRegion) {
-                  const artistIntermediateRegion = artistSubRegion.intermediateRegions.find(
-                    (intermediateRegion) =>
-                      intermediateRegion.intermediateRegionName ===
-                      artist.country?.intermediateRegion
-                  );
-
-                  if (artistIntermediateRegion) artistIntermediateRegion.count += 1;
-                  regionsMap.set(artist.country.region, artistRegion);
-                }
-              } else {
-                const newSubRegion = this.createSubRegion(artist);
-                artistRegion.subRegions.push(newSubRegion);
-                regionsMap.set(artist.country.region, artistRegion);
-              }
-            }
-          }
-        }
-      }
-    });
-
-    const sortedRegionsData = [...regionsMap].sort((a, b) => b[1].count - a[1].count);
-    return sortedRegionsData;
-  }
-
-  setSelectedData(dataType: DataTypes): void {
-    this.selectedData = dataType;
-  }
-
   private setMap() {
     const height = this.mapWrapper.nativeElement.offsetHeight as number;
     const width = this.mapWrapper.nativeElement.offsetWidth as number;
-    const marginX = 32;
-    const marginY = marginX;
+    const margin = 32;
 
     const projection = d3
       .geoNaturalEarth1()
-      .fitSize([width - marginX, height - marginY], countriesGeoData as d3.GeoGeometryObjects);
+      .fitSize([width - margin, height - margin], countriesGeoData as d3.GeoGeometryObjects);
+
     const path = d3.geoPath().projection(projection);
 
     const zoom = d3.zoom().on("zoom", (event) => {
@@ -209,53 +119,12 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
         .join("path")
         .attr("d", path as any)
         .attr("fill", (d) => {
-          const currentCountry = this.countries.find((country) => {
-            return country[1].country.code3 === d.id;
+          const currentCountry = this.countriesData.find((countryData) => {
+            return countryData.country.code3 === d.id;
           });
 
-          return colorScale(currentCountry ? currentCountry[1].count : 0);
+          return colorScale(currentCountry ? currentCountry.count : 0);
         });
     });
-  }
-
-  private createRegion(artist: Artist): RegionData {
-    let artistsIntermediateRegion: IntermediateRegionData | undefined = undefined;
-    if (artist.country!.intermediateRegion) {
-      artistsIntermediateRegion = {
-        intermediateRegionName: artist.country!.intermediateRegion,
-        count: 1,
-      };
-    }
-
-    let artistSubRegion: SubRegionData | undefined = undefined;
-    if (artist.country!.subRegion) {
-      artistSubRegion = {
-        subRegionName: artist.country!.subRegion,
-        count: 1,
-        intermediateRegions: artistsIntermediateRegion ? [artistsIntermediateRegion] : [],
-      };
-    }
-
-    return {
-      regionName: artist.country?.region,
-      subRegions: artistSubRegion ? [artistSubRegion] : [],
-      count: 1,
-    } as RegionData;
-  }
-
-  private createSubRegion(artist: Artist): SubRegionData {
-    let artistsIntermediateRegion: IntermediateRegionData | undefined = undefined;
-    if (artist.country!.intermediateRegion) {
-      artistsIntermediateRegion = {
-        intermediateRegionName: artist.country!.intermediateRegion,
-        count: 1,
-      };
-    }
-
-    return {
-      subRegionName: artist.country!.subRegion!,
-      count: 1,
-      intermediateRegions: artistsIntermediateRegion ? [artistsIntermediateRegion] : [],
-    };
   }
 }

@@ -13,18 +13,18 @@ export interface CountryData {
 }
 
 export interface IntermediateRegionData {
-  intermediateRegionName: string;
+  name: string;
   count: number;
 }
 
 export interface SubRegionData {
-  subRegionName: string;
+  name: string;
   count: number;
   intermediateRegions: IntermediateRegionData[];
 }
 
 export interface RegionData {
-  regionName: string;
+  name: string;
   count: number;
   subRegions: SubRegionData[];
 }

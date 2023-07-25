@@ -1,3 +1,4 @@
+import { GeoGeometryObjects } from "d3";
 import { Country } from "./country.model";
 
 export const countries: Country[] = [
