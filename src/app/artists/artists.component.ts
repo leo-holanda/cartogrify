@@ -12,6 +12,12 @@ import {
   SubRegionData,
 } from "../countries/country.model";
 
+enum DataTypes {
+  COUNTRIES = "countries",
+  REGIONS = "regions",
+  ARTISTS = "artists",
+}
+
 @Component({
   selector: "msm-artists",
   templateUrl: "./artists.component.html",
@@ -21,6 +27,9 @@ export class ArtistsComponent implements OnInit {
   artists$ = new BehaviorSubject<Artist[]>([]);
   countries: [string, CountryData][] = [];
   regions: [string, RegionData][] = [];
+  selectedData = DataTypes.COUNTRIES;
+
+  DataTypes = DataTypes;
 
   constructor(
     private spotifyService: SpotifyService,
@@ -149,6 +158,10 @@ export class ArtistsComponent implements OnInit {
 
     const sortedRegionsData = [...regionsMap].sort((a, b) => b[1].count - a[1].count);
     return sortedRegionsData;
+  }
+
+  setSelectedData(dataType: DataTypes): void {
+    this.selectedData = dataType;
   }
 
   private createRegion(artist: Artist): RegionData {

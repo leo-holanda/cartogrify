@@ -9,6 +9,32 @@ main {
   padding: 2rem;
   color: white;
 
+  .data-selector-wrapper {
+    display: flex;
+    justify-content: space-between;
+
+    .data-selector {
+      flex-grow: 1;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.75rem;
+
+      &:first-child {
+        border-radius: 0.5rem 0 0 0.5rem;
+      }
+
+      &:nth-child(2) {
+        border-left: 2px solid black;
+        border-right: 2px solid black;
+      }
+
+      &:last-child {
+        border-radius: 0 0.5rem 0.5rem 0;
+      }
+    }
+  }
+
   .data-title {
     margin: 1rem 0 0 1rem;
   }
