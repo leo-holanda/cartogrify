@@ -1,7 +1,14 @@
 <main>
   <div class="data-wrapper">
     <h1>Results</h1>
-    <div class="data">
+    <div class="data-selector-wrapper">
+      <button (click)="setSelectedData(DataTypes.COUNTRIES)" class="data-selector">
+        Countries
+      </button>
+      <button (click)="setSelectedData(DataTypes.REGIONS)" class="data-selector">Regions</button>
+      <button (click)="setSelectedData(DataTypes.ARTISTS)" class="data-selector">Artists</button>
+    </div>
+    <div *ngIf="selectedData == DataTypes.COUNTRIES" class="data">
       <h2 class="data-title">Top Countries</h2>
       <div class="data-content-wrapper">
         <div class="geo-data" *ngFor="let country of countries">
@@ -13,7 +20,7 @@
         </div>
       </div>
     </div>
-    <div class="data">
+    <div *ngIf="selectedData == DataTypes.REGIONS" class="data">
       <h2 class="data-title">Top Regions</h2>
       <div class="data-content-wrapper">
         <div *ngFor="let region of regions">
@@ -37,7 +44,7 @@
         </div>
       </div>
     </div>
-    <div class="data">
+    <div *ngIf="selectedData == DataTypes.ARTISTS" class="data">
       <h2 class="data-title">Top Artists</h2>
       <div class="data-content-wrapper">
         <table>
