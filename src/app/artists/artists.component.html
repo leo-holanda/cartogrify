@@ -11,13 +11,17 @@
     <div *ngIf="selectedData == DataTypes.COUNTRIES" class="data">
       <h2 class="data-title">Top Countries</h2>
       <div class="data-content-wrapper">
-        <div class="geo-data" *ngFor="let country of countries">
-          <div>
-            <span class="{{ 'flag fi fi-' + country[1].country.code.toLowerCase() }}"></span>
-            <span>{{ country[1].country.name }}</span>
-          </div>
-          <span>{{ country[1].count }}</span>
-        </div>
+        <table>
+          <tr *ngFor="let country of countries">
+            <td>
+              <span class="{{ 'flag fi fi-' + country[1].country.code.toLowerCase() }}"></span>
+              <span>{{ country[1].country.name }}</span>
+            </td>
+            <td>
+              <span>{{ country[1].count }}</span>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
     <div *ngIf="selectedData == DataTypes.REGIONS" class="data">
