@@ -12,13 +12,13 @@
       <h2 class="data-title">Top Countries</h2>
       <div class="data-content-wrapper">
         <table>
-          <tr *ngFor="let country of countries">
+          <tr *ngFor="let countryData of countriesData">
             <td>
-              <span class="{{ 'flag fi fi-' + country[1].country.code.toLowerCase() }}"></span>
-              <span>{{ country[1].country.name }}</span>
+              <span class="{{ 'flag fi fi-' + countryData.country.code.toLowerCase() }}"></span>
+              <span>{{ countryData.country.name }}</span>
             </td>
             <td>
-              <span>{{ country[1].count }}</span>
+              <span>{{ countryData.count }}</span>
             </td>
           </tr>
         </table>
@@ -27,21 +27,21 @@
     <div *ngIf="selectedData == DataTypes.REGIONS" class="data">
       <h2 class="data-title">Top Regions</h2>
       <div class="data-content-wrapper">
-        <div *ngFor="let region of regions">
+        <div *ngFor="let region of regionsData">
           <div class="geo-data">
-            <span>{{ region[1].regionName }}</span>
-            <span>{{ region[1].count }}</span>
+            <span>{{ region.name }}</span>
+            <span>{{ region.count }}</span>
           </div>
-          <div *ngFor="let subRegion of region[1].subRegions">
+          <div *ngFor="let subRegion of region.subRegions">
             <div class="geo-data sub-region-data">
-              <span>{{ subRegion.subRegionName }}</span>
+              <span>{{ subRegion.name }}</span>
               <span>{{ subRegion.count }}</span>
             </div>
             <div
               class="geo-data intermediate-region-data"
               *ngFor="let intermediateRegion of subRegion.intermediateRegions"
             >
-              <span>{{ intermediateRegion.intermediateRegionName }}</span>
+              <span>{{ intermediateRegion.name }}</span>
               <span>{{ intermediateRegion.count }}</span>
             </div>
           </div>
