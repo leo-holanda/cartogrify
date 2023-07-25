@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { ArtistService } from "./artist.service";
 import { CountriesService } from "../countries/countries.service";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, skip } from "rxjs";
 import { SpotifyService } from "../streaming/spotify.service";
 import { Artist } from "./artist.model";
 import {
@@ -11,6 +11,8 @@ import {
   IntermediateRegionData,
   SubRegionData,
 } from "../countries/country.model";
+import * as d3 from "d3";
+import { countriesGeoData } from "../countries/countries.data";
 
 enum DataTypes {
   COUNTRIES = "countries",
@@ -23,13 +25,15 @@ enum DataTypes {
   templateUrl: "./artists.component.html",
   styleUrls: ["./artists.component.scss"],
 })
-export class ArtistsComponent implements OnInit {
+export class ArtistsComponent implements OnInit, AfterViewInit {
   artists$ = new BehaviorSubject<Artist[]>([]);
   countries: [string, CountryData][] = [];
   regions: [string, RegionData][] = [];
   selectedData = DataTypes.COUNTRIES;
 
   DataTypes = DataTypes;
+
+  @ViewChild("mapWrapper") mapWrapper!: ElementRef;
 
   constructor(
     private spotifyService: SpotifyService,
@@ -65,6 +69,10 @@ export class ArtistsComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(): void {
+    this.setMap();
+  }
+
   findArtistsWithoutCountry(
     topArtistsNames: string[],
     artistsFromDatabase: Artist[] | null
@@ -81,6 +89,7 @@ export class ArtistsComponent implements OnInit {
     const countriesCount = new Map<string, CountryData>();
     const unknownCountry: Country = {
       code: "xx",
+      code3: "xxx",
       name: "Unknown",
       region: "Unknown",
       subRegion: "Unknown",
@@ -162,6 +171,45 @@ export class ArtistsComponent implements OnInit {
 
   setSelectedData(dataType: DataTypes): void {
     this.selectedData = dataType;
+  }
+
+  private setMap() {
+    const height = this.mapWrapper.nativeElement.offsetHeight as number;
+    const width = this.mapWrapper.nativeElement.offsetWidth as number;
+    const marginX = 32;
+    const marginY = marginX;
+
+    const projection = d3
+      .geoNaturalEarth1()
+      .fitSize([width - marginX, height - marginY], countriesGeoData as d3.GeoGeometryObjects);
+    const path = d3.geoPath().projection(projection);
+    const svg = d3
+      .select(".map-wrapper")
+      .append("svg")
+      .attr("class", "svg")
+      .attr("viewBox", [0, 0, width, height])
+      .attr("aspect-ratio", "auto");
+
+    const colorScale = d3
+      .scaleThreshold<number, string>()
+      .domain([0, 1, 2, 3])
+      .range(d3.schemeBlues[3]);
+
+    this.artists$.pipe(skip(1)).subscribe(() => {
+      svg
+        .append("g")
+        .selectAll("path")
+        .data(countriesGeoData.features)
+        .join("path")
+        .attr("d", path as any)
+        .attr("fill", (d) => {
+          const currentCountry = this.countries.find((country) => {
+            return country[1].country.code3 === d.id;
+          });
+
+          return colorScale(currentCountry ? currentCountry[1].count : 0);
+        });
+    });
   }
 
   private createRegion(artist: Artist): RegionData {

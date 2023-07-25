@@ -1,6 +1,7 @@
 export interface Country {
   name: string;
   code: string;
+  code3: string;
   region: string | undefined;
   subRegion: string | undefined;
   intermediateRegion: string | undefined;
