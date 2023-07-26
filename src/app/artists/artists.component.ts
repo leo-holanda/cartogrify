@@ -6,7 +6,7 @@ import { SpotifyService } from "../streaming/spotify.service";
 import { Artist } from "./artist.model";
 import { CountryData, RegionData } from "../countries/country.model";
 import * as d3 from "d3";
-import { countriesGeoData } from "../countries/countries.data";
+import { countriesCodes, countriesGeoData } from "../countries/countries.data";
 
 enum DataTypes {
   COUNTRIES = "countries",
@@ -111,19 +111,68 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       .domain([0, 1, 2, 3])
       .range(d3.schemeBlues[3]);
 
-    this.artists$.pipe(skip(1)).subscribe(() => {
+    const tooltip = d3
+      .select(".map-wrapper")
+      .append("div")
+      .style("position", "absolute")
+      .style("visibility", "hidden")
+      .style("background-color", "white")
+      .style("border", "solid")
+      .style("border-width", "1px")
+      .style("border-radius", "5px")
+      .style("padding", "10px");
+
+    this.artists$.pipe(skip(1)).subscribe((artists) => {
       svg
         .append("g")
         .selectAll("path")
         .data(countriesGeoData.features)
         .join("path")
         .attr("d", path as any)
+        .attr("country-name", (d) => d.properties.name)
+        .attr("country-code", (d) => d.id)
         .attr("fill", (d) => {
           const currentCountry = this.countriesData.find((countryData) => {
-            return countryData.country.code3 === d.id;
+            return countryData.country.name === d.properties.name;
           });
 
           return colorScale(currentCountry ? currentCountry.count : 0);
+        })
+        .on("mouseenter", (event) => {
+          const countryName = event.srcElement.getAttribute("country-name");
+          const countryCode = event.srcElement.getAttribute("country-code");
+
+          const artistsFromCountry = artists
+            .filter((artist) => artist.country?.code3 === countryCode)
+            .map((artist) => artist.name);
+
+          let countryTag = `
+            <div> 
+              <span class="fi fi-${countriesCodes[countryCode].toLowerCase()} flag"></span>
+              <span>
+                ${countryName}
+              </span> 
+            </div>
+          `;
+
+          artistsFromCountry.forEach((artistName) => {
+            const artistTag = document.createElement("div");
+            artistTag.innerHTML = artistName;
+            countryTag += artistTag.outerHTML;
+          });
+
+          if (artistsFromCountry.length === 0) countryTag += "No artists here.";
+
+          tooltip.style("top", event.pageY + "px").style("left", event.pageX + "px");
+          tooltip.style("visibility", "visible");
+          tooltip.html(countryTag);
+        })
+        .on("mouseover", (event) => {
+          console.log("mouseover");
+          tooltip.style("top", event.pageY + "px").style("left", event.pageX + "px");
+        })
+        .on("mouseout", () => {
+          tooltip.style("visibility", "hidden");
         });
     });
   }
