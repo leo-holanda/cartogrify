@@ -3,21 +3,39 @@
     <h1>Results</h1>
     <div class="data-selector-wrapper">
       <button (click)="setSelectedData(DataTypes.COUNTRIES)" class="data-selector">
-        Countries
+        <i class="bx bxs-flag-alt"></i>
+        <span>Countries</span>
       </button>
-      <button (click)="setSelectedData(DataTypes.REGIONS)" class="data-selector">Regions</button>
-      <button (click)="setSelectedData(DataTypes.ARTISTS)" class="data-selector">Artists</button>
+      <button (click)="setSelectedData(DataTypes.REGIONS)" class="data-selector">
+        <i class="bx bx-world"></i>
+        <span>Regions</span>
+      </button>
+      <button (click)="setSelectedData(DataTypes.ARTISTS)" class="data-selector">
+        <i class="bx bxs-user"></i>
+        <span> Artists </span>
+      </button>
     </div>
     <div *ngIf="selectedData == DataTypes.COUNTRIES" class="data">
       <h2 class="data-title">Top Countries</h2>
       <div class="data-content-wrapper">
         <table>
-          <tr *ngFor="let countryData of countriesData">
+          <thead>
+            <th>#</th>
+            <th>Country</th>
+            <th>Artists</th>
+          </thead>
+          <tr *ngFor="let countryData of countriesData; let i = index">
+            <td
+              class="data-index"
+              [ngClass]="{ 'first-place': i == 0, 'second-place': i == 1, 'third-place': i == 2 }"
+            >
+              {{ "#" + (i + 1) }}
+            </td>
             <td>
               <span class="{{ 'flag fi fi-' + countryData.country.code.toLowerCase() }}"></span>
               <span>{{ countryData.country.name }}</span>
             </td>
-            <td>
+            <td class="data-count">
               <span>{{ countryData.count }}</span>
             </td>
           </tr>
@@ -26,7 +44,7 @@
     </div>
     <div *ngIf="selectedData == DataTypes.REGIONS" class="data">
       <h2 class="data-title">Top Regions</h2>
-      <div class="data-content-wrapper">
+      <div class="data-content-wrapper region-data-wrapper">
         <div *ngFor="let region of regionsData">
           <div class="geo-data">
             <span>{{ region.name }}</span>
@@ -34,15 +52,13 @@
           </div>
           <div *ngFor="let subRegion of region.subRegions">
             <div class="geo-data sub-region-data">
-              <span>{{ subRegion.name }}</span>
-              <span>{{ subRegion.count }}</span>
+              <span>{{ subRegion.name + " (" + subRegion.count + ")" }}</span>
             </div>
             <div
               class="geo-data intermediate-region-data"
               *ngFor="let intermediateRegion of subRegion.intermediateRegions"
             >
-              <span>{{ intermediateRegion.name }}</span>
-              <span>{{ intermediateRegion.count }}</span>
+              <span>{{ intermediateRegion.name + " (" + intermediateRegion.count + ")" }}</span>
             </div>
           </div>
         </div>
@@ -52,7 +68,13 @@
       <h2 class="data-title">Top Artists</h2>
       <div class="data-content-wrapper">
         <table>
-          <tr *ngFor="let artist of artists$ | async">
+          <tr *ngFor="let artist of artists$ | async; let i = index">
+            <td
+              class="data-index"
+              [ngClass]="{ 'first-place': i == 0, 'second-place': i == 1, 'third-place': i == 2 }"
+            >
+              {{ "#" + (i + 1) }}
+            </td>
             <td>
               {{ artist.name }}
             </td>
