@@ -43,9 +43,17 @@ export class CountriesService {
 
     let countryOfOrigin = undefined;
     for (let i = 0; i < metadataTags.length; i++) {
+      const splittedTag = metadataTags
+        .item(i)
+        .innerHTML.split(",")
+        .map((content) => content.trim());
+
       countryOfOrigin = countries.find((country) =>
-        metadataTags.item(i).innerHTML.includes(country.name)
+        splittedTag.some(
+          (content) => content.includes(country.name) || country.name.includes(content)
+        )
       );
+
       if (countryOfOrigin !== undefined) break;
     }
 
