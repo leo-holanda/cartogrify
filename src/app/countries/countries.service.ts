@@ -29,6 +29,7 @@ export class CountriesService {
         take(1),
         map((artistsData: ScrapedArtist[]) =>
           artistsData.map((artist) => {
+            console.log(artist.name);
             return {
               name: artist.name,
               country: this.determineCountryOfOrigin(artist.page),
@@ -46,11 +47,13 @@ export class CountriesService {
       const splittedTag = metadataTags
         .item(i)
         .innerHTML.split(",")
-        .map((content) => content.trim());
+        .map((content) => content.trim().toLowerCase());
 
       countryOfOrigin = countries.find((country) =>
         splittedTag.some(
-          (content) => content.includes(country.name) || country.name.includes(content)
+          (content) =>
+            content.includes(country.name.toLowerCase()) ||
+            country.name.toLowerCase().includes(content)
         )
       );
 
@@ -68,13 +71,16 @@ export class CountriesService {
   }
 
   findCountryInArtistTags(document: Document): Country | undefined {
-    const artistTags = document.querySelectorAll("ul.tags-list tag");
+    const artistTags = document.querySelectorAll("ul.tags-list .tag a");
 
     let countryOfOrigin = undefined;
     for (let i = 0; i < artistTags.length; i++) {
-      countryOfOrigin = countries.find((country) =>
-        artistTags.item(i).innerHTML.includes(country.name)
+      countryOfOrigin = countries.find(
+        (country) =>
+          artistTags.item(i).innerHTML.toLowerCase().includes(country.name.toLowerCase()) ||
+          country.name.toLowerCase().includes(artistTags.item(i).innerHTML.toLowerCase())
       );
+
       if (countryOfOrigin !== undefined) break;
     }
 
