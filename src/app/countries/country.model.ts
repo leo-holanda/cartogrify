@@ -1,7 +1,6 @@
 export interface Country {
   name: string;
-  code: string;
-  code3: string;
+  flagCode: string;
   region: string | undefined;
   subRegion: string | undefined;
   intermediateRegion: string | undefined;
@@ -28,3 +27,10 @@ export interface RegionData {
   count: number;
   subRegions: SubRegionData[];
 }
+
+export type GeoFeature = GeoJSON.Feature<GeoJSON.Geometry, NonNullable<GeoJSON.GeoJsonProperties>>;
+
+export type GeoFeatureCollection = GeoJSON.FeatureCollection<
+  GeoJSON.Geometry,
+  NonNullable<GeoJSON.GeoJsonProperties>
+>;

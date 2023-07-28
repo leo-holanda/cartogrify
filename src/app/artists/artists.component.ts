@@ -4,9 +4,8 @@ import { CountriesService } from "../countries/countries.service";
 import { BehaviorSubject, skip } from "rxjs";
 import { SpotifyService } from "../streaming/spotify.service";
 import { Artist } from "./artist.model";
-import { CountryData, RegionData } from "../countries/country.model";
+import { CountryData, GeoFeature, RegionData } from "../countries/country.model";
 import * as d3 from "d3";
-import { countriesCodes, countriesGeoData } from "../countries/countries.data";
 
 enum DataTypes {
   COUNTRIES = "countries",
@@ -88,9 +87,11 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     const width = this.mapWrapper.nativeElement.offsetWidth as number;
     const margin = 32;
 
+    const geoJSON = this.countriesService.geoJSON;
+
     const projection = d3
       .geoNaturalEarth1()
-      .fitSize([width - margin, height - margin], countriesGeoData as d3.GeoGeometryObjects);
+      .fitSize([width - margin, height - margin], geoJSON as unknown as d3.GeoGeometryObjects);
 
     const path = d3.geoPath().projection(projection);
 
@@ -126,29 +127,35 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       svg
         .append("g")
         .selectAll("path")
-        .data(countriesGeoData.features)
+        .data(geoJSON.features)
         .join("path")
-        .attr("d", path as any)
-        .attr("country-name", (d) => d.properties.name)
-        .attr("country-code", (d) => d.id)
-        .attr("fill", (d) => {
+        .attr("d", path)
+        .attr("country-name", (feature: GeoFeature) => {
+          if (feature.properties) return feature.properties["NAME"];
+          else return "";
+        })
+        .attr("country-flag-code", (feature: GeoFeature) =>
+          this.countriesService.findCountryFlagCode(feature)
+        )
+        .attr("fill", (feature: GeoFeature) => {
           const currentCountry = this.countriesData.find((countryData) => {
-            return countryData.country.name === d.properties.name;
+            if (feature.properties) return countryData.country.name === feature.properties["NAME"];
+            else return false;
           });
 
           return colorScale(currentCountry ? currentCountry.count : 0);
         })
         .on("mouseenter", (event) => {
           const countryName = event.srcElement.getAttribute("country-name");
-          const countryCode = event.srcElement.getAttribute("country-code");
+          const countryFlagCode = event.srcElement.getAttribute("country-flag-code");
 
           const artistsFromCountry = artists
-            .filter((artist) => artist.country?.code3 === countryCode)
+            .filter((artist) => artist.country?.flagCode === countryFlagCode)
             .map((artist) => artist.name);
 
           let countryTag = `
             <div> 
-              <span class="fi fi-${countriesCodes[countryCode].toLowerCase()} flag"></span>
+              <span class="fi fi-${countryFlagCode} flag"></span>
               <span>
                 ${countryName}
               </span> 
@@ -168,7 +175,6 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
           tooltip.html(countryTag);
         })
         .on("mouseover", (event) => {
-          console.log("mouseover");
           tooltip.style("top", event.pageY + "px").style("left", event.pageX + "px");
         })
         .on("mouseout", () => {
