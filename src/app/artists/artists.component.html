@@ -32,7 +32,7 @@
               {{ "#" + (i + 1) }}
             </td>
             <td>
-              <span class="{{ 'flag fi fi-' + countryData.country.code.toLowerCase() }}"></span>
+              <span class="{{ 'flag fi fi-' + countryData.country.flagCode }}"></span>
               <span>{{ countryData.country.name }}</span>
             </td>
             <td class="data-count">
@@ -81,8 +81,7 @@
             <td class="country-row">
               <span
                 class="{{
-                  'flag fi fi-' +
-                    (artist.country == null ? 'xx' : artist.country?.code?.toLowerCase())
+                  'flag fi fi-' + (artist.country == null ? 'xx' : artist.country.flagCode)
                 }}"
               >
               </span>

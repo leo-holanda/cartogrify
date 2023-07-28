@@ -3,20 +3,31 @@ import { Injectable } from "@angular/core";
 import { Observable, map, take } from "rxjs";
 import { Artist, ScrapedArtist } from "../artists/artist.model";
 import { environment } from "src/environments/environment.development";
-import { countries } from "./countries.data";
 import {
   Country,
   CountryData,
   IntermediateRegionData,
   RegionData,
   SubRegionData,
+  GeoFeature,
+  GeoFeatureCollection,
 } from "./country.model";
+import countriesJSON from "../../assets/countries-50m.json";
+import * as topojson from "topojson-client";
+import * as TopoJSON from "topojson-specification";
 
 @Injectable({
   providedIn: "root",
 })
 export class CountriesService {
-  constructor(private http: HttpClient) {}
+  geoJSON!: GeoFeatureCollection;
+
+  constructor(private http: HttpClient) {
+    this.geoJSON = topojson.feature(
+      countriesJSON as unknown as TopoJSON.Topology,
+      countriesJSON.objects.countries as TopoJSON.GeometryCollection
+    );
+  }
 
   getArtistsCountryOfOrigin(artistsNames: string[]): Observable<Artist[]> {
     return this.http
@@ -41,50 +52,60 @@ export class CountriesService {
 
   findCountryInMetadataTags(document: Document): Country | undefined {
     const metadataTags = document.querySelectorAll("dd.catalogue-metadata-description");
+    if (metadataTags.length === 0) return undefined;
 
-    let countryOfOrigin = undefined;
+    let geoFeature: GeoFeature | undefined = undefined;
     for (let i = 0; i < metadataTags.length; i++) {
       const splittedTag = metadataTags
         .item(i)
         .innerHTML.split(",")
-        .map((content) => content.trim().toLowerCase());
+        .map((tagContent) => tagContent.trim().toLowerCase());
 
-      countryOfOrigin = countries.find((country) =>
-        splittedTag.some(
-          (content) =>
-            content.includes(country.name.toLowerCase()) ||
-            country.name.toLowerCase().includes(content)
-        )
+      geoFeature = this.geoJSON.features.find((currentGeoFeature: GeoFeature) =>
+        splittedTag.some((tagContent) => {
+          const geoFeatureName = currentGeoFeature.properties["NAME"].toLowerCase();
+          return tagContent.includes(geoFeatureName) || geoFeatureName.includes(tagContent);
+        })
       );
 
-      if (countryOfOrigin !== undefined) break;
+      if (geoFeature !== undefined) break;
     }
 
-    return countryOfOrigin;
+    if (!geoFeature) return undefined;
+    return this.createCountryFromFeature(geoFeature);
   }
 
   findCountryInWikiText(document: Document): Country | undefined {
     const wikiTag = document.querySelector("div.wiki-block-inner-2");
     if (!wikiTag) return undefined;
 
-    return countries.find((country) => wikiTag.innerHTML.includes(country.name));
+    const geoFeature = this.geoJSON.features.find((currentGeoFeature: GeoFeature) => {
+      const geoFeatureName = currentGeoFeature.properties["NAME"].toLowerCase();
+      return wikiTag.innerHTML.includes(geoFeatureName);
+    });
+
+    if (!geoFeature) return undefined;
+    return this.createCountryFromFeature(geoFeature);
   }
 
   findCountryInArtistTags(document: Document): Country | undefined {
     const artistTags = document.querySelectorAll("ul.tags-list .tag a");
 
-    let countryOfOrigin = undefined;
+    let geoFeature: GeoFeature | undefined = undefined;
     for (let i = 0; i < artistTags.length; i++) {
-      countryOfOrigin = countries.find(
-        (country) =>
-          artistTags.item(i).innerHTML.toLowerCase().includes(country.name.toLowerCase()) ||
-          country.name.toLowerCase().includes(artistTags.item(i).innerHTML.toLowerCase())
-      );
+      geoFeature = this.geoJSON.features.find((currentGeoFeature: GeoFeature) => {
+        const geoFeatureName = currentGeoFeature.properties["NAME"].toLowerCase();
+        return (
+          artistTags.item(i).innerHTML.toLowerCase().includes(geoFeatureName) ||
+          geoFeatureName.includes(artistTags.item(i).innerHTML.toLowerCase())
+        );
+      });
 
-      if (countryOfOrigin !== undefined) break;
+      if (geoFeature !== undefined) break;
     }
 
-    return countryOfOrigin;
+    if (!geoFeature) return undefined;
+    return this.createCountryFromFeature(geoFeature);
   }
 
   determineCountryOfOrigin(artistPage: string): Country | undefined {
@@ -102,9 +123,8 @@ export class CountriesService {
   countCountries(artists: Artist[]): CountryData[] {
     const countriesCount = new Map<string, CountryData>();
     const unknownCountry: Country = {
-      code: "xx",
-      code3: "xxx",
       name: "Unknown",
+      flagCode: "xx",
       region: "Unknown",
       subRegion: "Unknown",
       intermediateRegion: "Unknown",
@@ -186,6 +206,41 @@ export class CountriesService {
     return sortedRegionsData;
   }
 
+  findCountryFlagCode(geoFeature: GeoFeature): string {
+    let flagCode = "xx";
+    if (!geoFeature.properties) return flagCode;
+
+    const valuesToReject = ["-99", -99, "-099"];
+    if (
+      geoFeature.properties["ISO_A2"] &&
+      !valuesToReject.includes(geoFeature.properties["ISO_A2"])
+    )
+      flagCode = geoFeature.properties["ISO_A2"];
+    else if (
+      geoFeature.properties["ISO_A2_EH"] &&
+      !valuesToReject.includes(geoFeature.properties["ISO_A2_EH"])
+    )
+      flagCode = geoFeature.properties["ISO_A2_EH"];
+    else if (
+      geoFeature.properties["UN_A3"] &&
+      !valuesToReject.includes(geoFeature.properties["UN_A3"])
+    )
+      flagCode = geoFeature.properties["UN_A3"];
+    else if (
+      geoFeature.properties["POSTAL"] &&
+      !valuesToReject.includes(geoFeature.properties["POSTAL"])
+    )
+      flagCode = geoFeature.properties["POSTAL"];
+    else if (
+      geoFeature.properties["FIPS_10"] &&
+      !valuesToReject.includes(geoFeature.properties["FIPS_10"])
+    )
+      flagCode = geoFeature.properties["FIPS_10"];
+
+    if (flagCode === "CN-TW") flagCode = "TW";
+    return flagCode.toLowerCase();
+  }
+
   private createRegion(artist: Artist): RegionData {
     let artistsIntermediateRegion: IntermediateRegionData | undefined = undefined;
     if (artist.country!.intermediateRegion) {
@@ -225,5 +280,17 @@ export class CountriesService {
       count: 1,
       intermediateRegions: artistsIntermediateRegion ? [artistsIntermediateRegion] : [],
     };
+  }
+
+  private createCountryFromFeature(geoFeature: GeoFeature): Country {
+    const country: Country = {
+      name: geoFeature.properties["NAME"],
+      flagCode: this.findCountryFlagCode(geoFeature),
+      region: geoFeature.properties["REGION_UN"],
+      subRegion: geoFeature.properties["SUBREGION"],
+      intermediateRegion: geoFeature.properties["REGION_WB"],
+    };
+
+    return country;
   }
 }
