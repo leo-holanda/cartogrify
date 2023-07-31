@@ -95,9 +95,16 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
 
     const path = d3.geoPath().projection(projection);
 
-    const zoom = d3.zoom().on("zoom", (event) => {
-      d3.select("svg g").attr("transform", event.transform);
-    });
+    const zoom = d3
+      .zoom()
+      .translateExtent([
+        [-margin, -margin],
+        [width + margin, height + margin],
+      ])
+      .scaleExtent([1, 8])
+      .on("zoom", (event) => {
+        d3.select("svg g").attr("transform", event.transform);
+      });
 
     const svg = d3
       .select(".map-wrapper")
