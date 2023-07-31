@@ -34,3 +34,9 @@ export type GeoFeatureCollection = GeoJSON.FeatureCollection<
   GeoJSON.Geometry,
   NonNullable<GeoJSON.GeoJsonProperties>
 >;
+
+export interface LabelData {
+  min: number | undefined;
+  max: number | undefined;
+  fill: string;
+}
