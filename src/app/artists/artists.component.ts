@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { ArtistService } from "./artist.service";
 import { CountriesService } from "../countries/countries.service";
-import { BehaviorSubject, skip } from "rxjs";
+import { BehaviorSubject, map, skip } from "rxjs";
 import { SpotifyService } from "../streaming/spotify.service";
 import { Artist } from "./artist.model";
-import { CountryData, GeoFeature, RegionData } from "../countries/country.model";
+import { CountryData, GeoFeature, LabelData, RegionData } from "../countries/country.model";
 import * as d3 from "d3";
 
 enum DataTypes {
@@ -103,7 +103,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       ])
       .scaleExtent([1, 8])
       .on("zoom", (event) => {
-        d3.select("svg g").attr("transform", event.transform);
+        d3.select("svg #map").attr("transform", event.transform);
       });
 
     const svg = d3
@@ -113,11 +113,6 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       .attr("viewBox", [0, 0, width, height])
       .attr("aspect-ratio", "auto")
       .call(zoom as any);
-
-    const colorScale = d3
-      .scaleThreshold<number, string>()
-      .domain([0, 1, 2, 3])
-      .range(d3.schemeBlues[3]);
 
     const tooltip = d3
       .select(".map-wrapper")
@@ -131,8 +126,65 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       .style("padding", "10px");
 
     this.artists$.pipe(skip(1)).subscribe((artists) => {
+      const colorPalette = [
+        "#f1eef6",
+        "#d0d1e6",
+        "#a6bddb",
+        "#74a9cf",
+        "#3690c0",
+        "#0570b0",
+        "#034e7b",
+      ];
+
+      const colorScaleDomain = this.getColorScaleDomain();
+      const colorScale = d3
+        .scaleThreshold<number, string>()
+        .domain(colorScaleDomain)
+        .range(colorPalette);
+
+      const colorLabels: LabelData[] = colorPalette.map((color) => {
+        return {
+          min: colorScale.invertExtent(color)[0],
+          max: colorScale.invertExtent(color)[1],
+          fill: color,
+        };
+      });
+
+      const labelsWrapper = svg
+        .append("g")
+        .attr("id", "labelsWrapper")
+        .attr("transform", "translate(16, 0)");
+      labelsWrapper.selectAll("g").data(colorPalette).enter().append("g");
+      labelsWrapper
+        .append("text")
+        .text("Color per artists quantity")
+        .attr("transform", "translate(0, -16)");
+
+      labelsWrapper
+        .selectAll("g")
+        .data(colorLabels)
+        .append("rect")
+        .attr("id", (d, i) => "rect" + i)
+        .attr("fill", (d) => d.fill)
+        .attr("width", "1.5rem")
+        .attr("height", "1.5rem")
+        .attr("transform", (d, i) => `translate(0,${i * 28})`);
+
+      labelsWrapper
+        .selectAll("g")
+        .data(colorLabels)
+        .append("text")
+        .attr("transform", (d, i) => {
+          const rectCoordinates = (
+            document.querySelector("#rect" + i) as Element
+          ).getBoundingClientRect();
+          return `translate(${32},${rectCoordinates.y + 16})`;
+        })
+        .text((d) => this.getColorLabelText(d) || null);
+
       svg
         .append("g")
+        .attr("id", "map")
         .selectAll("path")
         .data(geoJSON.features)
         .join("path")
@@ -145,13 +197,13 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
           this.countriesService.findCountryFlagCode(feature)
         )
         .attr("fill", (feature: GeoFeature) => {
-          const currentCountry = this.countriesData.find((countryData) => {
-            if (feature.properties) return countryData.country.name === feature.properties["NAME"];
-            else return false;
-          });
+          const currentCountry = this.countriesData.find(
+            (countryData) => countryData.country.name === feature.properties["NAME"]
+          );
 
           return colorScale(currentCountry ? currentCountry.count : 0);
         })
+
         .on("mouseenter", (event) => {
           const countryName = event.srcElement.getAttribute("country-name");
           const countryFlagCode = event.srcElement.getAttribute("country-flag-code");
@@ -187,6 +239,37 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
         .on("mouseout", () => {
           tooltip.style("visibility", "hidden");
         });
+
+      const labelsWrapperHeight = (
+        document.querySelector("#labelsWrapper") as Element
+      ).getBoundingClientRect().height;
+
+      const mapCoordinates = (document.querySelector("#map") as Element).getBoundingClientRect();
+
+      labelsWrapper.attr(
+        "transform",
+        `translate(16, ${mapCoordinates.y + mapCoordinates.height - labelsWrapperHeight})`
+      );
     });
+  }
+
+  private getColorScaleDomain(): number[] {
+    const counts = this.countriesData.map((countryData) => countryData.count).reverse();
+    const domainSet = new Set<number>(counts);
+
+    return [...domainSet];
+  }
+
+  private getColorLabelText(labelData: LabelData): string {
+    if (labelData.min && labelData.max) {
+      if (labelData.max - labelData.min === 1) return labelData.min.toString();
+      else return labelData.min + " to " + (labelData.max - 1);
+    }
+    if (labelData.max === 1) return "0";
+
+    if (!labelData.min && labelData.max) return "Less than " + labelData.max;
+    if (!labelData.max && labelData.min) return "More than " + labelData.min;
+
+    return "Not used";
   }
 }
