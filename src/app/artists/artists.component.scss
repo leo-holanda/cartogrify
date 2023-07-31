@@ -171,8 +171,8 @@ main {
 
 .map-wrapper {
   display: flex;
-  align-items: center;
   justify-content: center;
+  overflow: hidden;
   background-color: white;
   width: 100vw;
 
