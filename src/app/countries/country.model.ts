@@ -40,3 +40,7 @@ export interface LabelData {
   max: number | undefined;
   fill: string;
 }
+
+export type ColorScale = d3.ScaleThreshold<number, string, never>;
+
+export type MapSVG = d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
