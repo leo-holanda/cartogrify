@@ -1,19 +1,33 @@
 <main>
-  <div>
-    <div class="title-wrapper">
-      <h1>MusicMap</h1>
-      <h3>Explore the worldwide origins of your music taste.</h3>
-    </div>
-    <div>
-      <p class="hint">Connect your account to start</p>
-      <div class="logo-wrapper">
-        <button class="logo spotify-logo" (click)="onSpotifyButtonClick()">
-          <img src="assets/images/spotify_logo.svg" alt="Spotify logo" />
-        </button>
-        <button class="logo lastfm-logo" (click)="onLastfmButtonClick()">
-          <img src="assets/images/lastfm_logo.svg" alt="Last.fm logo" />
+  <section class="title-wrapper">
+    <h1>MusicMap</h1>
+    <h3>Explore the worldwide origins of your music taste.</h3>
+  </section>
+  <section>
+    <h2 class="hint">Choose one of the options to start</h2>
+    <div class="options-wrapper">
+      <div class="option spotify-option">
+        <img class="logo" src="assets/images/spotify_logo.svg" alt="Spotify logo" />
+        <button (click)="onSpotifyButtonClick()" class="spotify-login-button">
+          Connect your Spotify Account
         </button>
       </div>
+      <div class="option lastfm-option">
+        <img class="logo" src="assets/images/lastfm_logo.svg" alt="Last.fm logo" />
+        <div>
+          <label class="lastfm-input-label" for="username">Enter your Last.fm username</label>
+          <div class="username-input">
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="myusername"
+              [(ngModel)]="lastFmUsername"
+            />
+            <button class="username-input-button">Start</button>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 </main>

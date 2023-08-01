@@ -8,6 +8,9 @@ import { SpotifyAuthService } from "../spotify-auth.service";
   styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent {
+  isLastFmInputActive = false;
+  lastFmUsername = "";
+
   constructor(private spotifyAuthService: SpotifyAuthService, private router: Router) {}
 
   onSpotifyButtonClick(): void {
@@ -23,6 +26,6 @@ export class LoginComponent {
   }
 
   onLastfmButtonClick(): void {
-    console.log("lastfm button clicked");
+    this.isLastFmInputActive = true;
   }
 }
