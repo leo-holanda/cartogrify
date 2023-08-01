@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, convertToParamMap } from "@angular/router";
 import { SpotifyAuthService } from "../spotify-auth.service";
+import { ArtistService } from "src/app/artists/artist.service";
+import { SpotifyService } from "src/app/streaming/spotify.service";
 
 @Component({
   selector: "msm-post-login",
@@ -15,6 +17,8 @@ export class PostLoginComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private spotifyAuthService: SpotifyAuthService,
+    private artistService: ArtistService,
+    private spotifyService: SpotifyService,
     private router: Router
   ) {}
 
@@ -34,7 +38,10 @@ export class PostLoginComponent implements OnInit {
         if (code) {
           this.isAuthorized = true;
           this.spotifyAuthService.requestAccessToken(code).subscribe(() => {
-            this.router.navigate(["/artists"]);
+            this.spotifyService.getUserTopArtists().subscribe((topArtists) => {
+              this.artistService.setUserTopArtists(topArtists);
+              this.router.navigate(["/artists"]);
+            });
           });
         }
       }

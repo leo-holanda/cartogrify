@@ -1,6 +1,8 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { SpotifyAuthService } from "../spotify-auth.service";
+import { SpotifyService } from "src/app/streaming/spotify.service";
+import { ArtistService } from "src/app/artists/artist.service";
 
 @Component({
   selector: "msm-login",
@@ -11,17 +13,28 @@ export class LoginComponent {
   isLastFmInputActive = false;
   lastFmUsername = "";
 
-  constructor(private spotifyAuthService: SpotifyAuthService, private router: Router) {}
+  constructor(
+    private spotifyAuthService: SpotifyAuthService,
+    private spotifyService: SpotifyService,
+    private artistService: ArtistService,
+    private router: Router
+  ) {}
 
   onSpotifyButtonClick(): void {
     if (this.spotifyAuthService.isTokenUndefined()) {
       this.spotifyAuthService.requestAuthorization();
     } else if (this.spotifyAuthService.isTokenExpired()) {
       this.spotifyAuthService.refreshToken().subscribe(() => {
-        this.router.navigate(["/artists"]);
+        this.spotifyService.getUserTopArtists().subscribe((topArtists) => {
+          this.artistService.setUserTopArtists(topArtists);
+          this.router.navigate(["/artists"]);
+        });
       });
     } else {
-      this.router.navigate(["/artists"]);
+      this.spotifyService.getUserTopArtists().subscribe((topArtists) => {
+        this.artistService.setUserTopArtists(topArtists);
+        this.router.navigate(["/artists"]);
+      });
     }
   }
 
