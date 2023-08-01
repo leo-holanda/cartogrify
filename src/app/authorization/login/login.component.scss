@@ -14,42 +14,17 @@ main {
   align-items: center;
   justify-content: center;
   flex-flow: column;
-  margin-bottom: 3rem;
 }
 
 h1 {
   font-family: "Lilita One", cursive;
-  font-size: 5rem;
   font-weight: normal;
-  margin-bottom: 0;
-}
-
-img {
-  width: 10rem;
-  margin: 1.5rem;
-}
-
-.logo-wrapper {
-  display: flex;
-  width: 100%;
-  justify-content: space-around;
+  margin: 0;
 }
 
 .logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 45%;
-}
-
-.spotify-logo {
-  background: $spotify-color;
-  border-radius: $border-radius;
-}
-
-.lastfm-logo {
-  background: $lastfm-color;
-  border-radius: $border-radius;
+  width: 10rem;
+  margin: 1.5rem 1.5rem 2rem 1.5rem;
 }
 
 button {
@@ -59,4 +34,62 @@ button {
 
 .hint {
   text-align: center;
+}
+
+.options-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  & .option {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+}
+
+.spotify-option {
+  background: $spotify-color;
+  border-radius: $border-radius;
+
+  .spotify-login-button {
+    text-decoration: none;
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+}
+
+.lastfm-option {
+  background: $lastfm-color;
+  border-radius: $border-radius;
+
+  .lastfm-input-label {
+    color: white;
+    font-size: large;
+    font-weight: bold;
+  }
+
+  .username-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & input {
+      padding: 1rem;
+      border-radius: 0.5rem 0 0 0.5rem;
+      appearance: none;
+      border: none;
+    }
+
+    .username-input-button {
+      padding: 1rem;
+      border-radius: 0 0.5rem 0.5rem 0;
+    }
+  }
 }
