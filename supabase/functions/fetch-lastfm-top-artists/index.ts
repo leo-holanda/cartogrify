@@ -3,6 +3,7 @@
 // This enables autocomplete, go to definition, etc.
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { corsHeaders } from "../_shared/cors.ts";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
@@ -12,9 +13,12 @@ serve(async (req) => {
 
   try {
     const response = await fetch(
-      `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${name}&api_key=${lastFmApiKey}&format=json`
+      `https://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${name}&api_key=${lastFmApiKey}&format=json`
     );
-    return response;
+
+    return new Response(JSON.stringify(await response.json()), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   } catch (error) {
     return new Response(JSON.stringify(error));
   }
