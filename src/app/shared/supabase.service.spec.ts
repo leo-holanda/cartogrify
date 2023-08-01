@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ArtistService } from './artist.service';
+import { SupabaseService } from './supabase.service';
 
-describe('ArtistService', () => {
-  let service: ArtistService;
+describe('SupabaseService', () => {
+  let service: SupabaseService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ArtistService);
+    service = TestBed.inject(SupabaseService);
   });
 
   it('should be created', () => {
