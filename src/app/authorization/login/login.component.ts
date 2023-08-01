@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { SpotifyAuthService } from "../spotify-auth.service";
 import { SpotifyService } from "src/app/streaming/spotify.service";
 import { ArtistService } from "src/app/artists/artist.service";
+import { LastFmService } from "src/app/streaming/last-fm.service";
 
 @Component({
   selector: "msm-login",
@@ -10,13 +11,13 @@ import { ArtistService } from "src/app/artists/artist.service";
   styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent {
-  isLastFmInputActive = false;
   lastFmUsername = "";
 
   constructor(
     private spotifyAuthService: SpotifyAuthService,
     private spotifyService: SpotifyService,
     private artistService: ArtistService,
+    private lastFmService: LastFmService,
     private router: Router
   ) {}
 
@@ -39,6 +40,9 @@ export class LoginComponent {
   }
 
   onLastfmButtonClick(): void {
-    this.isLastFmInputActive = true;
+    this.lastFmService.getTopArtists(this.lastFmUsername).subscribe((topArtists) => {
+      this.artistService.setUserTopArtists(topArtists);
+      this.router.navigate(["/artists"]);
+    });
   }
 }
