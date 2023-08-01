@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { SupabaseClient, createClient } from "@supabase/supabase-js";
-import { Observable, from, map, take } from "rxjs";
+import { Observable, asyncScheduler, from, map, scheduled, take } from "rxjs";
 import { environment } from "src/environments/environment";
 import { Artist } from "../artists/artist.model";
+import { LastFmTopArtists } from "./supabase.model";
 
 @Injectable({
   providedIn: "root",
@@ -35,5 +36,17 @@ export class SupabaseService {
     this.supabaseClient.functions.invoke("save-missing-artists", {
       body: missingArtists,
     });
+  }
+
+  getLastFmUserTopArtists(userName: string): Observable<LastFmTopArtists | null> {
+    return scheduled(
+      this.supabaseClient.functions.invoke<LastFmTopArtists>("fetch-lastfm-top-artists", {
+        body: { name: userName },
+      }),
+      asyncScheduler
+    ).pipe(
+      take(1),
+      map((response) => response.data)
+    );
   }
 }
