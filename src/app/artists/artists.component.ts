@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { CountriesService } from "../countries/countries.service";
 import { BehaviorSubject, skip } from "rxjs";
-import { SpotifyService } from "../streaming/spotify.service";
 import { Artist } from "./artist.model";
 import {
   ColorScale,
@@ -13,6 +12,7 @@ import {
 } from "../countries/country.model";
 import * as d3 from "d3";
 import { SupabaseService } from "../shared/supabase.service";
+import { ArtistService } from "./artist.service";
 
 enum DataTypes {
   COUNTRIES = "countries",
@@ -49,31 +49,30 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   @ViewChild("mapWrapper") mapWrapper!: ElementRef;
 
   constructor(
-    private spotifyService: SpotifyService,
+    private artistsService: ArtistService,
     private supabaseService: SupabaseService,
     private countriesService: CountriesService
   ) {}
 
   ngOnInit(): void {
-    this.spotifyService.getUserTopArtists().subscribe((topArtists) => {
-      const topArtistsNames = topArtists.items.map((artist) => artist.name.toLowerCase());
-      this.supabaseService.getArtistsByName(topArtistsNames).subscribe((artistsFromDatabase) => {
-        const artistsWithoutCountry = this.findArtistsWithoutCountry(
-          topArtistsNames,
-          artistsFromDatabase
-        );
+    const topArtistsNames = this.artistsService.getUserTopArtists();
 
-        if (artistsWithoutCountry.length > 0) {
-          this.countriesService
-            .getArtistsCountryOfOrigin(artistsWithoutCountry)
-            .subscribe((scrapedArtists) => {
-              this.supabaseService.saveArtists(scrapedArtists);
-              this.artists$.next([...artistsFromDatabase, ...scrapedArtists]);
-            });
-        } else {
-          this.artists$.next(artistsFromDatabase);
-        }
-      });
+    this.supabaseService.getArtistsByName(topArtistsNames).subscribe((artistsFromDatabase) => {
+      const artistsWithoutCountry = this.findArtistsWithoutCountry(
+        topArtistsNames,
+        artistsFromDatabase
+      );
+
+      if (artistsWithoutCountry.length > 0) {
+        this.countriesService
+          .getArtistsCountryOfOrigin(artistsWithoutCountry)
+          .subscribe((scrapedArtists) => {
+            this.supabaseService.saveArtists(scrapedArtists);
+            this.artists$.next([...artistsFromDatabase, ...scrapedArtists]);
+          });
+      } else {
+        this.artists$.next(artistsFromDatabase);
+      }
     });
 
     this.artists$.subscribe((artists) => {
@@ -103,7 +102,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     return topArtistsNames.filter(
       (topArtistName) =>
         !artistsFromDatabase?.some(
-          (artistsFromDatabase) => topArtistName === artistsFromDatabase.name
+          (artistsFromDatabase) => topArtistName.toLowerCase() === artistsFromDatabase.name
         )
     );
   }
