@@ -4,7 +4,14 @@ import { CountriesService } from "../countries/countries.service";
 import { BehaviorSubject, map, skip } from "rxjs";
 import { SpotifyService } from "../streaming/spotify.service";
 import { Artist } from "./artist.model";
-import { CountryData, GeoFeature, LabelData, RegionData } from "../countries/country.model";
+import {
+  ColorScale,
+  CountryData,
+  GeoFeature,
+  LabelData,
+  MapSVG,
+  RegionData,
+} from "../countries/country.model";
 import * as d3 from "d3";
 
 enum DataTypes {
@@ -23,6 +30,19 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   countriesData: CountryData[] = [];
   regionsData: RegionData[] = [];
   selectedData = DataTypes.COUNTRIES;
+
+  private mapSvg!: MapSVG;
+
+  private colorScale!: ColorScale;
+  private colorPalette = [
+    "#f1eef6",
+    "#d0d1e6",
+    "#a6bddb",
+    "#74a9cf",
+    "#3690c0",
+    "#0570b0",
+    "#034e7b",
+  ];
 
   DataTypes = DataTypes;
 
@@ -58,6 +78,12 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
 
     this.artists$.subscribe((artists) => {
       this.countriesData = this.countriesService.countCountries(artists);
+
+      this.colorScale = d3
+        .scaleThreshold<number, string>()
+        .domain(this.getColorScaleDomain())
+        .range(this.colorPalette);
+
       this.regionsData = this.countriesService.countRegions(artists);
     });
   }
@@ -106,7 +132,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
         d3.select("svg #map").attr("transform", event.transform);
       });
 
-    const svg = d3
+    this.mapSvg = d3
       .select(".map-wrapper")
       .append("svg")
       .attr("class", "svg")
@@ -126,63 +152,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       .style("padding", "10px");
 
     this.artists$.pipe(skip(1)).subscribe((artists) => {
-      const colorPalette = [
-        "#f1eef6",
-        "#d0d1e6",
-        "#a6bddb",
-        "#74a9cf",
-        "#3690c0",
-        "#0570b0",
-        "#034e7b",
-      ];
-
-      const colorScaleDomain = this.getColorScaleDomain();
-      const colorScale = d3
-        .scaleThreshold<number, string>()
-        .domain(colorScaleDomain)
-        .range(colorPalette);
-
-      const colorLabels: LabelData[] = colorPalette.map((color) => {
-        return {
-          min: colorScale.invertExtent(color)[0],
-          max: colorScale.invertExtent(color)[1],
-          fill: color,
-        };
-      });
-
-      const labelsWrapper = svg
-        .append("g")
-        .attr("id", "labelsWrapper")
-        .attr("transform", "translate(16, 0)");
-      labelsWrapper.selectAll("g").data(colorPalette).enter().append("g");
-      labelsWrapper
-        .append("text")
-        .text("Color per artists quantity")
-        .attr("transform", "translate(0, -16)");
-
-      labelsWrapper
-        .selectAll("g")
-        .data(colorLabels)
-        .append("rect")
-        .attr("id", (d, i) => "rect" + i)
-        .attr("fill", (d) => d.fill)
-        .attr("width", "1.5rem")
-        .attr("height", "1.5rem")
-        .attr("transform", (d, i) => `translate(0,${i * 28})`);
-
-      labelsWrapper
-        .selectAll("g")
-        .data(colorLabels)
-        .append("text")
-        .attr("transform", (d, i) => {
-          const rectCoordinates = (
-            document.querySelector("#rect" + i) as Element
-          ).getBoundingClientRect();
-          return `translate(${32},${rectCoordinates.y + 16})`;
-        })
-        .text((d) => this.getColorLabelText(d) || null);
-
-      svg
+      this.mapSvg
         .append("g")
         .attr("id", "map")
         .selectAll("path")
@@ -201,9 +171,8 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
             (countryData) => countryData.country.name === feature.properties["NAME"]
           );
 
-          return colorScale(currentCountry ? currentCountry.count : 0);
+          return this.colorScale(currentCountry ? currentCountry.count : 0);
         })
-
         .on("mouseenter", (event) => {
           const countryName = event.srcElement.getAttribute("country-name");
           const countryFlagCode = event.srcElement.getAttribute("country-flag-code");
@@ -240,16 +209,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
           tooltip.style("visibility", "hidden");
         });
 
-      const labelsWrapperHeight = (
-        document.querySelector("#labelsWrapper") as Element
-      ).getBoundingClientRect().height;
-
-      const mapCoordinates = (document.querySelector("#map") as Element).getBoundingClientRect();
-
-      labelsWrapper.attr(
-        "transform",
-        `translate(16, ${mapCoordinates.y + mapCoordinates.height - labelsWrapperHeight})`
-      );
+      this.addMapLegend();
     });
   }
 
@@ -271,5 +231,63 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     if (!labelData.max && labelData.min) return "More than " + labelData.min;
 
     return "Not used";
+  }
+
+  private addMapLegend(): void {
+    const colorLabels: LabelData[] = this.colorPalette.map((color) => {
+      return {
+        min: this.colorScale.invertExtent(color)[0],
+        max: this.colorScale.invertExtent(color)[1],
+        fill: color,
+      };
+    });
+
+    const labelsWrapper = this.mapSvg
+      .append("g")
+      .attr("id", "labelsWrapper")
+      .attr("transform", "translate(16, 0)");
+
+    labelsWrapper.selectAll("g").data(this.colorPalette).enter().append("g");
+
+    labelsWrapper
+      .append("text")
+      .text("Artists per country")
+      .attr("transform", "translate(0, -16)")
+      .attr("fill", "grey");
+
+    labelsWrapper
+      .selectAll("g")
+      .data(colorLabels)
+      .append("rect")
+      .attr("id", (d: LabelData, i: number) => "rect" + i)
+      .attr("fill", (d: LabelData) => d.fill)
+      .attr("width", "1.5rem")
+      .attr("height", "1.5rem")
+      .attr("transform", (d: LabelData, i: number) => `translate(0,${i * 28})`);
+
+    labelsWrapper
+      .selectAll("g")
+      .data(colorLabels)
+      .append("text")
+      .attr("transform", (d: LabelData, i: number) => {
+        const rectCoordinates = (
+          document.querySelector("#rect" + i) as Element
+        ).getBoundingClientRect();
+        return `translate(${32},${12 + rectCoordinates.y})`;
+      })
+      .attr("alignment-baseline", "middle")
+      .attr("fill", "grey")
+      .text((d: LabelData) => this.getColorLabelText(d) || null);
+
+    const labelsWrapperHeight = (
+      document.querySelector("#labelsWrapper") as Element
+    ).getBoundingClientRect().height;
+
+    const mapCoordinates = (document.querySelector("#map") as Element).getBoundingClientRect();
+
+    labelsWrapper.attr(
+      "transform",
+      `translate(16, ${mapCoordinates.y + mapCoordinates.height - labelsWrapperHeight})`
+    );
   }
 }
