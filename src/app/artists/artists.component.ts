@@ -114,11 +114,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     const margin = 32;
 
     const geoJSON = this.countriesService.geoJSON;
-
-    const projection = d3
-      .geoNaturalEarth1()
-      .fitSize([width - margin, height - margin], geoJSON as unknown as d3.GeoGeometryObjects);
-
+    const projection = d3.geoNaturalEarth1().fitSize([width - margin, height - margin], geoJSON);
     const path = d3.geoPath().projection(projection);
 
     const zoom = d3
@@ -184,9 +180,11 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
           let countryTag = `
             <div> 
               <span class="fi fi-${countryFlagCode} flag"></span>
-              <span>
+              <strong>
                 ${countryName}
-              </span> 
+              </strong> 
+              <hr style="margin: 0.25rem 0 0.25rem 0" />
+
             </div>
           `;
 
@@ -198,12 +196,12 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
 
           if (artistsFromCountry.length === 0) countryTag += "No artists here.";
 
-          tooltip.style("top", event.pageY + "px").style("left", event.pageX + "px");
           tooltip.style("visibility", "visible");
+          tooltip.style("opacity", "0.9");
           tooltip.html(countryTag);
         })
-        .on("mouseover", (event) => {
-          tooltip.style("top", event.pageY + "px").style("left", event.pageX + "px");
+        .on("mousemove", (event) => {
+          tooltip.style("top", event.pageY + "px").style("left", event.pageX + 16 + "px");
         })
         .on("mouseout", () => {
           tooltip.style("visibility", "hidden");
