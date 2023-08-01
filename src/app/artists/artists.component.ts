@@ -250,8 +250,9 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     labelsWrapper
       .append("text")
       .text("Artists per country")
-      .attr("transform", "translate(0, -16)")
-      .attr("fill", "grey");
+      .attr("transform", "translate(0, -8)")
+      .attr("fill", "grey")
+      .attr("font-size", "small");
 
     labelsWrapper
       .selectAll("g")
@@ -259,8 +260,9 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       .append("rect")
       .attr("id", (d: LabelData, i: number) => "rect" + i)
       .attr("fill", (d: LabelData) => d.fill)
-      .attr("width", "1.5rem")
-      .attr("height", "1.5rem")
+      .attr("width", "1.25rem")
+      .attr("height", "1.25rem")
+      .attr("font-size", "small")
       .attr("transform", (d: LabelData, i: number) => `translate(0,${i * 28})`);
 
     labelsWrapper
@@ -271,10 +273,11 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
         const rectCoordinates = (
           document.querySelector("#rect" + i) as Element
         ).getBoundingClientRect();
-        return `translate(${32},${12 + rectCoordinates.y})`;
+        return `translate(${26},${8 + rectCoordinates.y})`;
       })
-      .attr("alignment-baseline", "middle")
+      .attr("alignment-baseline", "central")
       .attr("fill", "grey")
+      .attr("font-size", "small")
       .text((d: LabelData) => this.getColorLabelText(d) || null);
 
     const labelsWrapperHeight = (
