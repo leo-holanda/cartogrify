@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { ArtistService } from "./artist.service";
 import { CountriesService } from "../countries/countries.service";
-import { BehaviorSubject, map, skip } from "rxjs";
+import { BehaviorSubject, skip } from "rxjs";
 import { SpotifyService } from "../streaming/spotify.service";
 import { Artist } from "./artist.model";
 import {
@@ -13,6 +12,7 @@ import {
   RegionData,
 } from "../countries/country.model";
 import * as d3 from "d3";
+import { SupabaseService } from "../shared/supabase.service";
 
 enum DataTypes {
   COUNTRIES = "countries",
@@ -50,14 +50,14 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
 
   constructor(
     private spotifyService: SpotifyService,
-    private artistService: ArtistService,
+    private supabaseService: SupabaseService,
     private countriesService: CountriesService
   ) {}
 
   ngOnInit(): void {
     this.spotifyService.getUserTopArtists().subscribe((topArtists) => {
       const topArtistsNames = topArtists.items.map((artist) => artist.name.toLowerCase());
-      this.artistService.getArtistsByName(topArtistsNames).subscribe((artistsFromDatabase) => {
+      this.supabaseService.getArtistsByName(topArtistsNames).subscribe((artistsFromDatabase) => {
         const artistsWithoutCountry = this.findArtistsWithoutCountry(
           topArtistsNames,
           artistsFromDatabase
@@ -67,7 +67,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
           this.countriesService
             .getArtistsCountryOfOrigin(artistsWithoutCountry)
             .subscribe((scrapedArtists) => {
-              this.artistService.saveArtists(scrapedArtists);
+              this.supabaseService.saveArtists(scrapedArtists);
               this.artists$.next([...artistsFromDatabase, ...scrapedArtists]);
             });
         } else {
