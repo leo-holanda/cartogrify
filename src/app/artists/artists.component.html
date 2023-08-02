@@ -68,7 +68,7 @@
       <h2 class="data-title">Top Artists</h2>
       <div class="data-content-wrapper">
         <table>
-          <tr *ngFor="let artist of artists$ | async; let i = index">
+          <tr *ngFor="let artist of artists; let i = index">
             <td
               class="data-index"
               [ngClass]="{ 'first-place': i == 0, 'second-place': i == 1, 'third-place': i == 2 }"

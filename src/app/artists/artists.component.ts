@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { CountriesService } from "../countries/countries.service";
-import { BehaviorSubject, skip } from "rxjs";
+import { filter } from "rxjs";
 import { Artist } from "./artist.model";
 import {
   ColorScale,
@@ -11,7 +11,6 @@ import {
   RegionData,
 } from "../countries/country.model";
 import * as d3 from "d3";
-import { SupabaseService } from "../shared/supabase.service";
 import { ArtistService } from "./artist.service";
 
 enum DataTypes {
@@ -26,7 +25,7 @@ enum DataTypes {
   styleUrls: ["./artists.component.scss"],
 })
 export class ArtistsComponent implements OnInit, AfterViewInit {
-  artists$ = new BehaviorSubject<Artist[]>([]);
+  artists: Artist[] = [];
   countriesData: CountryData[] = [];
   regionsData: RegionData[] = [];
   selectedData = DataTypes.COUNTRIES;
@@ -48,63 +47,34 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
 
   @ViewChild("mapWrapper") mapWrapper!: ElementRef;
 
-  constructor(
-    private artistsService: ArtistService,
-    private supabaseService: SupabaseService,
-    private countriesService: CountriesService
-  ) {}
+  constructor(private artistsService: ArtistService, private countriesService: CountriesService) {}
 
   ngOnInit(): void {
-    const topArtistsNames = this.artistsService.getUserTopArtists();
+    this.artistsService
+      .getUserTopArtists()
+      .pipe(filter((userTopArtists): userTopArtists is Artist[] => userTopArtists !== undefined))
+      .subscribe((userTopArtists) => {
+        this.artists = userTopArtists;
+        this.countriesData = this.countriesService.countCountries(userTopArtists);
+        this.regionsData = this.countriesService.countRegions(userTopArtists);
 
-    this.supabaseService.getArtistsByName(topArtistsNames).subscribe((artistsFromDatabase) => {
-      const artistsWithoutCountry = this.findArtistsWithoutCountry(
-        topArtistsNames,
-        artistsFromDatabase
-      );
-
-      if (artistsWithoutCountry.length > 0) {
-        this.countriesService
-          .getArtistsCountryOfOrigin(artistsWithoutCountry)
-          .subscribe((scrapedArtists) => {
-            this.supabaseService.saveArtists(scrapedArtists);
-            this.artists$.next([...artistsFromDatabase, ...scrapedArtists]);
-          });
-      } else {
-        this.artists$.next(artistsFromDatabase);
-      }
-    });
-
-    this.artists$.subscribe((artists) => {
-      this.countriesData = this.countriesService.countCountries(artists);
-
-      this.colorScale = d3
-        .scaleThreshold<number, string>()
-        .domain(this.getColorScaleDomain())
-        .range(this.colorPalette);
-
-      this.regionsData = this.countriesService.countRegions(artists);
-    });
+        this.colorScale = d3
+          .scaleThreshold<number, string>()
+          .domain(this.getColorScaleDomain())
+          .range(this.colorPalette);
+      });
   }
 
+  //The map can only be initialized after view has initiated
   ngAfterViewInit(): void {
-    this.setMap();
+    this.artistsService
+      .getUserTopArtists()
+      .pipe(filter((userTopArtists): userTopArtists is Artist[] => userTopArtists !== undefined))
+      .subscribe(() => this.setMap());
   }
 
   setSelectedData(dataType: DataTypes): void {
     this.selectedData = dataType;
-  }
-
-  private findArtistsWithoutCountry(
-    topArtistsNames: string[],
-    artistsFromDatabase: Artist[] | null
-  ): string[] {
-    return topArtistsNames.filter(
-      (topArtistName) =>
-        !artistsFromDatabase?.some(
-          (artistsFromDatabase) => topArtistName.toLowerCase() === artistsFromDatabase.name
-        )
-    );
   }
 
   private setMap() {
@@ -146,37 +116,36 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       .style("border-radius", "5px")
       .style("padding", "10px");
 
-    this.artists$.pipe(skip(1)).subscribe((artists) => {
-      this.mapSvg
-        .append("g")
-        .attr("id", "map")
-        .selectAll("path")
-        .data(geoJSON.features)
-        .join("path")
-        .attr("d", path)
-        .attr("country-name", (feature: GeoFeature) => {
-          if (feature.properties) return feature.properties["NAME"];
-          else return "";
-        })
-        .attr("country-flag-code", (feature: GeoFeature) =>
-          this.countriesService.findCountryFlagCode(feature)
-        )
-        .attr("fill", (feature: GeoFeature) => {
-          const currentCountry = this.countriesData.find(
-            (countryData) => countryData.country.name === feature.properties["NAME"]
-          );
+    this.mapSvg
+      .append("g")
+      .attr("id", "map")
+      .selectAll("path")
+      .data(geoJSON.features)
+      .join("path")
+      .attr("d", path)
+      .attr("country-name", (feature: GeoFeature) => {
+        if (feature.properties) return feature.properties["NAME"];
+        else return "";
+      })
+      .attr("country-flag-code", (feature: GeoFeature) =>
+        this.countriesService.findCountryFlagCode(feature)
+      )
+      .attr("fill", (feature: GeoFeature) => {
+        const currentCountry = this.countriesData.find(
+          (countryData) => countryData.country.name === feature.properties["NAME"]
+        );
 
-          return this.colorScale(currentCountry ? currentCountry.count : 0);
-        })
-        .on("mouseenter", (event) => {
-          const countryName = event.srcElement.getAttribute("country-name");
-          const countryFlagCode = event.srcElement.getAttribute("country-flag-code");
+        return this.colorScale(currentCountry ? currentCountry.count : 0);
+      })
+      .on("mouseenter", (event) => {
+        const countryName = event.srcElement.getAttribute("country-name");
+        const countryFlagCode = event.srcElement.getAttribute("country-flag-code");
 
-          const artistsFromCountry = artists
-            .filter((artist) => artist.country?.flagCode === countryFlagCode)
-            .map((artist) => artist.name);
+        const artistsFromCountry = this.artists
+          .filter((artist) => artist.country?.flagCode === countryFlagCode)
+          .map((artist) => artist.name);
 
-          let countryTag = `
+        let countryTag = `
             <div> 
               <span class="fi fi-${countryFlagCode} flag"></span>
               <strong>
@@ -187,27 +156,26 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
             </div>
           `;
 
-          artistsFromCountry.forEach((artistName) => {
-            const artistTag = document.createElement("div");
-            artistTag.innerHTML = artistName;
-            countryTag += artistTag.outerHTML;
-          });
-
-          if (artistsFromCountry.length === 0) countryTag += "No artists here.";
-
-          tooltip.style("visibility", "visible");
-          tooltip.style("opacity", "0.9");
-          tooltip.html(countryTag);
-        })
-        .on("mousemove", (event) => {
-          tooltip.style("top", event.pageY + "px").style("left", event.pageX + 16 + "px");
-        })
-        .on("mouseout", () => {
-          tooltip.style("visibility", "hidden");
+        artistsFromCountry.forEach((artistName) => {
+          const artistTag = document.createElement("div");
+          artistTag.innerHTML = artistName;
+          countryTag += artistTag.outerHTML;
         });
 
-      this.addMapLegend();
-    });
+        if (artistsFromCountry.length === 0) countryTag += "No artists here.";
+
+        tooltip.style("visibility", "visible");
+        tooltip.style("opacity", "0.9");
+        tooltip.html(countryTag);
+      })
+      .on("mousemove", (event) => {
+        tooltip.style("top", event.pageY + "px").style("left", event.pageX + 16 + "px");
+      })
+      .on("mouseout", () => {
+        tooltip.style("visibility", "hidden");
+      });
+
+    this.addMapLegend();
   }
 
   private getColorScaleDomain(): number[] {

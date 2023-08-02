@@ -1,10 +1,9 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { SupabaseService } from "./supabase.service";
 
 @NgModule({
   declarations: [],
-  providers: [SupabaseService],
+  providers: [],
   imports: [CommonModule],
 })
 export class SharedModule {}
