@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { CountriesService } from "../countries/countries.service";
 import { filter } from "rxjs";
 import { Artist } from "./artist.model";
@@ -47,6 +54,11 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   DataTypes = DataTypes;
 
   @ViewChild("mapWrapper") mapWrapper!: ElementRef<HTMLElement>;
+  @HostListener("window:resize") onResize() {
+    const height = this.mapWrapper.nativeElement.offsetHeight;
+    const width = this.mapWrapper.nativeElement.offsetWidth;
+    this.mapSvg.select("#map").attr("width", width).attr("height", height);
+  }
 
   constructor(private artistsService: ArtistService, private countriesService: CountriesService) {}
 
