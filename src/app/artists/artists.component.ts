@@ -136,7 +136,8 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       })
       .attr("country-flag-code", (feature: GeoFeature) =>
         this.countriesService.findCountryFlagCode(feature)
-      );
+      )
+      .attr("fill", this.colorPalette[0]);
   }
 
   private getColorScaleDomain(): number[] {
