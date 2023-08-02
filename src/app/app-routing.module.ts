@@ -11,6 +11,7 @@ const routes: Routes = [
     path: "artists",
     loadChildren: () => import("./artists/artists.module").then((m) => m.ArtistsModule),
   },
+  { path: "**", redirectTo: "" },
 ];
 
 @NgModule({
