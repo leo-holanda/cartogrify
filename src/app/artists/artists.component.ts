@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { CountriesService } from "../countries/countries.service";
-import { filter } from "rxjs";
+import { Observable, Subject, filter } from "rxjs";
 import { Artist } from "./artist.model";
 import {
   ColorScale,
@@ -30,6 +30,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   countriesData: CountryData[] = [];
   regionsData: RegionData[] = [];
   selectedData = DataTypes.COUNTRIES;
+  isDataLoaded$ = new Subject<boolean>();
 
   private mapSvg!: MapSVG;
   private colorScale!: ColorScale;
@@ -63,6 +64,8 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
           .scaleThreshold<number, string>()
           .domain(this.getColorScaleDomain())
           .range(this.colorPalette);
+
+        this.isDataLoaded$.next(true);
       });
   }
 
@@ -71,13 +74,10 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     this.addMap();
     this.addMapLegend();
 
-    this.artistsService
-      .getUserTopArtists()
-      .pipe(filter((userTopArtists): userTopArtists is Artist[] => userTopArtists !== undefined))
-      .subscribe(() => {
-        this.setCountriesColorInMap();
-        this.setLegendText();
-      });
+    this.isDataLoaded$.subscribe(() => {
+      this.setCountriesColorInMap();
+      this.setLegendText();
+    });
   }
 
   setSelectedData(dataType: DataTypes): void {
