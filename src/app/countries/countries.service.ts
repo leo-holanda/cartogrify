@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, map, take } from "rxjs";
+import { Observable, map, take, tap } from "rxjs";
 import { Artist, ScrapedArtist } from "../artists/artist.model";
 import { environment } from "src/environments/environment.development";
 import {
@@ -15,6 +15,7 @@ import {
 import countriesJSON from "../../assets/countries-50m.json";
 import * as topojson from "topojson-client";
 import * as TopoJSON from "topojson-specification";
+import { SupabaseService } from "../shared/supabase.service";
 
 @Injectable({
   providedIn: "root",
@@ -22,7 +23,7 @@ import * as TopoJSON from "topojson-specification";
 export class CountriesService {
   geoJSON!: GeoFeatureCollection;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private supabaseService: SupabaseService) {
     this.geoJSON = topojson.feature(
       countriesJSON as unknown as TopoJSON.Topology,
       countriesJSON.objects.countries as TopoJSON.GeometryCollection
@@ -40,13 +41,13 @@ export class CountriesService {
         take(1),
         map((artistsData: ScrapedArtist[]) =>
           artistsData.map((artist) => {
-            console.log(artist.name);
             return {
               name: artist.name,
               country: this.determineCountryOfOrigin(artist.page),
             } as Artist;
           })
-        )
+        ),
+        tap((artists: Artist[]) => this.supabaseService.saveArtists(artists))
       );
   }
 
@@ -131,7 +132,7 @@ export class CountriesService {
     };
 
     artists.forEach((artist) => {
-      const country = JSON.parse(artist.country as unknown as string) || unknownCountry;
+      const country = artist.country || unknownCountry;
       const count = countriesCount.get(country.name)?.count || 0;
       const countryData = {
         country: country,
@@ -160,7 +161,6 @@ export class CountriesService {
         unknownRegion.count += 1;
         regionsMap.set(unknownRegion.name, unknownRegion);
       } else {
-        artist.country = JSON.parse(artist.country as unknown as string) as Country;
         if (!artist.country.region) {
           unknownRegion.count += 1;
           regionsMap.set(unknownRegion.name, unknownRegion);
