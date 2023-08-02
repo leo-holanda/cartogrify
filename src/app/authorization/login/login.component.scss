@@ -14,12 +14,18 @@ main {
   align-items: center;
   justify-content: center;
   flex-flow: column;
-}
+  margin-bottom: 3rem;
 
-h1 {
-  font-family: "Lilita One", cursive;
-  font-weight: normal;
-  margin: 0;
+  & h1 {
+    font-family: "Lilita One", cursive;
+    font-weight: normal;
+    font-size: 8rem;
+    margin: 0;
+  }
+
+  & h3 {
+    margin-top: 0;
+  }
 }
 
 .logo {
