@@ -9,6 +9,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 })
 export class ArtistService {
   private userTopArtists$ = new BehaviorSubject<Artist[] | undefined>(undefined);
+  private hasRequestedTopArtists = false;
 
   constructor(
     private supabaseService: SupabaseService,
@@ -16,6 +17,7 @@ export class ArtistService {
   ) {}
 
   setUserTopArtists(topArtists: string[]): void {
+    this.hasRequestedTopArtists = true;
     this.supabaseService.getArtistsByName(topArtists).subscribe((artistsFromDatabase) => {
       const artistsWithoutCountry = this.findArtistsWithoutCountry(topArtists, artistsFromDatabase);
       if (artistsWithoutCountry.length > 0) {
@@ -32,6 +34,10 @@ export class ArtistService {
 
   getUserTopArtists(): Observable<Artist[] | undefined> {
     return this.userTopArtists$.asObservable();
+  }
+
+  getArtistsRequestStatus(): boolean {
+    return this.hasRequestedTopArtists;
   }
 
   private findArtistsWithoutCountry(

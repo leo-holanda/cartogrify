@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { hasRequestedTopArtists } from "./core/top-artists-request.guard";
 
 const routes: Routes = [
   {
@@ -10,6 +11,7 @@ const routes: Routes = [
   {
     path: "artists",
     loadChildren: () => import("./artists/artists.module").then((m) => m.ArtistsModule),
+    canActivate: [hasRequestedTopArtists],
   },
   { path: "**", redirectTo: "" },
 ];
