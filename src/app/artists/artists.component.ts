@@ -9,6 +9,7 @@ import {
   LabelData,
   MapSVG,
   RegionData,
+  Tooltip,
 } from "../countries/country.model";
 import * as d3 from "d3";
 import { ArtistService } from "./artist.service";
@@ -31,8 +32,8 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   selectedData = DataTypes.COUNTRIES;
 
   private mapSvg!: MapSVG;
-
   private colorScale!: ColorScale;
+  private tooltip!: Tooltip;
   private colorPalette = [
     "#f1eef6",
     "#d0d1e6",
@@ -45,7 +46,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
 
   DataTypes = DataTypes;
 
-  @ViewChild("mapWrapper") mapWrapper!: ElementRef;
+  @ViewChild("mapWrapper") mapWrapper!: ElementRef<HTMLElement>;
 
   constructor(private artistsService: ArtistService, private countriesService: CountriesService) {}
 
@@ -67,19 +68,25 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
 
   //The map can only be initialized after view has initiated
   ngAfterViewInit(): void {
+    this.addMap();
+    this.addMapLegend();
+
     this.artistsService
       .getUserTopArtists()
       .pipe(filter((userTopArtists): userTopArtists is Artist[] => userTopArtists !== undefined))
-      .subscribe(() => this.setMap());
+      .subscribe(() => {
+        this.setCountriesColorInMap();
+        this.setLegendText();
+      });
   }
 
   setSelectedData(dataType: DataTypes): void {
     this.selectedData = dataType;
   }
 
-  private setMap() {
-    const height = this.mapWrapper.nativeElement.offsetHeight as number;
-    const width = this.mapWrapper.nativeElement.offsetWidth as number;
+  private addMap() {
+    const height = this.mapWrapper.nativeElement.offsetHeight;
+    const width = this.mapWrapper.nativeElement.offsetWidth;
     const margin = 32;
 
     const geoJSON = this.countriesService.geoJSON;
@@ -105,7 +112,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       .attr("aspect-ratio", "auto")
       .call(zoom as any);
 
-    const tooltip = d3
+    this.tooltip = d3
       .select(".map-wrapper")
       .append("div")
       .style("position", "absolute")
@@ -129,53 +136,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       })
       .attr("country-flag-code", (feature: GeoFeature) =>
         this.countriesService.findCountryFlagCode(feature)
-      )
-      .attr("fill", (feature: GeoFeature) => {
-        const currentCountry = this.countriesData.find(
-          (countryData) => countryData.country.name === feature.properties["NAME"]
-        );
-
-        return this.colorScale(currentCountry ? currentCountry.count : 0);
-      })
-      .on("mouseenter", (event) => {
-        const countryName = event.srcElement.getAttribute("country-name");
-        const countryFlagCode = event.srcElement.getAttribute("country-flag-code");
-
-        const artistsFromCountry = this.artists
-          .filter((artist) => artist.country?.flagCode === countryFlagCode)
-          .map((artist) => artist.name);
-
-        let countryTag = `
-            <div> 
-              <span class="fi fi-${countryFlagCode} flag"></span>
-              <strong>
-                ${countryName}
-              </strong> 
-              <hr style="margin: 0.25rem 0 0.25rem 0" />
-
-            </div>
-          `;
-
-        artistsFromCountry.forEach((artistName) => {
-          const artistTag = document.createElement("div");
-          artistTag.innerHTML = artistName;
-          countryTag += artistTag.outerHTML;
-        });
-
-        if (artistsFromCountry.length === 0) countryTag += "No artists here.";
-
-        tooltip.style("visibility", "visible");
-        tooltip.style("opacity", "0.9");
-        tooltip.html(countryTag);
-      })
-      .on("mousemove", (event) => {
-        tooltip.style("top", event.pageY + "px").style("left", event.pageX + 16 + "px");
-      })
-      .on("mouseout", () => {
-        tooltip.style("visibility", "hidden");
-      });
-
-    this.addMapLegend();
+      );
   }
 
   private getColorScaleDomain(): number[] {
@@ -199,20 +160,10 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   }
 
   private addMapLegend(): void {
-    const colorLabels: LabelData[] = this.colorPalette.map((color) => {
-      return {
-        min: this.colorScale.invertExtent(color)[0],
-        max: this.colorScale.invertExtent(color)[1],
-        fill: color,
-      };
-    });
-
     const labelsWrapper = this.mapSvg
       .append("g")
       .attr("id", "labelsWrapper")
       .attr("transform", "translate(16, 0)");
-
-    labelsWrapper.selectAll("g").data(this.colorPalette).enter().append("g");
 
     labelsWrapper
       .append("text")
@@ -223,33 +174,33 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
 
     labelsWrapper
       .selectAll("g")
-      .data(colorLabels)
-      .append("rect")
-      .attr("id", (d: LabelData, i: number) => "rect" + i)
-      .attr("fill", (d: LabelData) => d.fill)
-      .attr("width", "1.25rem")
-      .attr("height", "1.25rem")
-      .attr("font-size", "small")
-      .attr("transform", (d: LabelData, i: number) => `translate(0,${i * 28})`);
+      .data(this.colorPalette)
+      .enter()
+      .append("g")
+      .attr("id", "labelsGroup");
 
     labelsWrapper
       .selectAll("g")
-      .data(colorLabels)
+      .data(this.colorPalette)
+      .append("rect")
+      .attr("id", (d: string, i: number) => "rect" + i)
+      .attr("fill", (d: string) => d)
+      .attr("width", "1.25rem")
+      .attr("height", "1.25rem")
+      .attr("font-size", "small")
+      .attr("transform", (d: string, i: number) => `translate(0,${i * 28})`);
+
+    labelsWrapper
+      .selectAll("g")
+      .data(this.colorPalette)
       .append("text")
-      .attr("transform", (d: LabelData, i: number) => {
-        const rectCoordinates = (
-          document.querySelector("#rect" + i) as Element
-        ).getBoundingClientRect();
-        return `translate(${26},${8 + rectCoordinates.y})`;
-      })
+      .attr("transform", (d: string, i: number) => `translate(${26},${10 + i * 28})`)
       .attr("alignment-baseline", "central")
       .attr("fill", "grey")
-      .attr("font-size", "small")
-      .text((d: LabelData) => this.getColorLabelText(d) || null);
+      .attr("font-size", "small");
 
-    const labelsWrapperHeight = (
-      document.querySelector("#labelsWrapper") as Element
-    ).getBoundingClientRect().height;
+    const labelsWrapperHeight = (labelsWrapper.node() as SVGAElement).getBoundingClientRect()
+      .height;
 
     const mapCoordinates = (document.querySelector("#map") as Element).getBoundingClientRect();
 
@@ -257,5 +208,65 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       "transform",
       `translate(16, ${mapCoordinates.y + mapCoordinates.height - labelsWrapperHeight})`
     );
+  }
+
+  private setCountriesColorInMap(): void {
+    const geoJSON = this.countriesService.geoJSON;
+
+    this.mapSvg
+      .selectAll("svg #map path")
+      .data(geoJSON.features)
+      .attr("fill", (feature: GeoFeature) => {
+        const currentCountry = this.countriesData.find(
+          (countryData) => countryData.country.name === feature.properties["NAME"]
+        );
+        return this.colorScale(currentCountry ? currentCountry.count : 0);
+      })
+      .on("mouseenter", (event) => {
+        const countryName = event.srcElement.getAttribute("country-name");
+        const countryFlagCode = event.srcElement.getAttribute("country-flag-code");
+        const artistsFromCountry = this.artists
+          .filter((artist) => artist.country?.flagCode === countryFlagCode)
+          .map((artist) => artist.name);
+        let countryTag = `
+          <div>
+            <span class="fi fi-${countryFlagCode} flag"></span>
+            <strong>
+              ${countryName}
+            </strong>
+            <hr style="margin: 0.25rem 0 0.25rem 0" />
+          </div>
+        `;
+        artistsFromCountry.forEach((artistName) => {
+          const artistTag = document.createElement("div");
+          artistTag.innerHTML = artistName;
+          countryTag += artistTag.outerHTML;
+        });
+        if (artistsFromCountry.length === 0) countryTag += "No artists here.";
+        this.tooltip.style("visibility", "visible");
+        this.tooltip.style("opacity", "0.9");
+        this.tooltip.html(countryTag);
+      })
+      .on("mousemove", (event) => {
+        this.tooltip.style("top", event.pageY + "px").style("left", event.pageX + 16 + "px");
+      })
+      .on("mouseout", () => {
+        this.tooltip.style("visibility", "hidden");
+      });
+  }
+
+  private setLegendText(): void {
+    const colorLabels: LabelData[] = this.colorPalette.map((color) => {
+      return {
+        min: this.colorScale.invertExtent(color)[0],
+        max: this.colorScale.invertExtent(color)[1],
+        fill: color,
+      };
+    });
+
+    this.mapSvg
+      .selectAll("#labelsGroup text")
+      .data(colorLabels)
+      .text((d: LabelData) => this.getColorLabelText(d) || null);
   }
 }
