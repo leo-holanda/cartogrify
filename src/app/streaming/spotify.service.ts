@@ -14,11 +14,14 @@ export class SpotifyService {
     const tokenData = JSON.parse(tokenDataItem) as SpotifyAccessTokenData;
 
     return this.http
-      .get<SpotifyApi.UsersTopArtistsResponse>("https://api.spotify.com/v1/me/top/artists", {
-        headers: {
-          Authorization: "Bearer " + tokenData.access_token,
-        },
-      })
+      .get<SpotifyApi.UsersTopArtistsResponse>(
+        "https://api.spotify.com/v1/me/top/artists?limit=50",
+        {
+          headers: {
+            Authorization: "Bearer " + tokenData.access_token,
+          },
+        }
+      )
       .pipe(
         take(1),
         map((response) => response.items.map((artist) => artist.name))
