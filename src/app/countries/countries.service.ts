@@ -11,6 +11,7 @@ import {
   SubRegionData,
   GeoFeature,
   GeoFeatureCollection,
+  PossibleCountry,
 } from "./country.model";
 import countriesJSON from "../../assets/countries-50m.json";
 import * as topojson from "topojson-client";
@@ -51,74 +52,90 @@ export class CountriesService {
       );
   }
 
-  findCountryInMetadataTags(document: Document): Country | undefined {
+  findCountryInMetadataTags(document: Document, possibleCountries: Map<string, PossibleCountry>) {
     const metadataTags = document.querySelectorAll("dd.catalogue-metadata-description");
     if (metadataTags.length === 0) return undefined;
 
-    let geoFeature: GeoFeature | undefined = undefined;
     for (let i = 0; i < metadataTags.length; i++) {
       const splittedTag = metadataTags
         .item(i)
         .innerHTML.split(",")
         .map((tagContent) => tagContent.trim().toLowerCase());
 
-      geoFeature = this.geoJSON.features.find((currentGeoFeature: GeoFeature) =>
-        splittedTag.some((tagContent) => {
-          const geoFeatureName = currentGeoFeature.properties["NAME"].toLowerCase();
-          return tagContent.includes(geoFeatureName) || geoFeatureName.includes(tagContent);
-        })
-      );
-
-      if (geoFeature !== undefined) break;
+      this.geoJSON.features.forEach((currentGeoFeature: GeoFeature) => {
+        const geoFeatureName = currentGeoFeature.properties["NAME"].toLowerCase();
+        splittedTag.forEach((tagContent) => {
+          if (tagContent.includes(geoFeatureName) || geoFeatureName.includes(tagContent)) {
+            const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
+            possibleCountries.set(geoFeatureName, {
+              count: currentCountryCount + 1,
+              geoFeature: currentGeoFeature,
+            });
+          }
+        });
+      });
     }
-
-    if (!geoFeature) return undefined;
-    return this.createCountryFromFeature(geoFeature);
   }
 
-  findCountryInWikiText(document: Document): Country | undefined {
-    const wikiTag = document.querySelector("div.wiki-block-inner-2");
-    if (!wikiTag) return undefined;
-
-    const geoFeature = this.geoJSON.features.find((currentGeoFeature: GeoFeature) => {
-      const geoFeatureName = currentGeoFeature.properties["NAME"].toLowerCase();
-      return wikiTag.innerHTML.includes(geoFeatureName);
-    });
-
-    if (!geoFeature) return undefined;
-    return this.createCountryFromFeature(geoFeature);
-  }
-
-  findCountryInArtistTags(document: Document): Country | undefined {
+  findCountryInArtistTags(
+    document: Document,
+    possibleCountries: Map<string, PossibleCountry>
+  ): void {
     const artistTags = document.querySelectorAll("ul.tags-list .tag a");
 
-    let geoFeature: GeoFeature | undefined = undefined;
     for (let i = 0; i < artistTags.length; i++) {
-      geoFeature = this.geoJSON.features.find((currentGeoFeature: GeoFeature) => {
+      this.geoJSON.features.forEach((currentGeoFeature: GeoFeature) => {
         const geoFeatureName = currentGeoFeature.properties["NAME"].toLowerCase();
-        return (
+        if (
           artistTags.item(i).innerHTML.toLowerCase().includes(geoFeatureName) ||
           geoFeatureName.includes(artistTags.item(i).innerHTML.toLowerCase())
-        );
+        ) {
+          const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
+          possibleCountries.set(geoFeatureName, {
+            count: currentCountryCount + 1,
+            geoFeature: currentGeoFeature,
+          });
+        }
       });
-
-      if (geoFeature !== undefined) break;
     }
+  }
 
-    if (!geoFeature) return undefined;
-    return this.createCountryFromFeature(geoFeature);
+  findCountryInWikiText(document: Document, possibleCountries: Map<string, PossibleCountry>): void {
+    const wikiTag = document.querySelector("div.wiki-block-inner-2");
+    if (wikiTag) {
+      this.geoJSON.features.find((currentGeoFeature: GeoFeature) => {
+        const geoFeatureName = currentGeoFeature.properties["NAME"].toLowerCase();
+        if (wikiTag.innerHTML.includes(geoFeatureName)) {
+          const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
+          possibleCountries.set(geoFeatureName, {
+            count: currentCountryCount + 1,
+            geoFeature: currentGeoFeature,
+          });
+        }
+      });
+    }
   }
 
   determineCountryOfOrigin(artistPage: string): Country | undefined {
     const parser = new DOMParser();
     const htmlDoc = parser.parseFromString(artistPage, "text/html");
+    const possibleCountries = new Map<string, PossibleCountry>();
 
-    const countryOfOrigin =
-      this.findCountryInMetadataTags(htmlDoc) ||
-      this.findCountryInArtistTags(htmlDoc) ||
-      this.findCountryInWikiText(htmlDoc);
+    this.findCountryInMetadataTags(htmlDoc, possibleCountries);
+    this.findCountryInArtistTags(htmlDoc, possibleCountries);
+    this.findCountryInWikiText(htmlDoc, possibleCountries);
 
-    return countryOfOrigin;
+    let highestCount = 0;
+    let mostLikelyCountry = undefined;
+    for (const possibleCountry of possibleCountries.values()) {
+      if (possibleCountry.count > highestCount) {
+        highestCount = possibleCountry.count;
+        mostLikelyCountry = possibleCountry.geoFeature;
+      }
+    }
+
+    if (!mostLikelyCountry) return undefined;
+    return this.createCountryFromFeature(mostLikelyCountry);
   }
 
   countCountries(artists: Artist[]): CountryData[] {

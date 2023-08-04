@@ -46,3 +46,8 @@ export type ColorScale = d3.ScaleThreshold<number, string, never>;
 export type MapSVG = d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
 
 export type Tooltip = d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
+
+export interface PossibleCountry {
+  count: number;
+  geoFeature: GeoFeature;
+}
