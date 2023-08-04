@@ -17,6 +17,7 @@ import countriesJSON from "../../assets/countries-50m.json";
 import * as topojson from "topojson-client";
 import * as TopoJSON from "topojson-specification";
 import { SupabaseService } from "../shared/supabase.service";
+import { countryRelatedTerms } from "./countries.data";
 
 @Injectable({
   providedIn: "root",
@@ -86,32 +87,51 @@ export class CountriesService {
     for (let i = 0; i < artistTags.length; i++) {
       this.geoJSON.features.forEach((currentGeoFeature: GeoFeature) => {
         const geoFeatureName = currentGeoFeature.properties["NAME"].toLowerCase();
-        if (
-          artistTags.item(i).innerHTML.toLowerCase().includes(geoFeatureName) ||
-          geoFeatureName.includes(artistTags.item(i).innerHTML.toLowerCase())
-        ) {
-          const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
-          possibleCountries.set(geoFeatureName, {
-            count: currentCountryCount + 1,
-            geoFeature: currentGeoFeature,
-          });
-        }
+        const tagContent = artistTags.item(i).innerHTML.toLowerCase();
+        const featureFlag = this.findCountryFlagCode(currentGeoFeature);
+
+        const currentCountryRelatedTerms: string[] = [
+          ...countryRelatedTerms[featureFlag].adjectivals,
+          ...countryRelatedTerms[featureFlag].demonyms,
+          geoFeatureName,
+        ];
+
+        currentCountryRelatedTerms.forEach((currentTerm) => {
+          if (tagContent.includes(currentTerm) || currentTerm.includes(tagContent)) {
+            const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
+            possibleCountries.set(geoFeatureName, {
+              count: currentCountryCount + 1,
+              geoFeature: currentGeoFeature,
+            });
+          }
+        });
       });
     }
   }
 
   findCountryInWikiText(document: Document, possibleCountries: Map<string, PossibleCountry>): void {
-    const wikiTag = document.querySelector("div.wiki-block-inner-2");
+    const wikiTag = document.querySelector<HTMLDivElement>("div.wiki-block-inner-2");
     if (wikiTag) {
       this.geoJSON.features.find((currentGeoFeature: GeoFeature) => {
+        const featureFlag = this.findCountryFlagCode(currentGeoFeature);
         const geoFeatureName = currentGeoFeature.properties["NAME"].toLowerCase();
-        if (wikiTag.innerHTML.includes(geoFeatureName)) {
-          const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
-          possibleCountries.set(geoFeatureName, {
-            count: currentCountryCount + 1,
-            geoFeature: currentGeoFeature,
-          });
-        }
+
+        const currentCountryRelatedTerms: string[] = [
+          ...countryRelatedTerms[featureFlag].adjectivals,
+          ...countryRelatedTerms[featureFlag].demonyms,
+          geoFeatureName,
+        ];
+
+        const wikiText = wikiTag.innerText.toLowerCase();
+        currentCountryRelatedTerms.forEach((currentTerm) => {
+          if (wikiText.includes(currentTerm)) {
+            const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
+            possibleCountries.set(geoFeatureName, {
+              count: currentCountryCount + 1,
+              geoFeature: currentGeoFeature,
+            });
+          }
+        });
       });
     }
   }

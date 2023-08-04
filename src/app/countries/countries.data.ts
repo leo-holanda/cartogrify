@@ -6,1033 +6,1003 @@ export interface CountryRelatedTerms {
 }
 
 export const countryRelatedTerms: CountryRelatedTerms = {
-  Afghanistan: {
-    adjectivals: ["Afghan"],
-    demonyms: ["Afghans"],
-  },
-  Åland: {
-    adjectivals: ["Åland Island"],
-    demonyms: ["Ålanders"],
-  },
-  Albania: {
-    adjectivals: ["Albanian"],
-    demonyms: ["Albanians"],
-  },
-  Algeria: {
-    adjectivals: ["Algerian"],
-    demonyms: ["Algerians"],
-  },
-  "American Samoa": {
-    adjectivals: ["American Samoan"],
-    demonyms: ["American Samoans"],
-  },
-  Andorra: {
-    adjectivals: ["Andorran"],
-    demonyms: ["Andorrans"],
-  },
-  Angola: {
-    adjectivals: ["Angolan"],
-    demonyms: ["Angolans"],
-  },
-  Anguilla: {
-    adjectivals: ["Anguillan"],
-    demonyms: ["Anguillans"],
-  },
-  Antarctica: {
-    adjectivals: ["Antarctic"],
-    demonyms: ["Antarctic residents, Antarcticans"],
-  },
-  "Antigua and Barbuda": {
-    adjectivals: ["Antiguan", "Barbudan"],
-    demonyms: ["Antiguans", "Barbudans"],
-  },
-  Argentina: {
-    adjectivals: ["Argentine", "Argentinian"],
-    demonyms: ["Argentines", "Argentinians"],
-  },
-  Armenia: {
-    adjectivals: ["Armenian"],
-    demonyms: ["Armenians"],
-  },
-  Aruba: {
-    adjectivals: ["Aruban"],
-    demonyms: ["Arubans"],
-  },
-  //According to Google, Christmas Island and Cocos (Keeling) Islands are part of Australia.
-  Australia: {
-    adjectivals: ["Australian", "Christmas Island", "Cocos Island"],
-    demonyms: ["Australians", "Christmas Islanders", "Cocos Islanders"],
-  },
-  Austria: {
-    adjectivals: ["Austrian"],
-    demonyms: ["Austrians"],
-  },
-  Azerbaijan: {
-    adjectivals: ["Azerbaijani", "Azeri"],
-    demonyms: ["Azerbaijanis", "Azeris"],
-  },
-  "The Bahamas": {
-    adjectivals: ["Bahamian"],
-    demonyms: ["Bahamians"],
-  },
-  Bahrain: {
-    adjectivals: ["Bahraini"],
-    demonyms: ["Bahrainis"],
-  },
-  Bangladesh: {
-    adjectivals: ["Bangladeshi"],
-    demonyms: ["Bangladeshis"],
-  },
-  Barbados: {
-    adjectivals: ["Barbadian"],
-    demonyms: ["Barbadians"],
-  },
-  Belarus: {
-    adjectivals: ["Belarusian"],
-    demonyms: ["Belarusians"],
-  },
-  Belgium: {
-    adjectivals: ["Belgian"],
-    demonyms: ["Belgians"],
-  },
-  Belize: {
-    adjectivals: ["Belizean"],
-    demonyms: ["Belizeans"],
-  },
-  Benin: {
-    adjectivals: ["Beninese", "Beninois"],
-    demonyms: ["Beninese", "Beninois"],
-  },
-  Bermuda: {
-    adjectivals: ["Bermudian", "Bermudan"],
-    demonyms: ["Bermudians", "Bermudans"],
-  },
-  Bhutan: {
-    adjectivals: ["Bhutanese"],
-    demonyms: ["Bhutanese"],
-  },
-  Bolivia: {
-    adjectivals: ["Bolivian"],
-    demonyms: ["Bolivians"],
-  },
-
-  "Bosnia and Herzegovina": {
-    adjectivals: ["Bosnian", "Herzegovinian"],
-    demonyms: ["Bosnians", "Herzegovinians"],
-  },
-  Botswana: {
-    adjectivals: ["Botswana"],
-    demonyms: ["Batswana (singular Motswana)"],
-  },
-
-  Brazil: {
-    adjectivals: ["Brazilian"],
-    demonyms: ["Brazilians"],
-  },
-  "British Indian Ocean Territory": {
-    adjectivals: ["BIOT"],
-    demonyms: ["British"],
-  },
-  Brunei: {
-    adjectivals: ["Bruneian"],
-    demonyms: ["Bruneians"],
-  },
-  Bulgaria: {
-    adjectivals: ["Bulgarian"],
-    demonyms: ["Bulgarians"],
-  },
-  "Burkina Faso": {
-    adjectivals: ["Burkinabé"],
-    demonyms: ["Burkinabè", "Burkinabé"],
-  },
-  Burundi: {
-    adjectivals: ["Burundian"],
-    demonyms: ["Burundians", "Barundi"],
-  },
-  "Cabo Verde": {
-    adjectivals: ["Cabo Verdean"],
-    demonyms: ["Cabo Verdeans"],
-  },
-  Cambodia: {
-    adjectivals: ["Cambodian"],
-    demonyms: ["Cambodians"],
-  },
-  Cameroon: {
-    adjectivals: ["Cameroonian"],
-    demonyms: ["Cameroonians"],
-  },
-  Canada: {
-    adjectivals: ["Canadian"],
-    demonyms: ["Canadians"],
-  },
-  "Cayman Islands": {
-    adjectivals: ["Caymanian"],
-    demonyms: ["Caymanians"],
-  },
-  "Central African Republic": {
-    adjectivals: ["Central African"],
-    demonyms: ["Central Africans"],
-  },
-  Chad: {
-    adjectivals: ["Chadian"],
-    demonyms: ["Chadians"],
-  },
-  Chile: {
-    adjectivals: ["Chilean"],
-    demonyms: ["Chileans"],
-  },
-  China: {
-    adjectivals: ["Chinese"],
-    demonyms: ["Chinese"],
-  },
-  Colombia: {
-    adjectivals: ["Colombian"],
-    demonyms: ["Colombians"],
-  },
-  Comoros: {
-    adjectivals: ["Comoran", "Comorian"],
-    demonyms: ["Comorans", "Comorians"],
-  },
-  "Democratic Republic of the Congo": {
-    adjectivals: ["Congolese"],
-    demonyms: ["Congolese"],
-  },
-  "Republic of the Congo": {
-    adjectivals: ["Congolese"],
-    demonyms: ["Congolese"],
-  },
-  "Cook Islands": {
-    adjectivals: ["Cook Island"],
-    demonyms: ["Cook Islanders"],
-  },
-  "Costa Rica": {
-    adjectivals: ["Costa Rican"],
-    demonyms: ["Costa Ricans"],
-  },
-  Croatia: {
-    adjectivals: ["Croatian"],
-    demonyms: ["Croatians", "Croats"],
-  },
-  Cuba: {
-    adjectivals: ["Cuban"],
-    demonyms: ["Cubans"],
-  },
-  Curaçao: {
-    adjectivals: ["Curaçaoan"],
-    demonyms: ["Curaçaoans"],
-  },
-  Cyprus: {
-    adjectivals: ["Cypriot"],
-    demonyms: ["Cypriots"],
-  },
-  "Czech Republic": {
-    adjectivals: ["Czech"],
-    demonyms: ["Czechs"],
-  },
-  Denmark: {
-    adjectivals: ["Danish"],
-    demonyms: ["Danes"],
-  },
-  Djibouti: {
-    adjectivals: ["Djiboutian"],
-    demonyms: ["Djiboutians"],
-  },
-  Dominica: {
-    adjectivals: ["Dominican"],
-    demonyms: ["Dominicans"],
-  },
-  "Dominican Republic": {
-    adjectivals: ["Dominican"],
-    demonyms: ["Dominicans"],
-  },
-  "East Timor": {
-    adjectivals: ["Timorese"],
-    demonyms: ["Timorese"],
-  },
-  Ecuador: {
-    adjectivals: ["Ecuadorian"],
-    demonyms: ["Ecuadorians"],
-  },
-  Egypt: {
-    adjectivals: ["Egyptian"],
-    demonyms: ["Egyptians"],
-  },
-  "El Salvador": {
-    adjectivals: ["Salvadoran"],
-    demonyms: ["Salvadorans", "Salvadorians", "Salvadoreans"],
-  },
-
-  "Equatorial Guinea": {
-    adjectivals: ["Equatorial Guinean", "Equatoguinean"],
-    demonyms: ["Equatorial Guineans", "Equatoguineans"],
-  },
-  Eritrea: {
-    adjectivals: ["Eritrean"],
-    demonyms: ["Eritreans"],
-  },
-  Estonia: {
-    adjectivals: ["Estonian"],
-    demonyms: ["Estonians"],
-  },
-  Eswatini: {
-    adjectivals: ["Swazi", "Swati"],
-    demonyms: ["Swazis"],
-  },
-  Ethiopia: {
-    adjectivals: ["Ethiopian"],
-    demonyms: ["Ethiopians", "Habesha"],
-  },
-  "Falkland Islands": {
-    adjectivals: ["Falkland Island"],
-    demonyms: ["Falkland Islanders"],
-  },
-  "Faroe Islands": {
-    adjectivals: ["Faroese"],
-    demonyms: ["Faroese"],
-  },
-  Fiji: {
-    adjectivals: ["Fijian"],
-    demonyms: ["Fijians"],
-  },
-  Finland: {
-    adjectivals: ["Finnish"],
-    demonyms: ["Finns"],
-  },
-  //According to Google, Guadeloupe, Martinique, Mayotte and Réunion is part of France.
-  France: {
+  zw: {
+    adjectivals: ["zimbabwean"],
+    demonyms: ["zimbabweans"],
+  },
+  zm: {
+    adjectivals: ["zambian"],
+    demonyms: ["zambians"],
+  },
+  ye: {
+    adjectivals: ["yemeni"],
+    demonyms: ["yemenis"],
+  },
+  vn: {
+    adjectivals: ["vietnamese"],
+    demonyms: ["vietnamese"],
+  },
+  ve: {
+    adjectivals: ["venezuelan"],
+    demonyms: ["venezuelans"],
+  },
+  va: {
+    adjectivals: ["vaticanian"],
+    demonyms: ["vaticanians"],
+  },
+  vu: {
+    adjectivals: ["ni-vanuatu", "vanuatuan"],
+    demonyms: ["ni-vanuatu"],
+  },
+  uz: {
+    adjectivals: ["uzbekistani", "uzbek"],
+    demonyms: ["uzbekistanis", "uzbeks"],
+  },
+  uy: {
+    adjectivals: ["uruguayan"],
+    demonyms: ["uruguayans"],
+  },
+  fm: {
+    adjectivals: ["micronesian"],
+    demonyms: ["micronesians"],
+  },
+  mh: {
+    adjectivals: ["marshallese"],
+    demonyms: ["marshallese"],
+  },
+  mp: {
+    adjectivals: ["northern marianan"],
+    demonyms: ["northern marianans"],
+  },
+  vi: {
+    adjectivals: ["u.s. virgin island"],
+    demonyms: ["u.s. virgin islanders"],
+  },
+  gu: {
+    adjectivals: ["guamanian"],
+    demonyms: ["guamanians"],
+  },
+  as: {
+    adjectivals: ["american samoan"],
+    demonyms: ["american samoans"],
+  },
+  pr: {
+    adjectivals: ["puerto rican"],
+    demonyms: ["puerto ricans"],
+  },
+  us: {
+    adjectivals: ["american", "united states", "u.s."],
+    demonyms: ["americans"],
+  },
+  gs: {
+    adjectivals: ["south georgia island", "south sandwich island"],
+    demonyms: ["south georgia islanders", "south sandwich islanders"],
+  },
+  io: {
+    adjectivals: ["biot"],
+    demonyms: ["british"],
+  },
+  sh: {
+    adjectivals: ["saint helenian"],
+    demonyms: ["saint helenians"],
+  },
+  pn: {
+    adjectivals: ["pitcairn island"],
+    demonyms: ["pitcairn islanders"],
+  },
+  ai: {
+    adjectivals: ["anguillan"],
+    demonyms: ["anguillans"],
+  },
+  fk: {
+    adjectivals: ["falkland island"],
+    demonyms: ["falkland islanders"],
+  },
+  ky: {
+    adjectivals: ["caymanian"],
+    demonyms: ["caymanians"],
+  },
+  bm: {
+    adjectivals: ["bermudian", "bermudan"],
+    demonyms: ["bermudians", "bermudans"],
+  },
+  vg: {
+    adjectivals: ["british virgin island"],
+    demonyms: ["british virgin islanders"],
+  },
+  tc: {
+    adjectivals: ["turks and caicos island"],
+    demonyms: ["turks and caicos islanders"],
+  },
+  ms: {
+    adjectivals: ["montserratian"],
+    demonyms: ["montserratians"],
+  },
+  je: {
+    adjectivals: ["jersey"],
+    demonyms: ["jerseymen and jerseywomen", "jersian", "jèrriais"],
+  },
+  gg: {
+    adjectivals: ["guernsey"],
+    demonyms: ["guernseymen and guernseywomen"],
+  },
+  im: {
+    adjectivals: ["manx"],
+    demonyms: ["manx", "manxmen and manxwomen"],
+  },
+  gb: {
     adjectivals: [
-      "French",
-      "French Guianese",
-      "French Southern Territories",
-      "Guadeloupe",
-      "Martiniquais",
-      "Martinican",
-      "Mahoran",
-      "Réunionese",
-      "Réunionnais",
+      "british",
+      "united kingdom",
+      "uk",
+      "english",
+      "gibraltar",
+      "northern irish",
+      "scotland",
+      "scottish",
+      "wales",
+      "welsh",
     ],
     demonyms: [
-      "French",
-      "Frenchmen and Frenchwomen",
-      "French Guianese",
-      "Guadeloupians",
-      "Guadeloupeans",
-      "Martiniquais",
-      "Martiniquaises",
-      "Mahorans",
-      "Réunionese",
-      "Réunionnais and Réunionnaises",
+      "britons",
+      "british people",
+      "english",
+      "englishmen and englishwomen",
+      "gibraltarians",
+      "northern irish",
+      "northern irishmen and northern irishwomen",
+      "scots",
+      "scotsmen and scotswomen",
+      "welshmen",
+      "welshwomen",
     ],
   },
-  "French Polynesia": {
-    adjectivals: ["French Polynesian"],
-    demonyms: ["French Polynesians"],
-  },
-  Gabon: {
-    adjectivals: ["Gabonese"],
-    demonyms: ["Gabonese", "Gabonaise"],
-  },
-  "The Gambia": {
-    adjectivals: ["Gambian"],
-    demonyms: ["Gambians"],
-  },
-  Georgia: {
-    adjectivals: ["Georgian"],
-    demonyms: ["Georgians"],
-  },
-  Germany: {
-    adjectivals: ["German"],
-    demonyms: ["Germans"],
-  },
-  Ghana: {
-    adjectivals: ["Ghanaian"],
-    demonyms: ["Ghanaians"],
-  },
-
-  Greece: {
-    adjectivals: ["Greek", "Hellenic"],
-    demonyms: ["Greeks", "Hellenes"],
-  },
-  Greenland: {
-    adjectivals: ["Greenland"],
-    demonyms: ["Greenlanders"],
-  },
-  Grenada: {
-    adjectivals: ["Grenadian"],
-    demonyms: ["Grenadians"],
-  },
-
-  Guam: {
-    adjectivals: ["Guamanian"],
-    demonyms: ["Guamanians"],
-  },
-  Guatemala: {
-    adjectivals: ["Guatemalan"],
-    demonyms: ["Guatemalans"],
-  },
-  Guernsey: {
-    adjectivals: ["Guernsey"],
-    demonyms: ["Guernseymen and Guernseywomen"],
-  },
-  Guinea: {
-    adjectivals: ["Guinean"],
-    demonyms: ["Guineans"],
-  },
-  "Guinea-Bissau": {
-    adjectivals: ["Bissau-Guinean"],
-    demonyms: ["Bissau-Guineans"],
-  },
-  Guyana: {
-    adjectivals: ["Guyanese"],
-    demonyms: ["Guyanese"],
-  },
-  Haiti: {
-    adjectivals: ["Haitian"],
-    demonyms: ["Haitians"],
-  },
-  "Heard Island and McDonald Islands": {
-    adjectivals: ["Heard Island", "McDonald Island"],
-    demonyms: ["Heard Islanders", "McDonald Islanders"],
-  },
-  Honduras: {
-    adjectivals: ["Honduran"],
-    demonyms: ["Hondurans"],
-  },
-  "Hong Kong": {
-    adjectivals: ["Hong Kong", "Cantonese", "Hong Konger"],
-    demonyms: ["Hongkongers", "Hong Kongese"],
-  },
-  Hungary: {
-    adjectivals: ["Hungarian", "Magyar"],
-    demonyms: ["Hungarians", "Magyars"],
-  },
-  Iceland: {
-    adjectivals: ["Icelandic"],
-    demonyms: ["Icelanders"],
-  },
-  India: {
-    adjectivals: ["Indian"],
-    demonyms: ["Indians"],
-  },
-  Indonesia: {
-    adjectivals: ["Indonesian"],
-    demonyms: ["Indonesians"],
-  },
-  Iran: {
-    adjectivals: ["Iranian", "Persian"],
-    demonyms: ["Iranians", "Persians"],
-  },
-  Iraq: {
-    adjectivals: ["Iraqi"],
-    demonyms: ["Iraqis"],
-  },
-  Ireland: {
-    adjectivals: ["Irish"],
-    demonyms: ["Irish", "Irishmen and Irishwomen"],
-  },
-  "Isle of Man": {
-    adjectivals: ["Manx"],
-    demonyms: ["Manx", "Manxmen and Manxwomen"],
-  },
-  Israel: {
-    adjectivals: ["Israeli", "Israelite"],
-    demonyms: ["Israelis"],
-  },
-  Italy: {
-    adjectivals: ["Italian"],
-    demonyms: ["Italians"],
-  },
-  "Ivory Coast": {
-    adjectivals: ["Ivorian"],
-    demonyms: ["Ivorians"],
-  },
-  Jamaica: {
-    adjectivals: ["Jamaican"],
-    demonyms: ["Jamaicans"],
-  },
-
-  Japan: {
-    adjectivals: ["Japanese"],
-    demonyms: ["Japanese"],
-  },
-  Jersey: {
-    adjectivals: ["Jersey"],
-    demonyms: ["Jerseymen and Jerseywomen", "Jersian", "Jèrriais"],
-  },
-  Jordan: {
-    adjectivals: ["Jordanian"],
-    demonyms: ["Jordanians"],
-  },
-  Kazakhstan: {
-    adjectivals: ["Kazakhstani", "Kazakh"],
-    demonyms: ["Kazakhstanis", "Kazakhs"],
-  },
-  Kenya: {
-    adjectivals: ["Kenyan"],
-    demonyms: ["Kenyans"],
-  },
-  Kiribati: {
-    adjectivals: ["Kiribati"],
-    demonyms: ["I-Kiribati"],
-  },
-  "North Korea": {
-    adjectivals: ["North Korean"],
-    demonyms: ["Koreans", "North Koreans"],
-  },
-  "South Korea": {
-    adjectivals: ["South Korean"],
-    demonyms: ["Koreans", "South Koreans"],
-  },
-  Kosovo: {
-    adjectivals: ["Kosovar", "Kosovan"],
-    demonyms: ["Kosovars"],
-  },
-  Kuwait: {
-    adjectivals: ["Kuwaiti"],
-    demonyms: ["Kuwaitis"],
-  },
-  Kyrgyzstan: {
-    adjectivals: ["Kyrgyzstani", "Kyrgyz", "Kirgiz", "Kirghiz"],
-    demonyms: ["Kyrgyzstanis", "Kyrgyz", "Kirgiz", "Kirghiz"],
-  },
-  Laos: {
-    adjectivals: ["Lao", "Laotian"],
-    demonyms: ["Laos", "Laotians"],
-  },
-  Latvia: {
-    adjectivals: ["Latvian", "Lettish"],
-    demonyms: ["Latvians", "Letts"],
-  },
-  Lebanon: {
-    adjectivals: ["Lebanese"],
-    demonyms: ["Lebanese"],
-  },
-  Lesotho: {
-    adjectivals: ["Basotho"],
-    demonyms: ["Basotho (singular Mosotho)"],
-  },
-  Liberia: {
-    adjectivals: ["Liberian"],
-    demonyms: ["Liberians"],
-  },
-  Libya: {
-    adjectivals: ["Libyan"],
-    demonyms: ["Libyans"],
-  },
-  Liechtenstein: {
-    adjectivals: ["Liechtensteiner"],
-    demonyms: ["Liechtensteiners"],
-  },
-  Lithuania: {
-    adjectivals: ["Lithuanian"],
-    demonyms: ["Lithuanians"],
-  },
-  Luxembourg: {
-    adjectivals: ["Luxembourg", "Luxembourgish"],
-    demonyms: ["Luxembourgers"],
-  },
-  Macau: {
-    adjectivals: ["Macanese"],
-    demonyms: ["Macanese"],
-  },
-  Madagascar: {
-    adjectivals: ["Malagasy, Madagascan"],
-    demonyms: ["Malagasy, Madagascans"],
-  },
-  Malawi: {
-    adjectivals: ["Malawian"],
-    demonyms: ["Malawians"],
-  },
-  Malaysia: {
-    adjectivals: ["Malaysian"],
-    demonyms: ["Malaysians"],
-  },
-  Maldives: {
-    adjectivals: ["Maldivian"],
-    demonyms: ["Maldivians"],
-  },
-  Mali: {
-    adjectivals: ["Malian", "Malinese"],
-    demonyms: ["Malians"],
-  },
-  Malta: {
-    adjectivals: ["Maltese"],
-    demonyms: ["Maltese"],
-  },
-  "Marshall Islands": {
-    adjectivals: ["Marshallese"],
-    demonyms: ["Marshallese"],
-  },
-
-  Mauritania: {
-    adjectivals: ["Mauritanian"],
-    demonyms: ["Mauritanians"],
-  },
-  Mauritius: {
-    adjectivals: ["Mauritian"],
-    demonyms: ["Mauritians"],
-  },
-
-  Mexico: {
-    adjectivals: ["Mexican"],
-    demonyms: ["Mexicans"],
-  },
-  Micronesia: {
-    adjectivals: ["Micronesian"],
-    demonyms: ["Micronesians"],
-  },
-  Moldova: {
-    adjectivals: ["Moldovan"],
-    demonyms: ["Moldovans"],
-  },
-  Monaco: {
-    adjectivals: ["Monégasque", "Monacan"],
-    demonyms: ["Monégasques", "Monacans"],
-  },
-  Mongolia: {
-    adjectivals: ["Mongolian"],
-    demonyms: ["Mongolians", "Mongols"],
-  },
-  Montenegro: {
-    adjectivals: ["Montenegrin"],
-    demonyms: ["Montenegrins"],
-  },
-  Montserrat: {
-    adjectivals: ["Montserratian"],
-    demonyms: ["Montserratians"],
-  },
-  Morocco: {
-    adjectivals: ["Moroccan"],
-    demonyms: ["Moroccans"],
-  },
-  Mozambique: {
-    adjectivals: ["Mozambican"],
-    demonyms: ["Mozambicans"],
-  },
-  Myanmar: {
-    adjectivals: ["Myanma", "Burmese"],
-    demonyms: ["Myanmar"],
-  },
-  Namibia: {
-    adjectivals: ["Namibian"],
-    demonyms: ["Namibians"],
-  },
-  Nauru: {
-    adjectivals: ["Nauruan"],
-    demonyms: ["Nauruans"],
-  },
-  Nepal: {
-    adjectivals: ["Nepali", "Nepalese"],
-    demonyms: ["Nepalis", "Nepalese"],
-  },
-  //According to Google, Bonaire, Saba and Sint Eustatius are part of Netherlands.
-  Netherlands: {
-    adjectivals: ["Dutch", "Bonaire", "Bonairean", "Saban", "Sint Eustatius", "Statian"],
+  ae: {
+    adjectivals: ["emirati", "emirian", "emiri"],
+    demonyms: ["emiratis", "emirians", "emiri"],
+  },
+  ua: {
+    adjectivals: ["ukrainian"],
+    demonyms: ["ukrainians"],
+  },
+  ug: {
+    adjectivals: ["ugandan"],
+    demonyms: ["ugandans"],
+  },
+  tm: {
+    adjectivals: ["turkmen"],
+    demonyms: ["turkmens"],
+  },
+  tr: {
+    adjectivals: ["turkish"],
+    demonyms: ["turks"],
+  },
+  tn: {
+    adjectivals: ["tunisian"],
+    demonyms: ["tunisians"],
+  },
+  tt: {
+    adjectivals: ["trinidadian", "tobagonian"],
+    demonyms: ["trinidadians", "tobagonians"],
+  },
+  to: {
+    adjectivals: ["tongan"],
+    demonyms: ["tongans"],
+  },
+  tg: {
+    adjectivals: ["togolese"],
+    demonyms: ["togolese"],
+  },
+  tl: {
+    adjectivals: ["timorese"],
+    demonyms: ["timorese"],
+  },
+  th: {
+    adjectivals: ["thai"],
+    demonyms: ["thai"],
+  },
+  tz: {
+    adjectivals: ["tanzanian", "zanzibari"],
+    demonyms: ["tanzanians", "zanzibaris"],
+  },
+  tj: {
+    adjectivals: ["tajikistani"],
+    demonyms: ["tajikistanis", "tajiks"],
+  },
+  tw: {
+    adjectivals: ["taiwanese", "formosan"],
+    demonyms: ["taiwanese", "formosans"],
+  },
+  sy: {
+    adjectivals: ["syrian"],
+    demonyms: ["syrians"],
+  },
+  ch: {
+    adjectivals: ["swiss"],
+    demonyms: ["swiss"],
+  },
+  se: {
+    adjectivals: ["swedish"],
+    demonyms: ["swedes"],
+  },
+  sz: {
+    adjectivals: ["swazi", "swati"],
+    demonyms: ["swazis"],
+  },
+  sr: {
+    adjectivals: ["surinamese"],
+    demonyms: ["surinamers"],
+  },
+  ss: {
+    adjectivals: ["south sudanese"],
+    demonyms: ["south sudanese"],
+  },
+  sd: {
+    adjectivals: ["sudanese"],
+    demonyms: ["sudanese"],
+  },
+  lk: {
+    adjectivals: ["sri lankan"],
+    demonyms: ["sri lankans"],
+  },
+  es: {
+    adjectivals: ["spanish"],
+    demonyms: ["spaniards"],
+  },
+  kr: {
+    adjectivals: ["south korean"],
+    demonyms: ["koreans", "south koreans"],
+  },
+  za: {
+    adjectivals: ["south african"],
+    demonyms: ["south africans"],
+  },
+  so: {
+    adjectivals: ["somali"],
+    demonyms: ["somalis"],
+  },
+  sl: {
+    adjectivals: ["sierra leonean"],
+    demonyms: ["sierra leoneans"],
+  },
+  sb: {
+    adjectivals: ["solomon island"],
+    demonyms: ["solomon islanders"],
+  },
+  sk: {
+    adjectivals: ["slovak"],
+    demonyms: ["slovaks", "slovakians"],
+  },
+  si: {
+    adjectivals: ["slovenian", "slovene"],
+    demonyms: ["slovenes", "slovenians"],
+  },
+  sg: {
+    adjectivals: [],
+    demonyms: [],
+  },
+  sc: {
+    adjectivals: ["seychellois"],
+    demonyms: ["seychellois/seychelloises"],
+  },
+  rs: {
+    adjectivals: ["serbian"],
+    demonyms: ["serbs", "serbians"],
+  },
+  sn: {
+    adjectivals: ["senegalese"],
+    demonyms: ["senegalese"],
+  },
+  sa: {
+    adjectivals: ["saudi", "saudi arabian"],
+    demonyms: ["saudis", "saudi arabians"],
+  },
+  st: {
+    adjectivals: ["são toméan"],
+    demonyms: ["são toméans"],
+  },
+  sm: {
+    adjectivals: ["sammarinese"],
+    demonyms: ["sammarinese"],
+  },
+  ws: {
+    adjectivals: ["samoan"],
+    demonyms: ["samoans"],
+  },
+  vc: {
+    adjectivals: ["saint vincentian", "vincentian"],
+    demonyms: ["saint vincentians", "vincentians"],
+  },
+  lc: {
+    adjectivals: ["saint lucian"],
+    demonyms: ["saint lucians"],
+  },
+  kn: {
+    adjectivals: ["kittitian", "nevisian"],
+    demonyms: ["kittitians", "nevisians"],
+  },
+  rw: {
+    adjectivals: ["rwandan"],
+    demonyms: ["rwandans", "banyarwanda"],
+  },
+  ru: {
+    adjectivals: ["russian"],
+    demonyms: ["russians"],
+  },
+  ro: {
+    adjectivals: ["romanian"],
+    demonyms: ["romanians"],
+  },
+  qa: {
+    adjectivals: ["qatari"],
+    demonyms: ["qataris"],
+  },
+  pt: {
+    adjectivals: ["portuguese"],
+    demonyms: ["portuguese"],
+  },
+  pl: {
+    adjectivals: ["polish"],
+    demonyms: ["poles"],
+  },
+  ph: {
+    adjectivals: ["filipino", "philippine"],
+    demonyms: ["filipinos", "filipinas"],
+  },
+  pe: {
+    adjectivals: ["peruvian"],
+    demonyms: ["peruvians"],
+  },
+  py: {
+    adjectivals: ["paraguayan"],
+    demonyms: ["paraguayans"],
+  },
+  pg: {
+    adjectivals: ["papua new guinean", "papuan"],
+    demonyms: ["papua new guineans", "papuans"],
+  },
+  pa: {
+    adjectivals: ["panamanian"],
+    demonyms: ["panamanians"],
+  },
+  pw: {
+    adjectivals: ["palauan"],
+    demonyms: ["palauans"],
+  },
+  pk: {
+    adjectivals: ["pakistani"],
+    demonyms: ["pakistanis"],
+  },
+  om: {
+    adjectivals: ["omani"],
+    demonyms: ["omanis"],
+  },
+  no: {
+    adjectivals: ["norwegian", "bouvet island", "jan mayen", "svalbard"],
+    demonyms: ["norwegians", "bouvet islanders", "jan mayen residents", "svalbard residents"],
+  },
+  kp: {
+    adjectivals: ["north korean"],
+    demonyms: ["koreans", "north koreans"],
+  },
+  ng: {
+    adjectivals: ["nigerian"],
+    demonyms: ["nigerians"],
+  },
+  ne: {
+    adjectivals: ["nigerien"],
+    demonyms: ["nigeriens"],
+  },
+  ni: {
+    adjectivals: ["nicaraguan"],
+    demonyms: ["nicaraguans"],
+  },
+  nz: {
+    adjectivals: ["new zealand", "tokelauan"],
+    demonyms: ["new zealanders", "tokelauans"],
+  },
+  nu: {
+    adjectivals: ["niuean"],
+    demonyms: ["niueans"],
+  },
+  ck: {
+    adjectivals: ["cook island"],
+    demonyms: ["cook islanders"],
+  },
+  nl: {
+    adjectivals: ["dutch", "bonaire", "bonairean", "saban", "sint eustatius", "statian"],
     demonyms: [
-      "Dutch",
-      "Dutchmen and Dutchwomen",
-      "Netherlanders",
-      "Bonaire Dutch",
-      "Saba Dutch",
-      "Statians",
+      "dutch",
+      "dutchmen and dutchwomen",
+      "netherlanders",
+      "bonaire dutch",
+      "saba dutch",
+      "statians",
     ],
   },
-  "New Caledonia": {
-    adjectivals: ["New Caledonian"],
-    demonyms: ["New Caledonians"],
-  },
-  //According to Google, Tokelau is part of New Zealand.
-  "New Zealand": {
-    adjectivals: ["New Zealand", "Tokelauan"],
-    demonyms: ["New Zealanders", "Tokelauans"],
-  },
-  Nicaragua: {
-    adjectivals: ["Nicaraguan"],
-    demonyms: ["Nicaraguans"],
-  },
-  Niger: {
-    adjectivals: ["Nigerien"],
-    demonyms: ["Nigeriens"],
-  },
-  Nigeria: {
-    adjectivals: ["Nigerian"],
-    demonyms: ["Nigerians"],
-  },
-  Niue: {
-    adjectivals: ["Niuean"],
-    demonyms: ["Niueans"],
-  },
-  "Norfolk Island": {
-    adjectivals: ["Norfolk Island"],
-    demonyms: ["Norfolk Islanders"],
-  },
-  "North Macedonia": {
-    adjectivals: ["Macedonian"],
-    demonyms: ["Macedonians"],
-  },
-
-  "Northern Mariana Islands": {
-    adjectivals: ["Northern Marianan"],
-    demonyms: ["Northern Marianans"],
-  },
-  //Acording to Google, Bouvet Island, Jan Mayen and Svalbard are part of Norway.
-  //It's highy unlikely that an artist will come from there but who knows.
-  Norway: {
-    adjectivals: ["Norwegian", "Bouvet Island", "Jan Mayen", "Svalbard"],
-    demonyms: ["Norwegians", "Bouvet Islanders", "Jan Mayen residents", "Svalbard residents"],
-  },
-  Oman: {
-    adjectivals: ["Omani"],
-    demonyms: ["Omanis"],
-  },
-  Pakistan: {
-    adjectivals: ["Pakistani"],
-    demonyms: ["Pakistanis"],
-  },
-  Palau: {
-    adjectivals: ["Palauan"],
-    demonyms: ["Palauans"],
-  },
-  Palestine: {
-    adjectivals: ["Palestinian"],
-    demonyms: ["Palestinians"],
-  },
-  Panama: {
-    adjectivals: ["Panamanian"],
-    demonyms: ["Panamanians"],
-  },
-  "Papua New Guinea": {
-    adjectivals: ["Papua New Guinean", "Papuan"],
-    demonyms: ["Papua New Guineans", "Papuans"],
-  },
-  Paraguay: {
-    adjectivals: ["Paraguayan"],
-    demonyms: ["Paraguayans"],
-  },
-  Peru: {
-    adjectivals: ["Peruvian"],
-    demonyms: ["Peruvians"],
-  },
-  Philippines: {
-    adjectivals: ["Filipino", "Philippine"],
-    demonyms: ["Filipinos", "Filipinas"],
-  },
-  "Pitcairn Islands": {
-    adjectivals: ["Pitcairn Island"],
-    demonyms: ["Pitcairn Islanders"],
-  },
-  Poland: {
-    adjectivals: ["Polish"],
-    demonyms: ["Poles"],
-  },
-  Portugal: {
-    adjectivals: ["Portuguese"],
-    demonyms: ["Portuguese"],
-  },
-  "Puerto Rico": {
-    adjectivals: ["Puerto Rican"],
-    demonyms: ["Puerto Ricans"],
-  },
-  Qatar: {
-    adjectivals: ["Qatari"],
-    demonyms: ["Qataris"],
-  },
-
-  Romania: {
-    adjectivals: ["Romanian"],
-    demonyms: ["Romanians"],
-  },
-  Russia: {
-    adjectivals: ["Russian"],
-    demonyms: ["Russians"],
-  },
-  Rwanda: {
-    adjectivals: ["Rwandan"],
-    demonyms: ["Rwandans", "Banyarwanda"],
-  },
-
-  "Saint Barthélemy": {
-    adjectivals: ["Barthélemois"],
-    demonyms: ["Barthélemois", "Barthélemoises"],
-  },
-  "Saint Helena, Ascension, and Tristan da Cunha": {
-    adjectivals: ["Saint Helenian"],
-    demonyms: ["Saint Helenians"],
-  },
-  "Saint Kitts and Nevis": {
-    adjectivals: ["Kittitian", "Nevisian"],
-    demonyms: ["Kittitians", "Nevisians"],
-  },
-  "Saint Lucia": {
-    adjectivals: ["Saint Lucian"],
-    demonyms: ["Saint Lucians"],
-  },
-  "Saint Martin": {
-    adjectivals: ["Saint-Martinoise"],
-    demonyms: ["Saint-Martinois", "Saint-Martinoises"],
-  },
-  "Saint Pierre and Miquelon": {
-    adjectivals: ["Saint-Pierrais", "Miquelonnais"],
-    demonyms: ["Saint-Pierrais", "Saint-Pierraises", "Miquelonnais", "Miquelonnaises"],
-  },
-  "Saint Vincent and the Grenadines": {
-    adjectivals: ["Saint Vincentian", "Vincentian"],
-    demonyms: ["Saint Vincentians", "Vincentians"],
-  },
-
-  Samoa: {
-    adjectivals: ["Samoan"],
-    demonyms: ["Samoans"],
-  },
-  "San Marino": {
-    adjectivals: ["Sammarinese"],
-    demonyms: ["Sammarinese"],
-  },
-  "São Tomé and Príncipe": {
-    adjectivals: ["São Toméan"],
-    demonyms: ["São Toméans"],
-  },
-  "Saudi Arabia": {
-    adjectivals: ["Saudi", "Saudi Arabian"],
-    demonyms: ["Saudis", "Saudi Arabians"],
-  },
-
-  Senegal: {
-    adjectivals: ["Senegalese"],
-    demonyms: ["Senegalese"],
-  },
-  Serbia: {
-    adjectivals: ["Serbian"],
-    demonyms: ["Serbs", "Serbians"],
-  },
-  Seychelles: {
-    adjectivals: ["Seychellois"],
-    demonyms: ["Seychellois/Seychelloises"],
-  },
-  "Sierra Leone": {
-    adjectivals: ["Sierra Leonean"],
-    demonyms: ["Sierra Leoneans"],
-  },
-  Singapore: {
-    adjectivals: ["Singapore", "Singaporean"],
-    demonyms: ["Singaporeans"],
-  },
-
-  "Sint Maarten": {
-    adjectivals: ["Sint Maarten"],
-    demonyms: ["Sint Maarteners"],
-  },
-  Slovakia: {
-    adjectivals: ["Slovak"],
-    demonyms: ["Slovaks", "Slovakians"],
-  },
-  Slovenia: {
-    adjectivals: ["Slovenian", "Slovene"],
-    demonyms: ["Slovenes", "Slovenians"],
-  },
-  "Solomon Islands": {
-    adjectivals: ["Solomon Island"],
-    demonyms: ["Solomon Islanders"],
-  },
-  Somalia: {
-    adjectivals: ["Somali"],
-    demonyms: ["Somalis"],
-  },
-  Somaliland: {
-    adjectivals: ["Somalilander"],
-    demonyms: ["Somalilanders"],
-  },
-  "South Africa": {
-    adjectivals: ["South African"],
-    demonyms: ["South Africans"],
-  },
-  "South Georgia and the South Sandwich Islands": {
-    adjectivals: ["South Georgia Island", "South Sandwich Island"],
-    demonyms: ["South Georgia Islanders", "South Sandwich Islanders"],
-  },
-  "South Sudan": {
-    adjectivals: ["South Sudanese"],
-    demonyms: ["South Sudanese"],
-  },
-  Spain: {
-    adjectivals: ["Spanish"],
-    demonyms: ["Spaniards"],
-  },
-  "Sri Lanka": {
-    adjectivals: ["Sri Lankan"],
-    demonyms: ["Sri Lankans"],
-  },
-  Sudan: {
-    adjectivals: ["Sudanese"],
-    demonyms: ["Sudanese"],
-  },
-  Suriname: {
-    adjectivals: ["Surinamese"],
-    demonyms: ["Surinamers"],
-  },
-
-  Sweden: {
-    adjectivals: ["Swedish"],
-    demonyms: ["Swedes"],
-  },
-  Switzerland: {
-    adjectivals: ["Swiss"],
-    demonyms: ["Swiss"],
-  },
-  Syria: {
-    adjectivals: ["Syrian"],
-    demonyms: ["Syrians"],
-  },
-  Taiwan: {
-    adjectivals: ["Taiwanese", "Formosan"],
-    demonyms: ["Taiwanese", "Formosans"],
-  },
-  Tajikistan: {
-    adjectivals: ["Tajikistani"],
-    demonyms: ["Tajikistanis", "Tajiks"],
-  },
-  //According to Google, Zanzibar is part of Tanzania.
-  Tanzania: {
-    adjectivals: ["Tanzanian", "Zanzibari"],
-    demonyms: ["Tanzanians", "Zanzibaris"],
-  },
-  Thailand: {
-    adjectivals: ["Thai"],
-    demonyms: ["Thai"],
-  },
-  "Timor-Leste": {
-    adjectivals: ["Timorese"],
-    demonyms: ["Timorese"],
-  },
-  Togo: {
-    adjectivals: ["Togolese"],
-    demonyms: ["Togolese"],
-  },
-
-  Tonga: {
-    adjectivals: ["Tongan"],
-    demonyms: ["Tongans"],
-  },
-  "Trinidad and Tobago": {
-    adjectivals: ["Trinidadian", "Tobagonian"],
-    demonyms: ["Trinidadians", "Tobagonians"],
-  },
-  Tunisia: {
-    adjectivals: ["Tunisian"],
-    demonyms: ["Tunisians"],
-  },
-  Turkey: {
-    adjectivals: ["Turkish"],
-    demonyms: ["Turks"],
-  },
-  Turkmenistan: {
-    adjectivals: ["Turkmen"],
-    demonyms: ["Turkmens"],
-  },
-  "Turks and Caicos Islands": {
-    adjectivals: ["Turks and Caicos Island"],
-    demonyms: ["Turks and Caicos Islanders"],
-  },
-  Tuvalu: {
-    adjectivals: ["Tuvaluan"],
-    demonyms: ["Tuvaluans"],
-  },
-  Uganda: {
-    adjectivals: ["Ugandan"],
-    demonyms: ["Ugandans"],
-  },
-  Ukraine: {
-    adjectivals: ["Ukrainian"],
-    demonyms: ["Ukrainians"],
-  },
-  "United Arab Emirates": {
-    adjectivals: ["Emirati", "Emirian", "Emiri"],
-    demonyms: ["Emiratis", "Emirians", "Emiri"],
-  },
-  //According to Google, Gibraltar is part of UK.
-  "United Kingdom of Great Britain and Northern Ireland": {
+  aw: {
+    adjectivals: ["aruban"],
+    demonyms: ["arubans"],
+  },
+  cw: {
+    adjectivals: ["curaçaoan"],
+    demonyms: ["curaçaoans"],
+  },
+  np: {
+    adjectivals: ["nepali", "nepalese"],
+    demonyms: ["nepalis", "nepalese"],
+  },
+  nr: {
+    adjectivals: ["nauruan"],
+    demonyms: ["nauruans"],
+  },
+  na: {
+    adjectivals: ["namibian"],
+    demonyms: ["namibians"],
+  },
+  mz: {
+    adjectivals: ["mozambican"],
+    demonyms: ["mozambicans"],
+  },
+  ma: {
+    adjectivals: ["moroccan"],
+    demonyms: ["moroccans"],
+  },
+  eh: {
+    adjectivals: ["sahrawi", "sahrawian", "sahraouian", "sahrawi", "western saharan", "sahrawian"],
+    demonyms: ["sahrawis", "sahraouis", "sahrawis", "western saharans"],
+  },
+  me: {
+    adjectivals: ["montenegrin"],
+    demonyms: ["montenegrins"],
+  },
+  mn: {
+    adjectivals: ["mongolian"],
+    demonyms: ["mongolians", "mongols"],
+  },
+  md: {
+    adjectivals: ["moldovan"],
+    demonyms: ["moldovans"],
+  },
+  mc: {
+    adjectivals: ["monégasque", "monacan"],
+    demonyms: ["monégasques", "monacans"],
+  },
+  mx: {
+    adjectivals: ["mexican"],
+    demonyms: ["mexicans"],
+  },
+  mu: {
+    adjectivals: ["mauritian"],
+    demonyms: ["mauritians"],
+  },
+  mr: {
+    adjectivals: ["mauritanian"],
+    demonyms: ["mauritanians"],
+  },
+  mt: {
+    adjectivals: ["maltese"],
+    demonyms: ["maltese"],
+  },
+  ml: {
+    adjectivals: ["malian", "malinese"],
+    demonyms: ["malians"],
+  },
+  mv: {
+    adjectivals: ["maldivian"],
+    demonyms: ["maldivians"],
+  },
+  my: {
+    adjectivals: ["malaysian"],
+    demonyms: ["malaysians"],
+  },
+  mw: {
+    adjectivals: ["malawian"],
+    demonyms: ["malawians"],
+  },
+  mg: {
+    adjectivals: ["malagasy, madagascan"],
+    demonyms: ["malagasy, madagascans"],
+  },
+  mk: {
+    adjectivals: ["macedonian"],
+    demonyms: ["macedonians"],
+  },
+  lu: {
+    adjectivals: ["luxembourg", "luxembourgish"],
+    demonyms: ["luxembourgers"],
+  },
+  lt: {
+    adjectivals: ["lithuanian"],
+    demonyms: ["lithuanians"],
+  },
+  li: {
+    adjectivals: ["liechtensteiner"],
+    demonyms: ["liechtensteiners"],
+  },
+  ly: {
+    adjectivals: ["libyan"],
+    demonyms: ["libyans"],
+  },
+  lr: {
+    adjectivals: ["liberian"],
+    demonyms: ["liberians"],
+  },
+  ls: {
+    adjectivals: ["basotho"],
+    demonyms: ["basotho (singular mosotho)"],
+  },
+  lb: {
+    adjectivals: ["lebanese"],
+    demonyms: ["lebanese"],
+  },
+  lv: {
+    adjectivals: ["latvian", "lettish"],
+    demonyms: ["latvians", "letts"],
+  },
+  la: {
+    adjectivals: ["lao", "laotian"],
+    demonyms: ["laos", "laotians"],
+  },
+  kg: {
+    adjectivals: ["kyrgyzstani", "kyrgyz", "kirgiz", "kirghiz"],
+    demonyms: ["kyrgyzstanis", "kyrgyz", "kirgiz", "kirghiz"],
+  },
+  kw: {
+    adjectivals: ["kuwaiti"],
+    demonyms: ["kuwaitis"],
+  },
+  xk: {
+    adjectivals: ["kosovar", "kosovan"],
+    demonyms: ["kosovars"],
+  },
+  ki: {
+    adjectivals: ["kiribati"],
+    demonyms: ["i-kiribati"],
+  },
+  ke: {
+    adjectivals: ["kenyan"],
+    demonyms: ["kenyans"],
+  },
+  kz: {
+    adjectivals: ["kazakhstani", "kazakh"],
+    demonyms: ["kazakhstanis", "kazakhs"],
+  },
+  jo: {
+    adjectivals: ["jordanian"],
+    demonyms: ["jordanians"],
+  },
+  jp: {
+    adjectivals: ["japanese"],
+    demonyms: ["japanese"],
+  },
+  jm: {
+    adjectivals: ["jamaican"],
+    demonyms: ["jamaicans"],
+  },
+  it: {
+    adjectivals: ["italian"],
+    demonyms: ["italians"],
+  },
+  il: {
+    adjectivals: ["israeli", "israelite"],
+    demonyms: ["israelis"],
+  },
+  ps: {
+    adjectivals: ["palestinian"],
+    demonyms: ["palestinians"],
+  },
+  ie: {
+    adjectivals: ["irish"],
+    demonyms: ["irish", "irishmen and irishwomen"],
+  },
+  iq: {
+    adjectivals: ["iraqi"],
+    demonyms: ["iraqis"],
+  },
+  ir: {
+    adjectivals: ["iranian", "persian"],
+    demonyms: ["iranians", "persians"],
+  },
+  id: {
+    adjectivals: ["indonesian"],
+    demonyms: ["indonesians"],
+  },
+  in: {
+    adjectivals: ["indian"],
+    demonyms: ["indians"],
+  },
+  is: {
+    adjectivals: ["icelandic"],
+    demonyms: ["icelanders"],
+  },
+  hu: {
+    adjectivals: ["hungarian", "magyar"],
+    demonyms: ["hungarians", "magyars"],
+  },
+  hn: {
+    adjectivals: ["honduran"],
+    demonyms: ["hondurans"],
+  },
+  ht: {
+    adjectivals: ["haitian"],
+    demonyms: ["haitians"],
+  },
+  gy: {
+    adjectivals: ["guyanese"],
+    demonyms: ["guyanese"],
+  },
+  gw: {
+    adjectivals: ["bissau-guinean"],
+    demonyms: ["bissau-guineans"],
+  },
+  gn: {
+    adjectivals: ["guinean"],
+    demonyms: ["guineans"],
+  },
+  gt: {
+    adjectivals: ["guatemalan"],
+    demonyms: ["guatemalans"],
+  },
+  gd: {
+    adjectivals: ["grenadian"],
+    demonyms: ["grenadians"],
+  },
+  gr: {
+    adjectivals: ["greek", "hellenic"],
+    demonyms: ["greeks", "hellenes"],
+  },
+  gh: {
+    adjectivals: ["ghanaian"],
+    demonyms: ["ghanaians"],
+  },
+  de: {
+    adjectivals: ["german"],
+    demonyms: ["germans"],
+  },
+  ge: {
+    adjectivals: ["georgian"],
+    demonyms: ["georgians"],
+  },
+  gm: {
+    adjectivals: ["gambian"],
+    demonyms: ["gambians"],
+  },
+  ga: {
+    adjectivals: ["gabonese"],
+    demonyms: ["gabonese", "gabonaise"],
+  },
+  fr: {
     adjectivals: [
-      "British",
-      "United Kingdom",
-      "UK",
-      "English",
-      "Gibraltar",
-      "Northern Irish",
-      "Scotland",
-      "Scottish",
-      "Wales",
-      "Welsh",
+      "french",
+      "french guianese",
+      "french southern territories",
+      "guadeloupe",
+      "martiniquais",
+      "martinican",
+      "mahoran",
+      "réunionese",
+      "réunionnais",
     ],
     demonyms: [
-      "Britons",
-      "British people",
-      "English",
-      "Englishmen and Englishwomen",
-      "Gibraltarians",
-      "Northern Irish",
-      "Northern Irishmen and Northern Irishwomen",
-      "Scots",
-      "Scotsmen and Scotswomen",
-      "Welshmen",
-      "Welshwomen",
+      "french",
+      "frenchmen and frenchwomen",
+      "french guianese",
+      "guadeloupians",
+      "guadeloupeans",
+      "martiniquais",
+      "martiniquaises",
+      "mahorans",
+      "réunionese",
+      "réunionnais and réunionnaises",
     ],
   },
-  "United States of America": {
-    adjectivals: ["American", "United States", "U.S."],
-    demonyms: ["Americans"],
+  pm: {
+    adjectivals: ["saint-pierrais", "miquelonnais"],
+    demonyms: ["saint-pierrais", "saint-pierraises", "miquelonnais", "miquelonnaises"],
   },
-  Uruguay: {
-    adjectivals: ["Uruguayan"],
-    demonyms: ["Uruguayans"],
+  wf: {
+    adjectivals: ["wallis and futuna", "wallisian", "futunan"],
+    demonyms: ["wallis and futuna islanders", "wallisians", "futunans"],
   },
-  Uzbekistan: {
-    adjectivals: ["Uzbekistani", "Uzbek"],
-    demonyms: ["Uzbekistanis", "Uzbeks"],
+  mf: {
+    adjectivals: ["saint-martinoise"],
+    demonyms: ["saint-martinois", "saint-martinoises"],
   },
-  Vanuatu: {
-    adjectivals: ["Ni-Vanuatu", "Vanuatuan"],
-    demonyms: ["Ni-Vanuatu"],
+  bl: {
+    adjectivals: ["barthélemois"],
+    demonyms: ["barthélemois", "barthélemoises"],
   },
-  "Vatican City": {
-    adjectivals: ["Vaticanian"],
-    demonyms: ["Vaticanians"],
+  pf: {
+    adjectivals: ["french polynesian"],
+    demonyms: ["french polynesians"],
   },
-  Venezuela: {
-    adjectivals: ["Venezuelan"],
-    demonyms: ["Venezuelans"],
+  nc: {
+    adjectivals: ["new caledonian"],
+    demonyms: ["new caledonians"],
   },
-  Vietnam: {
-    adjectivals: ["Vietnamese"],
-    demonyms: ["Vietnamese"],
+  tf: {
+    adjectivals: [],
+    demonyms: [],
   },
-  "British Virgin Islands": {
-    adjectivals: ["British Virgin Island"],
-    demonyms: ["British Virgin Islanders"],
+  ax: {
+    adjectivals: ["åland island"],
+    demonyms: ["ålanders"],
   },
-  "United States Virgin Islands": {
-    adjectivals: ["U.S. Virgin Island"],
-    demonyms: ["U.S. Virgin Islanders"],
+  fi: {
+    adjectivals: ["finnish"],
+    demonyms: ["finns"],
   },
-
-  "Wallis and Futuna": {
-    adjectivals: ["Wallis and Futuna", "Wallisian", "Futunan"],
-    demonyms: ["Wallis and Futuna Islanders", "Wallisians", "Futunans"],
+  fj: {
+    adjectivals: ["fijian"],
+    demonyms: ["fijians"],
   },
-  "Western Sahara": {
-    adjectivals: ["Sahrawi", "Sahrawian", "Sahraouian", "Sahrawi", "Western Saharan", "Sahrawian"],
-    demonyms: ["Sahrawis", "Sahraouis", "Sahrawis", "Western Saharans"],
+  et: {
+    adjectivals: ["ethiopian"],
+    demonyms: ["ethiopians", "habesha"],
   },
-  Yemen: {
-    adjectivals: ["Yemeni"],
-    demonyms: ["Yemenis"],
+  ee: {
+    adjectivals: ["estonian"],
+    demonyms: ["estonians"],
   },
-  Zambia: {
-    adjectivals: ["Zambian"],
-    demonyms: ["Zambians"],
+  er: {
+    adjectivals: ["eritrean"],
+    demonyms: ["eritreans"],
   },
-
-  Zimbabwe: {
-    adjectivals: ["Zimbabwean"],
-    demonyms: ["Zimbabweans"],
+  gq: {
+    adjectivals: ["equatorial guinean", "equatoguinean"],
+    demonyms: ["equatorial guineans", "equatoguineans"],
+  },
+  sv: {
+    adjectivals: ["salvadoran"],
+    demonyms: ["salvadorans", "salvadorians", "salvadoreans"],
+  },
+  eg: {
+    adjectivals: ["egyptian"],
+    demonyms: ["egyptians"],
+  },
+  ec: {
+    adjectivals: ["ecuadorian"],
+    demonyms: ["ecuadorians"],
+  },
+  do: {
+    adjectivals: ["dominican"],
+    demonyms: ["dominicans"],
+  },
+  dm: {
+    adjectivals: ["dominican"],
+    demonyms: ["dominicans"],
+  },
+  dj: {
+    adjectivals: ["djiboutian"],
+    demonyms: ["djiboutians"],
+  },
+  gl: {
+    adjectivals: ["greenland"],
+    demonyms: ["greenlanders"],
+  },
+  fo: {
+    adjectivals: ["faroese"],
+    demonyms: ["faroese"],
+  },
+  dk: {
+    adjectivals: ["danish"],
+    demonyms: ["danes"],
+  },
+  cz: {
+    adjectivals: ["czech"],
+    demonyms: ["czechs"],
+  },
+  cn: {
+    adjectivals: ["chinese"],
+    demonyms: ["chinese"],
+  },
+  cy: {
+    adjectivals: ["cypriot"],
+    demonyms: ["cypriots"],
+  },
+  cu: {
+    adjectivals: ["cuban"],
+    demonyms: ["cubans"],
+  },
+  hr: {
+    adjectivals: ["croatian"],
+    demonyms: ["croatians", "croats"],
+  },
+  ci: {
+    adjectivals: ["ivorian"],
+    demonyms: ["ivorians"],
+  },
+  cr: {
+    adjectivals: ["costa rican"],
+    demonyms: ["costa ricans"],
+  },
+  cd: {
+    adjectivals: ["congolese"],
+    demonyms: ["congolese"],
+  },
+  cg: {
+    adjectivals: ["congolese"],
+    demonyms: ["congolese"],
+  },
+  km: {
+    adjectivals: ["comoran", "comorian"],
+    demonyms: ["comorans", "comorians"],
+  },
+  co: {
+    adjectivals: ["colombian"],
+    demonyms: ["colombians"],
+  },
+  mo: {
+    adjectivals: ["chinese"],
+    demonyms: ["chinese"],
+  },
+  hk: {
+    adjectivals: ["chinese"],
+    demonyms: ["chinese"],
+  },
+  cl: {
+    adjectivals: ["chilean"],
+    demonyms: ["chileans"],
+  },
+  td: {
+    adjectivals: ["chadian"],
+    demonyms: ["chadians"],
+  },
+  cf: {
+    adjectivals: ["central african"],
+    demonyms: ["central africans"],
+  },
+  cv: {
+    adjectivals: ["cabo verdean"],
+    demonyms: ["cabo verdeans"],
+  },
+  ca: {
+    adjectivals: ["canadian"],
+    demonyms: ["canadians"],
+  },
+  cm: {
+    adjectivals: ["cameroonian"],
+    demonyms: ["cameroonians"],
+  },
+  kh: {
+    adjectivals: ["cambodian"],
+    demonyms: ["cambodians"],
+  },
+  mm: {
+    adjectivals: ["myanma", "burmese"],
+    demonyms: ["myanmar"],
+  },
+  bi: {
+    adjectivals: ["burundian"],
+    demonyms: ["burundians", "barundi"],
+  },
+  bf: {
+    adjectivals: ["burkinabé"],
+    demonyms: ["burkinabè", "burkinabé"],
+  },
+  bg: {
+    adjectivals: ["bulgarian"],
+    demonyms: ["bulgarians"],
+  },
+  bn: {
+    adjectivals: ["bruneian"],
+    demonyms: ["bruneians"],
+  },
+  br: {
+    adjectivals: ["brazilian"],
+    demonyms: ["brazilians"],
+  },
+  bw: {
+    adjectivals: ["botswana"],
+    demonyms: ["batswana (singular motswana)"],
+  },
+  ba: {
+    adjectivals: ["bosnian", "herzegovinian"],
+    demonyms: ["bosnians", "herzegovinians"],
+  },
+  bo: {
+    adjectivals: ["bolivian"],
+    demonyms: ["bolivians"],
+  },
+  bt: {
+    adjectivals: ["bhutanese"],
+    demonyms: ["bhutanese"],
+  },
+  bj: {
+    adjectivals: ["beninese", "beninois"],
+    demonyms: ["beninese", "beninois"],
+  },
+  bz: {
+    adjectivals: ["belizean"],
+    demonyms: ["belizeans"],
+  },
+  be: {
+    adjectivals: ["belgian"],
+    demonyms: ["belgians"],
+  },
+  by: {
+    adjectivals: ["belarusian"],
+    demonyms: ["belarusians"],
+  },
+  bb: {
+    adjectivals: ["barbadian"],
+    demonyms: ["barbadians"],
+  },
+  bd: {
+    adjectivals: ["bangladeshi"],
+    demonyms: ["bangladeshis"],
+  },
+  bh: {
+    adjectivals: ["bahraini"],
+    demonyms: ["bahrainis"],
+  },
+  bs: {
+    adjectivals: ["bahamian"],
+    demonyms: ["bahamians"],
+  },
+  az: {
+    adjectivals: ["azerbaijani", "azeri"],
+    demonyms: ["azerbaijanis", "azeris"],
+  },
+  at: {
+    adjectivals: ["austrian"],
+    demonyms: ["austrians"],
+  },
+  au: {
+    adjectivals: [],
+    demonyms: [],
+  },
+  hm: {
+    adjectivals: ["heard island", "mcdonald island"],
+    demonyms: ["heard islanders", "mcdonald islanders"],
+  },
+  nf: {
+    adjectivals: ["norfolk island"],
+    demonyms: ["norfolk islanders"],
+  },
+  am: {
+    adjectivals: ["armenian"],
+    demonyms: ["armenians"],
+  },
+  ar: {
+    adjectivals: ["argentine", "argentinian"],
+    demonyms: ["argentines", "argentinians"],
+  },
+  ag: {
+    adjectivals: ["antiguan", "barbudan"],
+    demonyms: ["antiguans", "barbudans"],
+  },
+  ao: {
+    adjectivals: ["angolan"],
+    demonyms: ["angolans"],
+  },
+  ad: {
+    adjectivals: ["andorran"],
+    demonyms: ["andorrans"],
+  },
+  dz: {
+    adjectivals: ["algerian"],
+    demonyms: ["algerians"],
+  },
+  al: {
+    adjectivals: ["albanian"],
+    demonyms: ["albanians"],
+  },
+  af: {
+    adjectivals: ["afghan"],
+    demonyms: ["afghans"],
+  },
+  aq: {
+    adjectivals: ["antarctic"],
+    demonyms: ["antarctic residents, antarcticans"],
+  },
+  sx: {
+    adjectivals: ["sint maarten"],
+    demonyms: ["sint maarteners"],
+  },
+  tv: {
+    adjectivals: ["tuvaluan"],
+    demonyms: ["tuvaluans"],
   },
 };
