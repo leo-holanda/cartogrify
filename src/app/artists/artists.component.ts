@@ -159,19 +159,6 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     return [...domainSet];
   }
 
-  private getColorLabelText(labelData: LabelData): string {
-    if (labelData.min && labelData.max) {
-      if (labelData.max - labelData.min === 1) return labelData.min.toString();
-      else return labelData.min + " to " + (labelData.max - 1);
-    }
-    if (labelData.max === 1) return "0";
-
-    if (!labelData.min && labelData.max) return "Less than " + labelData.max;
-    if (!labelData.max && labelData.min) return "More than " + labelData.min;
-
-    return "Not used";
-  }
-
   private addMapLegend(): void {
     const labelsWrapper = this.mapSvg
       .append("g")
@@ -268,6 +255,20 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       });
   }
 
+  private getColorLabelText(labelData: LabelData, isLast: boolean): string {
+    if (labelData.min && labelData.max) {
+      if (labelData.max - labelData.min === 1)
+        return labelData.min.toString() + (isLast ? "+" : "");
+      else return labelData.min + " to " + (labelData.max - 1) + (isLast ? "+" : "");
+    }
+    if (labelData.max === 1) return "0";
+
+    if (!labelData.min && labelData.max) return "Less than " + labelData.max;
+    if (!labelData.max && labelData.min) return "More than " + labelData.min;
+
+    return "Not used";
+  }
+
   private setLegendText(): void {
     const colorLabels: LabelData[] = this.colorPalette.map((color) => {
       return {
@@ -280,6 +281,9 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     this.mapSvg
       .selectAll("#labelsGroup text")
       .data(colorLabels)
-      .text((d: LabelData) => this.getColorLabelText(d) || null);
+      .text((d: LabelData, i: number) => {
+        const isTheLast = i === colorLabels.length - 1;
+        return this.getColorLabelText(d, isTheLast);
+      });
   }
 }
