@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, map, take, tap } from "rxjs";
+import { Observable, Subject, map, take, tap } from "rxjs";
 import { Artist, ScrapedArtist } from "../artists/artist.model";
 import { environment } from "src/environments/environment.development";
 import {
@@ -32,25 +32,44 @@ export class CountryService {
     );
   }
 
-  getArtistsCountryOfOrigin(artistsNames: string[]): Observable<Artist[]> {
-    return this.http
-      .post<ScrapedArtist[]>(environment.PAGE_FINDER_URL, artistsNames, {
-        headers: {
-          Authorization: "Bearer " + environment.SUPABASE_ANON_KEY,
-        },
-      })
-      .pipe(
-        take(1),
-        map((artistsData: ScrapedArtist[]) =>
-          artistsData.map((artist) => {
-            return {
+  getArtistsCountryOfOrigin(artistsNames: string[]): Subject<Artist> {
+    const START_INDICATOR_OFFSET = 13;
+    const END_INDICATOR_OFFSET = 11;
+    const artists$ = new Subject<Artist>();
+
+    fetch(environment.PAGE_FINDER_URL, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + environment.SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify(artistsNames),
+    }).then(async (response) => {
+      const textDecoder = new TextDecoder();
+      const reader = response.body?.getReader();
+      const artists = [];
+      let data = "";
+
+      if (reader) {
+        while (true) {
+          const { value, done } = await reader.read();
+          data += textDecoder.decode(value);
+          if (data.includes("START_OF_JSON") && data.includes("END_OF_JSON")) {
+            const startIndex = data.indexOf("START_OF_JSON") + START_INDICATOR_OFFSET;
+            const endIndex = data.indexOf("END_OF_JSON");
+            const artist = JSON.parse(data.slice(startIndex, endIndex));
+            artists$.next({
               name: artist.name,
               country: this.determineCountryOfOrigin(artist.page),
-            } as Artist;
-          })
-        ),
-        tap((artists: Artist[]) => this.supabaseService.saveArtists(artists))
-      );
+            });
+            data = data.slice(endIndex + END_INDICATOR_OFFSET);
+          }
+
+          if (done) break;
+        }
+      }
+    });
+
+    return artists$;
   }
 
   findCountryInMetadataTags(document: Document, possibleCountries: Map<string, PossibleCountry>) {

@@ -11,23 +11,20 @@ export class ArtistService {
   private userTopArtists$ = new BehaviorSubject<Artist[] | undefined>(undefined);
   private hasRequestedTopArtists = false;
 
-  constructor(
-    private supabaseService: SupabaseService,
-    private countryService: CountryService
-  ) {}
+  constructor(private supabaseService: SupabaseService, private countryService: CountryService) {}
 
   setUserTopArtists(topArtists: string[]): void {
     this.hasRequestedTopArtists = true;
     this.supabaseService.getArtistsByName(topArtists).subscribe((artistsFromDatabase) => {
+      this.userTopArtists$.next(artistsFromDatabase);
       const artistsWithoutCountry = this.findArtistsWithoutCountry(topArtists, artistsFromDatabase);
       if (artistsWithoutCountry.length > 0) {
         this.countryService
           .getArtistsCountryOfOrigin(artistsWithoutCountry)
-          .subscribe((scrapedArtists) => {
-            this.userTopArtists$.next([...artistsFromDatabase, ...scrapedArtists]);
+          .subscribe((artistWithCountry) => {
+            artistsFromDatabase.push(artistWithCountry);
+            this.userTopArtists$.next(artistsFromDatabase);
           });
-      } else {
-        this.userTopArtists$.next(artistsFromDatabase);
       }
     });
   }
