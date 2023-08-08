@@ -1,4 +1,4 @@
-import { CountryRelatedTerms } from "./countries.data";
+import { CountryRelatedTerms } from "./country.data";
 import { GeoFeature, GeoFeatureCollection } from "./country.model";
 
 /*

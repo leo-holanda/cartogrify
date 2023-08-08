@@ -6,20 +6,13 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
-import { CountriesService } from "../countries/countries.service";
 import { filter } from "rxjs";
 import { Artist } from "./artist.model";
-import {
-  ColorScale,
-  CountryData,
-  GeoFeature,
-  LabelData,
-  MapSVG,
-  RegionData,
-  Tooltip,
-} from "../countries/country.model";
+
 import * as d3 from "d3";
 import { ArtistService } from "./artist.service";
+import { CountryData, RegionData, MapSVG, ColorScale, Tooltip, GeoFeature, LabelData } from "../country/country.model";
+import { CountryService } from "../country/country.service";
 
 enum DataTypes {
   COUNTRIES = "countries",
@@ -60,7 +53,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     this.mapSvg.select("#map").attr("width", width).attr("height", height);
   }
 
-  constructor(private artistsService: ArtistService, private countriesService: CountriesService) {}
+  constructor(private artistsService: ArtistService, private countryService: CountryService) {}
 
   ngOnInit(): void {
     this.artistsService
@@ -68,8 +61,8 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       .pipe(filter((userTopArtists): userTopArtists is Artist[] => userTopArtists !== undefined))
       .subscribe((userTopArtists) => {
         this.artists = userTopArtists;
-        this.countriesData = this.countriesService.countCountries(userTopArtists);
-        this.regionsData = this.countriesService.countRegions(userTopArtists);
+        this.countriesData = this.countryService.countCountries(userTopArtists);
+        this.regionsData = this.countryService.countRegions(userTopArtists);
 
         this.colorScale = d3
           .scaleThreshold<number, string>()
@@ -101,7 +94,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     const width = this.mapWrapper.nativeElement.offsetWidth;
     const margin = 32;
 
-    const geoJSON = this.countriesService.geoJSON;
+    const geoJSON = this.countryService.geoJSON;
     const projection = d3.geoNaturalEarth1().fitSize([width - margin, height - margin], geoJSON);
     const path = d3.geoPath().projection(projection);
 
@@ -147,7 +140,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
         else return "";
       })
       .attr("country-flag-code", (feature: GeoFeature) =>
-        this.countriesService.findCountryFlagCode(feature)
+        this.countryService.findCountryFlagCode(feature)
       )
       .attr("fill", this.colorPalette[0]);
   }
@@ -211,7 +204,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   }
 
   private setCountriesColorInMap(): void {
-    const geoJSON = this.countriesService.geoJSON;
+    const geoJSON = this.countryService.geoJSON;
 
     this.mapSvg
       .selectAll("svg #map path")
