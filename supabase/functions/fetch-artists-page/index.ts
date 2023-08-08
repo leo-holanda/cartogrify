@@ -22,16 +22,26 @@ function fetchArtistPage(artistName: string): Promise<string> {
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
+  const textEncoder = new TextEncoder();
   const artistsNames = await req.json();
-  const artistsData = [];
-  for (const artistName of artistsNames) {
-    artistsData.push({
-      name: artistName,
-      page: await fetchArtistPage(artistName),
-    });
-  }
-
-  return new Response(JSON.stringify(artistsData), {
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  const body = new ReadableStream({
+    async start(controller) {
+      for (const artistName of artistsNames) {
+        controller.enqueue(textEncoder.encode("START_OF_JSON "));
+        const artistsData = {
+          name: artistName,
+          page: await fetchArtistPage(artistName),
+        };
+        controller.enqueue(textEncoder.encode(JSON.stringify(artistsData)));
+        controller.enqueue(textEncoder.encode("END_OF_JSON "));
+      }
+      controller.close();
+    },
+  });
+  return new Response(body, {
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "text/event-stream",
+    },
   });
 });
