@@ -1,4 +1,4 @@
-import { Country } from "../countries/country.model";
+import { Country } from "../country/country.model";
 
 export interface Artist {
   name: string;

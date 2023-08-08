@@ -17,12 +17,12 @@ import countriesJSON from "../../assets/countries-50m.json";
 import * as topojson from "topojson-client";
 import * as TopoJSON from "topojson-specification";
 import { SupabaseService } from "../shared/supabase.service";
-import { countryRelatedTerms } from "./countries.data";
+import { countryRelatedTerms } from "./country.data";
 
 @Injectable({
   providedIn: "root",
 })
-export class CountriesService {
+export class CountryService {
   geoJSON!: GeoFeatureCollection;
 
   constructor(private http: HttpClient, private supabaseService: SupabaseService) {
