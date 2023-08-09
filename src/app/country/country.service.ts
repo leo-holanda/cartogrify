@@ -39,17 +39,14 @@ export class CountryService {
 
     fetch(environment.PAGE_FINDER_URL, {
       method: "POST",
-      headers: {
-        Authorization: "Bearer " + environment.SUPABASE_ANON_KEY,
-      },
-      body: JSON.stringify(artistsNames),
+      body: artistsNames.join("+"),
     }).then(async (response) => {
-      const textDecoder = new TextDecoder();
       const reader = response.body?.getReader();
-      const artists = [];
-      let data = "";
 
       if (reader) {
+        const textDecoder = new TextDecoder();
+        let data = "";
+
         while (true) {
           const { value, done } = await reader.read();
           data += textDecoder.decode(value);
