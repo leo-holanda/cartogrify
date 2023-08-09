@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Artist } from "./artist.model";
 import { SupabaseService } from "../shared/supabase.service";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, finalize } from "rxjs";
 import { CountryService } from "../country/country.service";
 
 @Injectable({
@@ -19,10 +19,13 @@ export class ArtistService {
       this.userTopArtists$.next(artistsFromDatabase);
       const artistsWithoutCountry = this.findArtistsWithoutCountry(topArtists, artistsFromDatabase);
       if (artistsWithoutCountry.length > 0) {
+        const scrappedArtists: Artist[] = [];
         this.countryService
           .getArtistsCountryOfOrigin(artistsWithoutCountry)
+          .pipe(finalize(() => this.supabaseService.saveArtists(scrappedArtists)))
           .subscribe((artistWithCountry) => {
             artistsFromDatabase.push(artistWithCountry);
+            scrappedArtists.push(artistWithCountry);
             this.userTopArtists$.next(artistsFromDatabase);
           });
       }

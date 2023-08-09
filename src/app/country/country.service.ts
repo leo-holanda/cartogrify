@@ -32,7 +32,7 @@ export class CountryService {
     );
   }
 
-  getArtistsCountryOfOrigin(artistsNames: string[]): Subject<Artist> {
+  getArtistsCountryOfOrigin(artistsNames: string[]): Observable<Artist> {
     const START_INDICATOR_OFFSET = 13;
     const END_INDICATOR_OFFSET = 11;
     const artists$ = new Subject<Artist>();
@@ -61,12 +61,15 @@ export class CountryService {
             data = data.slice(endIndex + END_INDICATOR_OFFSET);
           }
 
-          if (done) break;
+          if (done) {
+            artists$.complete();
+            break;
+          }
         }
       }
     });
 
-    return artists$;
+    return artists$.asObservable();
   }
 
   findCountryInMetadataTags(document: Document, possibleCountries: Map<string, PossibleCountry>) {
