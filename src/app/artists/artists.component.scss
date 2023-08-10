@@ -11,8 +11,20 @@ main {
   padding: 2rem;
   color: white;
 
+  ::ng-deep .p-tabview-nav {
+    display: flex;
+
+    & li {
+      flex: 1;
+    }
+  }
+
   h1 {
     margin-top: 0;
+  }
+
+  .tab-icon {
+    margin-right: 0.5rem;
   }
 
   .suggestion-message {
@@ -33,13 +45,6 @@ main {
     margin-right: 1rem;
   }
 
-  .data-selection-wrapper {
-    display: flex;
-
-    & * {
-      flex: 1;
-    }
-  }
   .data-title {
     margin: 1rem 0 0 1rem;
   }

@@ -6,6 +6,7 @@ import { StreamingModule } from "../streaming/streaming.module";
 import { MessagesModule } from "primeng/messages";
 import { ToastModule } from "primeng/toast";
 import { ButtonModule } from "primeng/button";
+import { TabViewModule } from "primeng/tabview";
 
 @NgModule({
   declarations: [ArtistsComponent],
@@ -16,6 +17,7 @@ import { ButtonModule } from "primeng/button";
     MessagesModule,
     ToastModule,
     ButtonModule,
+    TabViewModule,
   ],
   providers: [],
 })
