@@ -1,6 +1,8 @@
 <main>
   <div class="data-wrapper">
-    <h1>Results</h1>
+    <div>
+      <h1>Results</h1>
+    </div>
     <p-tabView styleClass="tabview-custom">
       <p-tabPanel>
         <ng-template pTemplate="header">
@@ -99,7 +101,10 @@
           </p-messages>
         </div>
         <div class="data">
-          <h2 class="data-title">Top Artists</h2>
+          <div class="data-title-wrapper">
+            <h2 class="data-title">Top Artists</h2>
+            <p-button (onClick)="openDialog()" label="Suggest correct countries"></p-button>
+          </div>
           <div class="data-content-wrapper">
             <table>
               <tr *ngFor="let artist of artists; let i = index">

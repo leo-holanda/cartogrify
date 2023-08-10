@@ -1,0 +1,16 @@
+.bulk-suggest-guide-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  & p-dropdown {
+    margin-left: 1rem;
+  }
+}
+
+.confirm-button-wrapper {
+  display: flex;
+  margin: 0 1rem 0 1rem;
+  justify-content: space-between;
+}

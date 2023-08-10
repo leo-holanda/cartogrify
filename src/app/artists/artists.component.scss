@@ -45,8 +45,13 @@ main {
     margin-right: 1rem;
   }
 
+  .data-title-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   .data-title {
-    margin: 1rem 0 0 1rem;
+    margin: 0 0 0 1rem;
   }
 
   .data {

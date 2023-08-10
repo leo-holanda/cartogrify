@@ -7,6 +7,7 @@ import { MessagesModule } from "primeng/messages";
 import { ToastModule } from "primeng/toast";
 import { ButtonModule } from "primeng/button";
 import { TabViewModule } from "primeng/tabview";
+import { DialogService, DynamicDialogModule } from "primeng/dynamicdialog";
 
 @NgModule({
   declarations: [ArtistsComponent],
@@ -18,7 +19,8 @@ import { TabViewModule } from "primeng/tabview";
     ToastModule,
     ButtonModule,
     TabViewModule,
+    DynamicDialogModule,
   ],
-  providers: [],
+  providers: [DialogService],
 })
 export class ArtistsModule {}

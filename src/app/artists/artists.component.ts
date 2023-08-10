@@ -22,6 +22,9 @@ import {
 } from "../country/country.model";
 import { CountryService } from "../country/country.service";
 import { Message } from "primeng/api";
+import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
+import { LoginComponent } from "../authorization/login/login.component";
+import { SuggestionsComponent } from "../suggestions/suggestions.component";
 
 enum DataTypes {
   COUNTRIES = "countries",
@@ -61,6 +64,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     "#0570b0",
     "#034e7b",
   ];
+  ref: DynamicDialogRef | undefined;
 
   DataTypes = DataTypes;
 
@@ -71,7 +75,11 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     this.mapSvg.select("#map").attr("width", width).attr("height", height);
   }
 
-  constructor(private artistsService: ArtistService, private countryService: CountryService) {}
+  constructor(
+    private artistsService: ArtistService,
+    private countryService: CountryService,
+    private dialogService: DialogService
+  ) {}
 
   ngOnInit(): void {
     this.artistsService
@@ -109,6 +117,23 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
 
   hideMessage(): void {
     this.isMessageActive = false;
+  }
+
+  openDialog() {
+    this.ref = this.dialogService.open(SuggestionsComponent, {
+      header: "Make your suggestions!",
+      data: this.artists,
+    });
+
+    this.ref.onClose.subscribe((hasSuggestions) => {
+      console.log(hasSuggestions);
+      if (hasSuggestions) {
+        this.countriesData = this.countryService.countCountries(this.artists);
+        this.regionsData = this.countryService.countRegions(this.artists);
+        this.setCountriesColorInMap();
+        this.setLegendText();
+      }
+    });
   }
 
   private addMap() {
