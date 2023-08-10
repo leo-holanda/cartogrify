@@ -118,6 +118,18 @@ main {
         text-align: center;
       }
 
+      .artist-data {
+        padding: 0 0 0 0.5rem;
+
+        .artist-name {
+          font-size: large;
+        }
+
+        .country-name {
+          font-size: small;
+        }
+      }
+
       .data-count {
         text-align: right;
       }

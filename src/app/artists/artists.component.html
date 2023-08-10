@@ -76,8 +76,8 @@
               {{ "#" + (i + 1) }}
             </td>
             <td>
-              <div>
-                <span>
+              <div class="artist-data">
+                <span class="artist-name">
                   {{ artist.name }}
                 </span>
                 <div>
@@ -87,7 +87,7 @@
                     }}"
                   >
                   </span>
-                  <span>
+                  <span class="country-name">
                     {{ artist.country?.name || "Unknown" }}
                   </span>
                 </div>
