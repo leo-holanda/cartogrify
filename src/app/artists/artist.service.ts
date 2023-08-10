@@ -18,13 +18,13 @@ export class ArtistService {
     this.supabaseService.getArtistsByName(topArtists).subscribe((artistsFromDatabase) => {
       this.userTopArtists$.next(artistsFromDatabase);
       const artistsWithoutCountry = this.findArtistsWithoutCountry(topArtists, artistsFromDatabase);
+
       if (artistsWithoutCountry.length > 0) {
         const scrappedArtists: Artist[] = [];
         this.countryService
           .getArtistsCountryOfOrigin(artistsWithoutCountry)
           .pipe(finalize(() => this.supabaseService.saveArtists(scrappedArtists)))
           .subscribe((artistWithCountry) => {
-            console.log(artistWithCountry);
             artistsFromDatabase.push(artistWithCountry);
             scrappedArtists.push(artistWithCountry);
             this.userTopArtists$.next(artistsFromDatabase);
@@ -48,7 +48,7 @@ export class ArtistService {
     return topArtistsNames.filter(
       (topArtistName) =>
         !artistsFromDatabase?.some(
-          (artistsFromDatabase) => topArtistName.toLowerCase() === artistsFromDatabase.name
+          (artistsFromDatabase) => topArtistName === artistsFromDatabase.name
         )
     );
   }
