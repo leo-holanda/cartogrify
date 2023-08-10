@@ -76,16 +76,22 @@
               {{ "#" + (i + 1) }}
             </td>
             <td>
-              {{ artist.name }}
-            </td>
-            <td class="country-row">
-              <span
-                class="{{
-                  'flag fi fi-' + (artist.country == null ? 'xx' : artist.country.flagCode)
-                }}"
-              >
-              </span>
-              {{ artist.country?.name || "Unknown" }}
+              <div>
+                <span>
+                  {{ artist.name }}
+                </span>
+                <div>
+                  <span
+                    class="{{
+                      'flag fi fi-' + (artist.country == null ? 'xx' : artist.country.flagCode)
+                    }}"
+                  >
+                  </span>
+                  <span>
+                    {{ artist.country?.name || "Unknown" }}
+                  </span>
+                </div>
+              </div>
             </td>
           </tr>
         </table>
