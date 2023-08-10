@@ -11,8 +11,17 @@ import { Artist } from "./artist.model";
 
 import * as d3 from "d3";
 import { ArtistService } from "./artist.service";
-import { CountryData, RegionData, MapSVG, ColorScale, Tooltip, GeoFeature, LabelData } from "../country/country.model";
+import {
+  CountryData,
+  RegionData,
+  MapSVG,
+  ColorScale,
+  Tooltip,
+  GeoFeature,
+  LabelData,
+} from "../country/country.model";
 import { CountryService } from "../country/country.service";
+import { Message } from "primeng/api";
 
 enum DataTypes {
   COUNTRIES = "countries",
@@ -30,6 +39,15 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   countriesData: CountryData[] = [];
   regionsData: RegionData[] = [];
   selectedData = DataTypes.COUNTRIES;
+  messages: Message[] = [
+    {
+      detail:
+        "Hey, Taylor Swift is not from China! What a stupid tool! \n\n\r\n Sometimes, the little robot that guesses the artists countries might say something stupid. He's trying his best. You can help him by suggesting the correct artist country of origin!",
+      id: 0,
+      severity: "warn",
+    },
+  ];
+  isMessageActive = true;
 
   private mapSvg!: MapSVG;
   private colorScale!: ColorScale;
@@ -87,6 +105,10 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
 
   setSelectedData(dataType: DataTypes): void {
     this.selectedData = dataType;
+  }
+
+  hideMessage(): void {
+    this.isMessageActive = false;
   }
 
   private addMap() {
