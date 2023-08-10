@@ -1,20 +1,29 @@
 <main>
   <div class="data-wrapper">
     <h1>Results</h1>
-    <div class="data-selector-wrapper">
-      <button (click)="setSelectedData(DataTypes.COUNTRIES)" class="data-selector">
-        <i class="bx bxs-flag-alt"></i>
-        <span>Countries</span>
-      </button>
-      <button (click)="setSelectedData(DataTypes.REGIONS)" class="data-selector">
-        <i class="bx bx-world"></i>
-        <span>Regions</span>
-      </button>
-      <button (click)="setSelectedData(DataTypes.ARTISTS)" class="data-selector">
-        <i class="bx bxs-user"></i>
-        <span> Artists </span>
-      </button>
-    </div>
+    <span class="p-buttonset data-selection-wrapper">
+      <button
+        pButton
+        pRipple
+        (click)="setSelectedData(DataTypes.COUNTRIES)"
+        label="Countries"
+        icon="pi pi-flag-fill"
+      ></button>
+      <button
+        pButton
+        pRipple
+        (click)="setSelectedData(DataTypes.REGIONS)"
+        label="Regions"
+        icon="pi pi-map"
+      ></button>
+      <button
+        pButton
+        pRipple
+        (click)="setSelectedData(DataTypes.ARTISTS)"
+        label="Artists"
+        icon="pi pi-user"
+      ></button>
+    </span>
 
     <div *ngIf="selectedData == DataTypes.ARTISTS && isMessageActive">
       <p-messages severity="warn">
