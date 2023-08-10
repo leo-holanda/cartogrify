@@ -1,29 +1,142 @@
 <main>
   <div class="data-wrapper">
     <h1>Results</h1>
-    <span class="p-buttonset data-selection-wrapper">
-      <button
-        pButton
-        pRipple
-        (click)="setSelectedData(DataTypes.COUNTRIES)"
-        label="Countries"
-        icon="pi pi-flag-fill"
-      ></button>
-      <button
-        pButton
-        pRipple
-        (click)="setSelectedData(DataTypes.REGIONS)"
-        label="Regions"
-        icon="pi pi-map"
-      ></button>
-      <button
-        pButton
-        pRipple
-        (click)="setSelectedData(DataTypes.ARTISTS)"
-        label="Artists"
-        icon="pi pi-user"
-      ></button>
-    </span>
+    <p-tabView styleClass="tabview-custom">
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="pi pi-flag-fill tab-icon"></i>
+          <span>Countries</span>
+        </ng-template>
+        <div class="data">
+          <h2 class="data-title">Top Countries</h2>
+          <div class="data-content-wrapper">
+            <table>
+              <thead>
+                <th>#</th>
+                <th>Country</th>
+                <th>Artists</th>
+              </thead>
+              <tr *ngFor="let countryData of countriesData; let i = index">
+                <td
+                  class="data-index"
+                  [ngClass]="{
+                    'first-place': i == 0,
+                    'second-place': i == 1,
+                    'third-place': i == 2
+                  }"
+                >
+                  {{ "#" + (i + 1) }}
+                </td>
+                <td>
+                  <span class="{{ 'flag fi fi-' + countryData.country.flagCode }}"></span>
+                  <span>{{ countryData.country.name }}</span>
+                </td>
+                <td class="data-count">
+                  <span>{{ countryData.count }}</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Header II">
+        <ng-template pTemplate="header">
+          <i class="pi pi-map tab-icon"></i>
+          <span>Regions</span>
+        </ng-template>
+        <div class="data">
+          <h2 class="data-title">Top Regions</h2>
+          <div class="data-content-wrapper region-data-wrapper">
+            <div *ngFor="let region of regionsData">
+              <div class="geo-data">
+                <span>{{ region.name }}</span>
+                <span>{{ region.count }}</span>
+              </div>
+              <div *ngFor="let subRegion of region.subRegions">
+                <div class="geo-data sub-region-data">
+                  <span>{{ subRegion.name + " (" + subRegion.count + ")" }}</span>
+                </div>
+                <div
+                  class="geo-data intermediate-region-data"
+                  *ngFor="let intermediateRegion of subRegion.intermediateRegions"
+                >
+                  <span>{{ intermediateRegion.name + " (" + intermediateRegion.count + ")" }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Header III">
+        <ng-template pTemplate="header">
+          <i class="pi pi-user tab-icon"></i>
+          <span>Artists</span>
+        </ng-template>
+        <div *ngIf="isMessageActive">
+          <p-messages severity="warn">
+            <ng-template pTemplate>
+              <div>
+                <span class="pi pi-exclamation-triangle suggestion-message-icon"></span>
+              </div>
+              <div class="suggestion-message">
+                <div>
+                  <i>"Why is it saying that Taylor Swift was born in North Korea?"</i>
+                  <div class="suggestion-message-content">
+                    Sometimes, the little robot that guesses the artist's country of origin might be
+                    way off the target. He's trying his best. You can help him by suggesting the
+                    correct country of origin for your favourite artists!
+                  </div>
+                </div>
+                <div class="suggestion-message-close-btn">
+                  <p-button
+                    (onClick)="hideMessage()"
+                    styleClass="p-ripple p-element p-message-close p-link"
+                    icon="pi pi-times"
+                  ></p-button>
+                </div>
+              </div>
+            </ng-template>
+          </p-messages>
+        </div>
+        <div class="data">
+          <h2 class="data-title">Top Artists</h2>
+          <div class="data-content-wrapper">
+            <table>
+              <tr *ngFor="let artist of artists; let i = index">
+                <td
+                  class="data-index"
+                  [ngClass]="{
+                    'first-place': i == 0,
+                    'second-place': i == 1,
+                    'third-place': i == 2
+                  }"
+                >
+                  {{ "#" + (i + 1) }}
+                </td>
+                <td>
+                  <div class="artist-data">
+                    <span class="artist-name">
+                      {{ artist.name }}
+                    </span>
+                    <div>
+                      <span
+                        class="{{
+                          'flag fi fi-' + (artist.country == null ? 'xx' : artist.country.flagCode)
+                        }}"
+                      >
+                      </span>
+                      <span class="country-name">
+                        {{ artist.country?.name || "Unknown" }}
+                      </span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
 
     <div *ngIf="selectedData == DataTypes.ARTISTS && isMessageActive">
       <p-messages severity="warn">
@@ -50,88 +163,6 @@
           </div>
         </ng-template>
       </p-messages>
-    </div>
-    <div *ngIf="selectedData == DataTypes.COUNTRIES" class="data">
-      <h2 class="data-title">Top Countries</h2>
-      <div class="data-content-wrapper">
-        <table>
-          <thead>
-            <th>#</th>
-            <th>Country</th>
-            <th>Artists</th>
-          </thead>
-          <tr *ngFor="let countryData of countriesData; let i = index">
-            <td
-              class="data-index"
-              [ngClass]="{ 'first-place': i == 0, 'second-place': i == 1, 'third-place': i == 2 }"
-            >
-              {{ "#" + (i + 1) }}
-            </td>
-            <td>
-              <span class="{{ 'flag fi fi-' + countryData.country.flagCode }}"></span>
-              <span>{{ countryData.country.name }}</span>
-            </td>
-            <td class="data-count">
-              <span>{{ countryData.count }}</span>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <div *ngIf="selectedData == DataTypes.REGIONS" class="data">
-      <h2 class="data-title">Top Regions</h2>
-      <div class="data-content-wrapper region-data-wrapper">
-        <div *ngFor="let region of regionsData">
-          <div class="geo-data">
-            <span>{{ region.name }}</span>
-            <span>{{ region.count }}</span>
-          </div>
-          <div *ngFor="let subRegion of region.subRegions">
-            <div class="geo-data sub-region-data">
-              <span>{{ subRegion.name + " (" + subRegion.count + ")" }}</span>
-            </div>
-            <div
-              class="geo-data intermediate-region-data"
-              *ngFor="let intermediateRegion of subRegion.intermediateRegions"
-            >
-              <span>{{ intermediateRegion.name + " (" + intermediateRegion.count + ")" }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="selectedData == DataTypes.ARTISTS" class="data">
-      <h2 class="data-title">Top Artists</h2>
-      <div class="data-content-wrapper">
-        <table>
-          <tr *ngFor="let artist of artists; let i = index">
-            <td
-              class="data-index"
-              [ngClass]="{ 'first-place': i == 0, 'second-place': i == 1, 'third-place': i == 2 }"
-            >
-              {{ "#" + (i + 1) }}
-            </td>
-            <td>
-              <div class="artist-data">
-                <span class="artist-name">
-                  {{ artist.name }}
-                </span>
-                <div>
-                  <span
-                    class="{{
-                      'flag fi fi-' + (artist.country == null ? 'xx' : artist.country.flagCode)
-                    }}"
-                  >
-                  </span>
-                  <span class="country-name">
-                    {{ artist.country?.name || "Unknown" }}
-                  </span>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </table>
-      </div>
     </div>
   </div>
   <div #mapWrapper class="map-wrapper"></div>
