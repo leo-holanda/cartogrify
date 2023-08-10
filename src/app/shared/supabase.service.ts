@@ -16,9 +16,8 @@ export class SupabaseService {
   }
 
   getArtistsByName(artists: string[]): Observable<Artist[]> {
-    const normalizedArtistsNames = artists.map((artist) => artist.toLowerCase());
     return from(
-      this.supabaseClient.from("artists").select("name, country").in("name", normalizedArtistsNames)
+      this.supabaseClient.from("artists").select("name, country").in("name", artists)
     ).pipe(
       take(1),
       map((response) => response.data || [])
@@ -28,7 +27,7 @@ export class SupabaseService {
   saveArtists(artists: Artist[]): void {
     const missingArtists = artists.map((artist) => {
       return {
-        name: artist.name.toLowerCase(),
+        name: artist.name,
         country: artist.country,
       };
     });
