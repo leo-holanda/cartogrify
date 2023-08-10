@@ -24,6 +24,7 @@ export class ArtistService {
           .getArtistsCountryOfOrigin(artistsWithoutCountry)
           .pipe(finalize(() => this.supabaseService.saveArtists(scrappedArtists)))
           .subscribe((artistWithCountry) => {
+            console.log(artistWithCountry);
             artistsFromDatabase.push(artistWithCountry);
             scrappedArtists.push(artistWithCountry);
             this.userTopArtists$.next(artistsFromDatabase);
