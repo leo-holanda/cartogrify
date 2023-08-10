@@ -297,6 +297,18 @@ export class CountryService {
     return flagCode.toLowerCase();
   }
 
+  createCountryFromFeature(geoFeature: GeoFeature): Country {
+    const country: Country = {
+      name: geoFeature.properties["NAME"],
+      flagCode: this.findCountryFlagCode(geoFeature),
+      region: geoFeature.properties["REGION_UN"],
+      subRegion: geoFeature.properties["SUBREGION"],
+      intermediateRegion: geoFeature.properties["REGION_WB"],
+    };
+
+    return country;
+  }
+
   private createRegion(artist: Artist): RegionData {
     let artistsIntermediateRegion: IntermediateRegionData | undefined = undefined;
     if (artist.country!.intermediateRegion) {
@@ -336,17 +348,5 @@ export class CountryService {
       count: 1,
       intermediateRegions: artistsIntermediateRegion ? [artistsIntermediateRegion] : [],
     };
-  }
-
-  private createCountryFromFeature(geoFeature: GeoFeature): Country {
-    const country: Country = {
-      name: geoFeature.properties["NAME"],
-      flagCode: this.findCountryFlagCode(geoFeature),
-      region: geoFeature.properties["REGION_UN"],
-      subRegion: geoFeature.properties["SUBREGION"],
-      intermediateRegion: geoFeature.properties["REGION_WB"],
-    };
-
-    return country;
   }
 }

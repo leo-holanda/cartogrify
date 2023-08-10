@@ -5,6 +5,12 @@ export interface Artist {
   country: Country | undefined;
 }
 
+export interface ArtistWithSuggestion {
+  name: string;
+  country: Country | undefined;
+  suggestedCountry: Country | undefined;
+}
+
 export interface ScrapedArtist {
   name: string;
   page: string;
