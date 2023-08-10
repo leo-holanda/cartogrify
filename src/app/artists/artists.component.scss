@@ -15,6 +15,24 @@ main {
     margin-top: 0;
   }
 
+  .suggestion-message {
+    display: flex;
+  }
+
+  .suggestion-message-content {
+    margin-top: 1rem;
+  }
+
+  .suggestion-message-close-btn {
+    display: flex;
+    align-items: center;
+  }
+
+  .suggestion-message-icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+  }
+
   .data-selector-wrapper {
     display: flex;
     justify-content: space-between;
