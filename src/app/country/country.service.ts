@@ -185,6 +185,7 @@ export class CountryService {
       region: "Unknown",
       subRegion: "Unknown",
       intermediateRegion: "Unknown",
+      NE_ID: 0,
     };
 
     artists.forEach((artist) => {
@@ -304,6 +305,7 @@ export class CountryService {
       region: geoFeature.properties["REGION_UN"],
       subRegion: geoFeature.properties["SUBREGION"],
       intermediateRegion: geoFeature.properties["REGION_WB"],
+      NE_ID: geoFeature.properties["NE_ID"],
     };
 
     return country;

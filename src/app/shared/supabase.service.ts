@@ -52,7 +52,7 @@ export class SupabaseService {
     const suggestions = suggestionsToSave.map((suggestion) => {
       return {
         artist_id: suggestion.artist.id,
-        country_code: suggestion.suggestedCountry.flagCode,
+        country_id: suggestion.suggestedCountry.NE_ID,
       };
     });
 
