@@ -126,7 +126,6 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     });
 
     this.ref.onClose.subscribe((hasSuggestions) => {
-      console.log(hasSuggestions);
       if (hasSuggestions) {
         this.countriesData = this.countryService.countCountries(this.artists);
         this.regionsData = this.countryService.countRegions(this.artists);
