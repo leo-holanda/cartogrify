@@ -32,7 +32,19 @@ export class SupabaseService {
       })
     ).pipe(
       take(1),
-      map((response) => response.data || [])
+      map((response) => response.data || []),
+      tap((artists) => {
+        this.saveSuggestions(
+          artists
+            .filter((artist) => artist.country)
+            .map((artist) => {
+              return {
+                artist: artist,
+                suggestedCountry: artist.country,
+              } as Suggestion;
+            })
+        );
+      })
     );
   }
 
@@ -56,6 +68,7 @@ export class SupabaseService {
       };
     });
 
+    console.log(suggestions);
     scheduled(
       this.supabaseClient.functions.invoke<Suggestion[]>("save-suggestions", {
         body: JSON.stringify(suggestions),
