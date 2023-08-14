@@ -315,6 +315,14 @@ export class CountryService {
     this.supabaseService.saveSuggestions(suggestionsToSave);
   }
 
+  getCountryById(countryId: number): Country | undefined {
+    const matchedFeature = this.geoJSON.features.find(
+      (feature) => feature.properties["NE_ID"] == countryId
+    );
+    if (matchedFeature) return this.createCountryFromFeature(matchedFeature);
+    return undefined;
+  }
+
   private createRegion(artist: Artist): RegionData {
     let artistsIntermediateRegion: IntermediateRegionData | undefined = undefined;
     if (artist.country!.intermediateRegion) {

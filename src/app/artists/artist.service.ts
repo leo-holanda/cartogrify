@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Artist } from "./artist.model";
+import { Artist, ArtistFromDatabase } from "./artist.model";
 import { SupabaseService } from "../shared/supabase.service";
 import { BehaviorSubject, Observable, finalize } from "rxjs";
 import { CountryService } from "../country/country.service";
@@ -16,9 +16,10 @@ export class ArtistService {
   setUserTopArtists(topArtists: string[]): void {
     this.hasRequestedTopArtists = true;
     this.supabaseService.getArtistsByName(topArtists).subscribe((artistsFromDatabase) => {
-      this.userTopArtists$.next(artistsFromDatabase);
-      const artistsWithoutCountry = this.findArtistsWithoutCountry(topArtists, artistsFromDatabase);
+      const revivedArtists = this.loadArtistsCountry(artistsFromDatabase);
+      this.userTopArtists$.next(revivedArtists);
 
+      const artistsWithoutCountry = this.findArtistsWithoutCountry(topArtists, revivedArtists);
       if (artistsWithoutCountry.length > 0) {
         const scrappedArtists: Artist[] = [];
         this.countryService
@@ -27,18 +28,18 @@ export class ArtistService {
             finalize(() =>
               this.supabaseService.saveArtists(scrappedArtists).subscribe((savedArtists) => {
                 savedArtists.forEach((savedArtist) => {
-                  let matchedArtist = artistsFromDatabase.find(
-                    (artistFromDatabase) => artistFromDatabase.name === savedArtist.name
+                  let matchedArtist = revivedArtists.find(
+                    (revivedArtists) => revivedArtists.name === savedArtist.name
                   );
                   matchedArtist = savedArtist;
                 });
-                this.userTopArtists$.next([...artistsFromDatabase, ...savedArtists]);
+                this.userTopArtists$.next([...revivedArtists, ...savedArtists]);
               })
             )
           )
           .subscribe((artistWithCountry) => {
             scrappedArtists.push(artistWithCountry);
-            this.userTopArtists$.next([...artistsFromDatabase, ...scrappedArtists]);
+            this.userTopArtists$.next([...revivedArtists, ...scrappedArtists]);
           });
       }
     });
@@ -50,6 +51,16 @@ export class ArtistService {
 
   getArtistsRequestStatus(): boolean {
     return this.hasRequestedTopArtists;
+  }
+
+  private loadArtistsCountry(artistsFromDatabase: ArtistFromDatabase[]): Artist[] {
+    return artistsFromDatabase.map((artist) => {
+      return {
+        id: artist.id,
+        name: artist.name,
+        country: this.countryService.getCountryById(artist.country_id),
+      } as Artist;
+    });
   }
 
   private findArtistsWithoutCountry(

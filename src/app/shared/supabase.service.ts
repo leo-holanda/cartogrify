@@ -2,7 +2,12 @@ import { Injectable } from "@angular/core";
 import { SupabaseClient, createClient } from "@supabase/supabase-js";
 import { Observable, asyncScheduler, from, map, scheduled, take, tap } from "rxjs";
 import { environment } from "src/environments/environment";
-import { Artist, ArtistWithSuggestion, Suggestion } from "../artists/artist.model";
+import {
+  Artist,
+  ArtistFromDatabase,
+  ArtistWithSuggestion,
+  Suggestion,
+} from "../artists/artist.model";
 import { LastFmTopArtists } from "./supabase.model";
 
 @Injectable({
@@ -15,9 +20,13 @@ export class SupabaseService {
     this.supabaseClient = createClient(environment.SUPABASE_URL, environment.SUPABASE_ANON_KEY);
   }
 
-  getArtistsByName(artists: string[]): Observable<Artist[]> {
-    return from(
-      this.supabaseClient.from("artists").select("id, name, country").in("name", artists)
+  getArtistsByName(artists: string[]): Observable<ArtistFromDatabase[]> {
+    return scheduled(
+      this.supabaseClient
+        .from("highest_suggestion_by_artist")
+        .select("id, name, country_id")
+        .in("name", artists),
+      asyncScheduler
     ).pipe(
       take(1),
       map((response) => response.data || [])

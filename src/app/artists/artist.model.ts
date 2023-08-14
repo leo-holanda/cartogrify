@@ -19,3 +19,9 @@ export interface Suggestion {
   artist: Artist;
   suggestedCountry: Country;
 }
+
+export interface ArtistFromDatabase {
+  id: number;
+  name: string;
+  country_id: number;
+}
