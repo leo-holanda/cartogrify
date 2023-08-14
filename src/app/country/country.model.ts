@@ -4,6 +4,7 @@ export interface Country {
   region: string | undefined;
   subRegion: string | undefined;
   intermediateRegion: string | undefined;
+  NE_ID: number;
 }
 
 export interface CountryData {
