@@ -24,10 +24,10 @@ serve(async (req: Request) => {
     );
 
     const missingArtists = await req.json();
-    const { error } = await supabaseClient.from("artists").insert(missingArtists);
+    const { data, error } = await supabaseClient.from("artists").insert(missingArtists).select();
     if (error) throw error;
 
-    return new Response(undefined, {
+    return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });

@@ -23,11 +23,22 @@ export class ArtistService {
         const scrappedArtists: Artist[] = [];
         this.countryService
           .getArtistsCountryOfOrigin(artistsWithoutCountry)
-          .pipe(finalize(() => this.supabaseService.saveArtists(scrappedArtists)))
+          .pipe(
+            finalize(() =>
+              this.supabaseService.saveArtists(scrappedArtists).subscribe((savedArtists) => {
+                savedArtists.forEach((savedArtist) => {
+                  let matchedArtist = artistsFromDatabase.find(
+                    (artistFromDatabase) => artistFromDatabase.name === savedArtist.name
+                  );
+                  matchedArtist = savedArtist;
+                });
+                this.userTopArtists$.next([...artistsFromDatabase, ...savedArtists]);
+              })
+            )
+          )
           .subscribe((artistWithCountry) => {
-            artistsFromDatabase.push(artistWithCountry);
             scrappedArtists.push(artistWithCountry);
-            this.userTopArtists$.next(artistsFromDatabase);
+            this.userTopArtists$.next([...artistsFromDatabase, ...scrappedArtists]);
           });
       }
     });
