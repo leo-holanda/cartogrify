@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, Subject, map, take, tap } from "rxjs";
-import { Artist, ScrapedArtist } from "../artists/artist.model";
+import { Artist, ArtistWithSuggestion, ScrapedArtist, Suggestion } from "../artists/artist.model";
 import { environment } from "src/environments/environment.development";
 import {
   Country,
@@ -307,6 +307,10 @@ export class CountryService {
     };
 
     return country;
+  }
+
+  saveSuggestions(suggestionsToSave: Suggestion[]): void {
+    this.supabaseService.saveSuggestions(suggestionsToSave);
   }
 
   private createRegion(artist: Artist): RegionData {

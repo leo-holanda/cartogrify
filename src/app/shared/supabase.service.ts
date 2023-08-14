@@ -2,14 +2,14 @@ import { Injectable } from "@angular/core";
 import { SupabaseClient, createClient } from "@supabase/supabase-js";
 import { Observable, asyncScheduler, from, map, scheduled, take, tap } from "rxjs";
 import { environment } from "src/environments/environment";
-import { Artist } from "../artists/artist.model";
+import { Artist, ArtistWithSuggestion, Suggestion } from "../artists/artist.model";
 import { LastFmTopArtists } from "./supabase.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class SupabaseService {
-  supabaseClient!: SupabaseClient;
+  private supabaseClient!: SupabaseClient;
 
   constructor() {
     this.supabaseClient = createClient(environment.SUPABASE_URL, environment.SUPABASE_ANON_KEY);
@@ -46,5 +46,21 @@ export class SupabaseService {
       take(1),
       map((response) => response.data)
     );
+  }
+
+  saveSuggestions(suggestionsToSave: Suggestion[]): void {
+    const suggestions = suggestionsToSave.map((suggestion) => {
+      return {
+        artist_id: suggestion.artist.id,
+        country_code: suggestion.suggestedCountry.flagCode,
+      };
+    });
+
+    scheduled(
+      this.supabaseClient.functions.invoke<Suggestion[]>("save-suggestions", {
+        body: JSON.stringify(suggestions),
+      }),
+      asyncScheduler
+    ).subscribe();
   }
 }

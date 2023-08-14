@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
-import { Artist, ArtistWithSuggestion } from "../artists/artist.model";
+import { Artist, ArtistWithSuggestion, Suggestion } from "../artists/artist.model";
 import { CountryService } from "../country/country.service";
 import { Country } from "../country/country.model";
 import { TableRowSelectEvent } from "primeng/table";
@@ -55,9 +55,15 @@ export class SuggestionsComponent implements OnInit {
   }
 
   onConfirmButtonClick(): void {
-    this.artists.forEach((artist) => {
-      if (artist.suggestedCountry) artist.country = artist.suggestedCountry;
-    });
+    const suggestions = this.artists
+      .filter((artist) => artist.suggestedCountry)
+      .map((artist) => {
+        return {
+          artist: artist,
+          suggestedCountry: artist.suggestedCountry,
+        } as Suggestion;
+      });
+    this.countryService.saveSuggestions(suggestions);
     this.dynamicDialogRef.close(true);
   }
 }
