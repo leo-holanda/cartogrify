@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { SupabaseClient, createClient } from "@supabase/supabase-js";
-import { Observable, asyncScheduler, from, map, scheduled, take } from "rxjs";
+import { Observable, asyncScheduler, from, map, scheduled, take, tap } from "rxjs";
 import { environment } from "src/environments/environment";
 import { Artist } from "../artists/artist.model";
 import { LastFmTopArtists } from "./supabase.model";
@@ -17,24 +17,23 @@ export class SupabaseService {
 
   getArtistsByName(artists: string[]): Observable<Artist[]> {
     return from(
-      this.supabaseClient.from("artists").select("name, country").in("name", artists)
+      this.supabaseClient.from("artists").select("id, name, country").in("name", artists)
     ).pipe(
       take(1),
       map((response) => response.data || [])
     );
   }
 
-  saveArtists(artists: Artist[]): void {
-    const missingArtists = artists.map((artist) => {
-      return {
-        name: artist.name,
-        country: artist.country,
-      };
-    });
-
-    this.supabaseClient.functions.invoke("save-missing-artists", {
-      body: missingArtists,
-    });
+  saveArtists(artistsToSave: Artist[]): Observable<Artist[]> {
+    return from(
+      this.supabaseClient.functions.invoke<Artist[]>("save-missing-artists", {
+        method: "POST",
+        body: JSON.stringify(artistsToSave),
+      })
+    ).pipe(
+      take(1),
+      map((response) => response.data || [])
+    );
   }
 
   getLastFmUserTopArtists(userName: string): Observable<LastFmTopArtists | null> {
