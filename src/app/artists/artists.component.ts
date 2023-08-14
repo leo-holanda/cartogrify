@@ -285,6 +285,8 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
         if (artistsFromCountry.length === 0) countryTag += "No artists here.";
         this.tooltip.style("visibility", "visible");
         this.tooltip.style("opacity", "0.9");
+        this.tooltip.style("color", "black");
+
         this.tooltip.html(countryTag);
       })
       .on("mousemove", (event) => {
