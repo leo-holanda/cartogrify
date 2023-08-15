@@ -15,6 +15,7 @@ main {
   justify-content: center;
   flex-flow: column;
   margin-bottom: 3rem;
+  color: black;
 
   & h1 {
     font-family: "Lilita One", cursive;
@@ -40,6 +41,7 @@ button {
 
 .hint {
   text-align: center;
+  color: black;
 }
 
 .options-wrapper {
@@ -65,9 +67,11 @@ button {
   border-radius: $border-radius;
 
   .spotify-login-button {
-    text-decoration: none;
-    padding: 1rem;
-    border-radius: 0.5rem;
+    background-color: white;
+    & button {
+      font: black;
+      background-color: white;
+    }
   }
 }
 
@@ -85,17 +89,25 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 0.5rem;
 
     & input {
-      padding: 1rem;
       border-radius: 0.5rem 0 0 0.5rem;
       appearance: none;
       border: none;
+      background-color: white;
+      color: black;
+
+      &::placeholder {
+        color: grey;
+      }
     }
 
     .username-input-button {
       padding: 1rem;
       border-radius: 0 0.5rem 0.5rem 0;
+      background-color: white;
+      border-left: 2px solid #e92c14;
     }
   }
 }

@@ -12,6 +12,8 @@ import { LastFmService } from "src/app/streaming/last-fm.service";
 })
 export class LoginComponent {
   lastFmUsername = "";
+  hasClickedSpotifyButton = false;
+  hasClickedLastFmButton = false;
 
   constructor(
     private spotifyAuthService: SpotifyAuthService,
@@ -22,6 +24,7 @@ export class LoginComponent {
   ) {}
 
   onSpotifyButtonClick(): void {
+    this.hasClickedSpotifyButton = true;
     if (this.spotifyAuthService.isTokenUndefined()) {
       this.spotifyAuthService.requestAuthorization();
     } else if (this.spotifyAuthService.isTokenExpired()) {
@@ -40,6 +43,7 @@ export class LoginComponent {
   }
 
   onLastfmButtonClick(): void {
+    this.hasClickedLastFmButton = true;
     this.lastFmService.getTopArtists(this.lastFmUsername).subscribe((topArtists) => {
       this.artistService.setUserTopArtists(topArtists);
       this.router.navigate(["/artists"]);
