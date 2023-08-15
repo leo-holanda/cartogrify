@@ -7,6 +7,7 @@ main {
   align-items: center;
   justify-content: center;
   flex-flow: column;
+  overflow: hidden;
 }
 
 .title-wrapper {
@@ -20,12 +21,13 @@ main {
   & h1 {
     font-family: "Lilita One", cursive;
     font-weight: normal;
-    font-size: 8rem;
+    font-size: clamp(3.75rem, 12vw, 20rem);
     margin: 0;
   }
 
   & h3 {
     margin-top: 0;
+    font-size: clamp(0.65rem, 2vw, 4rem);
   }
 }
 
@@ -42,6 +44,7 @@ button {
 .hint {
   text-align: center;
   color: black;
+  font-size: clamp(0.8rem, 2vw, 4rem);
 }
 
 .options-wrapper {
