@@ -8,9 +8,15 @@
     <div class="options-wrapper">
       <div class="option spotify-option">
         <img class="logo" src="assets/images/spotify_logo.svg" alt="Spotify logo" />
-        <button (click)="onSpotifyButtonClick()" class="spotify-login-button">
-          Connect your Spotify Account
-        </button>
+        <button
+          pButton
+          pRipple
+          [loading]="hasClickedSpotifyButton"
+          [disabled]="hasClickedLastFmButton"
+          (click)="onSpotifyButtonClick()"
+          label="Connect your Spotify account"
+          class="spotify-login-button"
+        ></button>
       </div>
       <div class="option lastfm-option">
         <img class="logo" src="assets/images/lastfm_logo.svg" alt="Last.fm logo" />
@@ -19,12 +25,22 @@
           <div class="username-input">
             <input
               type="text"
+              pInputText
               id="username"
               name="username"
               placeholder="myusername"
               [(ngModel)]="lastFmUsername"
+              [disabled]="hasClickedSpotifyButton || hasClickedLastFmButton"
             />
-            <button (click)="onLastfmButtonClick()" class="username-input-button">Start</button>
+            <button
+              pButton
+              pRipple
+              [loading]="hasClickedLastFmButton"
+              [disabled]="hasClickedSpotifyButton || lastFmUsername.length == 0"
+              (click)="onLastfmButtonClick()"
+              label="Start"
+              class="username-input-button"
+            ></button>
           </div>
         </div>
       </div>
