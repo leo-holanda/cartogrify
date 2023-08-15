@@ -44,14 +44,12 @@ export class SupabaseService {
       map((response) => response.data || []),
       tap((artists) => {
         this.saveSuggestions(
-          artists
-            .filter((artist) => artist.country)
-            .map((artist) => {
-              return {
-                artist: artist,
-                suggestedCountry: artist.country,
-              } as Suggestion;
-            })
+          artists.map((artist) => {
+            return {
+              artist: artist,
+              suggestedCountry: artist.country,
+            } as Suggestion;
+          })
         );
       })
     );
@@ -73,7 +71,7 @@ export class SupabaseService {
     const suggestions = suggestionsToSave.map((suggestion) => {
       return {
         artist_id: suggestion.artist.id,
-        country_id: suggestion.suggestedCountry.NE_ID,
+        country_id: suggestion.suggestedCountry?.NE_ID || null,
       };
     });
 

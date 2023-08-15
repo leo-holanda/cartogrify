@@ -17,7 +17,7 @@ export interface ScrapedArtist {
 
 export interface Suggestion {
   artist: Artist;
-  suggestedCountry: Country;
+  suggestedCountry: Country | undefined;
 }
 
 export interface ArtistFromDatabase {
