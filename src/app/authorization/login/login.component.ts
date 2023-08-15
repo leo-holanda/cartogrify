@@ -4,6 +4,7 @@ import { SpotifyAuthService } from "../spotify-auth.service";
 import { SpotifyService } from "src/app/streaming/spotify.service";
 import { ArtistService } from "src/app/artists/artist.service";
 import { LastFmService } from "src/app/streaming/last-fm.service";
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: "msm-login",
@@ -20,7 +21,8 @@ export class LoginComponent {
     private spotifyService: SpotifyService,
     private artistService: ArtistService,
     private lastFmService: LastFmService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {}
 
   onSpotifyButtonClick(): void {
@@ -44,9 +46,21 @@ export class LoginComponent {
 
   onLastfmButtonClick(): void {
     this.hasClickedLastFmButton = true;
-    this.lastFmService.getTopArtists(this.lastFmUsername).subscribe((topArtists) => {
-      this.artistService.setUserTopArtists(topArtists);
-      this.router.navigate(["/artists"]);
+    this.lastFmService.getTopArtists(this.lastFmUsername).subscribe({
+      next: (topArtists) => {
+        this.artistService.setUserTopArtists(topArtists);
+        this.router.navigate(["/artists"]);
+      },
+      error: (err) => {
+        this.hasClickedSpotifyButton = false;
+        this.hasClickedLastFmButton = false;
+        this.messageService.add({
+          severity: "error",
+          summary: "Communication with LastFM has failed.",
+          detail: "Error: " + err.message,
+          life: 2000,
+        });
+      },
     });
   }
 }

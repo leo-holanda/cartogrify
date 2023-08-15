@@ -11,8 +11,9 @@ export class LastFmService {
   getTopArtists(userName: string): Observable<string[]> {
     return this.supabaseService.getLastFmUserTopArtists(userName).pipe(
       map((response) => {
-        if (!response) return [];
-        return response.topartists.artist.map((artist) => artist.name);
+        if (response.error && response.message) throw new Error(response.message);
+        if (response.topartists) return response.topartists.artist.map((artist) => artist.name);
+        throw new Error("The LastFM API is in a bad mood. Please, try again later.");
       })
     );
   }

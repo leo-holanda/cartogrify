@@ -47,7 +47,7 @@ export class SupabaseService {
     );
   }
 
-  getLastFmUserTopArtists(userName: string): Observable<LastFmTopArtists | null> {
+  getLastFmUserTopArtists(userName: string): Observable<LastFmTopArtists> {
     return scheduled(
       this.supabaseClient.functions.invoke<LastFmTopArtists>("fetch-lastfm-top-artists", {
         body: { name: userName },
@@ -55,7 +55,12 @@ export class SupabaseService {
       asyncScheduler
     ).pipe(
       take(1),
-      map((response) => response.data)
+      map((response) => {
+        //This is a Supabase Edge Function error
+        if (response.error) throw new Error(response.error);
+        if (!response.data) throw new Error(response.error);
+        return response.data;
+      })
     );
   }
 
