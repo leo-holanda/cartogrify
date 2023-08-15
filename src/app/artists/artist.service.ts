@@ -25,7 +25,7 @@ export class ArtistService {
         this.countryService
           .getArtistsCountryOfOrigin(artistsWithoutCountry)
           .pipe(
-            finalize(() =>
+            finalize(() => {
               this.supabaseService.saveArtists(scrappedArtists).subscribe((savedArtists) => {
                 savedArtists.forEach((savedArtist) => {
                   let matchedArtist = revivedArtists.find(
@@ -34,8 +34,8 @@ export class ArtistService {
                   matchedArtist = savedArtist;
                 });
                 this.userTopArtists$.next([...revivedArtists, ...savedArtists]);
-              })
-            )
+              });
+            })
           )
           .subscribe((artistWithCountry) => {
             scrappedArtists.push(artistWithCountry);
