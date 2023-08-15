@@ -1,5 +1,7 @@
 export interface LastFmTopArtists {
-  topartists: TopArtists;
+  topartists?: TopArtists;
+  error?: number;
+  message?: string;
 }
 
 interface TopArtists {
