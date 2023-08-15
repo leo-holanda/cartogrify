@@ -12,7 +12,7 @@ export interface ArtistWithSuggestion extends Artist {
 
 export interface ScrapedArtist {
   name: string;
-  page: string;
+  country: Country | undefined;
 }
 
 export interface Suggestion {
@@ -24,4 +24,9 @@ export interface ArtistFromDatabase {
   id: number;
   name: string;
   country_id: number;
+}
+
+export interface SavedArtist {
+  id: number;
+  name: string;
 }
