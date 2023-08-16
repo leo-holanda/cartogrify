@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, convertToParamMap } from "@angular/router";
 import { SpotifyAuthService } from "../spotify-auth.service";
 import { ArtistService } from "src/app/artists/artist.service";
 import { SpotifyService } from "src/app/streaming/spotify.service";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: "msm-post-login",
@@ -13,6 +14,8 @@ export class PostLoginComponent implements OnInit {
   isStateUnequal = false;
   hasError = false;
   isAuthorized = false;
+  hasRequestError = false;
+  requestErrorMessage = "";
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -37,14 +40,30 @@ export class PostLoginComponent implements OnInit {
         const code = paramMap.get("code");
         if (code) {
           this.isAuthorized = true;
-          this.spotifyAuthService.requestAccessToken(code).subscribe(() => {
-            this.spotifyService.getUserTopArtists().subscribe((topArtists) => {
-              this.artistService.setUserTopArtists(topArtists);
-              this.router.navigate(["/artists"]);
-            });
+          this.spotifyAuthService.requestAccessToken(code).subscribe({
+            next: () => {
+              this.spotifyService.getUserTopArtists().subscribe((topArtists) => {
+                this.artistService.setUserTopArtists(topArtists);
+                this.router.navigate(["/artists"]);
+              });
+            },
+            error: this.handleSpotifyError,
           });
         }
       }
     });
+  }
+
+  private handleSpotifyError(err: HttpErrorResponse): void {
+    let errorMessage = "";
+    if (err.error && err.error.error) {
+      errorMessage = err.error.error.message;
+    } else {
+      errorMessage =
+        err.message ||
+        "It was not possible to get info about the error. Please, report it as a GitHub issue in the repository.";
+    }
+
+    this.requestErrorMessage = errorMessage;
   }
 }
