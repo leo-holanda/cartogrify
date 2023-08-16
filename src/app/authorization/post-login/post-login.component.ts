@@ -47,7 +47,7 @@ export class PostLoginComponent implements OnInit {
                 this.router.navigate(["/artists"]);
               });
             },
-            error: this.handleSpotifyError,
+            error: (err) => this.handleSpotifyError(err),
           });
         }
       }

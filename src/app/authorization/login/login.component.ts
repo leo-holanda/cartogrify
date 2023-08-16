@@ -37,8 +37,8 @@ export class LoginComponent {
 
     if (this.spotifyAuthService.isTokenExpired()) {
       this.spotifyAuthService.refreshToken().subscribe({
-        next: this.fetchUserDataFromSpotify,
-        error: this.handleSpotifyError,
+        next: () => this.fetchUserDataFromSpotify,
+        error: (err) => this.handleSpotifyError(err),
       });
       return;
     }
