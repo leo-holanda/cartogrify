@@ -5,45 +5,59 @@
     <h3>Explore the worldwide origins of your music taste</h3>
   </section>
   <section>
-    <h2 class="hint">Choose one of the options to start</h2>
+    <h2 class="hint">Which streaming service do you use?</h2>
     <div class="options-wrapper">
-      <div class="option spotify-option">
-        <img class="logo" src="assets/images/spotify_logo.svg" alt="Spotify logo" />
+      <div>
         <button
           pButton
-          pRipple
-          [loading]="hasClickedSpotifyButton"
           [disabled]="hasClickedLastFmButton"
           (click)="onSpotifyButtonClick()"
-          label="Connect your Spotify account"
-          class="spotify-login-button"
-        ></button>
+          class="option-button spotify-option"
+        >
+          <i *ngIf="hasClickedSpotifyButton" class="pi pi-spin pi-spinner"></i>
+          Spotify
+        </button>
       </div>
-      <div class="option lastfm-option">
-        <img class="logo" src="assets/images/lastfm_logo.svg" alt="Last.fm logo" />
+      <div>
         <div>
-          <label class="lastfm-input-label" for="username">Enter your Last.fm username</label>
-          <div class="username-input">
-            <input
-              type="text"
-              pInputText
-              id="username"
-              name="username"
-              placeholder="myusername"
-              [(ngModel)]="lastFmUsername"
-              [disabled]="hasClickedSpotifyButton || hasClickedLastFmButton"
-            />
-            <button
-              pButton
-              pRipple
-              [loading]="hasClickedLastFmButton"
-              [disabled]="hasClickedSpotifyButton || lastFmUsername.length == 0"
-              (click)="onLastfmButtonClick()"
-              label="Start"
-              class="username-input-button"
-            ></button>
-          </div>
+          <button
+            pButton
+            [disabled]="hasClickedSpotifyButton"
+            (click)="onLastfmButtonClick()"
+            class="option-button lastfm-option"
+          >
+            <i *ngIf="hasClickedLastFmButton" class="pi pi-spin pi-spinner"></i>
+            Last.fm
+          </button>
         </div>
+
+        <p-dialog
+          header="Enter your Last.fm username"
+          [(visible)]="hasClickedLastFmButton"
+          [style]="{ width: '75%' }"
+          [modal]="true"
+        >
+          <input
+            type="text"
+            pInputText
+            id="username"
+            name="username"
+            placeholder="myusername"
+            class="username-input"
+            [(ngModel)]="lastFmUsername"
+            [disabled]="hasClickedSpotifyButton || hasClickedLastFmStartButton"
+          />
+          <button
+            pButton
+            pRipple
+            [disabled]="lastFmUsername.length == 0"
+            (click)="onLastfmStartButtonClick()"
+            class="username-input-button p-button-lg"
+          >
+            <i *ngIf="hasClickedLastFmStartButton" class="pi pi-spin pi-spinner"></i>
+            Start
+          </button>
+        </p-dialog>
       </div>
     </div>
   </section>

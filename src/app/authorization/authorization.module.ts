@@ -8,6 +8,8 @@ import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
 import { ToastModule } from "primeng/toast";
 import { MessageService } from "primeng/api";
+import { DialogModule } from "primeng/dialog";
+import { ProgressSpinnerModule } from "primeng/progressspinner";
 
 @NgModule({
   declarations: [PostLoginComponent, LoginComponent],
@@ -18,6 +20,8 @@ import { MessageService } from "primeng/api";
     ButtonModule,
     InputTextModule,
     ToastModule,
+    DialogModule,
+    ProgressSpinnerModule,
   ],
   providers: [MessageService],
 })
