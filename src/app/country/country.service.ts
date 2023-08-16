@@ -40,34 +40,38 @@ export class CountryService {
     fetch(environment.PAGE_FINDER_URL, {
       method: "POST",
       body: artistsNames.join("+"),
-    }).then(async (response) => {
-      const reader = response.body?.getReader();
+    })
+      .then(async (response) => {
+        const reader = response.body?.getReader();
 
-      if (reader) {
-        const textDecoder = new TextDecoder();
-        let data = "";
+        if (reader) {
+          const textDecoder = new TextDecoder();
+          let data = "";
 
-        while (true) {
-          const { value, done } = await reader.read();
-          data += textDecoder.decode(value);
-          if (data.includes("START_OF_JSON") && data.includes("END_OF_JSON")) {
-            const startIndex = data.indexOf("START_OF_JSON") + START_INDICATOR_OFFSET;
-            const endIndex = data.indexOf("END_OF_JSON");
-            const artist = JSON.parse(data.slice(startIndex, endIndex));
-            artists$.next({
-              name: artist.name,
-              country: this.determineCountryOfOrigin(artist.page),
-            });
-            data = data.slice(endIndex + END_INDICATOR_OFFSET);
-          }
+          while (true) {
+            const { value, done } = await reader.read();
+            data += textDecoder.decode(value);
+            if (data.includes("START_OF_JSON") && data.includes("END_OF_JSON")) {
+              const startIndex = data.indexOf("START_OF_JSON") + START_INDICATOR_OFFSET;
+              const endIndex = data.indexOf("END_OF_JSON");
+              const artist = JSON.parse(data.slice(startIndex, endIndex));
+              artists$.next({
+                name: artist.name,
+                country: this.determineCountryOfOrigin(artist.page),
+              });
+              data = data.slice(endIndex + END_INDICATOR_OFFSET);
+            }
 
-          if (done) {
-            artists$.complete();
-            break;
+            if (done) {
+              artists$.complete();
+              break;
+            }
           }
         }
-      }
-    });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     return artists$.asObservable();
   }
