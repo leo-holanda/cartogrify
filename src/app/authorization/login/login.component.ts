@@ -15,6 +15,7 @@ export class LoginComponent {
   lastFmUsername = "";
   hasClickedSpotifyButton = false;
   hasClickedLastFmButton = false;
+  hasClickedLastFmStartButton = false;
 
   constructor(
     private spotifyAuthService: SpotifyAuthService,
@@ -46,6 +47,10 @@ export class LoginComponent {
 
   onLastfmButtonClick(): void {
     this.hasClickedLastFmButton = true;
+  }
+
+  onLastfmStartButtonClick(): void {
+    this.hasClickedLastFmStartButton = true;
     this.lastFmService.getTopArtists(this.lastFmUsername).subscribe({
       next: (topArtists) => {
         this.artistService.setUserTopArtists(topArtists);
@@ -54,6 +59,8 @@ export class LoginComponent {
       error: (err) => {
         this.hasClickedSpotifyButton = false;
         this.hasClickedLastFmButton = false;
+        this.hasClickedLastFmStartButton = false;
+        this.lastFmUsername = "";
         this.messageService.add({
           severity: "error",
           summary: "Communication with LastFM has failed.",
