@@ -6,7 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
-import { filter } from "rxjs";
+import { debounceTime, filter, fromEvent, tap } from "rxjs";
 import { Artist } from "./artist.model";
 
 import * as d3 from "d3";
@@ -61,11 +61,6 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   DataTypes = DataTypes;
 
   @ViewChild("mapWrapper") mapWrapper!: ElementRef<HTMLElement>;
-  @HostListener("window:resize") onResize() {
-    const height = this.mapWrapper.nativeElement.offsetHeight;
-    const width = this.mapWrapper.nativeElement.offsetWidth;
-    this.mapSvg.select("#map").attr("width", width).attr("height", height);
-  }
 
   constructor(
     private artistsService: ArtistService,
@@ -100,6 +95,16 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       .subscribe(() => {
         this.setCountriesColorInMap();
         this.setLegendText();
+
+        fromEvent(window, "resize")
+          .pipe(debounceTime(250))
+          .subscribe(() => {
+            d3.select("svg").remove();
+            this.addMap();
+            this.addMapLegend();
+            this.setCountriesColorInMap();
+            this.setLegendText();
+          });
       });
   }
 
@@ -152,7 +157,6 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       .append("svg")
       .attr("class", "svg")
       .attr("viewBox", [0, 0, width, height])
-      .attr("aspect-ratio", "auto")
       .call(zoom as any);
 
     this.tooltip = d3
