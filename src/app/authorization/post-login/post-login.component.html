@@ -31,5 +31,11 @@
     <p>You have chosen to not connect your Spotify account.</p>
   </div>
 
+  <div *ngIf="hasRequestError">
+    <i class="bx bxs-sad"> </i>
+    <h1>REQUEST ERROR</h1>
+    <p>{{ requestErrorMessage }}</p>
+  </div>
+
   <button routerLink="/">Return to initial page</button>
 </main>

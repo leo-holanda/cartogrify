@@ -5,6 +5,7 @@ import { SpotifyService } from "src/app/streaming/spotify.service";
 import { ArtistService } from "src/app/artists/artist.service";
 import { LastFmService } from "src/app/streaming/last-fm.service";
 import { MessageService } from "primeng/api";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: "msm-login",
@@ -28,21 +29,21 @@ export class LoginComponent {
 
   onSpotifyButtonClick(): void {
     this.hasClickedSpotifyButton = true;
+
     if (this.spotifyAuthService.isTokenUndefined()) {
       this.spotifyAuthService.requestAuthorization();
-    } else if (this.spotifyAuthService.isTokenExpired()) {
-      this.spotifyAuthService.refreshToken().subscribe(() => {
-        this.spotifyService.getUserTopArtists().subscribe((topArtists) => {
-          this.artistService.setUserTopArtists(topArtists);
-          this.router.navigate(["/artists"]);
-        });
-      });
-    } else {
-      this.spotifyService.getUserTopArtists().subscribe((topArtists) => {
-        this.artistService.setUserTopArtists(topArtists);
-        this.router.navigate(["/artists"]);
-      });
+      return;
     }
+
+    if (this.spotifyAuthService.isTokenExpired()) {
+      this.spotifyAuthService.refreshToken().subscribe({
+        next: this.fetchUserDataFromSpotify,
+        error: this.handleSpotifyError,
+      });
+      return;
+    }
+
+    this.fetchUserDataFromSpotify();
   }
 
   onLastfmButtonClick(): void {
@@ -65,9 +66,39 @@ export class LoginComponent {
           severity: "error",
           summary: "Communication with LastFM has failed.",
           detail: "Error: " + err.message,
-          life: 2000,
+          sticky: true,
         });
       },
     });
+  }
+
+  private fetchUserDataFromSpotify(): void {
+    this.spotifyService.getUserTopArtists().subscribe({
+      next: (topArtists) => {
+        this.artistService.setUserTopArtists(topArtists);
+        this.router.navigate(["/artists"]);
+      },
+      error: this.handleSpotifyError,
+    });
+  }
+
+  private handleSpotifyError(err: HttpErrorResponse): void {
+    let errorMessage = "";
+    if (err.error && err.error.error) {
+      errorMessage = err.error.error.message;
+    } else {
+      errorMessage =
+        err.message ||
+        "It was not possible to get info about the error. Please, report it as a GitHub issue in the repository.";
+    }
+
+    this.messageService.add({
+      severity: "error",
+      summary: "Communication with Spotify has failed.",
+      detail: "Error: " + errorMessage,
+      sticky: true,
+    });
+
+    this.hasClickedSpotifyButton = false;
   }
 }
