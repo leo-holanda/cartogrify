@@ -34,7 +34,8 @@
         <p-dialog
           header="Enter your Last.fm username"
           [(visible)]="hasClickedLastFmButton"
-          [style]="{ width: '75%' }"
+          [breakpoints]="{ '768px': '87vw' }"
+          [style]="{ width: '35rem' }"
           [modal]="true"
         >
           <input
