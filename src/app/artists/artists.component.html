@@ -142,33 +142,6 @@
         </div>
       </p-tabPanel>
     </p-tabView>
-
-    <div *ngIf="selectedData == DataTypes.ARTISTS && isMessageActive">
-      <p-messages severity="warn">
-        <ng-template pTemplate>
-          <div>
-            <span class="pi pi-exclamation-triangle suggestion-message-icon"></span>
-          </div>
-          <div class="suggestion-message">
-            <div>
-              <i>"Why is it saying that Taylor Swift was born in North Korea?"</i>
-              <div class="suggestion-message-content">
-                Sometimes, the little robot that guesses the artist's country of origin might be way
-                off the target. He's trying his best. You can help him by suggesting the correct
-                country of origin for your favourite artists!
-              </div>
-            </div>
-            <div class="suggestion-message-close-btn">
-              <p-button
-                (onClick)="hideMessage()"
-                styleClass="p-ripple p-element p-message-close p-link"
-                icon="pi pi-times"
-              ></p-button>
-            </div>
-          </div>
-        </ng-template>
-      </p-messages>
-    </div>
   </div>
   <div #mapWrapper class="map-wrapper"></div>
 </main>
