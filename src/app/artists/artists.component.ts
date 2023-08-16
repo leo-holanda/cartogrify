@@ -87,14 +87,13 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   //The map can only be initialized after view has initiated
   ngAfterViewInit(): void {
     this.addMap();
-    this.addMapLegend();
 
     this.artistsService
       .getUserTopArtists()
       .pipe(filter((userTopArtists): userTopArtists is Artist[] => userTopArtists !== undefined))
       .subscribe(() => {
         this.setCountriesColorInMap();
-        this.setLegendText();
+        this.addMapLegend();
 
         fromEvent(window, "resize")
           .pipe(debounceTime(250))
@@ -103,7 +102,6 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
             this.addMap();
             this.addMapLegend();
             this.setCountriesColorInMap();
-            this.setLegendText();
           });
       });
   }
@@ -127,7 +125,6 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
         this.countriesData = this.countryService.countCountries(this.artists);
         this.regionsData = this.countryService.countRegions(this.artists);
         this.setCountriesColorInMap();
-        this.setLegendText();
       }
     });
   }
@@ -195,54 +192,68 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   }
 
   private addMapLegend(): void {
-    const labelsWrapper = this.mapSvg
-      .append("g")
-      .attr("id", "labelsWrapper")
-      .attr("transform", "translate(16, 0)");
+    setTimeout(() => {
+      this.mapSvg.selectAll("text").remove();
+      this.mapSvg.selectAll("rect").remove();
 
-    labelsWrapper
-      .append("text")
-      .text("Artists per country")
-      .attr("transform", "translate(0, -8)")
-      .attr("fill", "grey")
-      .attr("font-size", "small");
+      const mapMeasures = (document.querySelector("#map") as Element).getBoundingClientRect();
+      const mapViewWidthFactor = mapMeasures.width * 0.001;
+      const legendY = mapMeasures.y + mapMeasures.height - 192 * mapViewWidthFactor;
+      const legendX = 24;
+      const fontSize = 12 * mapViewWidthFactor;
+      const labelDistance = 20;
+      const rectDistanceToCenter = 8;
 
-    labelsWrapper
-      .selectAll("g")
-      .data(this.colorPalette)
-      .enter()
-      .append("g")
-      .attr("id", "labelsGroup");
+      const colorLabels: LabelData[] = this.colorPalette.map((color) => {
+        return {
+          min: this.colorScale.invertExtent(color)[0],
+          max: this.colorScale.invertExtent(color)[1],
+          fill: color,
+        };
+      });
 
-    labelsWrapper
-      .selectAll("g")
-      .data(this.colorPalette)
-      .append("rect")
-      .attr("id", (d: string, i: number) => "rect" + i)
-      .attr("fill", (d: string) => d)
-      .attr("width", "1.25rem")
-      .attr("height", "1.25rem")
-      .attr("font-size", "small")
-      .attr("transform", (d: string, i: number) => `translate(0,${i * 28})`);
+      this.mapSvg
+        .append("text")
+        .text("Artists per country")
+        .attr("fill", "grey")
+        .attr("font-size", fontSize)
+        .attr("transform", `translate(${legendX}, ${legendY - 8 * mapViewWidthFactor})`);
 
-    labelsWrapper
-      .selectAll("g")
-      .data(this.colorPalette)
-      .append("text")
-      .attr("transform", (d: string, i: number) => `translate(${26},${10 + i * 28})`)
-      .attr("alignment-baseline", "central")
-      .attr("fill", "grey")
-      .attr("font-size", "small");
+      this.mapSvg
+        .selectAll(".rect")
+        .data(this.colorPalette)
+        .enter()
+        .append("rect")
+        .attr("fill", (d: string) => d)
+        .attr("width", fontSize)
+        .attr("height", fontSize)
+        .attr(
+          "transform",
+          (d: string, i: number) =>
+            `translate(${legendX},${legendY + i * labelDistance * mapViewWidthFactor})`
+        );
 
-    const labelsWrapperHeight = (labelsWrapper.node() as SVGAElement).getBoundingClientRect()
-      .height;
-
-    const mapCoordinates = (document.querySelector("#map") as Element).getBoundingClientRect();
-
-    labelsWrapper.attr(
-      "transform",
-      `translate(16, ${mapCoordinates.y + mapCoordinates.height - labelsWrapperHeight})`
-    );
+      this.mapSvg
+        .selectAll(".color-label")
+        .data(colorLabels)
+        .enter()
+        .append("text")
+        .attr("class", "color-label")
+        .attr("alignment-baseline", "central")
+        .attr("fill", "grey")
+        .attr("font-size", fontSize)
+        .attr(
+          "transform",
+          (d: LabelData, i: number) =>
+            `translate(${legendX + labelDistance * mapViewWidthFactor},${
+              legendY + rectDistanceToCenter + i * labelDistance * mapViewWidthFactor
+            })`
+        )
+        .text((d: LabelData, i: number) => {
+          const isTheLast = i === colorLabels.length - 1;
+          return this.getColorLabelText(d, isTheLast);
+        });
+    }, 100);
   }
 
   private setCountriesColorInMap(): void {
@@ -304,23 +315,5 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     if (!labelData.max && labelData.min) return "More than " + labelData.min;
 
     return "Not used";
-  }
-
-  private setLegendText(): void {
-    const colorLabels: LabelData[] = this.colorPalette.map((color) => {
-      return {
-        min: this.colorScale.invertExtent(color)[0],
-        max: this.colorScale.invertExtent(color)[1],
-        fill: color,
-      };
-    });
-
-    this.mapSvg
-      .selectAll("#labelsGroup text")
-      .data(colorLabels)
-      .text((d: LabelData, i: number) => {
-        const isTheLast = i === colorLabels.length - 1;
-        return this.getColorLabelText(d, isTheLast);
-      });
   }
 }
