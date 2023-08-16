@@ -1,12 +1,5 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  HostListener,
-  OnInit,
-  ViewChild,
-} from "@angular/core";
-import { debounceTime, filter, fromEvent, tap } from "rxjs";
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { debounceTime, filter, fromEvent, take } from "rxjs";
 import { Artist } from "./artist.model";
 
 import * as d3 from "d3";
@@ -21,9 +14,7 @@ import {
   LabelData,
 } from "../country/country.model";
 import { CountryService } from "../country/country.service";
-import { Message } from "primeng/api";
 import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
-import { LoginComponent } from "../authorization/login/login.component";
 import { SuggestionsComponent } from "../suggestions/suggestions.component";
 
 enum DataTypes {
@@ -71,16 +62,14 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.artistsService
       .getUserTopArtists()
-      .pipe(filter((userTopArtists): userTopArtists is Artist[] => userTopArtists !== undefined))
+      .pipe(
+        filter((userTopArtists): userTopArtists is Artist[] => userTopArtists !== undefined),
+        take(1)
+      )
       .subscribe((userTopArtists) => {
         this.artists = userTopArtists;
         this.countriesData = this.countryService.countCountries(userTopArtists);
         this.regionsData = this.countryService.countRegions(userTopArtists);
-
-        this.colorScale = d3
-          .scaleThreshold<number, string>()
-          .domain(this.getColorScaleDomain())
-          .range(this.colorPalette);
       });
   }
 
@@ -91,7 +80,14 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     this.artistsService
       .getUserTopArtists()
       .pipe(filter((userTopArtists): userTopArtists is Artist[] => userTopArtists !== undefined))
-      .subscribe(() => {
+      .subscribe((userTopArtists) => {
+        this.artists = userTopArtists;
+        this.countriesData = this.countryService.countCountries(userTopArtists);
+        this.regionsData = this.countryService.countRegions(userTopArtists);
+
+        const { domain, range } = this.getScaleData();
+        this.colorScale = d3.scaleThreshold<number, string>().domain(domain).range(range);
+
         this.setCountriesColorInMap();
         this.addMapLegend();
 
@@ -184,11 +180,22 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       .attr("fill", this.colorPalette[0]);
   }
 
-  private getColorScaleDomain(): number[] {
-    const counts = this.countriesData.map((countryData) => countryData.count).reverse();
-    const domainSet = new Set<number>(counts);
+  private getScaleData(): { domain: number[]; range: string[] } {
+    const counts = this.countriesData.map((countryData) => countryData.count).sort();
+    const domain = [...new Set<number>(counts)];
+    const colorPalette = [...this.colorPalette];
 
-    return [...domainSet];
+    //If the number of values in the scale’s range is N+1, the number of values in the scale’s domain must be N
+    //https://github.com/d3/d3-scale#threshold_domain
+    while (domain.length < colorPalette.length - 1) {
+      const colorToBeRemovedIndex = Math.floor(colorPalette.length / 2);
+      colorPalette.splice(colorToBeRemovedIndex, 1);
+    }
+
+    return {
+      domain,
+      range: colorPalette,
+    };
   }
 
   private addMapLegend(): void {
@@ -204,7 +211,8 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       const labelDistance = 20;
       const rectDistanceToCenter = 8;
 
-      const colorLabels: LabelData[] = this.colorPalette.map((color) => {
+      const { range } = this.getScaleData();
+      const colorLabels: LabelData[] = range.map((color) => {
         return {
           min: this.colorScale.invertExtent(color)[0],
           max: this.colorScale.invertExtent(color)[1],
@@ -221,7 +229,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
 
       this.mapSvg
         .selectAll(".rect")
-        .data(this.colorPalette)
+        .data(range)
         .enter()
         .append("rect")
         .attr("fill", (d: string) => d)
