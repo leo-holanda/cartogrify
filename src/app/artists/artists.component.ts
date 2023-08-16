@@ -42,14 +42,6 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   countriesData: CountryData[] = [];
   regionsData: RegionData[] = [];
   selectedData = DataTypes.COUNTRIES;
-  messages: Message[] = [
-    {
-      detail:
-        "Hey, Taylor Swift is not from China! What a stupid tool! \n\n\r\n Sometimes, the little robot that guesses the artists countries might say something stupid. He's trying his best. You can help him by suggesting the correct artist country of origin!",
-      id: 0,
-      severity: "warn",
-    },
-  ];
   isMessageActive = true;
 
   private mapSvg!: MapSVG;
