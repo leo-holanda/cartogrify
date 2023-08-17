@@ -152,9 +152,11 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       .attr("viewBox", [0, 0, width, height])
       .call(zoom as any);
 
+    d3.select("#tooltip").remove();
     this.tooltip = d3
       .select(".map-wrapper")
       .append("div")
+      .attr("id", "tooltip")
       .style("position", "absolute")
       .style("visibility", "hidden")
       .style("background-color", "white")
