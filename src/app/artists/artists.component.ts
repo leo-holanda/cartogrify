@@ -205,8 +205,8 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
 
       const mapMeasures = (document.querySelector("#map") as Element).getBoundingClientRect();
       const mapViewWidthFactor = mapMeasures.width * 0.001;
-      const legendY = mapMeasures.y + mapMeasures.height - 192 * mapViewWidthFactor;
-      const legendX = 24;
+      const legendY = mapMeasures.y + mapMeasures.height - 96 * mapViewWidthFactor;
+      const legendX = 64 * mapViewWidthFactor;
       const fontSize = 12 * mapViewWidthFactor;
       const labelDistance = 20;
       const rectDistanceToCenter = 8;
