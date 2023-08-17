@@ -6,8 +6,8 @@ import { StreamingModule } from "../streaming/streaming.module";
 import { MessagesModule } from "primeng/messages";
 import { ToastModule } from "primeng/toast";
 import { ButtonModule } from "primeng/button";
-import { TabViewModule } from "primeng/tabview";
 import { DialogService, DynamicDialogModule } from "primeng/dynamicdialog";
+import { TabMenuModule } from "primeng/tabmenu";
 
 @NgModule({
   declarations: [ArtistsComponent],
@@ -18,7 +18,7 @@ import { DialogService, DynamicDialogModule } from "primeng/dynamicdialog";
     MessagesModule,
     ToastModule,
     ButtonModule,
-    TabViewModule,
+    TabMenuModule,
     DynamicDialogModule,
   ],
   providers: [DialogService],

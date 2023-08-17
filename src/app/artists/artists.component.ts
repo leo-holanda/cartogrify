@@ -16,11 +16,12 @@ import {
 import { CountryService } from "../country/country.service";
 import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
 import { SuggestionsComponent } from "../suggestions/suggestions.component";
+import { MenuItem } from "primeng/api";
 
 enum DataTypes {
-  COUNTRIES = "countries",
-  REGIONS = "regions",
-  ARTISTS = "artists",
+  COUNTRIES = "Countries",
+  REGIONS = "Regions",
+  ARTISTS = "Artists",
 }
 
 @Component({
@@ -34,6 +35,22 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   regionsData: RegionData[] = [];
   selectedData = DataTypes.COUNTRIES;
   isMessageActive = true;
+
+  activeItem = DataTypes.COUNTRIES;
+  items: MenuItem[] = [
+    {
+      label: DataTypes.COUNTRIES,
+      icon: "pi pi-flag-fill",
+    },
+    {
+      label: DataTypes.REGIONS,
+      icon: "pi pi-map",
+    },
+    {
+      label: DataTypes.ARTISTS,
+      icon: "pi pi-user",
+    },
+  ];
 
   private mapSvg!: MapSVG;
   private colorScale!: ColorScale;
@@ -123,6 +140,10 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
         this.setCountriesColorInMap();
       }
     });
+  }
+
+  onActiveItemChange(activeItem: MenuItem): void {
+    this.activeItem = activeItem.label as DataTypes;
   }
 
   private addMap() {
