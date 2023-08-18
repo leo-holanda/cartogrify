@@ -17,6 +17,8 @@ import { CountryService } from "../country/country.service";
 import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
 import { SuggestionsComponent } from "../suggestions/suggestions.component";
 import { MenuItem } from "primeng/api";
+import { ListboxClickEvent } from "primeng/listbox";
+import { colorPalettes } from "./artist.colors";
 
 enum DataTypes {
   COUNTRIES = "Countries",
@@ -53,22 +55,17 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   ];
 
   private mapSvg!: MapSVG;
-  private colorScale!: ColorScale;
   private tooltip!: Tooltip;
-  private colorPalette = [
-    "#f1eef6",
-    "#d0d1e6",
-    "#a6bddb",
-    "#74a9cf",
-    "#3690c0",
-    "#0570b0",
-    "#034e7b",
-  ];
+
+  colorPalettes = colorPalettes;
+  private colorPalette = colorPalettes[0].colors;
+  private colorScale!: ColorScale;
+  mapBackgroundColor = "rgb(255, 255, 255)";
+
   ref: DynamicDialogRef | undefined;
+  @ViewChild("mapWrapper") mapWrapper!: ElementRef<HTMLElement>;
 
   DataTypes = DataTypes;
-
-  @ViewChild("mapWrapper") mapWrapper!: ElementRef<HTMLElement>;
 
   constructor(
     private artistsService: ArtistService,
@@ -144,6 +141,13 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
 
   onActiveItemChange(activeItem: MenuItem): void {
     this.activeItem = activeItem.label as DataTypes;
+  }
+
+  onColorPaletteSelect(event: ListboxClickEvent): void {
+    this.colorPalette = event.option.colors;
+    this.mapBackgroundColor = event.option.background;
+    this.setCountriesColorInMap();
+    this.addMapLegend();
   }
 
   private addMap() {
@@ -296,6 +300,9 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
 
   private setCountriesColorInMap(): void {
     const geoJSON = this.countryService.geoJSON;
+
+    const { domain, range } = this.getScaleData();
+    this.colorScale = d3.scaleThreshold<number, string>().domain(domain).range(range);
 
     this.mapSvg
       .selectAll("svg #map path")

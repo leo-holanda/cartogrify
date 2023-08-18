@@ -189,4 +189,43 @@ main {
   overflow: hidden;
   background-color: white;
   width: 100%;
+
+  .map-buttons {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+}
+
+.palette-colors-array {
+  display: flex;
+}
+
+::ng-deep {
+  .color-theme-selector {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .map-color-palette {
+    margin-bottom: 0.5rem;
+  }
+
+  .map-background-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+  }
+
+  .map-background-input {
+    margin: 0.5rem 0;
+
+    &:last-child {
+      margin: 0.5rem 0 0 0;
+    }
+
+    label {
+      margin-left: 0.5rem;
+    }
+  }
 }

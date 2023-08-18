@@ -126,5 +126,58 @@
       </div>
     </div>
   </div>
-  <div #mapWrapper class="map-wrapper"></div>
+  <div #mapWrapper class="map-wrapper" [style]="{ background: mapBackgroundColor }">
+    <div class="map-buttons">
+      <p-button
+        (onClick)="op.toggle($event)"
+        label="Change color theme"
+        icon="pi pi-palette"
+        styleClass="p-button-sm"
+      ></p-button>
+      <p-overlayPanel #op>
+        <div class="color-theme-selector">
+          <label class="map-color-palette" for="map-color-palette">Color Palette</label>
+          <p-listbox
+            [options]="colorPalettes"
+            optionLabel="name"
+            [listStyle]="{ 'max-height': '250px' }"
+            (onClick)="onColorPaletteSelect($event)"
+          >
+            <ng-template let-palette pTemplate="item">
+              <div>
+                <div>{{ palette.title }}</div>
+                <div class="palette-colors-array">
+                  <div
+                    *ngFor="let color of palette.colors"
+                    style="width: 1rem; height: 1rem"
+                    [ngStyle]="{ background: color }"
+                  ></div>
+                </div>
+              </div> </ng-template
+          ></p-listbox>
+          <div class="map-background-input-wrapper">
+            <label for="background">Background Color</label>
+            <div class="map-background-input">
+              <p-radioButton
+                name="dark-background"
+                value="rgb(50, 50, 50)"
+                [(ngModel)]="mapBackgroundColor"
+                inputId="dark-background"
+              ></p-radioButton>
+              <label for="dark-background">Dark</label>
+            </div>
+            <div class="map-background-input">
+              <p-radioButton
+                name="light-background"
+                value="rgb(255, 255, 255)"
+                [(ngModel)]="mapBackgroundColor"
+                inputId="light-background"
+              ></p-radioButton>
+              <label for="light-background">Light</label>
+            </div>
+          </div>
+        </div>
+      </p-overlayPanel>
+    </div>
+  </div>
 </main>
