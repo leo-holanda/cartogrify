@@ -164,12 +164,19 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
       .scaleExtent([1, 8])
       .on("zoom", (event) => {
         d3.select("svg #map").attr("transform", event.transform);
+      })
+      .on("start", () => {
+        this.mapSvg.attr("cursor", "grabbing");
+      })
+      .on("end", () => {
+        this.mapSvg.attr("cursor", "grab");
       });
 
     this.mapSvg = d3
       .select(".map-wrapper")
       .append("svg")
       .attr("class", "svg")
+      .attr("cursor", "grab")
       .attr("viewBox", [0, 0, width, height])
       .call(zoom as any);
 
@@ -293,6 +300,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     this.mapSvg
       .selectAll("svg #map path")
       .data(geoJSON.features)
+      .attr("cursor", "pointer")
       .attr("fill", (feature: GeoFeature) => {
         const currentCountry = this.countriesData.find(
           (countryData) => countryData.country.name === feature.properties["NAME"]
