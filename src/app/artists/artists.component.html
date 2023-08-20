@@ -90,30 +90,27 @@
       (activeItemChange)="onActiveItemChange($event)"
     ></p-tabMenu>
     <div class="data" *ngIf="activeItem == DataTypes.COUNTRIES">
-      <h2 class="data-title">Top Countries</h2>
+      <div>
+        <h2 class="data-title">Ranking</h2>
+        <span class="data-subtitle">by artists per country</span>
+      </div>
       <div class="data-content-wrapper">
         <table>
           <thead>
-            <th>#</th>
             <th>Country</th>
             <th>Artists</th>
           </thead>
           <tr *ngFor="let countryData of countriesData; let i = index">
-            <td
-              class="data-index"
-              [ngClass]="{
-                'first-place': i == 0,
-                'second-place': i == 1,
-                'third-place': i == 2
-              }"
-            >
-              {{ "#" + (i + 1) }}
+            <td class="country-column">
+              <div>
+                <span class="{{ 'flag fi fi-' + countryData.country.flagCode }}"></span>
+              </div>
+              <div class="country-column-data">
+                <span>{{ countryData.country.name }}</span>
+                <p-progressBar [value]="(countryData.count / artists.length) * 100"></p-progressBar>
+              </div>
             </td>
-            <td>
-              <span class="{{ 'flag fi fi-' + countryData.country.flagCode }}"></span>
-              <span>{{ countryData.country.name }}</span>
-            </td>
-            <td class="data-count">
+            <td class="count-column">
               <span>{{ countryData.count }}</span>
             </td>
           </tr>

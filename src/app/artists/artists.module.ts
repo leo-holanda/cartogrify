@@ -12,6 +12,7 @@ import { OverlayPanelModule } from "primeng/overlaypanel";
 import { ListboxModule } from "primeng/listbox";
 import { RadioButtonModule } from "primeng/radiobutton";
 import { FormsModule } from "@angular/forms";
+import { ProgressBarModule } from "primeng/progressbar";
 
 @NgModule({
   declarations: [ArtistsComponent],
@@ -28,6 +29,7 @@ import { FormsModule } from "@angular/forms";
     ListboxModule,
     RadioButtonModule,
     FormsModule,
+    ProgressBarModule,
   ],
   providers: [DialogService],
 })
