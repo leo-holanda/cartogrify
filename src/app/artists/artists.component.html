@@ -50,6 +50,15 @@
             </div>
             <div class="map-background-input">
               <p-radioButton
+                name="blue-background"
+                value="rgb(156, 192, 249)"
+                [(ngModel)]="mapBackgroundColor"
+                inputId="blue-background"
+              ></p-radioButton>
+              <label for="blue-background">Light blue</label>
+            </div>
+            <div class="map-background-input">
+              <p-radioButton
                 name="light-brown-background"
                 value="rgb(229, 220, 203)"
                 [(ngModel)]="mapBackgroundColor"
