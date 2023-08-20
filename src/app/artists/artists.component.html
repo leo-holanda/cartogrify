@@ -84,7 +84,11 @@
     <div>
       <h1>Results</h1>
     </div>
-    <p-tabMenu [model]="items" (activeItemChange)="onActiveItemChange($event)"></p-tabMenu>
+    <p-tabMenu
+      [model]="items"
+      [activeItem]="items[0]"
+      (activeItemChange)="onActiveItemChange($event)"
+    ></p-tabMenu>
     <div class="data" *ngIf="activeItem == DataTypes.COUNTRIES">
       <h2 class="data-title">Top Countries</h2>
       <div class="data-content-wrapper">
