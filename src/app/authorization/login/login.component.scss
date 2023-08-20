@@ -8,6 +8,9 @@ main {
   justify-content: center;
   flex-flow: column;
   overflow: hidden;
+  background-image: url(../../../assets/background.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .title-wrapper {
