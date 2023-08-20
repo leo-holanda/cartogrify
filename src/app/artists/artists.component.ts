@@ -60,7 +60,7 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   colorPalettes = colorPalettes;
   private colorPalette = colorPalettes[0].colors;
   private colorScale!: ColorScale;
-  mapBackgroundColor = "rgb(255, 255, 255)";
+  mapBackgroundColor = "rgb(156, 192, 249)";
 
   ref: DynamicDialogRef | undefined;
   @ViewChild("mapWrapper") mapWrapper!: ElementRef<HTMLElement>;
