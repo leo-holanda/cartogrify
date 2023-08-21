@@ -18,17 +18,28 @@ export class ArtistService {
     this.supabaseService
       .getBestSuggestionByArtists(topArtistsNames)
       .subscribe((bestSuggestions) => {
-        const artists = this.transformSuggestionsInArtists(bestSuggestions);
-        this.userTopArtists$.next(artists);
+        const artistsFromDatabase = this.transformSuggestionsInArtists(bestSuggestions);
+        const artistsWithOriginalOrder = this.applyOriginalOrder(
+          topArtistsNames,
+          artistsFromDatabase
+        );
+        this.userTopArtists$.next(artistsWithOriginalOrder);
 
-        const artistsWithoutCountry = this.findArtistsWithoutCountry(topArtistsNames, artists);
+        const artistsWithoutCountry = this.findArtistsWithoutCountry(
+          topArtistsNames,
+          artistsFromDatabase
+        );
         if (artistsWithoutCountry.length > 0) {
           const scrappedArtists: ScrapedArtist[] = [];
 
           this.countryService.getArtistsCountryOfOrigin(artistsWithoutCountry).subscribe({
             next: (scrappedArtist) => {
               scrappedArtists.push(scrappedArtist);
-              this.userTopArtists$.next([...artists, ...scrappedArtists]);
+              const userTopArtists = this.applyOriginalOrder(topArtistsNames, [
+                ...artistsFromDatabase,
+                ...scrappedArtists,
+              ]);
+              this.userTopArtists$.next(userTopArtists);
             },
             complete: () => this.supabaseService.saveSuggestions(scrappedArtists),
           });
@@ -57,5 +68,11 @@ export class ArtistService {
     return topArtistsNames.filter(
       (topArtistName) => !artists?.some((artists) => topArtistName === artists.name)
     );
+  }
+
+  private applyOriginalOrder(topArtistsNames: string[], artistsFromDatabase: Artist[]): Artist[] {
+    return topArtistsNames
+      .map((artistName) => artistsFromDatabase.find((artist) => artist.name == artistName))
+      .filter((artist) => artist) as Artist[];
   }
 }
