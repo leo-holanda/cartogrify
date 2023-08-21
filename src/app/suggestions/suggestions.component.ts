@@ -55,15 +55,17 @@ export class SuggestionsComponent implements OnInit {
   }
 
   onConfirmButtonClick(): void {
-    const suggestions = this.artists
-      .filter((artist) => artist.suggestedCountry)
-      .map((artist) => {
+    const suggestions = this.artists.filter((artist) => artist.suggestedCountry);
+    suggestions.forEach((artist) => (artist.country = artist.suggestedCountry));
+
+    this.countryService.saveSuggestions(
+      suggestions.map((suggestion) => {
         return {
-          artist: artist,
-          suggestedCountry: artist.suggestedCountry,
-        } as Suggestion;
-      });
-    this.countryService.saveSuggestions(suggestions);
+          name: suggestion.name,
+          country: suggestion.suggestedCountry,
+        };
+      })
+    );
     this.dynamicDialogRef.close(true);
   }
 }

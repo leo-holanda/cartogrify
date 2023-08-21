@@ -15,14 +15,25 @@ export class ArtistService {
 
   setUserTopArtists(topArtistsNames: string[]): void {
     this.hasRequestedTopArtists = true;
-    this.supabaseService.getArtistsByName(topArtistsNames).subscribe((artistsFromDatabase) => {
-      const revivedArtists = this.loadArtistsCountry(artistsFromDatabase);
-      this.userTopArtists$.next(revivedArtists);
+    this.supabaseService
+      .getBestSuggestionByArtists(topArtistsNames)
+      .subscribe((bestSuggestions) => {
+        const artists = this.transformSuggestionsInArtists(bestSuggestions);
+        this.userTopArtists$.next(artists);
 
-      const artistsWithoutCountry = this.findArtistsWithoutCountry(topArtistsNames, revivedArtists);
-      if (artistsWithoutCountry.length > 0)
-        this.handleArtistsWithoutCountry(artistsWithoutCountry, revivedArtists);
-    });
+        const artistsWithoutCountry = this.findArtistsWithoutCountry(topArtistsNames, artists);
+        if (artistsWithoutCountry.length > 0) {
+          const scrappedArtists: ScrapedArtist[] = [];
+
+          this.countryService.getArtistsCountryOfOrigin(artistsWithoutCountry).subscribe({
+            next: (scrappedArtist) => {
+              scrappedArtists.push(scrappedArtist);
+              this.userTopArtists$.next([...artists, ...scrappedArtists]);
+            },
+            complete: () => this.supabaseService.saveSuggestions(scrappedArtists),
+          });
+        }
+      });
   }
 
   getUserTopArtists(): Observable<Artist[] | undefined> {
@@ -33,65 +44,18 @@ export class ArtistService {
     return this.hasRequestedTopArtists;
   }
 
-  private loadArtistsCountry(artistsFromDatabase: ArtistFromDatabase[]): Artist[] {
-    return artistsFromDatabase.map((artist) => {
+  private transformSuggestionsInArtists(suggestions: Suggestion[]): Artist[] {
+    return suggestions.map((suggestion) => {
       return {
-        id: artist.id,
-        name: artist.name,
-        country: this.countryService.getCountryById(artist.country_id),
+        name: suggestion.artist_name,
+        country: this.countryService.getCountryByCode(suggestion.country_code),
       } as Artist;
     });
   }
 
-  private findArtistsWithoutCountry(
-    topArtistsNames: string[],
-    artistsFromDatabase: Artist[] | null
-  ): string[] {
+  private findArtistsWithoutCountry(topArtistsNames: string[], artists: Artist[] | null): string[] {
     return topArtistsNames.filter(
-      (topArtistName) =>
-        !artistsFromDatabase?.some(
-          (artistsFromDatabase) => topArtistName === artistsFromDatabase.name
-        )
+      (topArtistName) => !artists?.some((artists) => topArtistName === artists.name)
     );
-  }
-
-  private handleArtistsWithoutCountry(
-    artistsWithoutCountry: string[],
-    revivedArtists: Artist[]
-  ): void {
-    const scrappedArtists: ScrapedArtist[] = [];
-
-    this.countryService
-      .getArtistsCountryOfOrigin(artistsWithoutCountry)
-      .pipe(
-        finalize(() => {
-          const scrappedArtistsNames = scrappedArtists.map((scrappedArtist) => scrappedArtist.name);
-          this.supabaseService.saveArtists(scrappedArtistsNames).subscribe((savedArtists) => {
-            const savedArtistsWithCountry = savedArtists.map((savedArtist) => {
-              return {
-                id: savedArtist.id,
-                name: savedArtist.name,
-                country: scrappedArtists.find(
-                  (scrapedArtist) => scrapedArtist.name == savedArtist.name
-                )?.country,
-              } as Artist;
-            });
-
-            this.userTopArtists$.next([...revivedArtists, ...savedArtistsWithCountry]);
-
-            const suggestions = savedArtistsWithCountry.map((artist) => {
-              return {
-                artist: artist,
-                suggestedCountry: artist.country,
-              } as Suggestion;
-            });
-            this.supabaseService.saveSuggestions(suggestions);
-          });
-        })
-      )
-      .subscribe((artistWithCountry) => {
-        scrappedArtists.push(artistWithCountry);
-        this.userTopArtists$.next([...revivedArtists, ...scrappedArtists]);
-      });
   }
 }

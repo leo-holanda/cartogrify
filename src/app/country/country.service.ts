@@ -315,16 +315,26 @@ export class CountryService {
     return country;
   }
 
-  saveSuggestions(suggestionsToSave: Suggestion[]): void {
+  saveSuggestions(suggestionsToSave: ScrapedArtist[]): void {
     this.supabaseService.saveSuggestions(suggestionsToSave);
   }
 
-  getCountryById(countryId: number): Country | undefined {
+  getCountryByCode(countryCode: number | undefined): Country | undefined {
+    const unknownCountry: Country = {
+      name: "Unknown",
+      flagCode: "xx",
+      region: "Unknown",
+      subRegion: "Unknown",
+      intermediateRegion: "Unknown",
+      NE_ID: 0,
+    };
+    if (!countryCode) return unknownCountry;
+
     const matchedFeature = this.geoJSON.features.find(
-      (feature) => feature.properties["NE_ID"] == countryId
+      (feature) => feature.properties["NE_ID"] == countryCode
     );
     if (matchedFeature) return this.createCountryFromFeature(matchedFeature);
-    return undefined;
+    return unknownCountry;
   }
 
   private createRegion(artist: Artist): RegionData {
