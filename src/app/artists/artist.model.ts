@@ -1,7 +1,6 @@
 import { Country } from "../country/country.model";
 
 export interface Artist {
-  id?: number;
   name: string;
   country: Country | undefined;
 }
@@ -16,17 +15,11 @@ export interface ScrapedArtist {
 }
 
 export interface Suggestion {
-  artist: Artist;
-  suggestedCountry: Country | undefined;
+  artist_name: string;
+  country_code?: number;
 }
 
 export interface ArtistFromDatabase {
-  id: number;
-  name: string;
-  country_id: number;
-}
-
-export interface SavedArtist {
-  id: number;
-  name: string;
+  artist_name: string;
+  country_code?: number;
 }

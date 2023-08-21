@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { SupabaseClient, createClient } from "@supabase/supabase-js";
 import { Observable, asyncScheduler, map, scheduled, take } from "rxjs";
 import { environment } from "src/environments/environment";
-import { ArtistFromDatabase, SavedArtist, Suggestion } from "../artists/artist.model";
+import { ArtistFromDatabase, ScrapedArtist, Suggestion } from "../artists/artist.model";
 import { LastFmTopArtists } from "./supabase.model";
 
 @Injectable({
@@ -15,31 +15,12 @@ export class SupabaseService {
     this.supabaseClient = createClient(environment.SUPABASE_URL, environment.SUPABASE_ANON_KEY);
   }
 
-  getArtistsByName(artists: string[]): Observable<ArtistFromDatabase[]> {
+  getBestSuggestionByArtists(artists: string[]): Observable<Suggestion[]> {
     return scheduled(
       this.supabaseClient
-        .from("highest_suggestion_by_artist")
-        .select("id, name, country_id")
-        .in("name", artists),
-      asyncScheduler
-    ).pipe(
-      take(1),
-      map((response) => response.data || [])
-    );
-  }
-
-  saveArtists(artistsNames: string[]): Observable<SavedArtist[]> {
-    const artistsToSave = artistsNames.map((artistName) => {
-      return {
-        name: artistName,
-      };
-    });
-
-    return scheduled(
-      this.supabaseClient.functions.invoke<SavedArtist[]>("save-missing-artists", {
-        method: "POST",
-        body: JSON.stringify(artistsToSave),
-      }),
+        .from("suggestions_rank")
+        .select("artist_name, country_code")
+        .in("artist_name", artists),
       asyncScheduler
     ).pipe(
       take(1),
@@ -64,15 +45,14 @@ export class SupabaseService {
     );
   }
 
-  saveSuggestions(suggestionsToSave: Suggestion[]): void {
-    const suggestions = suggestionsToSave.map((suggestion) => {
+  saveSuggestions(scrappedArtists: ScrapedArtist[]): void {
+    const suggestions = scrappedArtists.map((scrappedArtist) => {
       return {
-        artist_id: suggestion.artist.id,
-        country_id: suggestion.suggestedCountry?.NE_ID || null,
+        artist_name: scrappedArtist.name,
+        country_code: scrappedArtist.country?.NE_ID,
       };
     });
 
-    console.log(suggestions);
     scheduled(
       this.supabaseClient.functions.invoke<Suggestion[]>("save-suggestions", {
         body: JSON.stringify(suggestions),
