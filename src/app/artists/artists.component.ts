@@ -19,6 +19,7 @@ import { SuggestionsComponent } from "../suggestions/suggestions.component";
 import { MenuItem } from "primeng/api";
 import { ListboxClickEvent } from "primeng/listbox";
 import { colorPalettes } from "./artist.colors";
+import * as htmlToImage from "html-to-image";
 
 enum DataTypes {
   COUNTRIES = "Countries",
@@ -66,6 +67,9 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   @ViewChild("mapWrapper") mapWrapper!: ElementRef<HTMLElement>;
 
   DataTypes = DataTypes;
+
+  shareMode = false;
+  downloadURL = "";
 
   constructor(
     private artistsService: ArtistService,
@@ -148,6 +152,44 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
     this.mapBackgroundColor = event.option.background;
     this.setCountriesColorInMap();
     this.addMapLegend();
+  }
+
+  onShareButtonClick(): void {
+    this.shareMode = true;
+  }
+
+  shareMap(): void {
+    setTimeout(() => {
+      htmlToImage
+        .toPng(this.mapWrapper.nativeElement)
+        .then((dataUrl) => {
+          const a = document.createElement("a");
+          a.href = dataUrl;
+          a.download = "cartogrify_map";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        })
+        .catch(function (error) {
+          console.error("oops, something went wrong!", error);
+        });
+    }, 500);
+  }
+
+  shareRanking(): void {
+    htmlToImage
+      .toPng(document.querySelector(".data-wrapper") as HTMLElement)
+      .then((dataUrl) => {
+        const a = document.createElement("a");
+        a.href = dataUrl;
+        a.download = "cartogrify_ranking";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      })
+      .catch(function (error) {
+        console.error("oops, something went wrong!", error);
+      });
   }
 
   private addMap() {

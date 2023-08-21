@@ -19,6 +19,32 @@ main {
   }
 }
 
+.map-title {
+  position: absolute;
+  top: 16px;
+}
+
+.logo {
+  position: absolute;
+  bottom: 16px;
+}
+
+::ng-deep {
+  .download-options {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+
+    & p-button {
+      flex: 1;
+
+      & button {
+        width: 100%;
+      }
+    }
+  }
+}
+
 .data-wrapper {
   display: flex;
   flex-flow: column;
@@ -202,6 +228,8 @@ main {
   position: relative;
 
   .map-buttons {
+    display: flex;
+    gap: 1rem;
     position: absolute;
     top: 16px;
     right: 16px;

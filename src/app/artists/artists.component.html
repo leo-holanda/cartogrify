@@ -1,10 +1,16 @@
 <main>
   <div #mapWrapper class="map-wrapper" [style]="{ background: mapBackgroundColor }">
-    <div class="map-buttons">
+    <div [ngStyle]="{ visibility: shareMode ? 'collapse' : 'visible' }" class="map-buttons">
       <p-button
         (onClick)="op.toggle($event)"
         label="Change color theme"
         icon="pi pi-palette"
+        styleClass="p-button-sm"
+      ></p-button>
+      <p-button
+        (onClick)="onShareButtonClick()"
+        label="Share with your friends"
+        icon="pi pi-share-alt"
         styleClass="p-button-sm"
       ></p-button>
       <p-overlayPanel #op>
@@ -79,7 +85,24 @@
         </div>
       </p-overlayPanel>
     </div>
+    <div [ngStyle]="{ visibility: shareMode ? 'visible' : 'collapse' }" class="map-title">
+      <h1>Your map</h1>
+    </div>
+    <div class="logo">
+      <h1>cartogrify</h1>
+    </div>
   </div>
+  <p-dialog
+    header="Choose the content you want to share"
+    [(visible)]="shareMode"
+    [style]="{ width: '35rem' }"
+    [modal]="true"
+  >
+    <div class="download-options">
+      <p-button (onClick)="shareMap()" label="Map"></p-button>
+      <p-button (onClick)="shareRanking()" label="Ranking"></p-button>
+    </div>
+  </p-dialog>
   <div class="data-wrapper">
     <div>
       <h1>Results</h1>
