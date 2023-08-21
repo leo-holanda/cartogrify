@@ -215,8 +215,8 @@ export class ArtistsComponent implements OnInit, AfterViewInit {
   }
 
   private getScaleData(): { domain: number[]; range: string[] } {
-    const counts = this.countriesData.map((countryData) => countryData.count).sort();
-    const domain = [...new Set<number>(counts)];
+    const counts = this.countriesData.map((countryData) => countryData.count);
+    const domain = [...new Set<number>(counts)].sort((a, b) => a - b);
     const colorPalette = [...this.colorPalette];
 
     //If the number of values in the scale’s range is N+1, the number of values in the scale’s domain must be N
