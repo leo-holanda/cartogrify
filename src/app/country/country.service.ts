@@ -159,7 +159,9 @@ export class CountryService {
     }
   }
 
-  determineCountryOfOrigin(artistPage: string): Country | undefined {
+  determineCountryOfOrigin(artistPage: string | undefined): Country | undefined {
+    if (!artistPage) return undefined;
+
     const parser = new DOMParser();
     const htmlDoc = parser.parseFromString(artistPage, "text/html");
     const possibleCountries = new Map<string, PossibleCountry>();
