@@ -12,21 +12,21 @@ export interface CountryData {
   count: number;
 }
 
-export interface IntermediateRegionData {
+export interface SubRegionData {
   name: string;
   count: number;
 }
 
-export interface SubRegionData {
+export interface IntermediateRegionData {
   name: string;
   count: number;
-  intermediateRegions: IntermediateRegionData[];
+  subRegions: SubRegionData[];
 }
 
 export interface RegionData {
   name: string;
   count: number;
-  subRegions: SubRegionData[];
+  intermediateRegions: IntermediateRegionData[];
 }
 
 export type GeoFeature = GeoJSON.Feature<GeoJSON.Geometry, NonNullable<GeoJSON.GeoJsonProperties>>;
