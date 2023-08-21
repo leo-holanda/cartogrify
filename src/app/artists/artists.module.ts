@@ -13,6 +13,7 @@ import { ListboxModule } from "primeng/listbox";
 import { RadioButtonModule } from "primeng/radiobutton";
 import { FormsModule } from "@angular/forms";
 import { ProgressBarModule } from "primeng/progressbar";
+import { DialogModule } from "primeng/dialog";
 
 @NgModule({
   declarations: [ArtistsComponent],
@@ -30,6 +31,7 @@ import { ProgressBarModule } from "primeng/progressbar";
     RadioButtonModule,
     FormsModule,
     ProgressBarModule,
+    DialogModule,
   ],
   providers: [DialogService],
 })
