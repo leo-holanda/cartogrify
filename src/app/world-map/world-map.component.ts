@@ -33,6 +33,26 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
   @Input() artists: Artist[] = [];
 
   shareMode = false;
+  usesDefaultResolution = true;
+  availableResolutions = [
+    {
+      width: "1920px",
+      height: "1080px",
+    },
+    {
+      width: "2560px",
+      height: "1440px",
+    },
+    {
+      width: "3840px",
+      height: "2160px",
+    },
+    {
+      width: "1080px",
+      height: "1080px",
+    },
+  ];
+  shareMapResolution = this.availableResolutions[0];
 
   private mapSvg!: MapSVG;
   private tooltip!: Tooltip;
@@ -72,6 +92,11 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
   }
 
   shareMap(): void {
+    this.mapWrapper.nativeElement.style.position = "absolute";
+    this.mapWrapper.nativeElement.style.height = this.shareMapResolution.height;
+    this.mapWrapper.nativeElement.style.width = this.shareMapResolution.width;
+    this.updateMap();
+
     setTimeout(() => {
       htmlToImage
         .toPng(this.mapWrapper.nativeElement)
@@ -82,6 +107,11 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
+
+          this.mapWrapper.nativeElement.style.position = "relative";
+          this.mapWrapper.nativeElement.style.height = "100%";
+          this.mapWrapper.nativeElement.style.width = "100%";
+          this.updateMap();
         })
         .catch(function (error) {
           console.error("oops, something went wrong!", error);
@@ -103,6 +133,16 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
       .catch(function (error) {
         console.error("oops, something went wrong!", error);
       });
+  }
+
+  onChangeDefaultResolutionStatus(): void {
+    this.usesDefaultResolution = !this.usesDefaultResolution;
+    if (this.usesDefaultResolution) {
+      this.shareMapResolution = {
+        width: "1920px",
+        height: "1080px",
+      };
+    }
   }
 
   private addMap() {
@@ -131,7 +171,7 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
         this.mapSvg.attr("cursor", "grab");
       });
 
-    d3.select("svg").remove();
+    d3.select(".svg").remove();
     this.mapSvg = d3
       .select(".map-wrapper")
       .append("svg")

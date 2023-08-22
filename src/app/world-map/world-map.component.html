@@ -5,8 +5,69 @@
   [modal]="true"
 >
   <div class="download-options">
-    <p-button (onClick)="shareMap()" label="Map"></p-button>
-    <p-button (onClick)="shareRanking()" label="Ranking"></p-button>
+    <p-card header="Map">
+      <div class="share-map-buttons">
+        <p-button (onClick)="shareMap()" label="Download map"></p-button>
+        <div>
+          <p-toggleButton
+            (onChange)="onChangeDefaultResolutionStatus()"
+            [onLabel]="'Use default resolution'"
+            offLabel="Change image resolution"
+          ></p-toggleButton>
+        </div>
+      </div>
+
+      <div class="share-map-resolutions-wrapper" *ngIf="!usesDefaultResolution">
+        <span>Available resolutions</span>
+        <span>16:9</span>
+        <div class="share-map-resolutions">
+          <p-radioButton
+            name="share-map-resolution"
+            [value]="availableResolutions[0]"
+            [(ngModel)]="shareMapResolution"
+            inputId="1080p"
+          ></p-radioButton>
+          <label for="1080p"> <p-tag value="1920x1080"></p-tag></label>
+        </div>
+
+        <div class="share-map-resolutions">
+          <p-radioButton
+            name="share-map-resolution"
+            [value]="availableResolutions[1]"
+            [(ngModel)]="shareMapResolution"
+            inputId="1440px"
+          ></p-radioButton>
+          <label for="1440px"> <p-tag value="2560x1440"></p-tag></label>
+        </div>
+
+        <div class="share-map-resolutions">
+          <p-radioButton
+            name="share-map-resolution"
+            [value]="availableResolutions[2]"
+            [(ngModel)]="shareMapResolution"
+            inputId="2160p"
+          ></p-radioButton>
+          <label for="2160p"> <p-tag value="3840x2160"></p-tag></label>
+        </div>
+
+        <span>1:1</span>
+        <div class="share-map-resolutions">
+          <p-radioButton
+            name="share-map-resolution"
+            [value]="availableResolutions[3]"
+            [(ngModel)]="shareMapResolution"
+            inputId="2160p"
+          ></p-radioButton>
+          <label for="2160p"> <p-tag value="1080x1080"></p-tag></label>
+        </div>
+      </div>
+    </p-card>
+
+    <p-card header="Rankings">
+      <ng-template pTemplate="footer">
+        <p-button (onClick)="shareRanking()" label="Download rankings"></p-button>
+      </ng-template>
+    </p-card>
   </div>
 </p-dialog>
 <div #mapWrapper class="map-wrapper" [style]="{ background: mapBackgroundColor }">
