@@ -268,8 +268,8 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
 
       const mapMeasures = (document.querySelector("#map") as Element).getBoundingClientRect();
       const mapViewWidthFactor = mapMeasures.width * 0.001;
-      const legendY = mapMeasures.y + mapMeasures.height - 96 * mapViewWidthFactor;
-      const legendX = 64 * mapViewWidthFactor;
+      const legendY = mapMeasures.y + mapMeasures.height - 172 * mapViewWidthFactor;
+      const legendX = 120 * mapViewWidthFactor;
       const fontSize = 12 * mapViewWidthFactor;
       const labelDistance = 20;
       const rectDistanceToCenter = 8;
