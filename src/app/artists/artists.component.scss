@@ -19,32 +19,6 @@ main {
   }
 }
 
-.map-title {
-  position: absolute;
-  top: 16px;
-}
-
-.logo {
-  position: absolute;
-  bottom: 16px;
-}
-
-::ng-deep {
-  .download-options {
-    display: flex;
-    justify-content: space-around;
-    gap: 1rem;
-
-    & p-button {
-      flex: 1;
-
-      & button {
-        width: 100%;
-      }
-    }
-  }
-}
-
 .data-wrapper {
   display: flex;
   flex-flow: column;
@@ -216,55 +190,5 @@ main {
 
   .flag {
     margin-right: 0.25rem;
-  }
-}
-
-.map-wrapper {
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  background-color: white;
-  width: 100%;
-  position: relative;
-
-  .map-buttons {
-    display: flex;
-    gap: 1rem;
-    position: absolute;
-    top: 16px;
-    right: 16px;
-  }
-}
-
-.palette-colors-array {
-  display: flex;
-}
-
-::ng-deep {
-  .color-theme-selector {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .map-color-palette {
-    margin-bottom: 0.5rem;
-  }
-
-  .map-background-input-wrapper {
-    display: flex;
-    flex-direction: column;
-    margin-top: 1rem;
-  }
-
-  .map-background-input {
-    margin: 0.5rem 0;
-
-    &:last-child {
-      margin: 0.5rem 0 0 0;
-    }
-
-    label {
-      margin-left: 0.5rem;
-    }
   }
 }
