@@ -286,7 +286,7 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
       this.mapSvg
         .append("text")
         .text("Artists per country")
-        .attr("fill", "grey")
+        .attr("fill", this.currentColorPalette[this.currentColorPalette.length - 1])
         .attr("font-size", fontSize)
         .attr("transform", `translate(${legendX}, ${legendY - 8 * mapViewWidthFactor})`);
 
@@ -311,7 +311,7 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
         .append("text")
         .attr("class", "color-label")
         .attr("alignment-baseline", "central")
-        .attr("fill", "grey")
+        .attr("fill", this.currentColorPalette[this.currentColorPalette.length - 1])
         .attr("font-size", fontSize)
         .attr(
           "transform",
