@@ -8,6 +8,9 @@ import { RadioButtonModule } from "primeng/radiobutton";
 import { FormsModule } from "@angular/forms";
 import { DialogModule } from "primeng/dialog";
 import { WorldMapComponent } from "./world-map.component";
+import { CardModule } from "primeng/card";
+import { TagModule } from "primeng/tag";
+import { ToggleButtonModule } from "primeng/togglebutton";
 
 @NgModule({
   declarations: [WorldMapComponent],
@@ -20,6 +23,9 @@ import { WorldMapComponent } from "./world-map.component";
     RadioButtonModule,
     FormsModule,
     DialogModule,
+    CardModule,
+    TagModule,
+    ToggleButtonModule,
   ],
   exports: [WorldMapComponent],
 })

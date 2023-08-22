@@ -79,5 +79,27 @@
         width: 100%;
       }
     }
+
+    & .p-card-content {
+      padding-bottom: 0;
+    }
+  }
+
+  .share-map-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .share-map-resolutions-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .share-map-resolutions {
+    display: flex;
+    gap: 0.5rem;
   }
 }
