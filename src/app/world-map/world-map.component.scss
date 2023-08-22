@@ -69,7 +69,7 @@
 ::ng-deep {
   .download-options {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     gap: 1rem;
 
     & p-button {
