@@ -56,7 +56,10 @@
     </div>
 
     <div class="data" *ngIf="activeItem == DataTypes.REGIONS">
-      <h2 class="data-title">Top Regions</h2>
+      <div>
+        <h2 class="data-title">Ranking</h2>
+        <span class="data-subtitle">by artists per region</span>
+      </div>
       <div class="data-content-wrapper region-data-wrapper">
         <div *ngFor="let region of regionsData">
           <div class="geo-data">
@@ -106,7 +109,10 @@
         </p-messages>
       </div>
       <div class="data-title-wrapper">
-        <h2 class="data-title">Top Artists</h2>
+        <div>
+          <h2 class="data-title">Ranking</h2>
+          <span class="data-subtitle">by most played artists</span>
+        </div>
         <p-button (onClick)="openDialog()" label="Suggest correct countries"></p-button>
       </div>
       <div class="data-content-wrapper">
