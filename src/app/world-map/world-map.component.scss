@@ -4,6 +4,12 @@
   width: 100%;
 }
 
+.map-messages {
+  position: absolute;
+  z-index: 9999;
+  margin: 0rem 1rem;
+}
+
 .map-wrapper {
   display: flex;
   align-items: center;
