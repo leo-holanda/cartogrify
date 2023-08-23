@@ -5,6 +5,18 @@ main {
   overflow: hidden;
 }
 
+.map-messages {
+  inset: 0;
+  position: absolute;
+  margin: auto auto 0 auto;
+  width: fit-content;
+  height: fit-content;
+
+  @media (max-width: 768px) {
+    margin: 0 1rem auto 1rem;
+  }
+}
+
 ::ng-deep {
   .p-tabmenu-nav {
     display: flex;
