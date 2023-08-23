@@ -17,7 +17,7 @@ export interface SpotifyAccessTokenData {
 })
 export class SpotifyAuthService {
   clientId = environment.SPOTIFY_CLIENT_ID;
-  redirectUri = environment.SPOTIFY_CLIENT_ID;
+  redirectUri = environment.SPOTIFY_REDIRECT_URI;
 
   constructor(private http: HttpClient) {}
 
