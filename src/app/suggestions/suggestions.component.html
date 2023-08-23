@@ -1,7 +1,7 @@
 <div>
   <p-tabView>
     <p-tabPanel header="Individual suggest">
-      <p-table [value]="artists" [scrollable]="true" scrollHeight="400px">
+      <p-table [value]="artists" [scrollable]="true" scrollHeight="50vh">
         <ng-template pTemplate="header">
           <tr>
             <th>Name</th>
@@ -32,6 +32,8 @@
                 filterBy="name"
                 [showClear]="true"
                 placeholder="Select a Country"
+                [virtualScroll]="true"
+                [virtualScrollItemSize]="20"
               >
                 <ng-template pTemplate="selectedItem">
                   <div *ngIf="artists[rowIndex].suggestedCountry">
@@ -79,6 +81,8 @@
           placeholder="Select a country"
           [disabled]="selectedArtistsToBulkSuggest.length == 0"
           (onChange)="onBulkSuggestDropdownChange($event)"
+          [virtualScroll]="true"
+          [virtualScrollItemSize]="20"
         >
           <ng-template pTemplate="selectedItem">
             <div *ngIf="selectedCountryToBulkSuggest">
@@ -104,7 +108,7 @@
         selectionMode="multiple"
         [(selection)]="selectedArtistsToBulkSuggest"
         [scrollable]="true"
-        scrollHeight="400px"
+        scrollHeight="50vh"
       >
         <ng-template pTemplate="header">
           <tr>
