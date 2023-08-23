@@ -25,20 +25,10 @@ export class SuggestionsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.dynamicDialogConfig.data) {
-      this.artists = [...this.dynamicDialogConfig.data]
-        .map((artist) => {
-          (artist as ArtistWithSuggestion).suggestedCountry = undefined;
-          return artist as ArtistWithSuggestion;
-        })
-        .sort((a: ArtistWithSuggestion, b: ArtistWithSuggestion) => {
-          if (a.country && !b.country) return 1;
-          if (!a.country && b.country) return -1;
-          if (a.country && b.country) {
-            if (a.country.name > b.country.name) return 1;
-            else if (a.country.name < b.country.name) return -1;
-          }
-          return 0;
-        });
+      this.artists = [...this.dynamicDialogConfig.data].map((artist) => {
+        (artist as ArtistWithSuggestion).suggestedCountry = undefined;
+        return artist as ArtistWithSuggestion;
+      });
 
       this.countries = this.countryService.geoJSON.features.map((feature) =>
         this.countryService.createCountryFromFeature(feature)
