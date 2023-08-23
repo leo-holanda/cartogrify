@@ -1,3 +1,9 @@
+<p-messages
+  *ngIf="isMobile"
+  class="map-messages"
+  [(value)]="messages"
+  [closable]="true"
+></p-messages>
 <p-dialog
   header="Choose the content you want to share"
   [(visible)]="shareMode"

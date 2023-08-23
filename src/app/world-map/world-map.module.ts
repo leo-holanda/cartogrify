@@ -11,6 +11,7 @@ import { WorldMapComponent } from "./world-map.component";
 import { CardModule } from "primeng/card";
 import { TagModule } from "primeng/tag";
 import { ToggleButtonModule } from "primeng/togglebutton";
+import { MessagesModule } from "primeng/messages";
 
 @NgModule({
   declarations: [WorldMapComponent],
@@ -26,6 +27,7 @@ import { ToggleButtonModule } from "primeng/togglebutton";
     CardModule,
     TagModule,
     ToggleButtonModule,
+    MessagesModule,
   ],
   exports: [WorldMapComponent],
 })
