@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, from, map, take, tap } from "rxjs";
+import { environment } from "src/environments/environment";
 
 export interface SpotifyAccessTokenData {
   access_token: string;
@@ -15,8 +16,8 @@ export interface SpotifyAccessTokenData {
   providedIn: "root",
 })
 export class SpotifyAuthService {
-  clientId = "c8201434fef4436fb83dfa7bb2a7128d";
-  redirectUri = "http://localhost:4200/authorization";
+  clientId = environment.SPOTIFY_CLIENT_ID;
+  redirectUri = environment.SPOTIFY_CLIENT_ID;
 
   constructor(private http: HttpClient) {}
 
