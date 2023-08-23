@@ -1,131 +1,157 @@
-<main>
-  <ctg-world-map [artists]="artists" [countriesData]="countriesData"></ctg-world-map>
-  <div class="data-wrapper">
-    <div>
-      <h1>Results</h1>
-    </div>
-    <p-tabMenu
-      [model]="items"
-      [activeItem]="items[0]"
-      (activeItemChange)="onActiveItemChange($event)"
-    ></p-tabMenu>
-    <div class="data" *ngIf="activeItem == DataTypes.COUNTRIES">
-      <div>
-        <h2 class="data-title">Ranking</h2>
-        <span class="data-subtitle">by artists per country</span>
-      </div>
-      <div class="data-content-wrapper">
-        <table>
-          <thead>
-            <th>Country</th>
-            <th>Artists</th>
-          </thead>
-          <tr *ngFor="let countryData of countriesData; let i = index">
-            <td class="country-column">
-              <div>
-                <span class="{{ 'flag fi fi-' + countryData.country.flagCode }}"></span>
-              </div>
-              <div class="country-column-data">
-                <span>{{ countryData.country.name }}</span>
-                <p-progressBar [value]="(countryData.count / artists.length) * 100"></p-progressBar>
-              </div>
-            </td>
-            <td class="count-column">
-              <span>{{ countryData.count }}</span>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
+<main *ngIf="isMobile; else desktopTemplate">
+  <ctg-world-map
+    [artists]="artists"
+    [countriesData]="countriesData"
+    [isMobile]="isMobile"
+    (shouldOpenRankings)="openRankings()"
+  ></ctg-world-map>
+  <p-sidebar [(visible)]="sidebarVisible" position="bottom">
+    <h3>Sidebar</h3>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+      laboris nisi ut aliquip ex ea commodo consequat.
+    </p>
+  </p-sidebar>
+</main>
 
-    <div class="data" *ngIf="activeItem == DataTypes.REGIONS">
-      <h2 class="data-title">Top Regions</h2>
-      <div class="data-content-wrapper region-data-wrapper">
-        <div *ngFor="let region of regionsData">
-          <div class="geo-data">
-            <span>{{ region.name }}</span>
-            <span>{{ region.count }}</span>
-          </div>
-          <div *ngFor="let intermediateRegion of region.intermediateRegions">
-            <div class="geo-data sub-region-data">
-              <span>{{ intermediateRegion.name + " (" + intermediateRegion.count + ")" }}</span>
+<ng-template #desktopTemplate>
+  <main>
+    <ctg-world-map
+      [artists]="artists"
+      [countriesData]="countriesData"
+      [isMobile]="isMobile"
+      (shouldOpenRankings)="openRankings()"
+    ></ctg-world-map>
+    <div class="data-wrapper">
+      <div>
+        <h1>Results</h1>
+      </div>
+      <p-tabMenu
+        [model]="items"
+        [activeItem]="items[0]"
+        (activeItemChange)="onActiveItemChange($event)"
+      ></p-tabMenu>
+      <div class="data" *ngIf="activeItem == DataTypes.COUNTRIES">
+        <div>
+          <h2 class="data-title">Ranking</h2>
+          <span class="data-subtitle">by artists per country</span>
+        </div>
+        <div class="data-content-wrapper">
+          <table>
+            <thead>
+              <th>Country</th>
+              <th>Artists</th>
+            </thead>
+            <tr *ngFor="let countryData of countriesData; let i = index">
+              <td class="country-column">
+                <div>
+                  <span class="{{ 'flag fi fi-' + countryData.country.flagCode }}"></span>
+                </div>
+                <div class="country-column-data">
+                  <span>{{ countryData.country.name }}</span>
+                  <p-progressBar
+                    [value]="(countryData.count / artists.length) * 100"
+                  ></p-progressBar>
+                </div>
+              </td>
+              <td class="count-column">
+                <span>{{ countryData.count }}</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="data" *ngIf="activeItem == DataTypes.REGIONS">
+        <h2 class="data-title">Top Regions</h2>
+        <div class="data-content-wrapper region-data-wrapper">
+          <div *ngFor="let region of regionsData">
+            <div class="geo-data">
+              <span>{{ region.name }}</span>
+              <span>{{ region.count }}</span>
             </div>
-            <div
-              class="geo-data intermediate-region-data"
-              *ngFor="let subRegion of intermediateRegion.subRegions"
-            >
-              <span>{{ subRegion.name + " (" + subRegion.count + ")" }}</span>
+            <div *ngFor="let intermediateRegion of region.intermediateRegions">
+              <div class="geo-data sub-region-data">
+                <span>{{ intermediateRegion.name + " (" + intermediateRegion.count + ")" }}</span>
+              </div>
+              <div
+                class="geo-data intermediate-region-data"
+                *ngFor="let subRegion of intermediateRegion.subRegions"
+              >
+                <span>{{ subRegion.name + " (" + subRegion.count + ")" }}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="data" *ngIf="activeItem == DataTypes.ARTISTS">
-      <div *ngIf="isMessageActive">
-        <p-messages class="suggestion-message-wrapper" severity="warn">
-          <ng-template pTemplate>
-            <div>
-              <span class="pi pi-exclamation-triangle suggestion-message-icon"></span>
-            </div>
-            <div class="suggestion-message">
+      <div class="data" *ngIf="activeItem == DataTypes.ARTISTS">
+        <div *ngIf="isMessageActive">
+          <p-messages class="suggestion-message-wrapper" severity="warn">
+            <ng-template pTemplate>
               <div>
-                <i>"Why is it saying that Taylor Swift was born in North Korea?"</i>
-                <div class="suggestion-message-content">
-                  Sometimes, the little robot that guesses the artist's country of origin might be
-                  way off the target. He's trying his best. You can help him by suggesting the
-                  correct country of origin for your favourite artists!
-                </div>
+                <span class="pi pi-exclamation-triangle suggestion-message-icon"></span>
               </div>
-              <div class="suggestion-message-close-btn">
-                <p-button
-                  (onClick)="hideMessage()"
-                  styleClass="p-ripple p-element p-message-close p-link"
-                  icon="pi pi-times"
-                ></p-button>
-              </div>
-            </div>
-          </ng-template>
-        </p-messages>
-      </div>
-      <div class="data-title-wrapper">
-        <h2 class="data-title">Top Artists</h2>
-        <p-button (onClick)="openDialog()" label="Suggest correct countries"></p-button>
-      </div>
-      <div class="data-content-wrapper">
-        <table>
-          <tr *ngFor="let artist of artists; let i = index">
-            <td
-              class="data-index"
-              [ngClass]="{
-                'first-place': i == 0,
-                'second-place': i == 1,
-                'third-place': i == 2
-              }"
-            >
-              {{ "#" + (i + 1) }}
-            </td>
-            <td>
-              <div class="artist-data">
-                <span class="artist-name">
-                  {{ artist.name }}
-                </span>
+              <div class="suggestion-message">
                 <div>
-                  <span
-                    class="{{
-                      'flag fi fi-' + (artist.country == null ? 'xx' : artist.country.flagCode)
-                    }}"
-                  >
-                  </span>
-                  <span class="country-name">
-                    {{ artist.country?.name || "Unknown" }}
-                  </span>
+                  <i>"Why is it saying that Taylor Swift was born in North Korea?"</i>
+                  <div class="suggestion-message-content">
+                    Sometimes, the little robot that guesses the artist's country of origin might be
+                    way off the target. He's trying his best. You can help him by suggesting the
+                    correct country of origin for your favourite artists!
+                  </div>
+                </div>
+                <div class="suggestion-message-close-btn">
+                  <p-button
+                    (onClick)="hideMessage()"
+                    styleClass="p-ripple p-element p-message-close p-link"
+                    icon="pi pi-times"
+                  ></p-button>
                 </div>
               </div>
-            </td>
-          </tr>
-        </table>
+            </ng-template>
+          </p-messages>
+        </div>
+        <div class="data-title-wrapper">
+          <h2 class="data-title">Top Artists</h2>
+          <p-button (onClick)="openDialog()" label="Suggest correct countries"></p-button>
+        </div>
+        <div class="data-content-wrapper">
+          <table>
+            <tr *ngFor="let artist of artists; let i = index">
+              <td
+                class="data-index"
+                [ngClass]="{
+                  'first-place': i == 0,
+                  'second-place': i == 1,
+                  'third-place': i == 2
+                }"
+              >
+                {{ "#" + (i + 1) }}
+              </td>
+              <td>
+                <div class="artist-data">
+                  <span class="artist-name">
+                    {{ artist.name }}
+                  </span>
+                  <div>
+                    <span
+                      class="{{
+                        'flag fi fi-' + (artist.country == null ? 'xx' : artist.country.flagCode)
+                      }}"
+                    >
+                    </span>
+                    <span class="country-name">
+                      {{ artist.country?.name || "Unknown" }}
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
-</main>
+  </main>
+</ng-template>

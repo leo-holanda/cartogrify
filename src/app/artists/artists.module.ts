@@ -10,6 +10,7 @@ import { TabMenuModule } from "primeng/tabmenu";
 import { ProgressBarModule } from "primeng/progressbar";
 import { DialogModule } from "primeng/dialog";
 import { WorldMapModule } from "../world-map/world-map.module";
+import { SidebarModule } from "primeng/sidebar";
 
 @NgModule({
   declarations: [ArtistsComponent],
@@ -24,6 +25,7 @@ import { WorldMapModule } from "../world-map/world-map.module";
     ProgressBarModule,
     DialogModule,
     WorldMapModule,
+    SidebarModule,
   ],
   providers: [DialogService],
 })

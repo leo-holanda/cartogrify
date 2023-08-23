@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { filter } from "rxjs";
+import { debounceTime, filter, fromEvent } from "rxjs";
 import { Artist } from "./artist.model";
 import { ArtistService } from "./artist.service";
 import { CountryData, RegionData } from "../country/country.model";
@@ -44,6 +44,8 @@ export class ArtistsComponent implements OnInit {
 
   ref: DynamicDialogRef | undefined;
   DataTypes = DataTypes;
+  isMobile = window.innerWidth <= 768;
+  sidebarVisible = false;
 
   constructor(
     private artistsService: ArtistService,
@@ -59,6 +61,12 @@ export class ArtistsComponent implements OnInit {
         this.artists = userTopArtists;
         this.countriesData = [...this.countryService.countCountries(userTopArtists)];
         this.regionsData = this.countryService.countRegions(userTopArtists);
+      });
+
+    fromEvent(window, "resize")
+      .pipe(debounceTime(250))
+      .subscribe(() => {
+        this.isMobile = window.innerWidth <= 768;
       });
   }
 
@@ -86,5 +94,9 @@ export class ArtistsComponent implements OnInit {
 
   onActiveItemChange(activeItem: MenuItem): void {
     this.activeItem = activeItem.label as DataTypes;
+  }
+
+  openRankings(): void {
+    this.sidebarVisible = true;
   }
 }
