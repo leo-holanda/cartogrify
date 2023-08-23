@@ -77,12 +77,19 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
       .pipe(debounceTime(250))
       .subscribe(() => {
         this.isMobile = window.innerWidth <= 768;
-        this.updateMap();
+        setTimeout(() => {
+          this.updateMap();
+        }, 200);
       });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes["countriesData"].isFirstChange() && !changes["artists"].isFirstChange())
+    if (
+      changes["countriesData"] &&
+      changes["artists"] &&
+      !changes["countriesData"].isFirstChange() &&
+      !changes["artists"].isFirstChange()
+    )
       this.updateMap();
   }
 
