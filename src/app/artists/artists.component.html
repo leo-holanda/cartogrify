@@ -6,6 +6,14 @@
     (shouldOpenRankings)="openRankings()"
   ></ctg-world-map>
 
+  <p-messages
+    class="map-messages"
+    key="map-messages"
+    [(value)]="messages"
+    [enableService]="false"
+    [closable]="false"
+  ></p-messages>
+
   <p-sidebar *ngIf="isMobile; else desktopTemplate" [(visible)]="sidebarVisible" position="bottom">
     <h3>Sidebar</h3>
     <p>

@@ -9,6 +9,9 @@ import { CountryService } from "../country/country.service";
 })
 export class ArtistService {
   private userTopArtists$ = new BehaviorSubject<Artist[] | undefined>(undefined);
+  private scrappedArtists$ = new BehaviorSubject<Artist | undefined>(undefined);
+  private hasArtistsWithoutCountry$ = new BehaviorSubject<boolean | undefined>(undefined);
+
   private hasRequestedTopArtists = false;
 
   constructor(private supabaseService: SupabaseService, private countryService: CountryService) {}
@@ -30,10 +33,13 @@ export class ArtistService {
           artistsFromDatabase
         );
         if (artistsWithoutCountry.length > 0) {
+          this.hasArtistsWithoutCountry$.next(true);
           const scrappedArtists: ScrapedArtist[] = [];
 
           this.countryService.getArtistsCountryOfOrigin(artistsWithoutCountry).subscribe({
             next: (scrappedArtist) => {
+              this.scrappedArtists$.next(scrappedArtist);
+
               scrappedArtists.push(scrappedArtist);
               const userTopArtists = this.applyOriginalOrder(topArtistsNames, [
                 ...artistsFromDatabase,
@@ -41,7 +47,10 @@ export class ArtistService {
               ]);
               this.userTopArtists$.next(userTopArtists);
             },
-            complete: () => this.supabaseService.saveSuggestions(scrappedArtists),
+            complete: () => {
+              this.supabaseService.saveSuggestions(scrappedArtists);
+              this.scrappedArtists$.complete();
+            },
           });
         }
       });
@@ -49,6 +58,14 @@ export class ArtistService {
 
   getUserTopArtists(): Observable<Artist[] | undefined> {
     return this.userTopArtists$.asObservable();
+  }
+
+  getScrappedArtists(): Observable<Artist | undefined> {
+    return this.scrappedArtists$.asObservable();
+  }
+
+  getArtistsWithoutCountryStatus(): Observable<boolean | undefined> {
+    return this.hasArtistsWithoutCountry$.asObservable();
   }
 
   getArtistsRequestStatus(): boolean {

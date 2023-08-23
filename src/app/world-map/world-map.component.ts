@@ -37,15 +37,6 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
   @Input() isMobile!: boolean;
   @Output() shouldOpenRankings = new EventEmitter<boolean>();
 
-  messages: Message[] = [
-    {
-      severity: "info",
-      detail:
-        "The map might seem small when displayed on a mobile screen due to the projection. For a larger view, consider rotating your phone!",
-      life: 10000,
-    } as Message,
-  ];
-
   shareMode = false;
   usesDefaultResolution = true;
   availableResolutions = [
