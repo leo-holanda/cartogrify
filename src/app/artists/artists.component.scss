@@ -33,6 +33,10 @@ main {
   .suggestion-message-wrapper .p-message-warn {
     margin-top: 0;
   }
+
+  .p-sidebar-active {
+    height: 95% !important;
+  }
 }
 
 .data-wrapper {
