@@ -2,8 +2,10 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnChanges,
+  Output,
   SimpleChanges,
   ViewChild,
 } from "@angular/core";
@@ -31,6 +33,8 @@ import { colorPalettes } from "./world-map.colors";
 export class WorldMapComponent implements OnChanges, AfterViewInit {
   @Input() countriesData: CountryData[] = [];
   @Input() artists: Artist[] = [];
+  @Input() isMobile!: boolean;
+  @Output() shouldOpenRankings = new EventEmitter<boolean>();
 
   shareMode = false;
   usesDefaultResolution = true;
@@ -71,7 +75,10 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
 
     fromEvent(window, "resize")
       .pipe(debounceTime(250))
-      .subscribe(() => this.updateMap());
+      .subscribe(() => {
+        this.isMobile = window.innerWidth <= 768;
+        this.updateMap();
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -144,6 +151,10 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
         height: "1080px",
       };
     }
+  }
+
+  sendOpenRankingsEvent(): void {
+    this.shouldOpenRankings.emit(true);
   }
 
   private addMap() {

@@ -74,15 +74,23 @@
   <div [ngStyle]="{ visibility: shareMode ? 'collapse' : 'visible' }" class="map-buttons">
     <p-button
       (onClick)="op.toggle($event)"
-      label="Change color theme"
+      [label]="isMobile ? 'Customize' : 'Customize map'"
       icon="pi pi-palette"
-      styleClass="p-button-sm"
+      [styleClass]="isMobile ? 'p-button-sm p-button-rounded' : undefined"
+    ></p-button>
+    <p-button
+      *ngIf="isMobile"
+      (onClick)="sendOpenRankingsEvent()"
+      icon="pi pi-sort-amount-up"
+      class="sidebar-button"
+      [label]="isMobile ? 'Rankings' : 'See your rankings'"
+      [styleClass]="isMobile ? 'p-button-sm p-button-rounded' : undefined"
     ></p-button>
     <p-button
       (onClick)="onShareButtonClick()"
-      label="Share with your friends"
+      [label]="isMobile ? 'Share' : 'Share with your friends'"
       icon="pi pi-share-alt"
-      styleClass="p-button-sm"
+      [styleClass]="isMobile ? 'p-button-sm p-button-rounded' : undefined"
     ></p-button>
     <p-overlayPanel #op>
       <div class="color-theme-selector">
