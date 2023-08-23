@@ -30,11 +30,11 @@ export class ArtistsComponent implements OnInit {
   items: MenuItem[] = [
     {
       label: DataTypes.COUNTRIES,
-      icon: "pi pi-flag-fill",
+      icon: "pi pi-flag",
     },
     {
       label: DataTypes.REGIONS,
-      icon: "pi pi-map",
+      icon: "pi pi-globe",
     },
     {
       label: DataTypes.ARTISTS,
