@@ -1075,3 +1075,24 @@ const countryRelatedTerms: CountryRelatedTerms = {
     demonyms: ["Zimbabweans"],
   },
 };
+
+// countriesJSON.objects.countries.geometries.forEach((geometry) => {
+//   Object.keys(geometry.properties).forEach((key) => {
+//     if (
+//       ![
+//         "NAME",
+//         "ISO_A2",
+//         "ISO_A2_EH",
+//         "UN_A3",
+//         "POSTAL",
+//         "FIPS_10",
+//         "REGION_UN",
+//         "SUBREGION",
+//         "REGION_WB",
+//         "NE_ID",
+//       ].includes(key)
+//     )
+//       delete (geometry.properties as any)[key as any];
+//   });
+// });
+// console.log(JSON.stringify(countriesJSON));
