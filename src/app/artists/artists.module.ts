@@ -11,6 +11,7 @@ import { ProgressBarModule } from "primeng/progressbar";
 import { DialogModule } from "primeng/dialog";
 import { WorldMapModule } from "../world-map/world-map.module";
 import { SidebarModule } from "primeng/sidebar";
+import { SuggestionsModule } from "../suggestions/suggestions.module";
 
 @NgModule({
   declarations: [ArtistsComponent],
@@ -26,6 +27,7 @@ import { SidebarModule } from "primeng/sidebar";
     DialogModule,
     WorldMapModule,
     SidebarModule,
+    SuggestionsModule,
   ],
   providers: [DialogService],
 })
