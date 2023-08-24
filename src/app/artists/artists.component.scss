@@ -39,6 +39,10 @@ main {
   }
 }
 
+.tab-menu {
+  margin-bottom: 1rem;
+}
+
 .data-wrapper {
   display: flex;
   flex-flow: column;
@@ -73,10 +77,23 @@ main {
   }
 
   .data-title-wrapper {
+    margin-bottom: 1rem;
+  }
+
+  .countries-data-title {
+    margin-top: 1rem;
+  }
+
+  .artist-data-title {
+    margin-top: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1rem;
+
+    & div:first-child {
+      text-wrap: nowrap;
+      margin-right: 2rem;
+    }
   }
 
   .data-title {
@@ -96,13 +113,19 @@ main {
     flex-flow: column;
     background-color: #303030;
     padding: 1rem;
-    margin: 1rem 0 0 0;
     border-radius: 1rem;
     overflow-y: auto;
   }
 
+  .countries-data {
+    padding: 0 1rem;
+  }
+
+  .artist-data-fix {
+    padding: 0 1rem;
+  }
+
   .data-content-wrapper {
-    margin-top: 0.25rem;
     overflow-y: auto;
 
     &::-webkit-scrollbar {
@@ -123,43 +146,68 @@ main {
       }
     }
 
-    table {
+    .region-data-wrapper {
+      margin-top: 1rem;
+    }
+
+    .geo-data {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid grey;
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.5rem;
+
+      & span:first-child {
+        padding-right: 2rem;
+      }
+    }
+
+    .sub-region-data {
+      padding-left: 1rem;
+    }
+
+    .intermediate-region-data {
+      padding-left: 2rem;
+    }
+
+    .flag {
+      margin-right: 0.25rem;
+    }
+
+    .country-table {
       border-collapse: separate;
-      border-spacing: 0 0.75rem;
       width: 100%;
 
-      th {
-        &:first-child {
-          padding-left: 0;
+      thead th {
+        padding-left: 0;
+
+        &:last-child {
+          text-align: right;
         }
 
         text-align: left;
-        padding-left: 0.5rem;
         color: #ffffff8c;
         font-size: smaller;
       }
 
       td {
         white-space: nowrap;
-        padding: 0.5rem;
-      }
+        padding-bottom: 1rem;
 
-      .data-index {
-        padding: 0.75rem;
-        margin: 0.25rem;
-        border-radius: 0.5rem;
-        text-align: center;
-      }
-
-      .artist-data {
-        padding: 0 0 0 0.5rem;
-
-        .artist-name {
-          font-size: large;
+        &:last-child {
+          width: 0;
         }
+      }
 
-        .country-name {
-          font-size: small;
+      tr:last-child {
+        td {
+          padding: 0;
+        }
+      }
+
+      tr:first-child {
+        td {
+          padding-top: 0.75rem;
         }
       }
 
@@ -181,35 +229,48 @@ main {
 
       .count-column {
         text-align: right;
+        vertical-align: bottom;
       }
     }
   }
 
-  .region-data-wrapper {
-    margin-top: 1rem;
+  .artist-content {
+    padding: 1rem 0;
   }
 
-  .geo-data {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid grey;
-    padding-bottom: 0.5rem;
-    margin-bottom: 0.5rem;
+  .artist-table {
+    border-collapse: separate;
+    border-spacing: 0 0;
 
-    & span:first-child {
-      padding-right: 2rem;
+    td {
+      white-space: nowrap;
+      padding: 0 0 1.5rem 0.5rem;
     }
-  }
 
-  .sub-region-data {
-    padding-left: 1rem;
-  }
+    tr:last-child {
+      td {
+        padding: 0;
+      }
+    }
 
-  .intermediate-region-data {
-    padding-left: 2rem;
-  }
+    .data-index {
+      padding: 0 0.5rem 1.5rem 0;
+      text-align: center;
+      font-size: 1.3rem;
+    }
 
-  .flag {
-    margin-right: 0.25rem;
+    .artist-data {
+      .artist-name {
+        font-size: 1.2rem;
+      }
+
+      .country-name {
+        font-size: 0.9rem;
+      }
+
+      .flag {
+        margin-top: 0.25rem;
+      }
+    }
   }
 }
