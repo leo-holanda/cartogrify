@@ -136,8 +136,14 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
   }
 
   shareRanking(): void {
+    const dataWrapper = document.querySelector(".data-wrapper .data") as HTMLElement;
+    dataWrapper.style.position = "absolute";
+    dataWrapper.style.borderRadius = "0";
+    dataWrapper.style.top = "0";
+    dataWrapper.style.left = "0";
+
     htmlToImage
-      .toPng(document.querySelector(".data-wrapper") as HTMLElement)
+      .toPng(dataWrapper)
       .then((dataUrl) => {
         const a = document.createElement("a");
         a.href = dataUrl;
@@ -145,6 +151,10 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+        dataWrapper.style.position = "unset";
+        dataWrapper.style.borderRadius = "1rem";
+        dataWrapper.style.top = "";
+        dataWrapper.style.left = "";
       })
       .catch(function (error) {
         console.error("oops, something went wrong!", error);
