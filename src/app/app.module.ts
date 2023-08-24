@@ -6,7 +6,6 @@ import { AppComponent } from "./app.component";
 import { HttpClientModule } from "@angular/common/http";
 import { AuthorizationModule } from "./authorization/authorization.module";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { SuggestionsModule } from "./suggestions/suggestions.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,7 +15,6 @@ import { SuggestionsModule } from "./suggestions/suggestions.module";
     HttpClientModule,
     AuthorizationModule,
     BrowserAnimationsModule,
-    SuggestionsModule,
   ],
   bootstrap: [AppComponent],
 })
