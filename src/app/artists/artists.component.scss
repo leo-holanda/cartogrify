@@ -35,7 +35,23 @@ main {
   }
 
   .p-sidebar-active {
-    height: 95% !important;
+    height: 90% !important;
+  }
+
+  .p-sidebar-header {
+    background-color: #121212;
+    padding: 0 1rem !important;
+  }
+
+  .p-sidebar-content {
+    background-color: #121212;
+    .data-wrapper {
+      padding: 0 !important;
+    }
+  }
+
+  .p-sidebar-footer {
+    display: none;
   }
 }
 
@@ -91,7 +107,9 @@ main {
     justify-content: space-between;
 
     & div:first-child {
-      text-wrap: nowrap;
+      @media (min-width: 768px) {
+        text-wrap: nowrap;
+      }
       margin-right: 2rem;
     }
   }

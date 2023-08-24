@@ -15,49 +15,52 @@
   ></p-messages>
 
   <p-sidebar *ngIf="isMobile; else desktopTemplate" [(visible)]="sidebarVisible" position="bottom">
-    <ng-template pTemplate="header">
+    <ng-template style="background-color: #121212; padding: 0 1rem" pTemplate="header">
       <h1>Results</h1>
     </ng-template>
-    <ng-template pTemplate="content">
-      <div class="data-wrapper">
+    <ng-template style="background-color: #121212; padding: 0" pTemplate="content">
+      <div style="padding: 0 1rem" class="data-wrapper">
         <p-tabMenu
+          class="tab-menu"
           [model]="items"
           [activeItem]="items[0]"
           (activeItemChange)="onActiveItemChange($event)"
         ></p-tabMenu>
-        <div class="data" *ngIf="activeItem == DataTypes.COUNTRIES">
-          <div>
+        <div class="data countries-data" *ngIf="activeItem == DataTypes.COUNTRIES">
+          <div class="countries-data-title">
             <h2 class="data-title">Ranking</h2>
             <span class="data-subtitle">by artists per country</span>
           </div>
-          <div class="data-content-wrapper">
-            <table>
+          <div class="data-content-wrapper artist-content">
+            <table class="country-table">
               <thead>
                 <th>Country</th>
                 <th>Artists</th>
               </thead>
-              <tr *ngFor="let countryData of countriesData; let i = index">
-                <td class="country-column">
-                  <div>
-                    <span class="{{ 'flag fi fi-' + countryData.country.flagCode }}"></span>
-                  </div>
-                  <div class="country-column-data">
-                    <span>{{ countryData.country.name }}</span>
-                    <p-progressBar
-                      [value]="(countryData.count / artists.length) * 100"
-                    ></p-progressBar>
-                  </div>
-                </td>
-                <td class="count-column">
-                  <span>{{ countryData.count }}</span>
-                </td>
-              </tr>
+              <tbody>
+                <tr *ngFor="let countryData of countriesData; let i = index">
+                  <td class="country-column">
+                    <div>
+                      <span class="{{ 'flag fi fi-' + countryData.country.flagCode }}"></span>
+                    </div>
+                    <div class="country-column-data">
+                      <span>{{ countryData.country.name }}</span>
+                      <p-progressBar
+                        [value]="(countryData.count / artists.length) * 100"
+                      ></p-progressBar>
+                    </div>
+                  </td>
+                  <td class="count-column">
+                    {{ countryData.count }}
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>
 
         <div class="data" *ngIf="activeItem == DataTypes.REGIONS">
-          <div>
+          <div class="data-title-wrapper">
             <h2 class="data-title">Ranking</h2>
             <span class="data-subtitle">by artists per region</span>
           </div>
@@ -109,7 +112,7 @@
               </ng-template>
             </p-messages>
           </div>
-          <div class="data-title-wrapper">
+          <div class="data-title-wrapper artist-data-title">
             <div>
               <h2 class="data-title">Ranking</h2>
               <span class="data-subtitle">by most played artists</span>
@@ -117,37 +120,33 @@
             <p-button (onClick)="openDialog()" label="Suggest correct countries"></p-button>
           </div>
           <div class="data-content-wrapper">
-            <table>
-              <tr *ngFor="let artist of artists; let i = index">
-                <td
-                  class="data-index"
-                  [ngClass]="{
-                    'first-place': i == 0,
-                    'second-place': i == 1,
-                    'third-place': i == 2
-                  }"
-                >
-                  {{ "#" + (i + 1) }}
-                </td>
-                <td>
-                  <div class="artist-data">
-                    <span class="artist-name">
-                      {{ artist.name }}
-                    </span>
-                    <div>
-                      <span
-                        class="{{
-                          'flag fi fi-' + (artist.country == null ? 'xx' : artist.country.flagCode)
-                        }}"
-                      >
+            <table class="artist-table">
+              <tbody>
+                <tr *ngFor="let artist of artists; let i = index">
+                  <td class="data-index">
+                    {{ i + 1 }}
+                  </td>
+                  <td>
+                    <div class="artist-data">
+                      <span class="artist-name">
+                        {{ artist.name }}
                       </span>
-                      <span class="country-name">
-                        {{ artist.country?.name || "Unknown" }}
-                      </span>
+                      <div>
+                        <span
+                          class="{{
+                            'flag fi fi-' +
+                              (artist.country == null ? 'xx' : artist.country.flagCode)
+                          }}"
+                        >
+                        </span>
+                        <span class="country-name">
+                          {{ artist.country?.name || "Unknown" }}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </td>
-              </tr>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>
