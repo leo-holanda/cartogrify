@@ -102,7 +102,7 @@ export class ArtistsComponent implements OnInit {
             messageDetail = `${scrappedArtist.name} comes from ${scrappedArtist.country.name}`;
           else messageDetail = `I couldn't find where ${scrappedArtist.name} comes from!`;
 
-          if (this.messages.length > 2) this.messages.splice(0, 1);
+          if (this.messages.length > 1) this.messages.splice(0, 1);
           this.messages = [
             ...this.messages,
             {
