@@ -3,6 +3,12 @@
   overflow-y: auto;
 }
 
+::ng-deep {
+  .suggestion-message-wrapper .p-message-warn {
+    margin-top: 0;
+  }
+}
+
 .ranking-wrapper {
   display: flex;
   flex-flow: column;
