@@ -1,0 +1,98 @@
+.ranking-wrapper {
+  display: flex;
+  flex-flow: column;
+  background-color: #303030;
+  padding: 1rem 1rem 0 1rem;
+  border-radius: 1rem;
+  overflow-y: auto;
+}
+
+.ranking-header {
+  .ranking-title {
+    margin: 0;
+  }
+
+  .ranking-subtitle {
+    color: grey;
+  }
+}
+
+.ranking-content {
+  overflow-y: auto;
+  padding: 1rem 0;
+
+  &::-webkit-scrollbar {
+    background-color: transparent;
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #babac0;
+    border-radius: 1rem;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.808);
+    }
+  }
+}
+
+.flag {
+  margin-right: 0.25rem;
+}
+
+table {
+  border-collapse: separate;
+  width: 100%;
+
+  .table-header-column {
+    color: #ffffff8c;
+    font-size: smaller;
+    padding-bottom: 1rem;
+    text-align: left;
+
+    &:last-child {
+      text-align: right;
+    }
+  }
+
+  .table-row {
+    &:last-child {
+      width: 0;
+    }
+
+    &:last-of-type {
+      & .country-column,
+      .artist-count-column {
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  .country-column {
+    display: flex;
+    white-space: nowrap;
+    padding-bottom: 1rem;
+
+    .flag {
+      font-size: 1.75rem;
+      margin-right: 0.5rem;
+    }
+
+    .country {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+
+  .artist-count-column {
+    text-align: right;
+    vertical-align: bottom;
+    padding: 1rem 0;
+  }
+}
