@@ -18,11 +18,11 @@ import {
   LabelData,
   CountryData,
   Tooltip,
-} from "../country/country.model";
-import { CountryService } from "../country/country.service";
+} from "../../country/country.model";
+import { CountryService } from "../../country/country.service";
 import { fromEvent, debounceTime } from "rxjs";
 import * as htmlToImage from "html-to-image";
-import { Artist } from "../artists/artist.model";
+import { Artist } from "../artist.model";
 import { colorPalettes } from "./world-map.colors";
 import { Message } from "primeng/api";
 

@@ -1,10 +1,9 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { Artist } from "../artists/artist.model";
-import { CountryData, RegionData } from "../country/country.model";
+import { Artist } from "../artist.model";
+import { CountryData, RegionData } from "../../country/country.model";
 import { MenuItem } from "primeng/api";
 import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
-import { SuggestionsComponent } from "../suggestions/suggestions.component";
-import { CountryService } from "../country/country.service";
+import { CountryService } from "../../country/country.service";
 
 enum DataTypes {
   COUNTRIES = "Countries",

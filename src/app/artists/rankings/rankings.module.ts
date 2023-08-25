@@ -7,12 +7,18 @@ import { MessagesModule } from "primeng/messages";
 import { ButtonModule } from "primeng/button";
 import { DialogService, DynamicDialogModule } from "primeng/dynamicdialog";
 import { SidebarModule } from "primeng/sidebar";
-import { CountriesRankComponent } from './countries-rank/countries-rank.component';
-import { RegionsRankComponent } from './regions-rank/regions-rank.component';
-import { ArtistsRankComponent } from './artists-rank/artists-rank.component';
+import { CountriesRankComponent } from "./countries-rank/countries-rank.component";
+import { RegionsRankComponent } from "./regions-rank/regions-rank.component";
+import { ArtistsRankComponent } from "./artists-rank/artists-rank.component";
+import { SuggestionsModule } from "./artists-rank/suggestions/suggestions.module";
 
 @NgModule({
-  declarations: [RankingsComponent, CountriesRankComponent, RegionsRankComponent, ArtistsRankComponent],
+  declarations: [
+    RankingsComponent,
+    CountriesRankComponent,
+    RegionsRankComponent,
+    ArtistsRankComponent,
+  ],
   imports: [
     CommonModule,
     ProgressBarModule,
@@ -21,6 +27,7 @@ import { ArtistsRankComponent } from './artists-rank/artists-rank.component';
     ButtonModule,
     DynamicDialogModule,
     SidebarModule,
+    SuggestionsModule,
   ],
   providers: [DialogService],
   exports: [RankingsComponent],

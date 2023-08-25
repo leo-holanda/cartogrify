@@ -9,9 +9,8 @@ import { DialogService, DynamicDialogModule } from "primeng/dynamicdialog";
 import { TabMenuModule } from "primeng/tabmenu";
 import { ProgressBarModule } from "primeng/progressbar";
 import { DialogModule } from "primeng/dialog";
-import { WorldMapModule } from "../world-map/world-map.module";
-import { SuggestionsModule } from "../suggestions/suggestions.module";
-import { RankingsModule } from "../rankings/rankings.module";
+import { WorldMapModule } from "./world-map/world-map.module";
+import { RankingsModule } from "./rankings/rankings.module";
 
 @NgModule({
   declarations: [ArtistsComponent],
@@ -26,7 +25,6 @@ import { RankingsModule } from "../rankings/rankings.module";
     ProgressBarModule,
     DialogModule,
     WorldMapModule,
-    SuggestionsModule,
     RankingsModule,
   ],
   providers: [DialogService],
