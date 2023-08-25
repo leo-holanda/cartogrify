@@ -1,7 +1,7 @@
 import { Component, Input } from "@angular/core";
 import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
 import { Artist } from "src/app/artists/artist.model";
-import { SuggestionsComponent } from "src/app/suggestions/suggestions.component";
+import { SuggestionsComponent } from "./suggestions/suggestions.component";
 
 @Component({
   selector: "ctg-artists-rank",

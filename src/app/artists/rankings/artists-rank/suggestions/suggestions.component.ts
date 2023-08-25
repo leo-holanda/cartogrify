@@ -1,10 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
-import { Artist, ArtistWithSuggestion, Suggestion } from "../artists/artist.model";
-import { CountryService } from "../country/country.service";
-import { Country } from "../country/country.model";
-import { TableRowSelectEvent } from "primeng/table";
 import { DropdownChangeEvent } from "primeng/dropdown";
+import { ArtistWithSuggestion, Artist } from "src/app/artists/artist.model";
+import { Country } from "src/app/country/country.model";
+import { CountryService } from "src/app/country/country.service";
 
 @Component({
   selector: "app-suggestions",

@@ -10,5 +10,6 @@ import { ButtonModule } from "primeng/button";
 @NgModule({
   declarations: [SuggestionsComponent],
   imports: [CommonModule, TableModule, FormsModule, DropdownModule, TabViewModule, ButtonModule],
+  exports: [SuggestionsComponent],
 })
 export class SuggestionsModule {}
