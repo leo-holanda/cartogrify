@@ -1,3 +1,7 @@
+:host {
+  display: flex;
+}
+
 ::ng-deep {
   .p-tabmenu-nav {
     display: flex;
@@ -25,9 +29,11 @@
   }
 
   .p-sidebar-content {
+    display: flex;
     background-color: #121212;
     .data-wrapper {
       padding: 0 !important;
+      width: 100%;
     }
   }
 
