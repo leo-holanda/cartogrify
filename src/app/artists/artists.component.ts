@@ -1,18 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { debounceTime, filter, first, fromEvent } from "rxjs";
+import { debounceTime, filter, fromEvent } from "rxjs";
 import { Artist } from "./artist.model";
 import { ArtistService } from "./artist.service";
 import { CountryData, RegionData } from "../country/country.model";
 import { CountryService } from "../country/country.service";
-import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
-import { SuggestionsComponent } from "../suggestions/suggestions.component";
-import { MenuItem, Message } from "primeng/api";
-
-enum DataTypes {
-  COUNTRIES = "Countries",
-  REGIONS = "Regions",
-  ARTISTS = "Artists",
-}
+import { Message } from "primeng/api";
 
 @Component({
   selector: "msm-artists",
@@ -23,37 +15,12 @@ export class ArtistsComponent implements OnInit {
   artists: Artist[] = [];
   countriesData: CountryData[] = [];
   regionsData: RegionData[] = [];
-  selectedData = DataTypes.COUNTRIES;
-  isMessageActive = true;
 
-  activeItem = DataTypes.COUNTRIES;
-  items: MenuItem[] = [
-    {
-      label: DataTypes.COUNTRIES,
-      icon: "pi pi-flag",
-    },
-    {
-      label: DataTypes.REGIONS,
-      icon: "pi pi-globe",
-    },
-    {
-      label: DataTypes.ARTISTS,
-      icon: "pi pi-user",
-    },
-  ];
-
-  ref: DynamicDialogRef | undefined;
-  DataTypes = DataTypes;
   isMobile = window.innerWidth <= 768;
-  sidebarVisible = false;
-
   messages: Message[] = [];
+  shouldOpenRankings = false;
 
-  constructor(
-    private artistsService: ArtistService,
-    private countryService: CountryService,
-    private dialogService: DialogService
-  ) {}
+  constructor(private artistsService: ArtistService, private countryService: CountryService) {}
 
   ngOnInit(): void {
     if (this.isMobile) {
@@ -134,33 +101,11 @@ export class ArtistsComponent implements OnInit {
       });
   }
 
-  setSelectedData(dataType: DataTypes): void {
-    this.selectedData = dataType;
-  }
-
-  hideMessage(): void {
-    this.isMessageActive = false;
-  }
-
-  openDialog() {
-    this.ref = this.dialogService.open(SuggestionsComponent, {
-      header: "Make your suggestions!",
-      data: this.artists,
-    });
-
-    this.ref.onClose.subscribe((hasSuggestions) => {
-      if (hasSuggestions) {
-        this.countriesData = this.countryService.countCountries(this.artists);
-        this.regionsData = this.countryService.countRegions(this.artists);
-      }
-    });
-  }
-
-  onActiveItemChange(activeItem: MenuItem): void {
-    this.activeItem = activeItem.label as DataTypes;
-  }
-
   openRankings(): void {
-    this.sidebarVisible = true;
+    this.shouldOpenRankings = true;
+  }
+
+  hideRankings(): void {
+    this.shouldOpenRankings = false;
   }
 }

@@ -10,8 +10,8 @@ import { TabMenuModule } from "primeng/tabmenu";
 import { ProgressBarModule } from "primeng/progressbar";
 import { DialogModule } from "primeng/dialog";
 import { WorldMapModule } from "../world-map/world-map.module";
-import { SidebarModule } from "primeng/sidebar";
 import { SuggestionsModule } from "../suggestions/suggestions.module";
+import { RankingsModule } from "../rankings/rankings.module";
 
 @NgModule({
   declarations: [ArtistsComponent],
@@ -26,8 +26,8 @@ import { SuggestionsModule } from "../suggestions/suggestions.module";
     ProgressBarModule,
     DialogModule,
     WorldMapModule,
-    SidebarModule,
     SuggestionsModule,
+    RankingsModule,
   ],
   providers: [DialogService],
 })
