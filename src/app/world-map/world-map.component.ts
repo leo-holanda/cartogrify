@@ -38,8 +38,8 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
   @Output() shouldOpenRankings = new EventEmitter<boolean>();
 
   shareMode = false;
-  usesDefaultResolution = true;
-  availableResolutions = [
+  usesDefaultMapResolution = true;
+  availableMapResolutions = [
     {
       width: "1920px",
       height: "1080px",
@@ -57,7 +57,11 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
       height: "1080px",
     },
   ];
-  shareMapResolution = this.availableResolutions[0];
+  shareMapResolution = this.availableMapResolutions[0];
+
+  usesDefaultRankingSize = true;
+  availableRankingSizes = ["16px", "24px", "32px", "40px", "48px"];
+  shareRankingSize = this.availableRankingSizes[0];
 
   private mapSvg!: MapSVG;
   private tooltip!: Tooltip;
@@ -136,16 +140,12 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
   }
 
   shareRanking(): void {
-    const dataWrapper = document.querySelector(".ranking-wrapper") as HTMLElement;
-    dataWrapper.style.position = "absolute";
-    dataWrapper.style.width = "fit-content";
-
-    dataWrapper.style.borderRadius = "0";
-    dataWrapper.style.top = "0";
-    dataWrapper.style.left = "0";
+    const rankingWrapper = document.querySelector(".ranking-wrapper") as HTMLElement;
+    const rankingComponent = document.querySelector("ctg-countries-rank") as HTMLElement;
+    this.setRankingStyleVariables(rankingWrapper, rankingComponent, true);
 
     htmlToImage
-      .toPng(dataWrapper)
+      .toPng(rankingWrapper)
       .then((dataUrl) => {
         const a = document.createElement("a");
         a.href = dataUrl;
@@ -153,12 +153,7 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        dataWrapper.style.position = "unset";
-        dataWrapper.style.borderRadius = "1rem";
-        dataWrapper.style.width = "100%";
-
-        dataWrapper.style.top = "";
-        dataWrapper.style.left = "";
+        this.setRankingStyleVariables(rankingWrapper, rankingComponent, false);
       })
       .catch(function (error) {
         console.error("oops, something went wrong!", error);
@@ -166,13 +161,13 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
   }
 
   onChangeDefaultResolutionStatus(): void {
-    this.usesDefaultResolution = !this.usesDefaultResolution;
-    if (this.usesDefaultResolution) {
-      this.shareMapResolution = {
-        width: "1920px",
-        height: "1080px",
-      };
-    }
+    this.usesDefaultMapResolution = !this.usesDefaultMapResolution;
+    if (this.usesDefaultMapResolution) this.shareMapResolution = this.availableMapResolutions[0];
+  }
+
+  onChangeDefaultSizeStatus(): void {
+    this.usesDefaultRankingSize = !this.usesDefaultRankingSize;
+    if (this.usesDefaultRankingSize) this.shareRankingSize = this.availableRankingSizes[0];
   }
 
   sendOpenRankingsEvent(): void {
@@ -434,5 +429,44 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
     this.setColorScale();
     this.addMapLegend();
     this.setCountriesColorInMap();
+  }
+
+  private setRankingStyleVariables(
+    rankingWrapper: HTMLElement,
+    rankingComponent: HTMLElement,
+    isInShareMode: boolean
+  ): void {
+    rankingComponent.style.setProperty(
+      "--ranking-wrapper-padding",
+      isInShareMode ? "1em 1em 0 1em" : "1rem 1rem 0 1rem"
+    );
+    rankingComponent.style.setProperty("--ranking-border-radius", isInShareMode ? "0" : "1rem");
+    rankingComponent.style.setProperty("--ranking-width", isInShareMode ? "fit-content" : "100%");
+    rankingComponent.style.setProperty("--ranking-padding", isInShareMode ? "1em 0" : "1rem 0");
+    rankingComponent.style.setProperty(
+      "--ranking-table-header-column",
+      isInShareMode ? "0.5em" : "0.5rem"
+    );
+    rankingComponent.style.setProperty(
+      "--ranking-country-column-padding-bottom",
+      isInShareMode ? "0.5em" : "0.5rem"
+    );
+    rankingComponent.style.setProperty(
+      "--ranking-flag-font-size",
+      isInShareMode ? "1.75em" : "1.75rem"
+    );
+    rankingComponent.style.setProperty(
+      "--ranking-flag-margin-right",
+      isInShareMode ? "0.25em" : "0.5rem"
+    );
+    rankingComponent.style.setProperty(
+      "--ranking-artist-count-column",
+      isInShareMode ? "0.5em 0" : "1rem 0"
+    );
+
+    rankingWrapper.style.position = isInShareMode ? "absolute" : "unset";
+    rankingWrapper.style.fontSize = isInShareMode ? this.shareRankingSize : "unset";
+    rankingWrapper.style.top = isInShareMode ? "0" : "";
+    rankingWrapper.style.left = isInShareMode ? "0" : "";
   }
 }
