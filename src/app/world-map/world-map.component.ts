@@ -292,6 +292,7 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
 
   private addMapLegend(): void {
     setTimeout(() => {
+      this.mapSvg.selectAll(".label-title").remove();
       this.mapSvg.selectAll(".color-label").remove();
       this.mapSvg.selectAll("rect").remove();
 
@@ -317,6 +318,7 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
         .text("Artists per country")
         .attr("fill", this.currentColorPalette[this.currentColorPalette.length - 1])
         .attr("font-size", fontSize)
+        .attr("class", "label-title")
         .attr("transform", `translate(${legendX}, ${legendY - 8 * mapViewWidthFactor})`);
 
       this.mapSvg
