@@ -94,7 +94,10 @@
     ></p-button>
     <p-overlayPanel #op>
       <div class="color-theme-selector">
-        <label class="map-color-palette" for="map-color-palette">Color Palette</label>
+        <label class="map-color-palette" for="map-color-palette">
+          <div>Color Palette</div>
+          <div style="color: grey">Provided by ArcGIS Maps SDK</div>
+        </label>
         <p-listbox
           [options]="colorPalettes"
           optionLabel="name"
