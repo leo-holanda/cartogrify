@@ -1,0 +1,25 @@
+<div class="ranking">
+  <div class="ranking-header">
+    <h2 class="ranking-title">Ranking</h2>
+    <span class="ranking-subtitle">by artists per region</span>
+  </div>
+  <div class="ranking-content">
+    <div *ngFor="let region of regionsData">
+      <div class="geo-data">
+        <span>{{ region.name }}</span>
+        <span>{{ region.count }}</span>
+      </div>
+      <div *ngFor="let intermediateRegion of region.intermediateRegions">
+        <div class="geo-data sub-region-data">
+          <span>{{ intermediateRegion.name + " (" + intermediateRegion.count + ")" }}</span>
+        </div>
+        <div
+          class="geo-data intermediate-region-data"
+          *ngFor="let subRegion of intermediateRegion.subRegions"
+        >
+          <span>{{ subRegion.name + " (" + subRegion.count + ")" }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
