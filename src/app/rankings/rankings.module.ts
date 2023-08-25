@@ -9,9 +9,10 @@ import { DialogService, DynamicDialogModule } from "primeng/dynamicdialog";
 import { SidebarModule } from "primeng/sidebar";
 import { CountriesRankComponent } from './countries-rank/countries-rank.component';
 import { RegionsRankComponent } from './regions-rank/regions-rank.component';
+import { ArtistsRankComponent } from './artists-rank/artists-rank.component';
 
 @NgModule({
-  declarations: [RankingsComponent, CountriesRankComponent, RegionsRankComponent],
+  declarations: [RankingsComponent, CountriesRankComponent, RegionsRankComponent, ArtistsRankComponent],
   imports: [
     CommonModule,
     ProgressBarModule,
