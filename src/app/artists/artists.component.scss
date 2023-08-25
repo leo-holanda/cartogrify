@@ -11,6 +11,7 @@ main {
   margin: auto auto 0 auto;
   width: fit-content;
   height: fit-content;
+  z-index: 9999;
 
   @media (max-width: 768px) {
     margin: 0 1rem auto 1rem;
