@@ -43,8 +43,6 @@ export class RankingsComponent {
   ];
 
   DataTypes = DataTypes;
-  isMessageActive = true;
-  ref: DynamicDialogRef | undefined;
   sidebarVisible = false;
 
   constructor(private dialogService: DialogService, private countryService: CountryService) {}
@@ -55,24 +53,6 @@ export class RankingsComponent {
 
   setSelectedData(dataType: DataTypes): void {
     this.selectedData = dataType;
-  }
-
-  hideMessage(): void {
-    this.isMessageActive = false;
-  }
-
-  openDialog() {
-    this.ref = this.dialogService.open(SuggestionsComponent, {
-      header: "Make your suggestions!",
-      data: this.artists,
-    });
-
-    this.ref.onClose.subscribe((hasSuggestions) => {
-      if (hasSuggestions) {
-        this.countriesData = this.countryService.countCountries(this.artists);
-        this.regionsData = this.countryService.countRegions(this.artists);
-      }
-    });
   }
 
   hideRankings(): void {

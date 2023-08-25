@@ -61,44 +61,12 @@
     margin-right: 0.5rem;
   }
 
-  .suggestion-message {
-    display: flex;
-  }
-
-  .suggestion-message-content {
-    margin-top: 1rem;
-  }
-
-  .suggestion-message-close-btn {
-    display: flex;
-    align-items: center;
-  }
-
-  .suggestion-message-icon {
-    font-size: 1.5rem;
-    margin-right: 1rem;
-  }
-
   .data-title-wrapper {
     margin-bottom: 1rem;
   }
 
   .countries-data-title {
     margin-top: 1rem;
-  }
-
-  .artist-data-title {
-    margin-top: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    & div:first-child {
-      @media (min-width: 768px) {
-        text-wrap: nowrap;
-      }
-      margin-right: 2rem;
-    }
   }
 
   .data-title {
@@ -241,41 +209,5 @@
 
   .artist-content {
     padding: 1rem 0;
-  }
-
-  .artist-table {
-    border-collapse: separate;
-    border-spacing: 0 0;
-
-    td {
-      white-space: nowrap;
-      padding: 0 0 1.5rem 0.5rem;
-    }
-
-    tr:last-child {
-      td {
-        padding: 0;
-      }
-    }
-
-    .data-index {
-      padding: 0 0.5rem 1.5rem 0;
-      text-align: center;
-      font-size: 1.3rem;
-    }
-
-    .artist-data {
-      .artist-name {
-        font-size: 1.2rem;
-      }
-
-      .country-name {
-        font-size: 0.9rem;
-      }
-
-      .flag {
-        margin-top: 0.25rem;
-      }
-    }
   }
 }
