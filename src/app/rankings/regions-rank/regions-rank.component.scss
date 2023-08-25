@@ -1,0 +1,58 @@
+.ranking {
+  display: flex;
+  flex-flow: column;
+  background-color: #303030;
+  padding: 1rem;
+  border-radius: 1rem;
+  overflow-y: auto;
+}
+
+.ranking-header {
+  margin-bottom: 1rem;
+
+  .ranking-title {
+    margin: 0;
+  }
+
+  .ranking-subtitle {
+    color: grey;
+  }
+}
+
+.ranking-content {
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    background-color: transparent;
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #babac0;
+    border-radius: 1rem;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.808);
+    }
+  }
+}
+
+.geo-data {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid grey;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.sub-region-data {
+  padding-left: 1rem;
+}
+
+.intermediate-region-data {
+  padding-left: 2rem;
+}
