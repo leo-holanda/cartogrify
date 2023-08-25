@@ -4,11 +4,11 @@
   position="bottom"
   (onHide)="hideRankings()"
 >
-  <ng-template style="background-color: #121212; padding: 0 1rem" pTemplate="header">
+  <ng-template pTemplate="header">
     <h1>Results</h1>
   </ng-template>
-  <ng-template style="background-color: #121212; padding: 0" pTemplate="content">
-    <div style="padding: 0 1rem" class="data-wrapper">
+  <ng-template pTemplate="content">
+    <div class="data-wrapper">
       <p-tabMenu
         class="tab-menu"
         [model]="items"
