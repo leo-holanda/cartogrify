@@ -7,6 +7,7 @@
   <ng-template pTemplate="header">
     <h1>Results</h1>
   </ng-template>
+
   <ng-template pTemplate="content">
     <div class="data-wrapper">
       <p-tabMenu
@@ -15,64 +16,17 @@
         [activeItem]="items[0]"
         (activeItemChange)="onActiveItemChange($event)"
       ></p-tabMenu>
-      <div class="data countries-data" *ngIf="activeItem == DataTypes.COUNTRIES">
-        <div class="countries-data-title">
-          <h2 class="data-title">Ranking</h2>
-          <span class="data-subtitle">by artists per country</span>
-        </div>
-        <div class="data-content-wrapper artist-content">
-          <table class="country-table">
-            <thead>
-              <th>Country</th>
-              <th>Artists</th>
-            </thead>
-            <tbody>
-              <tr *ngFor="let countryData of countriesData; let i = index">
-                <td class="country-column">
-                  <div>
-                    <span class="{{ 'flag fi fi-' + countryData.country.flagCode }}"></span>
-                  </div>
-                  <div class="country-column-data">
-                    <span>{{ countryData.country.name }}</span>
-                    <p-progressBar
-                      [value]="(countryData.count / artists.length) * 100"
-                    ></p-progressBar>
-                  </div>
-                </td>
-                <td class="count-column">
-                  {{ countryData.count }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
 
-      <div class="data" *ngIf="activeItem == DataTypes.REGIONS">
-        <div class="data-title-wrapper">
-          <h2 class="data-title">Ranking</h2>
-          <span class="data-subtitle">by artists per region</span>
-        </div>
-        <div class="data-content-wrapper region-data-wrapper">
-          <div *ngFor="let region of regionsData">
-            <div class="geo-data">
-              <span>{{ region.name }}</span>
-              <span>{{ region.count }}</span>
-            </div>
-            <div *ngFor="let intermediateRegion of region.intermediateRegions">
-              <div class="geo-data sub-region-data">
-                <span>{{ intermediateRegion.name + " (" + intermediateRegion.count + ")" }}</span>
-              </div>
-              <div
-                class="geo-data intermediate-region-data"
-                *ngFor="let subRegion of intermediateRegion.subRegions"
-              >
-                <span>{{ subRegion.name + " (" + subRegion.count + ")" }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ctg-countries-rank
+        *ngIf="activeItem == DataTypes.COUNTRIES"
+        [countriesData]="countriesData"
+        [artists]="artists"
+      ></ctg-countries-rank>
+
+      <ctg-regions-rank
+        *ngIf="activeItem == DataTypes.REGIONS"
+        [regionsData]="regionsData"
+      ></ctg-regions-rank>
 
       <ctg-artists-rank
         *ngIf="activeItem == DataTypes.ARTISTS"
@@ -87,6 +41,7 @@
     <div>
       <h1>Results</h1>
     </div>
+
     <p-tabMenu
       class="tab-menu"
       [model]="items"
