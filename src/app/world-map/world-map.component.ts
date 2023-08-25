@@ -136,8 +136,10 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
   }
 
   shareRanking(): void {
-    const dataWrapper = document.querySelector(".data-wrapper .data") as HTMLElement;
+    const dataWrapper = document.querySelector(".ranking-wrapper") as HTMLElement;
     dataWrapper.style.position = "absolute";
+    dataWrapper.style.width = "fit-content";
+
     dataWrapper.style.borderRadius = "0";
     dataWrapper.style.top = "0";
     dataWrapper.style.left = "0";
@@ -153,6 +155,8 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
         document.body.removeChild(a);
         dataWrapper.style.position = "unset";
         dataWrapper.style.borderRadius = "1rem";
+        dataWrapper.style.width = "100%";
+
         dataWrapper.style.top = "";
         dataWrapper.style.left = "";
       })
