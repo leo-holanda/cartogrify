@@ -23,7 +23,6 @@
     "boxicons": "^2.1.4",
     "d3": "^7.8.5",
     "html-to-image": "^1.11.11",
-    "normalize.css": "^8.0.1",
     "primeng": "^16.1.0",
     "rxjs": "~7.8.0",
     "topojson-client": "^3.1.0",
