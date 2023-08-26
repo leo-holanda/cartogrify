@@ -8,9 +8,6 @@ main {
   justify-content: center;
   flex-flow: column;
   overflow: hidden;
-  background-image: url(../../../assets/background.svg);
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 
 .title-wrapper {
@@ -20,11 +17,13 @@ main {
   flex-flow: column;
   margin-bottom: 3rem;
   color: black;
+  width: 50%;
+  text-align: center;
 
   & h1 {
-    font-family: "Lilita One", cursive;
+    font-family: "Quicksand", cursive;
     font-weight: normal;
-    font-size: clamp(3.75rem, 12vw, 20rem);
+    font-size: clamp(3.75rem, 4vw, 20rem);
     margin: 0;
   }
 
@@ -36,6 +35,8 @@ main {
 
 button {
   cursor: pointer;
+  font-family: "Quicksand", cursive;
+
   border: none;
 }
 
@@ -59,7 +60,7 @@ button {
     padding: 2rem 4rem;
     font-size: 2rem;
     transition: 0.2s;
-    border-radius: 0.5rem;
+    border-radius: 999px;
   }
 
   @media (max-width: 768px) {
