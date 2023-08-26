@@ -29,15 +29,15 @@ export class RankingsComponent {
   items: MenuItem[] = [
     {
       label: DataTypes.COUNTRIES,
-      icon: "pi pi-flag",
+      icon: "bx bxs-flag-alt",
     },
     {
       label: DataTypes.REGIONS,
-      icon: "pi pi-globe",
+      icon: "bx bx-world",
     },
     {
       label: DataTypes.ARTISTS,
-      icon: "pi pi-user",
+      icon: "bx bxs-music",
     },
   ];
 

@@ -2,7 +2,7 @@
   <p-messages *ngIf="isMessageActive" class="suggestion-message-wrapper" severity="warn">
     <ng-template pTemplate>
       <div>
-        <span class="pi pi-exclamation-triangle suggestion-message-icon"></span>
+        <span class="bx bx-error suggestion-message-icon"></span>
       </div>
       <div class="suggestion-message">
         <div>
@@ -17,7 +17,7 @@
           <p-button
             (onClick)="hideMessage()"
             styleClass="p-ripple p-element p-message-close p-link"
-            icon="pi pi-times"
+            icon="bx bx-x"
           ></p-button>
         </div>
       </div>
