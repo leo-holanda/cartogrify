@@ -136,7 +136,7 @@
       (onClick)="op.toggle($event)"
       [label]="isMobile ? 'Customize' : 'Customize map'"
       icon="pi pi-palette"
-      [styleClass]="isMobile ? 'p-button-rounded' : undefined"
+      [styleClass]="isMobile ? 'p-button-lg p-button-rounded' : undefined"
     ></p-button>
     <p-button
       *ngIf="isMobile"
@@ -144,13 +144,13 @@
       icon="pi pi-sort-amount-up"
       class="sidebar-button"
       [label]="isMobile ? 'Rankings' : 'See your rankings'"
-      [styleClass]="isMobile ? 'p-button-rounded' : undefined"
+      [styleClass]="isMobile ? 'p-button-lg p-button-rounded' : undefined"
     ></p-button>
     <p-button
       (onClick)="onShareButtonClick()"
       [label]="isMobile ? 'Share' : 'Share with your friends'"
       icon="pi pi-share-alt"
-      [styleClass]="isMobile ? 'p-button-rounded' : undefined"
+      [styleClass]="isMobile ? 'p-button-lg p-button-rounded' : undefined"
     ></p-button>
     <p-overlayPanel #op>
       <div class="color-theme-selector">
