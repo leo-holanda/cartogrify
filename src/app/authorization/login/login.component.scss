@@ -8,6 +8,7 @@ main {
   justify-content: center;
   flex-flow: column;
   overflow: hidden;
+  padding: 3rem;
 }
 
 .title-wrapper {
@@ -17,13 +18,16 @@ main {
   flex-flow: column;
   margin-bottom: 3rem;
   color: black;
-  width: 50%;
   text-align: center;
+
+  @media (min-width: 768px) {
+    width: 50%;
+  }
 
   & h1 {
     font-family: "Quicksand", cursive;
     font-weight: normal;
-    font-size: clamp(3.75rem, 4vw, 20rem);
+    font-size: clamp(2.5rem, 4vw, 8rem);
     margin: 0;
   }
 
