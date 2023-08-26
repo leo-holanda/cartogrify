@@ -14,7 +14,7 @@
           (click)="onSpotifyButtonClick()"
           class="option-button spotify-option"
         >
-          <i *ngIf="hasClickedSpotifyButton" class="pi pi-spin pi-spinner"></i>
+          <i *ngIf="hasClickedSpotifyButton" class="bx bx-loader-alt bx-spin"></i>
           Spotify
         </button>
       </div>
@@ -26,7 +26,7 @@
             (click)="onLastfmButtonClick()"
             class="option-button lastfm-option"
           >
-            <i *ngIf="hasClickedLastFmButton" class="pi pi-spin pi-spinner"></i>
+            <i *ngIf="hasClickedLastFmButton" class="bx bx-loader-alt bx-spin"></i>
             Last.fm
           </button>
         </div>
@@ -55,7 +55,7 @@
             (click)="onLastfmStartButtonClick()"
             class="username-input-button p-button-lg"
           >
-            <i *ngIf="hasClickedLastFmStartButton" class="pi pi-spin pi-spinner"></i>
+            <i *ngIf="hasClickedLastFmStartButton" class="bx bx-loader-alt bx-spin"></i>
             Start
           </button>
         </p-dialog>

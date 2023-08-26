@@ -135,13 +135,13 @@
     <p-button
       (onClick)="op.toggle($event)"
       [label]="isMobile ? 'Customize' : 'Customize map'"
-      icon="pi pi-palette"
+      icon="bx bx-palette"
       [styleClass]="isMobile ? 'p-button-lg p-button-rounded' : undefined"
     ></p-button>
     <p-button
       *ngIf="isMobile"
       (onClick)="sendOpenRankingsEvent()"
-      icon="pi pi-sort-amount-up"
+      icon="bx bx-bar-chart-alt bx-rotate-90"
       class="sidebar-button"
       [label]="isMobile ? 'Rankings' : 'See your rankings'"
       [styleClass]="isMobile ? 'p-button-lg p-button-rounded' : undefined"
@@ -149,7 +149,7 @@
     <p-button
       (onClick)="onShareButtonClick()"
       [label]="isMobile ? 'Share' : 'Share with your friends'"
-      icon="pi pi-share-alt"
+      icon="bx bx-share-alt"
       [styleClass]="isMobile ? 'p-button-lg p-button-rounded' : undefined"
     ></p-button>
     <p-overlayPanel #op>

@@ -2,7 +2,6 @@
 @import "/node_modules/flag-icons/css/flag-icons.min.css";
 @import "primeng/resources/themes/md-dark-indigo/theme.css";
 @import "primeng/resources/primeng.css";
-@import "primeicons/primeicons.css";
 /* You can add global styles to this file, and also import other style files */
 
 * {
@@ -15,4 +14,12 @@ body {
   overflow: hidden;
   width: 100%;
   height: 100dvh;
+}
+
+.bx {
+  font-size: 1.3rem;
+}
+
+.bx-loader-alt {
+  margin-right: 0.5rem;
 }
