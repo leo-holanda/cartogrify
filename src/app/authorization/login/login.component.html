@@ -1,33 +1,31 @@
 <p-toast></p-toast>
+
 <main>
   <section class="title-wrapper">
-    <h1>cartogrify</h1>
-    <h3>Explore the worldwide origins of your music taste</h3>
+    <h1>Explore the origins of the music you love</h1>
   </section>
   <section>
-    <h2 class="hint">Which streaming service do you use?</h2>
     <div class="options-wrapper">
       <div>
         <button
           pButton
-          [disabled]="hasClickedLastFmButton"
+          [disabled]="hasInitiatedLogin"
           (click)="onSpotifyButtonClick()"
           class="option-button spotify-option"
         >
-          <i *ngIf="hasClickedSpotifyButton" class="bx bx-loader-alt bx-spin"></i>
-          Spotify
+          <i *ngIf="hasInitiatedLogin" class="bx bx-loader-alt bx-spin"></i>
+          Log in with Spotify
         </button>
       </div>
       <div>
         <div>
           <button
             pButton
-            [disabled]="hasClickedSpotifyButton"
+            [disabled]="hasInitiatedLogin"
             (click)="onLastfmButtonClick()"
             class="option-button lastfm-option"
           >
-            <i *ngIf="hasClickedLastFmButton" class="bx bx-loader-alt bx-spin"></i>
-            Last.fm
+            Log in with Last.fm
           </button>
         </div>
 
@@ -37,6 +35,7 @@
           [breakpoints]="{ '768px': '87vw' }"
           [style]="{ width: '35rem' }"
           [modal]="true"
+          (onHide)="onLastfmUsernameDialogHide()"
         >
           <input
             type="text"
@@ -46,7 +45,6 @@
             placeholder="myusername"
             class="username-input"
             [(ngModel)]="lastFmUsername"
-            [disabled]="hasClickedSpotifyButton || hasClickedLastFmStartButton"
           />
           <button
             pButton

@@ -14,7 +14,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 })
 export class LoginComponent {
   lastFmUsername = "";
-  hasClickedSpotifyButton = false;
+  hasInitiatedLogin = false;
   hasClickedLastFmButton = false;
   hasClickedLastFmStartButton = false;
 
@@ -28,7 +28,7 @@ export class LoginComponent {
   ) {}
 
   onSpotifyButtonClick(): void {
-    this.hasClickedSpotifyButton = true;
+    this.hasInitiatedLogin = true;
 
     if (this.spotifyAuthService.isTokenUndefined()) {
       this.spotifyAuthService.requestAuthorization();
@@ -47,6 +47,7 @@ export class LoginComponent {
   }
 
   onLastfmButtonClick(): void {
+    this.hasInitiatedLogin = true;
     this.hasClickedLastFmButton = true;
   }
 
@@ -58,7 +59,7 @@ export class LoginComponent {
         this.router.navigate(["/artists"]);
       },
       error: (err) => {
-        this.hasClickedSpotifyButton = false;
+        this.hasInitiatedLogin = false;
         this.hasClickedLastFmButton = false;
         this.hasClickedLastFmStartButton = false;
         this.lastFmUsername = "";
@@ -70,6 +71,11 @@ export class LoginComponent {
         });
       },
     });
+  }
+
+  onLastfmUsernameDialogHide(): void {
+    this.hasInitiatedLogin = false;
+    this.hasClickedLastFmButton = false;
   }
 
   private fetchUserDataFromSpotify(): void {
@@ -99,6 +105,6 @@ export class LoginComponent {
       sticky: true,
     });
 
-    this.hasClickedSpotifyButton = false;
+    this.hasInitiatedLogin = false;
   }
 }
