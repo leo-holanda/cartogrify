@@ -32,7 +32,11 @@ export class ArtistService {
           topArtistsNames,
           artistsFromDatabase
         );
-        if (artistsWithoutCountry.length > 0) {
+
+        if (artistsWithoutCountry.length == 0) {
+          const countriesCount = this.countryService.countCountries(artistsWithOriginalOrder);
+          this.countryService.incrementDiversityIndexOccurrence(countriesCount.length);
+        } else {
           this.hasArtistsWithoutCountry$.next(true);
           const scrappedArtists: ScrapedArtist[] = [];
 
@@ -49,6 +53,11 @@ export class ArtistService {
             },
             complete: () => {
               this.supabaseService.saveSuggestions(scrappedArtists);
+              const countriesCount = this.countryService.countCountries([
+                ...artistsFromDatabase,
+                ...scrappedArtists,
+              ]);
+              this.countryService.incrementDiversityIndexOccurrence(countriesCount.length);
               this.scrappedArtists$.complete();
             },
           });

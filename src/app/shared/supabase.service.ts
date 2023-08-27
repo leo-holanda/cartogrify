@@ -60,4 +60,13 @@ export class SupabaseService {
       asyncScheduler
     ).subscribe();
   }
+
+  incrementDiversityIndexOccurence(diversityIndex: number): void {
+    scheduled(
+      this.supabaseClient.rpc("incrementdiversityindexocurrence", {
+        provided_diversity_index: diversityIndex,
+      }),
+      asyncScheduler
+    ).subscribe();
+  }
 }
