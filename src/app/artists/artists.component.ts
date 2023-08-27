@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { debounceTime, filter, fromEvent } from "rxjs";
 import { Artist } from "./artist.model";
 import { ArtistService } from "./artist.service";
-import { CountryData, RegionData } from "../country/country.model";
+import { CountryData, DiversityStatistics, RegionData } from "../country/country.model";
 import { CountryService } from "../country/country.service";
 import { Message } from "primeng/api";
 
@@ -15,6 +15,7 @@ export class ArtistsComponent implements OnInit {
   artists: Artist[] = [];
   countriesData: CountryData[] = [];
   regionsData: RegionData[] = [];
+  diversityStatistics!: DiversityStatistics;
 
   isMobile = window.innerWidth <= 768;
   messages: Message[] = [];
@@ -33,6 +34,10 @@ export class ArtistsComponent implements OnInit {
         } as Message,
       ];
     }
+
+    this.countryService
+      .getDiversityStatistics()
+      .subscribe((diversityStatistics) => (this.diversityStatistics = diversityStatistics));
 
     this.artistsService
       .getUserTopArtists()

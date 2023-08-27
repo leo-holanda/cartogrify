@@ -35,3 +35,8 @@ interface Attr2 {
   perPage: string;
   total: string;
 }
+
+export interface DiversityData {
+  diversity_index: number;
+  index_occurrence: number;
+}

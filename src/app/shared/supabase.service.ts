@@ -3,7 +3,7 @@ import { SupabaseClient, createClient } from "@supabase/supabase-js";
 import { Observable, asyncScheduler, map, scheduled, take } from "rxjs";
 import { environment } from "src/environments/environment";
 import { ArtistFromDatabase, ScrapedArtist, Suggestion } from "../artists/artist.model";
-import { LastFmTopArtists } from "./supabase.model";
+import { DiversityData, LastFmTopArtists } from "./supabase.model";
 
 @Injectable({
   providedIn: "root",
@@ -68,5 +68,18 @@ export class SupabaseService {
       }),
       asyncScheduler
     ).subscribe();
+  }
+
+  getDiversityData(): Observable<DiversityData[]> {
+    return scheduled(
+      this.supabaseClient
+        .from("diversity_per_country_quantity")
+        .select("*")
+        .neq("index_occurrence", "0"),
+      asyncScheduler
+    ).pipe(
+      take(1),
+      map((response) => response.data || [])
+    );
   }
 }

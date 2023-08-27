@@ -52,3 +52,7 @@ export interface PossibleCountry {
   count: number;
   geoFeature: GeoFeature;
 }
+
+export interface DiversityStatistics {
+  average: number;
+}
