@@ -12,6 +12,7 @@ import {
   GeoFeature,
   GeoFeatureCollection,
   PossibleCountry,
+  DiversityStatistics,
 } from "./country.model";
 import countriesJSON from "../../assets/countries-50m.json";
 import * as topojson from "topojson-client";
@@ -341,6 +342,24 @@ export class CountryService {
 
   incrementDiversityIndexOccurrence(diversityIndex: number): void {
     this.supabaseService.incrementDiversityIndexOccurence(diversityIndex);
+  }
+
+  getDiversityStatistics(): Observable<DiversityStatistics> {
+    return this.supabaseService.getDiversityData().pipe(
+      map((diversityData) => {
+        let sum = 0;
+        let valuesQuantity = 0;
+
+        diversityData.forEach((data) => {
+          sum += data.diversity_index * data.index_occurrence;
+          valuesQuantity += data.index_occurrence;
+        });
+
+        return {
+          average: valuesQuantity > 0 ? sum / valuesQuantity : 0,
+        };
+      })
+    );
   }
 
   private createRegion(artist: Artist): RegionData {

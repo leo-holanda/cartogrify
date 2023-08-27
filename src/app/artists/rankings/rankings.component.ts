@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { Artist } from "../artist.model";
-import { CountryData, RegionData } from "../../country/country.model";
+import { CountryData, DiversityStatistics, RegionData } from "../../country/country.model";
 import { MenuItem } from "primeng/api";
 import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
 import { CountryService } from "../../country/country.service";
@@ -20,6 +20,7 @@ export class RankingsComponent {
   @Input() artists: Artist[] = [];
   @Input() countriesData: CountryData[] = [];
   @Input() regionsData: RegionData[] = [];
+  @Input() diversityStatistics!: DiversityStatistics;
   @Input() isMobile!: boolean;
   @Input() shouldOpenRankings!: boolean;
   @Output() shouldHideRankings = new EventEmitter<boolean>();
