@@ -339,6 +339,10 @@ export class CountryService {
     return unknownCountry;
   }
 
+  incrementDiversityIndexOccurrence(diversityIndex: number): void {
+    this.supabaseService.incrementDiversityIndexOccurence(diversityIndex);
+  }
+
   private createRegion(artist: Artist): RegionData {
     let artistSubRegion: SubRegionData | undefined = undefined;
     artistSubRegion = {
