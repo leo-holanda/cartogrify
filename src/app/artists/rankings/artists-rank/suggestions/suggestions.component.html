@@ -2,7 +2,7 @@
   <p-tabView styleClass="batata">
     <p-tabPanel header="Suggest individually" leftIcon="bx bx-user">
       <p-table
-        *ngIf="isMobile; else desktopTableTemplate"
+        *ngIf="isMobile; else desktopIndividualTableTemplate"
         [value]="artists"
         [scrollable]="true"
         scrollHeight="50vh"
@@ -67,7 +67,7 @@
           </tr>
         </ng-template>
       </p-table>
-      <ng-template #desktopTableTemplate>
+      <ng-template #desktopIndividualTableTemplate>
         <p-table [value]="artists" [scrollable]="true" scrollHeight="50vh">
           <ng-template pTemplate="header">
             <tr>
@@ -184,6 +184,7 @@
       </div>
 
       <p-table
+        *ngIf="isMobile; else desktopBulkTableTemplate"
         [value]="artists"
         selectionMode="multiple"
         [(selection)]="selectedArtistsToBulkSuggest"
@@ -195,9 +196,7 @@
             <th style="width: 4rem">
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
-            <th>Name</th>
-            <th>Country</th>
-            <th>Suggested country</th>
+            <th>Artist</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-artist let-rowIndex="rowIndex">
@@ -205,31 +204,91 @@
             <td>
               <p-tableCheckbox [value]="artist"></p-tableCheckbox>
             </td>
-            <td>{{ artist.name }}</td>
             <td>
-              <span
-                class="{{
-                  'flag fi fi-' + (artist.country == null ? 'xx' : artist.country.flagCode)
-                }}"
-              >
-              </span>
-              <span>
-                {{ artist.country?.name || "Unknown" }}
-              </span>
-            </td>
-            <td>
-              <span
-                *ngIf="artist.suggestedCountry"
-                class="{{ 'flag fi fi-' + artist.suggestedCountry.flagCode }}"
-              >
-              </span>
-              <span>
-                {{ artist.suggestedCountry?.name || "" }}
-              </span>
+              <div class="artist-data">
+                <span class="artist-name">
+                  {{ artist.name }}
+                </span>
+                <div>
+                  <span
+                    class="{{
+                      'flag fi fi-' + (artist.country == null ? 'xx' : artist.country.flagCode)
+                    }}"
+                  >
+                  </span>
+                  <span>
+                    {{ artist.country?.name || "Unknown" }}
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <span>Country suggestion</span>
+                <div>
+                  <span
+                    *ngIf="artist.suggestedCountry"
+                    class="{{ 'flag fi fi-' + artist.suggestedCountry.flagCode }}"
+                  >
+                  </span>
+                  <span>
+                    {{ artist.suggestedCountry?.name || "To be suggested" }}
+                  </span>
+                </div>
+              </div>
             </td>
           </tr>
         </ng-template>
       </p-table>
+
+      <ng-template #desktopBulkTableTemplate>
+        <p-table
+          [value]="artists"
+          selectionMode="multiple"
+          [(selection)]="selectedArtistsToBulkSuggest"
+          [scrollable]="true"
+          scrollHeight="50vh"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 4rem">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th>Name</th>
+              <th>Country</th>
+              <th>Suggested country</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-artist let-rowIndex="rowIndex">
+            <tr>
+              <td>
+                <p-tableCheckbox [value]="artist"></p-tableCheckbox>
+              </td>
+              <td>{{ artist.name }}</td>
+              <td>
+                <span
+                  class="{{
+                    'flag fi fi-' + (artist.country == null ? 'xx' : artist.country.flagCode)
+                  }}"
+                >
+                </span>
+                <span>
+                  {{ artist.country?.name || "Unknown" }}
+                </span>
+              </td>
+              <td>
+                <span
+                  *ngIf="artist.suggestedCountry"
+                  class="{{ 'flag fi fi-' + artist.suggestedCountry.flagCode }}"
+                >
+                </span>
+                <span>
+                  {{ artist.suggestedCountry?.name || "" }}
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
     </p-tabPanel>
   </p-tabView>
 </div>
