@@ -1,6 +1,6 @@
 <div>
-  <p-tabView>
-    <p-tabPanel header="Individual suggest" leftIcon="bx bx-user">
+  <p-tabView styleClass="batata">
+    <p-tabPanel header="Suggest individually" leftIcon="bx bx-user">
       <p-table
         *ngIf="isMobile; else desktopTableTemplate"
         [value]="artists"
@@ -28,17 +28,18 @@
               </div>
 
               <div class="suggestion-dropdown-wrapper">
-                <label for="name">Country suggestion</label>
+                <label for="country-suggestion">Country suggestion</label>
                 <p-dropdown
-                  [options]="countries"
                   [(ngModel)]="artists[rowIndex].suggestedCountry"
-                  optionLabel="name"
                   [filter]="true"
-                  filterBy="name"
+                  [options]="countries"
                   [showClear]="true"
-                  placeholder="Select a country"
                   [virtualScroll]="true"
                   [virtualScrollItemSize]="20"
+                  aria-label="Dropdown input to choose a country to suggest"
+                  filterBy="name"
+                  optionLabel="country-suggestion"
+                  placeholder="Select a country"
                   styleClass="suggestion-dropdown"
                 >
                   <ng-template pTemplate="selectedItem">
@@ -128,7 +129,7 @@
         </p-table>
       </ng-template>
     </p-tabPanel>
-    <p-tabPanel header="Bulk suggest" leftIcon="bx bx-group">
+    <p-tabPanel header="Suggest by bulk" leftIcon="bx bx-group">
       <div class="bulk-suggest-guide-wrapper">
         <div>
           <div>First, mark the checkboxes of the artists you want to make a suggestion.</div>

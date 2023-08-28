@@ -19,6 +19,14 @@
   .suggestion-dropdown {
     width: 100%;
   }
+
+  .p-tabview-title {
+    text-wrap: wrap !important;
+  }
+
+  .p-tabview-panels {
+    padding: 1rem 0 !important;
+  }
 }
 
 .table-column {
@@ -26,7 +34,7 @@
   flex-direction: column;
 
   .artist-data {
-    padding: 0 1rem 1rem 1rem;
+    margin-bottom: 1rem;
   }
 
   .artist-name {
@@ -34,6 +42,8 @@
   }
 
   .suggestion-dropdown-wrapper {
-    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 }
