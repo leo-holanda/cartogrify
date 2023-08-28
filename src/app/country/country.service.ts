@@ -5,10 +5,10 @@ import { Artist, ArtistWithSuggestion, ScrapedArtist, Suggestion } from "../arti
 import { environment } from "src/environments/environment.development";
 import {
   Country,
-  CountryData,
-  IntermediateRegionData,
-  RegionData,
-  SubRegionData,
+  CountryCount,
+  IntermediateRegionCount,
+  RegionCount,
+  SubRegionCount,
   GeoFeature,
   GeoFeatureCollection,
   PossibleCountry,
@@ -184,8 +184,8 @@ export class CountryService {
     return this.createCountryFromFeature(mostLikelyCountry);
   }
 
-  countCountries(artists: Artist[]): CountryData[] {
-    const countriesCount = new Map<string, CountryData>();
+  countCountries(artists: Artist[]): CountryCount[] {
+    const countriesCount = new Map<string, CountryCount>();
     const unknownCountry: Country = {
       name: "Unknown",
       flagCode: "xx",
@@ -198,11 +198,11 @@ export class CountryService {
     artists.forEach((artist) => {
       const country = artist.country || unknownCountry;
       const count = countriesCount.get(country.name)?.count || 0;
-      const countryData = {
+      const countryCount = {
         country: country,
         count: count + 1,
       };
-      countriesCount.set(country.name, countryData);
+      countriesCount.set(country.name, countryCount);
     });
 
     const sortedCountriesCount = [...countriesCount]
@@ -212,9 +212,9 @@ export class CountryService {
     return sortedCountriesCount;
   }
 
-  countRegions(artists: Artist[]): RegionData[] {
-    const regionsMap = new Map<string, RegionData>();
-    const unknownRegion: RegionData = {
+  countRegions(artists: Artist[]): RegionCount[] {
+    const regionsMap = new Map<string, RegionCount>();
+    const unknownRegion: RegionCount = {
       name: "Unknown",
       intermediateRegions: [],
       count: 0,
@@ -264,10 +264,10 @@ export class CountryService {
       }
     });
 
-    const sortedRegionsData = [...regionsMap]
+    const sortedRegionsCount = [...regionsMap]
       .sort((a, b) => b[1].count - a[1].count)
       .map((region) => region[1]);
-    return sortedRegionsData;
+    return sortedRegionsCount;
   }
 
   findCountryFlagCode(geoFeature: GeoFeature): string {
@@ -362,14 +362,14 @@ export class CountryService {
     );
   }
 
-  private createRegion(artist: Artist): RegionData {
-    let artistSubRegion: SubRegionData | undefined = undefined;
+  private createRegion(artist: Artist): RegionCount {
+    let artistSubRegion: SubRegionCount | undefined = undefined;
     artistSubRegion = {
       name: artist.country!.subRegion || "Unknown",
       count: 1,
     };
 
-    let artistsIntermediateRegion: IntermediateRegionData | undefined = undefined;
+    let artistsIntermediateRegion: IntermediateRegionCount | undefined = undefined;
     artistsIntermediateRegion = {
       name: artist.country!.intermediateRegion || "Unknown",
       count: 1,
@@ -380,11 +380,11 @@ export class CountryService {
       name: artist.country?.region,
       intermediateRegions: artistsIntermediateRegion ? [artistsIntermediateRegion] : [],
       count: 1,
-    } as RegionData;
+    } as RegionCount;
   }
 
-  private createIntermediateRegion(artist: Artist): IntermediateRegionData {
-    let artistSubRegion: SubRegionData | undefined = undefined;
+  private createIntermediateRegion(artist: Artist): IntermediateRegionCount {
+    let artistSubRegion: SubRegionCount | undefined = undefined;
     artistSubRegion = {
       name: artist.country!.subRegion || "Unknown",
       count: 1,

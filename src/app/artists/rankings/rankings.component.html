@@ -19,14 +19,14 @@
 
       <ctg-countries-rank
         *ngIf="activeItem == DataTypes.COUNTRIES"
-        [countriesData]="countriesData"
+        [countriesCount]="countriesCount"
         [artists]="artists"
         [diversityStatistics]="diversityStatistics"
       ></ctg-countries-rank>
 
       <ctg-regions-rank
         *ngIf="activeItem == DataTypes.REGIONS"
-        [regionsData]="regionsData"
+        [regionsCount]="regionsCount"
       ></ctg-regions-rank>
 
       <ctg-artists-rank
@@ -52,14 +52,14 @@
 
     <ctg-countries-rank
       *ngIf="activeItem == DataTypes.COUNTRIES"
-      [countriesData]="countriesData"
+      [countriesCount]="countriesCount"
       [artists]="artists"
       [diversityStatistics]="diversityStatistics"
     ></ctg-countries-rank>
 
     <ctg-regions-rank
       *ngIf="activeItem == DataTypes.REGIONS"
-      [regionsData]="regionsData"
+      [regionsCount]="regionsCount"
     ></ctg-regions-rank>
 
     <ctg-artists-rank

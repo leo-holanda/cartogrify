@@ -7,26 +7,26 @@ export interface Country {
   NE_ID: number;
 }
 
-export interface CountryData {
+export interface CountryCount {
   country: Country;
   count: number;
 }
 
-export interface SubRegionData {
+export interface SubRegionCount {
   name: string;
   count: number;
 }
 
-export interface IntermediateRegionData {
+export interface IntermediateRegionCount {
   name: string;
   count: number;
-  subRegions: SubRegionData[];
+  subRegions: SubRegionCount[];
 }
 
-export interface RegionData {
+export interface RegionCount {
   name: string;
   count: number;
-  intermediateRegions: IntermediateRegionData[];
+  intermediateRegions: IntermediateRegionCount[];
 }
 
 export type GeoFeature = GeoJSON.Feature<GeoJSON.Geometry, NonNullable<GeoJSON.GeoJsonProperties>>;
