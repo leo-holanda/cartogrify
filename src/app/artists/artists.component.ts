@@ -23,35 +23,16 @@ export class ArtistsComponent implements OnInit {
   constructor(private artistsService: ArtistService, private countryService: CountryService) {}
 
   ngOnInit(): void {
-    if (this.isMobile) {
-      this.messages = [
-        {
-          severity: "info",
-          detail: "For a larger view, consider zooming in or rotating your device!",
-          life: 10000,
-        } as Message,
-      ];
-    }
+    this.sendInitialMessages();
 
-    this.messages = [
-      ...this.messages,
-      {
-        severity: "info",
-        detail: "Searching for your top artists...",
-      },
-    ];
+    this.artistsService.getUserTopArtists().subscribe((userTopArtists) => {
+      this.artists = userTopArtists;
+      this.countriesCount = [...this.countryService.countCountries(userTopArtists)];
+      this.regionsCount = this.countryService.countRegions(userTopArtists);
+    });
 
     this.artistsService
-      .getUserTopArtists()
-      .pipe(filter((userTopArtists): userTopArtists is Artist[] => userTopArtists !== undefined))
-      .subscribe((userTopArtists) => {
-        this.artists = userTopArtists;
-        this.countriesCount = [...this.countryService.countCountries(userTopArtists)];
-        this.regionsCount = this.countryService.countRegions(userTopArtists);
-      });
-
-    this.artistsService
-      .getArtistsWithoutCountryStatus()
+      .hasArtistsWithoutCountryStatus()
       .pipe(
         filter(
           (hasArtistsWithoutCountry): hasArtistsWithoutCountry is boolean =>
@@ -78,54 +59,23 @@ export class ArtistsComponent implements OnInit {
             },
           ];
 
-          setTimeout(() => {
-            this.messages = [];
-          }, 8000);
+          this.clearMessages();
         }
       });
 
     this.artistsService
-      .getScrappedArtists()
+      .getScrapedArtists()
       .pipe(
         filter(
-          (scrappedArtistData): scrappedArtistData is ScrapedArtistData =>
-            scrappedArtistData !== undefined
+          (scrapedArtistData): scrapedArtistData is ScrapedArtistData =>
+            scrapedArtistData !== undefined
         )
       )
       .subscribe({
-        next: (scrappedArtistData) => {
-          let messageDetail;
-          if (scrappedArtistData.artist.country)
-            messageDetail = `${scrappedArtistData.artist.name} comes from ${scrappedArtistData.artist.country.name} (${scrappedArtistData.remanining}/${scrappedArtistData.total})`;
-          else
-            messageDetail = `I couldn't find where ${scrappedArtistData.artist.name} comes from! (${scrappedArtistData.remanining}/${scrappedArtistData.total})`;
-
-          if (this.messages.length > 1) this.messages.splice(0, Math.abs(1 - this.messages.length));
-          this.messages = [
-            ...this.messages,
-            {
-              severity: scrappedArtistData.artist.country ? "success" : "warn",
-              detail: messageDetail,
-              key: "map-messages",
-            } as Message,
-          ];
-        },
-        complete: () => {
-          setTimeout(() => {
-            if (this.messages.length > 1) this.messages.splice(0, 1);
-            this.messages = [
-              ...this.messages,
-              {
-                severity: "success",
-                detail:
-                  "That's it! If you noticed something wrong, please suggest correct countries at the artist tab in the results.",
-              },
-            ];
-          }, 1000);
-
-          setTimeout(() => {
-            this.messages = [];
-          }, 8000);
+        next: (scrapedArtistData) => {
+          const scrapedArtistMessage = this.buildScrapedArtistMessage(scrapedArtistData);
+          this.emitMessage(scrapedArtistMessage);
+          if (this.isFinalMessage(scrapedArtistData)) this.emitFinalMessage();
         },
       });
 
@@ -142,5 +92,70 @@ export class ArtistsComponent implements OnInit {
 
   hideRankings(): void {
     this.shouldOpenRankings = false;
+  }
+
+  private sendInitialMessages(): void {
+    if (this.isMobile) {
+      this.messages = [
+        {
+          severity: "info",
+          detail: "For a larger view, consider zooming in or rotating your device!",
+          life: 10000,
+        } as Message,
+      ];
+    }
+
+    this.messages = [
+      ...this.messages,
+      {
+        severity: "info",
+        detail: "Searching for your top artists...",
+      },
+    ];
+  }
+
+  private clearMessages(): void {
+    setTimeout(() => {
+      this.messages = [];
+    }, 8000);
+  }
+
+  private buildScrapedArtistMessage(scrapedArtistData: ScrapedArtistData): Message {
+    let messageDetail;
+    if (scrapedArtistData.artist.country)
+      messageDetail = `${scrapedArtistData.artist.name} comes from ${scrapedArtistData.artist.country.name} (${scrapedArtistData.remanining}/${scrapedArtistData.total})`;
+    else
+      messageDetail = `I couldn't find where ${scrapedArtistData.artist.name} comes from! (${scrapedArtistData.remanining}/${scrapedArtistData.total})`;
+
+    return {
+      severity: scrapedArtistData.artist.country ? "success" : "warn",
+      detail: messageDetail,
+      key: "map-messages",
+    } as Message;
+  }
+
+  private emitMessage(message: Message): void {
+    if (this.messages.length > 1) this.messages.splice(0, Math.abs(1 - this.messages.length));
+    this.messages = [...this.messages, message];
+  }
+
+  private isFinalMessage(scrapedArtistData: ScrapedArtistData): boolean {
+    return scrapedArtistData.remanining == scrapedArtistData.total;
+  }
+
+  private emitFinalMessage(): void {
+    setTimeout(() => {
+      if (this.messages.length > 1) this.messages.splice(0, 1);
+      this.messages = [
+        ...this.messages,
+        {
+          severity: "success",
+          detail:
+            "That's it! If you noticed something wrong, please suggest correct countries at the artist tab in the results.",
+        },
+      ];
+
+      this.clearMessages();
+    }, 1000);
   }
 }

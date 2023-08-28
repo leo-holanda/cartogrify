@@ -8,8 +8,8 @@ import { CountryService } from "../country/country.service";
   providedIn: "root",
 })
 export class ArtistService {
-  private userTopArtists$ = new BehaviorSubject<Artist[] | undefined>(undefined);
-  private scrappedArtists$ = new BehaviorSubject<ScrapedArtistData | undefined>(undefined);
+  private userTopArtists$ = new BehaviorSubject<Artist[]>([]);
+  private scrapedArtists$ = new BehaviorSubject<ScrapedArtistData | undefined>(undefined);
   private hasArtistsWithoutCountry$ = new BehaviorSubject<boolean | undefined>(undefined);
 
   private hasRequestedTopArtists = false;
@@ -18,6 +18,7 @@ export class ArtistService {
 
   setUserTopArtists(topArtistsNames: string[]): void {
     this.hasRequestedTopArtists = true;
+
     this.supabaseService
       .getBestSuggestionByArtists(topArtistsNames)
       .subscribe((bestSuggestions) => {
@@ -26,6 +27,7 @@ export class ArtistService {
           topArtistsNames,
           artistsFromDatabase
         );
+
         this.userTopArtists$.next(artistsWithOriginalOrder);
 
         const artistsWithoutCountry = this.findArtistsWithoutCountry(
@@ -34,47 +36,45 @@ export class ArtistService {
         );
 
         if (artistsWithoutCountry.length == 0) {
-          const countriesCount = this.countryService.countCountries(artistsWithOriginalOrder);
           this.hasArtistsWithoutCountry$.next(false);
         } else {
           this.hasArtistsWithoutCountry$.next(true);
-          const scrappedArtists: ScrapedArtist[] = [];
+          const scrapedArtists: ScrapedArtist[] = [];
 
-          this.countryService.getArtistsCountryOfOrigin(artistsWithoutCountry).subscribe({
-            next: (scrappedArtist) => {
-              scrappedArtists.push(scrappedArtist);
+          this.countryService.findArtistsCountryOfOrigin(artistsWithoutCountry).subscribe({
+            next: (scrapedArtist) => {
+              scrapedArtists.push(scrapedArtist);
 
-              this.scrappedArtists$.next({
-                artist: scrappedArtist,
+              this.scrapedArtists$.next({
+                artist: scrapedArtist,
                 total: artistsWithoutCountry.length,
-                remanining: scrappedArtists.length,
+                remanining: scrapedArtists.length,
               });
 
-              const userTopArtists = this.applyOriginalOrder(topArtistsNames, [
+              const artistsWithOriginalOrder = this.applyOriginalOrder(topArtistsNames, [
                 ...artistsFromDatabase,
-                ...scrappedArtists,
+                ...scrapedArtists,
               ]);
 
-              this.userTopArtists$.next(userTopArtists);
+              this.userTopArtists$.next(artistsWithOriginalOrder);
             },
             complete: () => {
-              this.supabaseService.saveSuggestions(scrappedArtists);
-              this.scrappedArtists$.complete();
+              this.supabaseService.saveSuggestions(scrapedArtists);
             },
           });
         }
       });
   }
 
-  getUserTopArtists(): Observable<Artist[] | undefined> {
+  getUserTopArtists(): Observable<Artist[]> {
     return this.userTopArtists$.asObservable();
   }
 
-  getScrappedArtists(): Observable<ScrapedArtistData | undefined> {
-    return this.scrappedArtists$.asObservable();
+  getScrapedArtists(): Observable<ScrapedArtistData | undefined> {
+    return this.scrapedArtists$.asObservable();
   }
 
-  getArtistsWithoutCountryStatus(): Observable<boolean | undefined> {
+  hasArtistsWithoutCountryStatus(): Observable<boolean | undefined> {
     return this.hasArtistsWithoutCountry$.asObservable();
   }
 
@@ -91,9 +91,15 @@ export class ArtistService {
     });
   }
 
-  private findArtistsWithoutCountry(topArtistsNames: string[], artists: Artist[] | null): string[] {
+  private findArtistsWithoutCountry(
+    topArtistsNames: string[],
+    artistsFromDatabase: Artist[]
+  ): string[] {
     return topArtistsNames.filter(
-      (topArtistName) => !artists?.some((artists) => topArtistName === artists.name)
+      (topArtistName) =>
+        !artistsFromDatabase.some(
+          (artistsFromDatabase) => topArtistName === artistsFromDatabase.name
+        )
     );
   }
 

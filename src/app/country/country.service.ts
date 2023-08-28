@@ -32,7 +32,7 @@ export class CountryService {
     );
   }
 
-  getArtistsCountryOfOrigin(artistsNames: string[]): Observable<ScrapedArtist> {
+  findArtistsCountryOfOrigin(artistsNames: string[]): Observable<ScrapedArtist> {
     const START_INDICATOR_OFFSET = 13;
     const END_INDICATOR_OFFSET = 11;
     const artists$ = new Subject<ScrapedArtist>();
