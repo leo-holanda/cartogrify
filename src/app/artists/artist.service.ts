@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Artist, ScrapedArtist, ScrapedArtistData, Suggestion } from "./artist.model";
 import { SupabaseService } from "../shared/supabase.service";
-import { BehaviorSubject, Observable, finalize } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { CountryService } from "../country/country.service";
 
 @Injectable({
@@ -35,7 +35,6 @@ export class ArtistService {
 
         if (artistsWithoutCountry.length == 0) {
           const countriesCount = this.countryService.countCountries(artistsWithOriginalOrder);
-          this.countryService.incrementDiversityIndexOccurrence(countriesCount.length);
           this.hasArtistsWithoutCountry$.next(false);
         } else {
           this.hasArtistsWithoutCountry$.next(true);
@@ -60,11 +59,6 @@ export class ArtistService {
             },
             complete: () => {
               this.supabaseService.saveSuggestions(scrappedArtists);
-              const countriesCount = this.countryService.countCountries([
-                ...artistsFromDatabase,
-                ...scrappedArtists,
-              ]);
-              this.countryService.incrementDiversityIndexOccurrence(countriesCount.length);
               this.scrappedArtists$.complete();
             },
           });

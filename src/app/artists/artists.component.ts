@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { debounceTime, filter, fromEvent } from "rxjs";
 import { Artist, ScrapedArtistData } from "./artist.model";
 import { ArtistService } from "./artist.service";
-import { CountryCount, DiversityStatistics, RegionCount } from "../country/country.model";
+import { CountryCount, RegionCount } from "../country/country.model";
 import { CountryService } from "../country/country.service";
 import { Message } from "primeng/api";
 
@@ -15,7 +15,6 @@ export class ArtistsComponent implements OnInit {
   artists: Artist[] = [];
   countriesCount: CountryCount[] = [];
   regionsCount: RegionCount[] = [];
-  diversityStatistics!: DiversityStatistics;
 
   isMobile = window.innerWidth <= 768;
   messages: Message[] = [];
@@ -41,10 +40,6 @@ export class ArtistsComponent implements OnInit {
         detail: "Searching for your top artists...",
       },
     ];
-
-    this.countryService
-      .getDiversityStatistics()
-      .subscribe((diversityStatistics) => (this.diversityStatistics = diversityStatistics));
 
     this.artistsService
       .getUserTopArtists()
