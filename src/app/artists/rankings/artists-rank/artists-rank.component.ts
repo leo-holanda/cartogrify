@@ -1,7 +1,6 @@
 import { Component, Input } from "@angular/core";
-import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
 import { Artist } from "src/app/artists/artist.model";
-import { SuggestionsComponent } from "./suggestions/suggestions.component";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "ctg-artists-rank",
@@ -11,27 +10,29 @@ import { SuggestionsComponent } from "./suggestions/suggestions.component";
 export class ArtistsRankComponent {
   @Input() artists!: Artist[];
 
+  shouldMakeSuggestions$ = new Subject<boolean>();
   isMessageActive = true;
-  ref: DynamicDialogRef | undefined;
-
-  constructor(private dialogService: DialogService) {}
+  shouldOpenDialog = false;
 
   hideMessage(): void {
     this.isMessageActive = false;
   }
 
   openDialog() {
-    this.ref = this.dialogService.open(SuggestionsComponent, {
-      header: "Make your suggestions!",
-      data: this.artists,
-    });
+    this.shouldOpenDialog = true;
+  }
 
-    //FIX LOGIC
-    // this.ref.onClose.subscribe((hasSuggestions) => {
-    //   if (hasSuggestions) {
-    //     this.countriesCount = this.countryService.countCountries(this.artists);
-    //     this.regionsCount = this.countryService.countRegions(this.artists);
-    //   }
-    // });
+  onCancelButtonClick(): void {
+    this.shouldMakeSuggestions$.next(false);
+  }
+
+  onSuggestButtonClick(): void {
+    this.shouldMakeSuggestions$.next(true);
+
+    //TODO Implement changing regions and countries count
+  }
+
+  onShouldCloseDialog(): void {
+    this.shouldOpenDialog = false;
   }
 }

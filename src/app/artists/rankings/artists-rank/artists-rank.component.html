@@ -1,3 +1,28 @@
+<p-dialog header="Make your suggestions" [(visible)]="shouldOpenDialog" [modal]="true">
+  <ctg-suggestions
+    [artists]="artists"
+    [shouldMakeSuggestions$]="shouldMakeSuggestions$"
+    (shouldCloseDialog)="onShouldCloseDialog()"
+  ></ctg-suggestions>
+
+  <ng-template pTemplate="footer">
+    <div class="confirm-button-wrapper">
+      <p-button
+        (onClick)="onCancelButtonClick()"
+        label="Cancel"
+        icon="bx bx-x"
+        styleClass="p-button-outlined"
+      ></p-button>
+      <p-button
+        (onClick)="onSuggestButtonClick()"
+        label="Suggest"
+        icon="bx bx-check"
+        styleClass="p-button-success"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-dialog>
+
 <div class="ranking-wrapper">
   <p-messages *ngIf="isMessageActive" class="suggestion-message-wrapper" severity="warn">
     <ng-template pTemplate>
