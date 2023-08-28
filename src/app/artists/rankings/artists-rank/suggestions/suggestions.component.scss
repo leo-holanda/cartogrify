@@ -25,6 +25,12 @@
     gap: 0.5rem;
   }
 
+  .guide-item {
+    display: flex;
+    gap: 0.5rem;
+    align-items: start;
+  }
+
   p-dropdown {
     margin-top: 1rem;
     width: 100%;
