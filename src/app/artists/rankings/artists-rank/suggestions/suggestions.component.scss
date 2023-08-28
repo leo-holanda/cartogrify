@@ -39,18 +39,18 @@
 .table-column {
   display: flex;
   flex-direction: column;
+}
 
-  .artist-data {
-    margin-bottom: 1rem;
-  }
+.artist-data {
+  margin-bottom: 1rem;
+}
 
-  .artist-name {
-    font-size: 1.2rem;
-  }
+.artist-name {
+  font-size: 1.2rem;
+}
 
-  .suggestion-dropdown-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
+.suggestion-dropdown-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
