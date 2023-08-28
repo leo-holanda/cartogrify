@@ -244,16 +244,6 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
 
       const mapViewWidthFactor = mapMeasures.width * 0.001;
       const fontSizeDefault = 16 * mapViewWidthFactor;
-      const fontSizeBigger = 24 * mapViewWidthFactor;
-
-      this.mapSvg
-        .append("text")
-        .text("Your map")
-        .attr("font-size", fontSizeBigger)
-        .attr("fill", this.currentColorPalette[this.currentColorPalette.length - 1])
-        .attr("text-anchor", "middle")
-        .attr("visibility", this.shareMode ? "visible" : "hidden")
-        .attr("transform", `translate(${mapWrapperMeasures.width / 2}, ${mapMeasures.y})`);
 
       this.mapSvg
         .append("text")
