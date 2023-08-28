@@ -28,18 +28,13 @@
   .guide-item {
     display: flex;
     gap: 0.5rem;
-    align-items: start;
+    align-items: center;
   }
 
   p-dropdown {
     margin-top: 1rem;
     width: 100%;
   }
-}
-
-.confirm-button-wrapper {
-  display: flex;
-  justify-content: space-between;
 }
 
 .table-column {

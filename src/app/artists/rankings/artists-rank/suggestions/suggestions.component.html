@@ -1,9 +1,9 @@
 <div>
-  <p-tabView styleClass="batata">
+  <p-tabView>
     <p-tabPanel header="Suggest individually" leftIcon="bx bx-user">
       <p-table
         *ngIf="isMobile; else desktopIndividualTableTemplate"
-        [value]="artists"
+        [value]="artistsWithSuggestion"
         [scrollable]="true"
         scrollHeight="50vh"
       >
@@ -30,7 +30,7 @@
               <div class="suggestion-dropdown-wrapper">
                 <label for="country-suggestion">Country suggestion</label>
                 <p-dropdown
-                  [(ngModel)]="artists[rowIndex].suggestedCountry"
+                  [(ngModel)]="artistsWithSuggestion[rowIndex].suggestedCountry"
                   [filter]="true"
                   [options]="countries"
                   [showClear]="true"
@@ -38,37 +38,41 @@
                   [virtualScrollItemSize]="20"
                   aria-label="Dropdown input to choose a country to suggest"
                   filterBy="name"
-                  optionLabel="country-suggestion"
+                  optionLabel="name"
                   placeholder="Select a country"
                   styleClass="suggestion-dropdown"
                 >
                   <ng-template pTemplate="selectedItem">
-                    <div *ngIf="artists[rowIndex].suggestedCountry">
+                    <div *ngIf="artistsWithSuggestion[rowIndex].suggestedCountry">
                       <span
-                        class="{{ 'flag fi fi-' + artists[rowIndex].suggestedCountry?.flagCode }}"
+                        class="{{
+                          'flag fi fi-' + artistsWithSuggestion[rowIndex].suggestedCountry?.flagCode
+                        }}"
                       >
                       </span>
                       <span>
-                        {{ artists[rowIndex].suggestedCountry?.name }}
+                        {{ artistsWithSuggestion[rowIndex].suggestedCountry?.name }}
                       </span>
                     </div>
                   </ng-template>
+
                   <ng-template let-country pTemplate="item">
                     <div>
-                      <span class="{{ 'flag fi fi-' + country.flagCode }}"> </span>
+                      <span class="{{ 'flag fi fi-' + country.flagCode }}"></span>
                       <span>
                         {{ country.name }}
                       </span>
                     </div>
-                  </ng-template></p-dropdown
-                >
+                  </ng-template>
+                </p-dropdown>
               </div>
             </td>
           </tr>
         </ng-template>
       </p-table>
+
       <ng-template #desktopIndividualTableTemplate>
-        <p-table [value]="artists" [scrollable]="true" scrollHeight="50vh">
+        <p-table [value]="artistsWithSuggestion" [scrollable]="true" scrollHeight="50vh">
           <ng-template pTemplate="header">
             <tr>
               <th>Name</th>
@@ -93,24 +97,26 @@
               </td>
               <td>
                 <p-dropdown
-                  [options]="countries"
-                  [(ngModel)]="artists[rowIndex].suggestedCountry"
-                  optionLabel="name"
+                  [(ngModel)]="artistsWithSuggestion[rowIndex].suggestedCountry"
                   [filter]="true"
-                  filterBy="name"
+                  [options]="countries"
                   [showClear]="true"
-                  placeholder="Select a Country"
                   [virtualScroll]="true"
                   [virtualScrollItemSize]="20"
+                  filterBy="name"
+                  optionLabel="name"
+                  placeholder="Select a Country"
                 >
                   <ng-template pTemplate="selectedItem">
-                    <div *ngIf="artists[rowIndex].suggestedCountry">
+                    <div *ngIf="artistsWithSuggestion[rowIndex].suggestedCountry">
                       <span
-                        class="{{ 'flag fi fi-' + artists[rowIndex].suggestedCountry?.flagCode }}"
+                        class="{{
+                          'flag fi fi-' + artistsWithSuggestion[rowIndex].suggestedCountry?.flagCode
+                        }}"
                       >
                       </span>
                       <span>
-                        {{ artists[rowIndex].suggestedCountry?.name }}
+                        {{ artistsWithSuggestion[rowIndex].suggestedCountry?.name }}
                       </span>
                     </div>
                   </ng-template>
@@ -185,7 +191,7 @@
 
       <p-table
         *ngIf="isMobile; else desktopBulkTableTemplate"
-        [value]="artists"
+        [value]="artistsWithSuggestion"
         selectionMode="multiple"
         [(selection)]="selectedArtistsToBulkSuggest"
         [scrollable]="true"
@@ -242,7 +248,7 @@
 
       <ng-template #desktopBulkTableTemplate>
         <p-table
-          [value]="artists"
+          [value]="artistsWithSuggestion"
           selectionMode="multiple"
           [(selection)]="selectedArtistsToBulkSuggest"
           [scrollable]="true"
@@ -291,19 +297,4 @@
       </ng-template>
     </p-tabPanel>
   </p-tabView>
-</div>
-
-<div class="confirm-button-wrapper">
-  <p-button
-    (onClick)="onCancelButtonClick()"
-    label="Cancel"
-    icon="bx bx-x"
-    styleClass="p-button-outlined"
-  ></p-button>
-  <p-button
-    (onClick)="onConfirmButtonClick()"
-    label="Suggest"
-    icon="bx bx-check"
-    styleClass="p-button-success"
-  ></p-button>
 </div>
