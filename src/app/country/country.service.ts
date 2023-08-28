@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, Subject, map, take, tap } from "rxjs";
-import { Artist, ArtistWithSuggestion, ScrapedArtist, Suggestion } from "../artists/artist.model";
+import { Observable, Subject, map } from "rxjs";
+import { Artist, ScrapedArtist } from "../artists/artist.model";
 import { environment } from "src/environments/environment.development";
 import {
   Country,
@@ -12,7 +12,6 @@ import {
   GeoFeature,
   GeoFeatureCollection,
   PossibleCountry,
-  DiversityStatistics,
 } from "./country.model";
 import countriesJSON from "../../assets/countries-50m.json";
 import * as topojson from "topojson-client";
@@ -338,28 +337,6 @@ export class CountryService {
     );
     if (matchedFeature) return this.createCountryFromFeature(matchedFeature);
     return unknownCountry;
-  }
-
-  incrementDiversityIndexOccurrence(diversityIndex: number): void {
-    this.supabaseService.incrementDiversityIndexOccurence(diversityIndex);
-  }
-
-  getDiversityStatistics(): Observable<DiversityStatistics> {
-    return this.supabaseService.getDiversityData().pipe(
-      map((diversityData) => {
-        let sum = 0;
-        let valuesQuantity = 0;
-
-        diversityData.forEach((data) => {
-          sum += data.diversity_index * data.index_occurrence;
-          valuesQuantity += data.index_occurrence;
-        });
-
-        return {
-          average: valuesQuantity > 0 ? sum / valuesQuantity : 0,
-        };
-      })
-    );
   }
 
   private createRegion(artist: Artist): RegionCount {
