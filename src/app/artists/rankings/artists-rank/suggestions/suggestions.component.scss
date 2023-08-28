@@ -1,20 +1,3 @@
-.bulk-suggest-guide-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-
-  & p-dropdown {
-    margin-left: 1rem;
-  }
-}
-
-.confirm-button-wrapper {
-  display: flex;
-  margin: 0 1rem 0 1rem;
-  justify-content: space-between;
-}
-
 ::ng-deep {
   .suggestion-dropdown {
     width: 100%;
@@ -27,6 +10,30 @@
   .p-tabview-panels {
     padding: 1rem 0 !important;
   }
+}
+
+.bulk-suggest-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  .guide {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  p-dropdown {
+    margin-top: 1rem;
+    width: 100%;
+  }
+}
+
+.confirm-button-wrapper {
+  display: flex;
+  justify-content: space-between;
 }
 
 .table-column {

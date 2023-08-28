@@ -129,29 +129,40 @@
         </p-table>
       </ng-template>
     </p-tabPanel>
+
     <p-tabPanel header="Suggest by bulk" leftIcon="bx bx-group">
-      <div class="bulk-suggest-guide-wrapper">
-        <div>
-          <div>First, mark the checkboxes of the artists you want to make a suggestion.</div>
-          <div>Then, select the country in the dropdown.</div>
+      <div class="bulk-suggest-wrapper">
+        <div class="guide">
           <div>
-            The country you selected will be marked as the suggested country for each selected
-            artist.
+            <p-chip label="1"></p-chip>
+            <span> Mark the checkboxes of the artists you want to make a suggestion. </span>
+          </div>
+          <div>
+            <p-chip label="2"></p-chip>
+            <span> Select the country in the dropdown. </span>
+          </div>
+          <div>
+            <p-chip label="3"></p-chip>
+            <span>
+              The country you selected will be marked as the suggested country for each selected
+              artist.
+            </span>
           </div>
         </div>
 
         <p-dropdown
-          [options]="countries"
-          [(ngModel)]="selectedCountryToBulkSuggest"
-          optionLabel="name"
-          [filter]="true"
-          filterBy="name"
-          [showClear]="true"
-          placeholder="Select a country"
-          [disabled]="selectedArtistsToBulkSuggest.length == 0"
           (onChange)="onBulkSuggestDropdownChange($event)"
+          [(ngModel)]="selectedCountryToBulkSuggest"
+          [disabled]="selectedArtistsToBulkSuggest.length == 0"
+          [filter]="true"
+          [options]="countries"
+          [showClear]="true"
           [virtualScroll]="true"
           [virtualScrollItemSize]="20"
+          styleClass="suggestion-dropdown"
+          filterBy="name"
+          optionLabel="name"
+          placeholder="Select a country to suggest"
         >
           <ng-template pTemplate="selectedItem">
             <div *ngIf="selectedCountryToBulkSuggest">
