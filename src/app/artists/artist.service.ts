@@ -36,6 +36,7 @@ export class ArtistService {
         if (artistsWithoutCountry.length == 0) {
           const countriesCount = this.countryService.countCountries(artistsWithOriginalOrder);
           this.countryService.incrementDiversityIndexOccurrence(countriesCount.length);
+          this.hasArtistsWithoutCountry$.next(false);
         } else {
           this.hasArtistsWithoutCountry$.next(true);
           const scrappedArtists: ScrapedArtist[] = [];

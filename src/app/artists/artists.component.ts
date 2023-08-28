@@ -34,6 +34,14 @@ export class ArtistsComponent implements OnInit {
       ];
     }
 
+    this.messages = [
+      ...this.messages,
+      {
+        severity: "info",
+        detail: "Searching for your top artists...",
+      },
+    ];
+
     this.countryService
       .getDiversityStatistics()
       .subscribe((diversityStatistics) => (this.diversityStatistics = diversityStatistics));
@@ -49,9 +57,14 @@ export class ArtistsComponent implements OnInit {
 
     this.artistsService
       .getArtistsWithoutCountryStatus()
-      .pipe(filter((status): status is boolean => status !== undefined))
-      .subscribe((status) => {
-        if (status) {
+      .pipe(
+        filter(
+          (hasArtistsWithoutCountry): hasArtistsWithoutCountry is boolean =>
+            hasArtistsWithoutCountry !== undefined
+        )
+      )
+      .subscribe((hasArtistsWithoutCountry) => {
+        if (hasArtistsWithoutCountry) {
           this.messages = [
             ...this.messages,
             {
@@ -60,6 +73,19 @@ export class ArtistsComponent implements OnInit {
                 "Our super-fancy AI doesn't know some artists you listen to. It will try to know where they come from!",
             },
           ];
+        } else {
+          this.messages = [
+            ...this.messages,
+            {
+              severity: "info",
+              detail:
+                "That's it! Your top artists are now loaded. If you noticed something wrong, please suggest correct countries at the artist tab in the results.",
+            },
+          ];
+
+          setTimeout(() => {
+            this.messages = [];
+          }, 8000);
         }
       });
 
@@ -79,7 +105,7 @@ export class ArtistsComponent implements OnInit {
           else
             messageDetail = `I couldn't find where ${scrappedArtistData.artist.name} comes from! (${scrappedArtistData.remanining}/${scrappedArtistData.total})`;
 
-          if (this.messages.length > 1) this.messages.splice(0, 1);
+          if (this.messages.length > 1) this.messages.splice(0, Math.abs(1 - this.messages.length));
           this.messages = [
             ...this.messages,
             {
@@ -90,15 +116,18 @@ export class ArtistsComponent implements OnInit {
           ];
         },
         complete: () => {
-          if (this.messages.length > 1) this.messages.splice(0, 1);
-          this.messages = [
-            ...this.messages,
-            {
-              severity: "success",
-              detail:
-                "That's it! If you noticed something wrong, please suggest correct countries at the artist tab in the rankings.",
-            },
-          ];
+          setTimeout(() => {
+            if (this.messages.length > 1) this.messages.splice(0, 1);
+            this.messages = [
+              ...this.messages,
+              {
+                severity: "success",
+                detail:
+                  "That's it! If you noticed something wrong, please suggest correct countries at the artist tab in the results.",
+              },
+            ];
+          }, 1000);
+
           setTimeout(() => {
             this.messages = [];
           }, 8000);
