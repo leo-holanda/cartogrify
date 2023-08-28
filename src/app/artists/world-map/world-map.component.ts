@@ -16,7 +16,7 @@ import {
   ColorScale,
   GeoFeature,
   LabelData,
-  CountryData,
+  CountryCount,
   Tooltip,
 } from "../../country/country.model";
 import { CountryService } from "../../country/country.service";
@@ -32,7 +32,7 @@ import { Message } from "primeng/api";
   styleUrls: ["./world-map.component.scss"],
 })
 export class WorldMapComponent implements OnChanges, AfterViewInit {
-  @Input() countriesData: CountryData[] = [];
+  @Input() countriesCount: CountryCount[] = [];
   @Input() artists: Artist[] = [];
   @Input() isMobile!: boolean;
   @Output() shouldOpenRankings = new EventEmitter<boolean>();
@@ -90,9 +90,9 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (
-      changes["countriesData"] &&
+      changes["countriesCount"] &&
       changes["artists"] &&
-      !changes["countriesData"].isFirstChange() &&
+      !changes["countriesCount"].isFirstChange() &&
       !changes["artists"].isFirstChange()
     )
       this.updateMap();
@@ -272,7 +272,7 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
   }
 
   private getScaleData(): { domain: number[]; range: string[] } {
-    const counts = this.countriesData.map((countryData) => countryData.count);
+    const counts = this.countriesCount.map((countryCount) => countryCount.count);
     const domain = [...new Set<number>(counts)].sort((a, b) => a - b);
     const colorPalette = [...this.currentColorPalette];
 
@@ -365,8 +365,8 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
       .data(geoJSON.features)
       .attr("cursor", "pointer")
       .attr("fill", (feature: GeoFeature) => {
-        const currentCountry = this.countriesData.find(
-          (countryData) => countryData.country.name === feature.properties["NAME"]
+        const currentCountry = this.countriesCount.find(
+          (countryCount) => countryCount.country.name === feature.properties["NAME"]
         );
         return this.colorScale(currentCountry ? currentCountry.count : 0);
       })

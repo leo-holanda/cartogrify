@@ -29,8 +29,8 @@ export class ArtistsRankComponent {
     //FIX LOGIC
     // this.ref.onClose.subscribe((hasSuggestions) => {
     //   if (hasSuggestions) {
-    //     this.countriesData = this.countryService.countCountries(this.artists);
-    //     this.regionsData = this.countryService.countRegions(this.artists);
+    //     this.countriesCount = this.countryService.countCountries(this.artists);
+    //     this.regionsCount = this.countryService.countRegions(this.artists);
     //   }
     // });
   }

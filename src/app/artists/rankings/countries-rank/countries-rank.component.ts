@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Artist } from "src/app/artists/artist.model";
-import { CountryData, DiversityStatistics } from "src/app/country/country.model";
+import { CountryCount, DiversityStatistics } from "src/app/country/country.model";
 
 @Component({
   selector: "ctg-countries-rank",
@@ -8,7 +8,7 @@ import { CountryData, DiversityStatistics } from "src/app/country/country.model"
   styleUrls: ["./countries-rank.component.scss"],
 })
 export class CountriesRankComponent implements OnInit {
-  @Input() countriesData!: CountryData[];
+  @Input() countriesCount!: CountryCount[];
   @Input() artists!: Artist[];
   @Input() diversityStatistics!: DiversityStatistics;
 
@@ -19,8 +19,8 @@ export class CountriesRankComponent implements OnInit {
   ngOnInit(): void {
     //TODO Use a service to get this data
     setTimeout(() => {
-      const countriesCount = this.countriesData.length;
-      const difference = Math.abs(this.diversityStatistics.average - this.countriesData.length);
+      const countriesCount = this.countriesCount.length;
+      const difference = Math.abs(this.diversityStatistics.average - this.countriesCount.length);
       const userDiversityPercentage =
         ((difference / this.diversityStatistics.average) * 100).toPrecision(2).toString() + "%";
       if (countriesCount > this.diversityStatistics.average)

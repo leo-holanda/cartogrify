@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { debounceTime, filter, fromEvent } from "rxjs";
 import { Artist } from "./artist.model";
 import { ArtistService } from "./artist.service";
-import { CountryData, DiversityStatistics, RegionData } from "../country/country.model";
+import { CountryCount, DiversityStatistics, RegionCount } from "../country/country.model";
 import { CountryService } from "../country/country.service";
 import { Message } from "primeng/api";
 
@@ -13,8 +13,8 @@ import { Message } from "primeng/api";
 })
 export class ArtistsComponent implements OnInit {
   artists: Artist[] = [];
-  countriesData: CountryData[] = [];
-  regionsData: RegionData[] = [];
+  countriesCount: CountryCount[] = [];
+  regionsCount: RegionCount[] = [];
   diversityStatistics!: DiversityStatistics;
 
   isMobile = window.innerWidth <= 768;
@@ -44,8 +44,8 @@ export class ArtistsComponent implements OnInit {
       .pipe(filter((userTopArtists): userTopArtists is Artist[] => userTopArtists !== undefined))
       .subscribe((userTopArtists) => {
         this.artists = userTopArtists;
-        this.countriesData = [...this.countryService.countCountries(userTopArtists)];
-        this.regionsData = this.countryService.countRegions(userTopArtists);
+        this.countriesCount = [...this.countryService.countCountries(userTopArtists)];
+        this.regionsCount = this.countryService.countRegions(userTopArtists);
       });
 
     this.artistsService

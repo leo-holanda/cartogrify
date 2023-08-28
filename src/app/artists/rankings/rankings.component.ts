@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { Artist } from "../artist.model";
-import { CountryData, DiversityStatistics, RegionData } from "../../country/country.model";
+import { CountryCount, DiversityStatistics, RegionCount } from "../../country/country.model";
 import { MenuItem } from "primeng/api";
 import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
 import { CountryService } from "../../country/country.service";
@@ -18,8 +18,8 @@ enum DataTypes {
 })
 export class RankingsComponent {
   @Input() artists: Artist[] = [];
-  @Input() countriesData: CountryData[] = [];
-  @Input() regionsData: RegionData[] = [];
+  @Input() countriesCount: CountryCount[] = [];
+  @Input() regionsCount: RegionCount[] = [];
   @Input() diversityStatistics!: DiversityStatistics;
   @Input() isMobile!: boolean;
   @Input() shouldOpenRankings!: boolean;

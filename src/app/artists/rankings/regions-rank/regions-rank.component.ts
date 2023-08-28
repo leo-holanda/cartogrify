@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { RegionData } from "src/app/country/country.model";
+import { RegionCount } from "src/app/country/country.model";
 
 @Component({
   selector: "ctg-regions-rank",
@@ -7,5 +7,5 @@ import { RegionData } from "src/app/country/country.model";
   styleUrls: ["./regions-rank.component.scss"],
 })
 export class RegionsRankComponent {
-  @Input() regionsData!: RegionData[];
+  @Input() regionsCount!: RegionCount[];
 }
