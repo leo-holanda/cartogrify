@@ -4,6 +4,7 @@ import { DropdownChangeEvent } from "primeng/dropdown";
 import { ArtistWithSuggestion, Artist } from "src/app/artists/artist.model";
 import { Country } from "src/app/country/country.model";
 import { CountryService } from "src/app/country/country.service";
+import { debounceTime, fromEvent } from "rxjs";
 
 @Component({
   selector: "app-suggestions",
@@ -15,6 +16,7 @@ export class SuggestionsComponent implements OnInit {
   countries: Country[] = [];
   selectedCountryToBulkSuggest: Country | undefined;
   selectedArtistsToBulkSuggest: ArtistWithSuggestion[] = [];
+  isMobile = window.innerWidth <= 768;
 
   constructor(
     private dynamicDialogConfig: DynamicDialogConfig<Artist[]>,
@@ -23,6 +25,12 @@ export class SuggestionsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    fromEvent(window, "resize")
+      .pipe(debounceTime(250))
+      .subscribe(() => {
+        this.isMobile = window.innerWidth <= 768;
+      });
+
     if (this.dynamicDialogConfig.data) {
       this.artists = [...this.dynamicDialogConfig.data].map((artist) => {
         (artist as ArtistWithSuggestion).suggestedCountry = undefined;

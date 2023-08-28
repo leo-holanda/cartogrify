@@ -14,3 +14,26 @@
   margin: 0 1rem 0 1rem;
   justify-content: space-between;
 }
+
+::ng-deep {
+  .suggestion-dropdown {
+    width: 100%;
+  }
+}
+
+.table-column {
+  display: flex;
+  flex-direction: column;
+
+  .artist-data {
+    padding: 0 1rem 1rem 1rem;
+  }
+
+  .artist-name {
+    font-size: 1.2rem;
+  }
+
+  .suggestion-dropdown-wrapper {
+    padding: 0 1rem;
+  }
+}

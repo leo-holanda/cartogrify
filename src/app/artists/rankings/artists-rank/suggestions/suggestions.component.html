@@ -1,64 +1,132 @@
 <div>
   <p-tabView>
     <p-tabPanel header="Individual suggest" leftIcon="bx bx-user">
-      <p-table [value]="artists" [scrollable]="true" scrollHeight="50vh">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Name</th>
-            <th>Country</th>
-            <th>Suggested country</th>
-          </tr>
-        </ng-template>
+      <p-table
+        *ngIf="isMobile; else desktopTableTemplate"
+        [value]="artists"
+        [scrollable]="true"
+        scrollHeight="50vh"
+      >
         <ng-template pTemplate="body" let-artist let-rowIndex="rowIndex">
           <tr>
-            <td>{{ artist.name }}</td>
-            <td>
-              <span
-                class="{{
-                  'flag fi fi-' + (artist.country == null ? 'xx' : artist.country.flagCode)
-                }}"
-              >
-              </span>
-              <span>
-                {{ artist.country?.name || "Unknown" }}
-              </span>
-            </td>
-            <td>
-              <p-dropdown
-                [options]="countries"
-                [(ngModel)]="artists[rowIndex].suggestedCountry"
-                optionLabel="name"
-                [filter]="true"
-                filterBy="name"
-                [showClear]="true"
-                placeholder="Select a Country"
-                [virtualScroll]="true"
-                [virtualScrollItemSize]="20"
-              >
-                <ng-template pTemplate="selectedItem">
-                  <div *ngIf="artists[rowIndex].suggestedCountry">
-                    <span
-                      class="{{ 'flag fi fi-' + artists[rowIndex].suggestedCountry?.flagCode }}"
-                    >
-                    </span>
-                    <span>
-                      {{ artists[rowIndex].suggestedCountry?.name }}
-                    </span>
-                  </div>
-                </ng-template>
-                <ng-template let-country pTemplate="item">
-                  <div>
-                    <span class="{{ 'flag fi fi-' + country.flagCode }}"> </span>
-                    <span>
-                      {{ country.name }}
-                    </span>
-                  </div>
-                </ng-template></p-dropdown
-              >
+            <td class="table-column">
+              <div class="artist-data">
+                <span class="artist-name">
+                  {{ artist.name }}
+                </span>
+                <div>
+                  <span
+                    class="{{
+                      'flag fi fi-' + (artist.country == null ? 'xx' : artist.country.flagCode)
+                    }}"
+                  >
+                  </span>
+                  <span>
+                    {{ artist.country?.name || "Unknown" }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="suggestion-dropdown-wrapper">
+                <label for="name">Country suggestion</label>
+                <p-dropdown
+                  [options]="countries"
+                  [(ngModel)]="artists[rowIndex].suggestedCountry"
+                  optionLabel="name"
+                  [filter]="true"
+                  filterBy="name"
+                  [showClear]="true"
+                  placeholder="Select a country"
+                  [virtualScroll]="true"
+                  [virtualScrollItemSize]="20"
+                  styleClass="suggestion-dropdown"
+                >
+                  <ng-template pTemplate="selectedItem">
+                    <div *ngIf="artists[rowIndex].suggestedCountry">
+                      <span
+                        class="{{ 'flag fi fi-' + artists[rowIndex].suggestedCountry?.flagCode }}"
+                      >
+                      </span>
+                      <span>
+                        {{ artists[rowIndex].suggestedCountry?.name }}
+                      </span>
+                    </div>
+                  </ng-template>
+                  <ng-template let-country pTemplate="item">
+                    <div>
+                      <span class="{{ 'flag fi fi-' + country.flagCode }}"> </span>
+                      <span>
+                        {{ country.name }}
+                      </span>
+                    </div>
+                  </ng-template></p-dropdown
+                >
+              </div>
             </td>
           </tr>
         </ng-template>
       </p-table>
+      <ng-template #desktopTableTemplate>
+        <p-table [value]="artists" [scrollable]="true" scrollHeight="50vh">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Name</th>
+              <th>Country</th>
+              <th>Suggested country</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-artist let-rowIndex="rowIndex">
+            <tr>
+              <td>{{ artist.name }}</td>
+              <td>
+                <span
+                  class="{{
+                    'flag fi fi-' + (artist.country == null ? 'xx' : artist.country.flagCode)
+                  }}"
+                >
+                </span>
+                <span>
+                  {{ artist.country?.name || "Unknown" }}
+                </span>
+              </td>
+              <td>
+                <p-dropdown
+                  [options]="countries"
+                  [(ngModel)]="artists[rowIndex].suggestedCountry"
+                  optionLabel="name"
+                  [filter]="true"
+                  filterBy="name"
+                  [showClear]="true"
+                  placeholder="Select a Country"
+                  [virtualScroll]="true"
+                  [virtualScrollItemSize]="20"
+                >
+                  <ng-template pTemplate="selectedItem">
+                    <div *ngIf="artists[rowIndex].suggestedCountry">
+                      <span
+                        class="{{ 'flag fi fi-' + artists[rowIndex].suggestedCountry?.flagCode }}"
+                      >
+                      </span>
+                      <span>
+                        {{ artists[rowIndex].suggestedCountry?.name }}
+                      </span>
+                    </div>
+                  </ng-template>
+                  <ng-template let-country pTemplate="item">
+                    <div>
+                      <span class="{{ 'flag fi fi-' + country.flagCode }}"> </span>
+                      <span>
+                        {{ country.name }}
+                      </span>
+                    </div>
+                  </ng-template></p-dropdown
+                >
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
     </p-tabPanel>
     <p-tabPanel header="Bulk suggest" leftIcon="bx bx-group">
       <div class="bulk-suggest-guide-wrapper">
