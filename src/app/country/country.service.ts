@@ -319,7 +319,7 @@ export class CountryService {
   }
 
   saveSuggestions(suggestionsToSave: ScrapedArtist[]): void {
-    this.supabaseService.saveSuggestions(suggestionsToSave);
+    if (suggestionsToSave.length > 0) this.supabaseService.saveSuggestions(suggestionsToSave);
   }
 
   getCountryByCode(countryCode: number | undefined): Country | undefined {
