@@ -1,6 +1,6 @@
 <div>
   <p-tabView>
-    <p-tabPanel header="Individual suggest">
+    <p-tabPanel header="Individual suggest" leftIcon="bx bx-user">
       <p-table [value]="artists" [scrollable]="true" scrollHeight="50vh">
         <ng-template pTemplate="header">
           <tr>
@@ -60,7 +60,7 @@
         </ng-template>
       </p-table>
     </p-tabPanel>
-    <p-tabPanel header="Bulk suggest">
+    <p-tabPanel header="Bulk suggest" leftIcon="bx bx-group">
       <div class="bulk-suggest-guide-wrapper">
         <div>
           <div>First, mark the checkboxes of the artists you want to make a suggestion.</div>
