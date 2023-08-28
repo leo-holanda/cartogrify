@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { debounceTime, filter, fromEvent } from "rxjs";
-import { Artist } from "./artist.model";
+import { Artist, ScrapedArtistData } from "./artist.model";
 import { ArtistService } from "./artist.service";
 import { CountryCount, DiversityStatistics, RegionCount } from "../country/country.model";
 import { CountryService } from "../country/country.service";
@@ -66,25 +66,32 @@ export class ArtistsComponent implements OnInit {
 
     this.artistsService
       .getScrappedArtists()
-      .pipe(filter((scrappedArtist): scrappedArtist is Artist => scrappedArtist !== undefined))
+      .pipe(
+        filter(
+          (scrappedArtistData): scrappedArtistData is ScrapedArtistData =>
+            scrappedArtistData !== undefined
+        )
+      )
       .subscribe({
-        next: (scrappedArtist) => {
+        next: (scrappedArtistData) => {
           let messageDetail;
-          if (scrappedArtist.country)
-            messageDetail = `${scrappedArtist.name} comes from ${scrappedArtist.country.name}`;
-          else messageDetail = `I couldn't find where ${scrappedArtist.name} comes from!`;
+          if (scrappedArtistData.artist.country)
+            messageDetail = `${scrappedArtistData.artist.name} comes from ${scrappedArtistData.artist.country.name} (${scrappedArtistData.remanining}/${scrappedArtistData.total})`;
+          else
+            messageDetail = `I couldn't find where ${scrappedArtistData.artist.name} comes from! (${scrappedArtistData.remanining}/${scrappedArtistData.total})`;
 
           if (this.messages.length > 1) this.messages.splice(0, 1);
           this.messages = [
             ...this.messages,
             {
-              severity: scrappedArtist.country ? "success" : "warn",
+              severity: scrappedArtistData.artist.country ? "success" : "warn",
               detail: messageDetail,
               key: "map-messages",
             } as Message,
           ];
         },
         complete: () => {
+          if (this.messages.length > 1) this.messages.splice(0, 1);
           this.messages = [
             ...this.messages,
             {
@@ -95,7 +102,7 @@ export class ArtistsComponent implements OnInit {
           ];
           setTimeout(() => {
             this.messages = [];
-          }, 5000);
+          }, 8000);
         },
       });
 

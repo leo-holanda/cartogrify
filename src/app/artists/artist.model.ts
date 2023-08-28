@@ -23,3 +23,9 @@ export interface ArtistFromDatabase {
   artist_name: string;
   country_code?: number;
 }
+
+export interface ScrapedArtistData {
+  artist: ScrapedArtist;
+  total: number;
+  remanining: number;
+}
