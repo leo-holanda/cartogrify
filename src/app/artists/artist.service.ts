@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Artist, ArtistFromDatabase, ScrapedArtist, Suggestion } from "./artist.model";
+import { Artist, ScrapedArtist, ScrapedArtistData, Suggestion } from "./artist.model";
 import { SupabaseService } from "../shared/supabase.service";
 import { BehaviorSubject, Observable, finalize } from "rxjs";
 import { CountryService } from "../country/country.service";
@@ -9,7 +9,7 @@ import { CountryService } from "../country/country.service";
 })
 export class ArtistService {
   private userTopArtists$ = new BehaviorSubject<Artist[] | undefined>(undefined);
-  private scrappedArtists$ = new BehaviorSubject<Artist | undefined>(undefined);
+  private scrappedArtists$ = new BehaviorSubject<ScrapedArtistData | undefined>(undefined);
   private hasArtistsWithoutCountry$ = new BehaviorSubject<boolean | undefined>(undefined);
 
   private hasRequestedTopArtists = false;
@@ -42,13 +42,19 @@ export class ArtistService {
 
           this.countryService.getArtistsCountryOfOrigin(artistsWithoutCountry).subscribe({
             next: (scrappedArtist) => {
-              this.scrappedArtists$.next(scrappedArtist);
-
               scrappedArtists.push(scrappedArtist);
+
+              this.scrappedArtists$.next({
+                artist: scrappedArtist,
+                total: artistsWithoutCountry.length,
+                remanining: scrappedArtists.length,
+              });
+
               const userTopArtists = this.applyOriginalOrder(topArtistsNames, [
                 ...artistsFromDatabase,
                 ...scrappedArtists,
               ]);
+
               this.userTopArtists$.next(userTopArtists);
             },
             complete: () => {
@@ -69,7 +75,7 @@ export class ArtistService {
     return this.userTopArtists$.asObservable();
   }
 
-  getScrappedArtists(): Observable<Artist | undefined> {
+  getScrappedArtists(): Observable<ScrapedArtistData | undefined> {
     return this.scrappedArtists$.asObservable();
   }
 
