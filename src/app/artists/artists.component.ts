@@ -28,8 +28,7 @@ export class ArtistsComponent implements OnInit {
       this.messages = [
         {
           severity: "info",
-          detail:
-            "The map might seem small when displayed on a mobile screen due to the projection. For a larger view, consider zooming in or rotating your phone!",
+          detail: "For a larger view, consider zooming in or rotating your device!",
           life: 10000,
         } as Message,
       ];
