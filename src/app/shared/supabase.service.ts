@@ -45,11 +45,11 @@ export class SupabaseService {
     );
   }
 
-  saveSuggestions(scrappedArtists: ScrapedArtist[]): void {
-    const suggestions = scrappedArtists.map((scrappedArtist) => {
+  saveSuggestions(scrapedArtists: ScrapedArtist[]): void {
+    const suggestions = scrapedArtists.map((scrapedArtist) => {
       return {
-        artist_name: scrappedArtist.name,
-        country_code: scrappedArtist.country?.NE_ID,
+        artist_name: scrapedArtist.name,
+        country_code: scrapedArtist.country?.NE_ID,
       };
     });
 
