@@ -4,6 +4,7 @@ import { Observable, asyncScheduler, map, scheduled, take } from "rxjs";
 import { environment } from "src/environments/environment";
 import { ScrapedArtist, Suggestion } from "../artists/artist.model";
 import { LastFmTopArtists } from "./supabase.model";
+import { User } from "../user/user.model";
 
 @Injectable({
   providedIn: "root",
@@ -56,6 +57,21 @@ export class SupabaseService {
     scheduled(
       this.supabaseClient.functions.invoke<Suggestion[]>("save-suggestions", {
         body: JSON.stringify(suggestions),
+      }),
+      asyncScheduler
+    ).subscribe();
+  }
+
+  saveDiversityIndex(user: User, diversityIndex: number): void {
+    const userData = {
+      user_id: user.id,
+      diversity_index: diversityIndex,
+      user_country: user.country,
+    };
+
+    scheduled(
+      this.supabaseClient.functions.invoke<Suggestion[]>("save-user-diversity-index", {
+        body: JSON.stringify(userData),
       }),
       asyncScheduler
     ).subscribe();
