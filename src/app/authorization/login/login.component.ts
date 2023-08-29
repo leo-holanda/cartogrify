@@ -6,6 +6,7 @@ import { ArtistService } from "src/app/artists/artist.service";
 import { LastFmService } from "src/app/streaming/last-fm.service";
 import { MessageService } from "primeng/api";
 import { HttpErrorResponse } from "@angular/common/http";
+import { UserService } from "src/app/user/user.service";
 
 @Component({
   selector: "msm-login",
@@ -24,7 +25,8 @@ export class LoginComponent {
     private artistService: ArtistService,
     private lastFmService: LastFmService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private userService: UserService
   ) {}
 
   onSpotifyButtonClick(): void {
@@ -37,13 +39,17 @@ export class LoginComponent {
 
     if (this.spotifyAuthService.isTokenExpired()) {
       this.spotifyAuthService.refreshToken().subscribe({
-        next: () => this.fetchUserDataFromSpotify(),
+        next: () => {
+          this.fetchUserDataFromSpotify();
+          this.setUserProfileData();
+        },
         error: (err) => this.handleSpotifyError(err),
       });
       return;
     }
 
     this.fetchUserDataFromSpotify();
+    this.setUserProfileData();
   }
 
   onLastfmButtonClick(): void {
@@ -106,5 +112,11 @@ export class LoginComponent {
     });
 
     this.hasInitiatedLogin = false;
+  }
+
+  private setUserProfileData(): void {
+    this.spotifyService.getUserProfileData().subscribe((userProfileData) => {
+      this.userService.setUser(userProfileData);
+    });
   }
 }

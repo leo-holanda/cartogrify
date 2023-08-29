@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, map, take } from "rxjs";
 import { SpotifyAccessTokenData } from "../authorization/spotify-auth.service";
+import { SpotifyUserData } from "./spotify.model";
 
 @Injectable({
   providedIn: "root",
@@ -22,6 +23,27 @@ export class SpotifyService {
       .pipe(
         take(1),
         map((response) => response.items.map((artist) => artist.name))
+      );
+  }
+
+  getUserProfileData(): Observable<SpotifyUserData> {
+    const tokenDataItem = localStorage.getItem("token_data") as string;
+    const tokenData = JSON.parse(tokenDataItem) as SpotifyAccessTokenData;
+
+    return this.http
+      .get<SpotifyApi.CurrentUsersProfileResponse>("https://api.spotify.com/v1/me", {
+        headers: {
+          Authorization: "Bearer " + tokenData.access_token,
+        },
+      })
+      .pipe(
+        take(1),
+        map((response) => {
+          return {
+            id: response.id,
+            country: response.country,
+          } as SpotifyUserData;
+        })
       );
   }
 }
