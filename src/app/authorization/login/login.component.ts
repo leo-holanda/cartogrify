@@ -8,6 +8,7 @@ import { MessageService } from "primeng/api";
 import { HttpErrorResponse } from "@angular/common/http";
 import { UserService } from "src/app/user/user.service";
 import { User } from "src/app/user/user.model";
+import { CountryService } from "src/app/country/country.service";
 
 @Component({
   selector: "msm-login",
@@ -27,7 +28,8 @@ export class LoginComponent {
     private lastFmService: LastFmService,
     private router: Router,
     private messageService: MessageService,
-    private userService: UserService
+    private userService: UserService,
+    private countryService: CountryService
   ) {}
 
   onSpotifyButtonClick(): void {
@@ -64,9 +66,10 @@ export class LoginComponent {
       next: (lastFmUserProfileData) => {
         const userData = {
           id: this.lastFmUsername,
-          country: lastFmUserProfileData.country,
+          country: this.countryService.getCountryCodeByText(lastFmUserProfileData.country),
         } as User;
         this.userService.setUser(userData);
+
         this.lastFmService.getTopArtists(this.lastFmUsername).subscribe({
           next: (topArtists) => {
             this.artistService.setUserTopArtists(topArtists);
