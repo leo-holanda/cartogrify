@@ -3,7 +3,12 @@ import { SupabaseClient, createClient } from "@supabase/supabase-js";
 import { Observable, asyncScheduler, map, scheduled, take } from "rxjs";
 import { environment } from "src/environments/environment";
 import { ScrapedArtist, Suggestion } from "../artists/artist.model";
-import { LastFmTopArtists, LastFmUserResponse } from "./supabase.model";
+import {
+  DiversityIndex,
+  DiversityIndexResponse,
+  LastFmTopArtists,
+  LastFmUserResponse,
+} from "./supabase.model";
 import { User } from "../user/user.model";
 
 @Injectable({
@@ -91,6 +96,24 @@ export class SupabaseService {
         if (!response.data) throw new Error(response.error);
         return response.data;
       })
+    );
+  }
+
+  getDiversityIndexes(): Observable<DiversityIndex[]> {
+    return scheduled(
+      this.supabaseClient.from("diversity_index_count").select("*"),
+      asyncScheduler
+    ).pipe(
+      take(1),
+      map((response) => response.data || []),
+      map((data: DiversityIndexResponse[]) =>
+        data.map((data) => {
+          return {
+            countriesCount: data.countries_count,
+            occurrenceQuantity: data.occurrence_quantity,
+          } as DiversityIndex;
+        })
+      )
     );
   }
 }

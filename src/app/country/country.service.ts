@@ -356,7 +356,6 @@ export class CountryService {
         this.findCountryFlagCode(feature) == countryNameOrAbbreviation.toLocaleLowerCase()
     );
 
-    console.log(countryNameOrAbbreviation);
     if (matchedFeature) return matchedFeature.properties["NE_ID"];
     return undefined;
   }
