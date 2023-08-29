@@ -20,7 +20,6 @@
       <ctg-countries-rank
         *ngIf="activeItem == DataTypes.COUNTRIES"
         [countriesCount]="countriesCount"
-        [artists]="artists"
       ></ctg-countries-rank>
 
       <ctg-regions-rank
@@ -28,10 +27,7 @@
         [regionsCount]="regionsCount"
       ></ctg-regions-rank>
 
-      <ctg-artists-rank
-        *ngIf="activeItem == DataTypes.ARTISTS"
-        [artists]="artists"
-      ></ctg-artists-rank>
+      <ctg-artists-rank *ngIf="activeItem == DataTypes.ARTISTS"></ctg-artists-rank>
     </div>
   </ng-template>
 </p-sidebar>
@@ -52,7 +48,6 @@
     <ctg-countries-rank
       *ngIf="activeItem == DataTypes.COUNTRIES"
       [countriesCount]="countriesCount"
-      [artists]="artists"
     ></ctg-countries-rank>
 
     <ctg-regions-rank
@@ -60,9 +55,6 @@
       [regionsCount]="regionsCount"
     ></ctg-regions-rank>
 
-    <ctg-artists-rank
-      *ngIf="activeItem == DataTypes.ARTISTS"
-      [artists]="artists"
-    ></ctg-artists-rank>
+    <ctg-artists-rank *ngIf="activeItem == DataTypes.ARTISTS"></ctg-artists-rank>
   </div>
 </ng-template>

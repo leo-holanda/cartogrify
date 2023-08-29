@@ -1,18 +1,26 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { Artist } from "src/app/artists/artist.model";
 import { Subject } from "rxjs";
+import { CountryService } from "src/app/country/country.service";
+import { ArtistService } from "../../artist.service";
 
 @Component({
   selector: "ctg-artists-rank",
   templateUrl: "./artists-rank.component.html",
   styleUrls: ["./artists-rank.component.scss"],
 })
-export class ArtistsRankComponent {
-  @Input() artists!: Artist[];
+export class ArtistsRankComponent implements OnInit {
+  artists: Artist[] = [];
 
   shouldMakeSuggestions$ = new Subject<boolean>();
   isMessageActive = true;
   shouldOpenDialog = false;
+
+  constructor(private artistService: ArtistService) {}
+
+  ngOnInit(): void {
+    this.artistService.getUserTopArtists().subscribe((artists) => (this.artists = artists));
+  }
 
   hideMessage(): void {
     this.isMessageActive = false;

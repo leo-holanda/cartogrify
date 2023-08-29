@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Artist } from "../artist.model";
 import { CountryCount, RegionCount } from "../../country/country.model";
 import { MenuItem } from "primeng/api";
 import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
 import { CountryService } from "../../country/country.service";
+import { ArtistService } from "../artist.service";
 
 enum DataTypes {
   COUNTRIES = "Countries",
@@ -16,8 +17,8 @@ enum DataTypes {
   templateUrl: "./rankings.component.html",
   styleUrls: ["./rankings.component.scss"],
 })
-export class RankingsComponent {
-  @Input() artists: Artist[] = [];
+export class RankingsComponent implements OnInit {
+  artists: Artist[] = [];
   @Input() countriesCount: CountryCount[] = [];
   @Input() regionsCount: RegionCount[] = [];
   @Input() isMobile!: boolean;
@@ -44,7 +45,11 @@ export class RankingsComponent {
   DataTypes = DataTypes;
   sidebarVisible = false;
 
-  constructor(private dialogService: DialogService, private countryService: CountryService) {}
+  constructor(private artistService: ArtistService) {}
+
+  ngOnInit(): void {
+    this.artistService.getUserTopArtists().subscribe((artists) => (this.artists = artists));
+  }
 
   onActiveItemChange(activeItem: MenuItem): void {
     this.activeItem = activeItem.label as DataTypes;
