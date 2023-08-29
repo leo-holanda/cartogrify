@@ -18,12 +18,13 @@ enum DataTypes {
   styleUrls: ["./rankings.component.scss"],
 })
 export class RankingsComponent implements OnInit {
-  artists: Artist[] = [];
-  @Input() countriesCount: CountryCount[] = [];
-  @Input() regionsCount: RegionCount[] = [];
   @Input() isMobile!: boolean;
   @Input() shouldOpenRankings!: boolean;
   @Output() shouldHideRankings = new EventEmitter<boolean>();
+
+  artists: Artist[] = [];
+  countriesCount: CountryCount[] = [];
+  regionsCount: RegionCount[] = [];
 
   selectedData = DataTypes.COUNTRIES;
   activeItem = DataTypes.COUNTRIES;
@@ -45,10 +46,18 @@ export class RankingsComponent implements OnInit {
   DataTypes = DataTypes;
   sidebarVisible = false;
 
-  constructor(private artistService: ArtistService) {}
+  constructor(private artistService: ArtistService, private countryService: CountryService) {}
 
   ngOnInit(): void {
     this.artistService.getUserTopArtists().subscribe((artists) => (this.artists = artists));
+
+    this.countryService.getCountriesCount().subscribe((countriesCount) => {
+      this.countriesCount = countriesCount;
+    });
+
+    this.countryService.getRegionsCount().subscribe((regionsCount) => {
+      this.regionsCount = regionsCount;
+    });
   }
 
   onActiveItemChange(activeItem: MenuItem): void {

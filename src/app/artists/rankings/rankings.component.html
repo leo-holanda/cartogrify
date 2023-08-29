@@ -17,16 +17,8 @@
         (activeItemChange)="onActiveItemChange($event)"
       ></p-tabMenu>
 
-      <ctg-countries-rank
-        *ngIf="activeItem == DataTypes.COUNTRIES"
-        [countriesCount]="countriesCount"
-      ></ctg-countries-rank>
-
-      <ctg-regions-rank
-        *ngIf="activeItem == DataTypes.REGIONS"
-        [regionsCount]="regionsCount"
-      ></ctg-regions-rank>
-
+      <ctg-countries-rank *ngIf="activeItem == DataTypes.COUNTRIES"></ctg-countries-rank>
+      <ctg-regions-rank *ngIf="activeItem == DataTypes.REGIONS"></ctg-regions-rank>
       <ctg-artists-rank *ngIf="activeItem == DataTypes.ARTISTS"></ctg-artists-rank>
     </div>
   </ng-template>
@@ -45,16 +37,8 @@
       (activeItemChange)="onActiveItemChange($event)"
     ></p-tabMenu>
 
-    <ctg-countries-rank
-      *ngIf="activeItem == DataTypes.COUNTRIES"
-      [countriesCount]="countriesCount"
-    ></ctg-countries-rank>
-
-    <ctg-regions-rank
-      *ngIf="activeItem == DataTypes.REGIONS"
-      [regionsCount]="regionsCount"
-    ></ctg-regions-rank>
-
+    <ctg-countries-rank *ngIf="activeItem == DataTypes.COUNTRIES"></ctg-countries-rank>
+    <ctg-regions-rank *ngIf="activeItem == DataTypes.REGIONS"></ctg-regions-rank>
     <ctg-artists-rank *ngIf="activeItem == DataTypes.ARTISTS"></ctg-artists-rank>
   </div>
 </ng-template>

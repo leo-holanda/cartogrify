@@ -19,7 +19,9 @@ export class ArtistsRankComponent implements OnInit {
   constructor(private artistService: ArtistService) {}
 
   ngOnInit(): void {
-    this.artistService.getUserTopArtists().subscribe((artists) => (this.artists = artists));
+    this.artistService.getUserTopArtists().subscribe((artists) => {
+      this.artists = artists;
+    });
   }
 
   hideMessage(): void {

@@ -25,7 +25,6 @@ import { fromEvent, debounceTime } from "rxjs";
 import * as htmlToImage from "html-to-image";
 import { Artist } from "../artist.model";
 import { colorPalettes } from "./world-map.colors";
-import { Message } from "primeng/api";
 import { ArtistService } from "../artist.service";
 
 @Component({
@@ -34,10 +33,11 @@ import { ArtistService } from "../artist.service";
   styleUrls: ["./world-map.component.scss"],
 })
 export class WorldMapComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input() countriesCount: CountryCount[] = [];
   @Input() isMobile!: boolean;
   @Output() shouldOpenRankings = new EventEmitter<boolean>();
+
   artists: Artist[] = [];
+  countriesCount: CountryCount[] = [];
 
   shareMode = false;
   usesDefaultMapResolution = true;
@@ -78,7 +78,13 @@ export class WorldMapComponent implements OnInit, OnChanges, AfterViewInit {
   constructor(private countryService: CountryService, private artistService: ArtistService) {}
 
   ngOnInit(): void {
-    this.artistService.getUserTopArtists().subscribe((artists) => (this.artists = artists));
+    this.artistService.getUserTopArtists().subscribe((artists) => {
+      this.artists = artists;
+    });
+
+    this.countryService.getCountriesCount().subscribe((countriesCount) => {
+      this.countriesCount = countriesCount;
+    });
   }
 
   ngAfterViewInit(): void {
