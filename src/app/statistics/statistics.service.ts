@@ -2,12 +2,12 @@ import { Injectable } from "@angular/core";
 import { SupabaseService } from "../shared/supabase.service";
 import { Observable, map, of } from "rxjs";
 import { DiversityIndex } from "../shared/supabase.model";
+import { ComparedDiversityData } from "./statistics.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class StatisticsService {
-  average!: number;
   diversityIndexes!: DiversityIndex[];
 
   constructor(private supabaseService: SupabaseService) {}
@@ -23,9 +23,16 @@ export class StatisticsService {
     );
   }
 
-  getComparedDiversity(currentUserCountriesCount: number): Observable<string> {
+  getComparedDiversity(currentUserCountriesCount: number): Observable<ComparedDiversityData> {
     return this.getDiversityIndexes().pipe(
       map((diversityIndexes) => {
+        /*
+          Should I include the current user in this calculation?
+          I'm comparing the current user against the users from database
+          The current user could be and couldn't be in the database
+          Is it harming the validity of the rating?
+        */
+
         const allUsersDiversity = [];
         allUsersDiversity.push(currentUserCountriesCount);
 
@@ -40,9 +47,18 @@ export class StatisticsService {
           (index) => index === currentUserCountriesCount
         );
 
-        if (currentUserIndex != -1)
-          return ((currentUserIndex / allUsersDiversity.length) * 100).toFixed(0) + "%";
-        return "0%";
+        let comparedDiversity;
+        if (currentUserIndex != -1) {
+          comparedDiversity =
+            ((currentUserIndex / allUsersDiversity.length) * 100).toFixed(0) + "%";
+        } else {
+          comparedDiversity = "0%";
+        }
+
+        return {
+          comparedDiversity,
+          totalUsers: allUsersDiversity.length,
+        };
       })
     );
   }

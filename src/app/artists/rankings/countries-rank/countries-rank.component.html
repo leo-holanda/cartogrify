@@ -1,9 +1,13 @@
 <div>
   <div class="diversity-wrapper">
-    <h3>Congratulations! Your country diversity rating is {{ comparedDiversity }}</h3>
+    <h3>
+      Congratulations! Your country diversity rating is
+      {{ comparedDiversityData.comparedDiversity }}
+    </h3>
     <span class="rating-explanation">
       It means that the music you listen to comes from more countries that
-      {{ comparedDiversity }} of our users!
+      {{ comparedDiversityData.comparedDiversity }} of our
+      {{ comparedDiversityData.totalUsers }} users!
     </span>
   </div>
 
