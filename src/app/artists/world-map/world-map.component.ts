@@ -32,7 +32,7 @@ import { ArtistService } from "../artist.service";
   templateUrl: "./world-map.component.html",
   styleUrls: ["./world-map.component.scss"],
 })
-export class WorldMapComponent implements OnInit, OnChanges, AfterViewInit {
+export class WorldMapComponent implements AfterViewInit {
   @Input() isMobile!: boolean;
   @Output() shouldOpenRankings = new EventEmitter<boolean>();
 
@@ -77,18 +77,17 @@ export class WorldMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor(private countryService: CountryService, private artistService: ArtistService) {}
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
+    this.addMap();
+
     this.artistService.getUserTopArtists().subscribe((artists) => {
       this.artists = artists;
     });
 
     this.countryService.getCountriesCount().subscribe((countriesCount) => {
       this.countriesCount = countriesCount;
+      this.updateMap();
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.addMap();
 
     fromEvent(window, "resize")
       .pipe(debounceTime(250))
@@ -98,16 +97,6 @@ export class WorldMapComponent implements OnInit, OnChanges, AfterViewInit {
           this.updateMap();
         }, 200);
       });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (
-      changes["countriesCount"] &&
-      changes["artists"] &&
-      !changes["countriesCount"].isFirstChange() &&
-      !changes["artists"].isFirstChange()
-    )
-      this.updateMap();
   }
 
   onColorPaletteSelect(event: ListboxClickEvent): void {
