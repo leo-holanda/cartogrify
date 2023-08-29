@@ -1,6 +1,5 @@
 <p-dialog header="Make your suggestions" [(visible)]="shouldOpenDialog" [modal]="true">
   <ctg-suggestions
-    [artists]="artists"
     [shouldMakeSuggestions$]="shouldMakeSuggestions$"
     (shouldCloseDialog)="onShouldCloseDialog()"
   ></ctg-suggestions>

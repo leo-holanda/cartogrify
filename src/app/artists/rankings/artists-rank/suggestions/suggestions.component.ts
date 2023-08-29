@@ -4,6 +4,7 @@ import { ArtistWithSuggestion, Artist } from "src/app/artists/artist.model";
 import { Country } from "src/app/country/country.model";
 import { CountryService } from "src/app/country/country.service";
 import { Subject, debounceTime, fromEvent } from "rxjs";
+import { ArtistService } from "src/app/artists/artist.service";
 
 @Component({
   selector: "ctg-suggestions",
@@ -11,7 +12,7 @@ import { Subject, debounceTime, fromEvent } from "rxjs";
   styleUrls: ["./suggestions.component.scss"],
 })
 export class SuggestionsComponent implements OnInit {
-  @Input() artists: Artist[] = [];
+  artists: Artist[] = [];
   @Input() shouldMakeSuggestions$!: Subject<boolean>;
   @Output() shouldCloseDialog = new EventEmitter<boolean>();
 
@@ -22,9 +23,11 @@ export class SuggestionsComponent implements OnInit {
 
   isMobile = window.innerWidth <= 768;
 
-  constructor(private countryService: CountryService) {}
+  constructor(private countryService: CountryService, private artistService: ArtistService) {}
 
   ngOnInit(): void {
+    this.artistService.getUserTopArtists().subscribe((artists) => (this.artists = artists));
+
     fromEvent(window, "resize")
       .pipe(debounceTime(250))
       .subscribe(() => {

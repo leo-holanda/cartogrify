@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
@@ -25,17 +26,18 @@ import * as htmlToImage from "html-to-image";
 import { Artist } from "../artist.model";
 import { colorPalettes } from "./world-map.colors";
 import { Message } from "primeng/api";
+import { ArtistService } from "../artist.service";
 
 @Component({
   selector: "ctg-world-map",
   templateUrl: "./world-map.component.html",
   styleUrls: ["./world-map.component.scss"],
 })
-export class WorldMapComponent implements OnChanges, AfterViewInit {
+export class WorldMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() countriesCount: CountryCount[] = [];
-  @Input() artists: Artist[] = [];
   @Input() isMobile!: boolean;
   @Output() shouldOpenRankings = new EventEmitter<boolean>();
+  artists: Artist[] = [];
 
   shareMode = false;
   usesDefaultMapResolution = true;
@@ -73,7 +75,11 @@ export class WorldMapComponent implements OnChanges, AfterViewInit {
 
   @ViewChild("mapWrapper") mapWrapper!: ElementRef<HTMLElement>;
 
-  constructor(private countryService: CountryService) {}
+  constructor(private countryService: CountryService, private artistService: ArtistService) {}
+
+  ngOnInit(): void {
+    this.artistService.getUserTopArtists().subscribe((artists) => (this.artists = artists));
+  }
 
   ngAfterViewInit(): void {
     this.addMap();
