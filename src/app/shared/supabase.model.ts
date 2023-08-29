@@ -35,3 +35,38 @@ interface Attr2 {
   perPage: string;
   total: string;
 }
+
+export interface LastFmUserResponse {
+  user?: LastFmUser;
+  error?: number;
+  message?: string;
+}
+
+export interface ProfileImage {
+  size: string;
+  "#text": string;
+}
+
+export interface Registered {
+  unixtime: string;
+  "#text": number;
+}
+
+export interface LastFmUser {
+  name: string;
+  age: string;
+  subscriber: string;
+  realname: string;
+  bootstrap: string;
+  playcount: string;
+  artist_count: string;
+  playlists: string;
+  track_count: string;
+  album_count: string;
+  image: ProfileImage[];
+  registered: Registered;
+  country: string;
+  gender: string;
+  url: string;
+  type: string;
+}
