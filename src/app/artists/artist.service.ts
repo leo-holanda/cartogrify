@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { Artist, ScrapedArtist, ScrapedArtistData, Suggestion } from "./artist.model";
 import { SupabaseService } from "../shared/supabase.service";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, take } from "rxjs";
 import { CountryService } from "../country/country.service";
+import { UserService } from "../user/user.service";
 
 @Injectable({
   providedIn: "root",
@@ -14,7 +15,11 @@ export class ArtistService {
 
   private hasRequestedTopArtists = false;
 
-  constructor(private supabaseService: SupabaseService, private countryService: CountryService) {}
+  constructor(
+    private supabaseService: SupabaseService,
+    private countryService: CountryService,
+    private userService: UserService
+  ) {}
 
   setUserTopArtists(topArtistsNames: string[]): void {
     this.hasRequestedTopArtists = true;
@@ -38,6 +43,13 @@ export class ArtistService {
 
         if (artistsWithoutCountry.length == 0) {
           this.hasArtistsWithoutCountry$.next(false);
+          this.countryService
+            .getCountriesCount()
+            .pipe(take(1))
+            .subscribe((countriesCount) => {
+              const user = this.userService.getUser();
+              this.supabaseService.saveDiversityIndex(user, countriesCount.length);
+            });
         } else {
           this.hasArtistsWithoutCountry$.next(true);
           const scrapedArtists: ScrapedArtist[] = [];
@@ -61,6 +73,13 @@ export class ArtistService {
             },
             complete: () => {
               this.supabaseService.saveSuggestions(scrapedArtists);
+              this.countryService
+                .getCountriesCount()
+                .pipe(take(1))
+                .subscribe((countriesCount) => {
+                  const user = this.userService.getUser();
+                  this.supabaseService.saveDiversityIndex(user, countriesCount.length);
+                });
             },
           });
         }
