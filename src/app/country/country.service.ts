@@ -349,6 +349,18 @@ export class CountryService {
     return unknownCountry;
   }
 
+  getCountryCodeByText(countryNameOrAbbreviation: string): string | undefined {
+    const matchedFeature = this.geoJSON.features.find(
+      (feature) =>
+        feature.properties["NAME"].toLowerCase() == countryNameOrAbbreviation.toLowerCase() ||
+        this.findCountryFlagCode(feature) == countryNameOrAbbreviation.toLocaleLowerCase()
+    );
+
+    console.log(countryNameOrAbbreviation);
+    if (matchedFeature) return matchedFeature.properties["NE_ID"];
+    return undefined;
+  }
+
   private createRegion(artist: Artist): RegionCount {
     let artistSubRegion: SubRegionCount | undefined = undefined;
     artistSubRegion = {
