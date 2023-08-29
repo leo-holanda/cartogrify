@@ -4,6 +4,7 @@ import { SpotifyAuthService } from "../spotify-auth.service";
 import { ArtistService } from "src/app/artists/artist.service";
 import { SpotifyService } from "src/app/streaming/spotify.service";
 import { HttpErrorResponse } from "@angular/common/http";
+import { UserService } from "src/app/user/user.service";
 
 @Component({
   selector: "msm-post-login",
@@ -22,7 +23,8 @@ export class PostLoginComponent implements OnInit {
     private spotifyAuthService: SpotifyAuthService,
     private artistService: ArtistService,
     private spotifyService: SpotifyService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +47,10 @@ export class PostLoginComponent implements OnInit {
               this.spotifyService.getUserTopArtists().subscribe((topArtists) => {
                 this.artistService.setUserTopArtists(topArtists);
                 this.router.navigate(["/artists"]);
+              });
+
+              this.spotifyService.getUserProfileData().subscribe((userProfileData) => {
+                this.userService.setUser(userProfileData);
               });
             },
             error: (err) => this.handleSpotifyError(err),
