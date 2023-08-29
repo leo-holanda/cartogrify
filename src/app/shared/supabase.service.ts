@@ -67,10 +67,10 @@ export class SupabaseService {
     ).subscribe();
   }
 
-  saveDiversityIndex(user: User, diversityIndex: number): void {
+  saveDiversityIndex(user: User, countriesCount: number): void {
     const userData = {
       user_id: user.id,
-      diversity_index: diversityIndex,
+      countries_count: countriesCount,
       user_country: user.country,
     };
 
