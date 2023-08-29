@@ -3,7 +3,7 @@ import { SupabaseClient, createClient } from "@supabase/supabase-js";
 import { Observable, asyncScheduler, map, scheduled, take } from "rxjs";
 import { environment } from "src/environments/environment";
 import { ScrapedArtist, Suggestion } from "../artists/artist.model";
-import { LastFmTopArtists } from "./supabase.model";
+import { LastFmTopArtists, LastFmUserResponse } from "./supabase.model";
 import { User } from "../user/user.model";
 
 @Injectable({
@@ -75,5 +75,22 @@ export class SupabaseService {
       }),
       asyncScheduler
     ).subscribe();
+  }
+
+  getLastFmUserProfileData(userName: string): Observable<LastFmUserResponse> {
+    return scheduled(
+      this.supabaseClient.functions.invoke<LastFmUserResponse>("get-lastfm-user-profile-data", {
+        body: { name: userName },
+      }),
+      asyncScheduler
+    ).pipe(
+      take(1),
+      map((response) => {
+        //This is a Supabase Edge Function error
+        if (response.error) throw new Error(response.error);
+        if (!response.data) throw new Error(response.error);
+        return response.data;
+      })
+    );
   }
 }

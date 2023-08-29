@@ -7,6 +7,7 @@ import { LastFmService } from "src/app/streaming/last-fm.service";
 import { MessageService } from "primeng/api";
 import { HttpErrorResponse } from "@angular/common/http";
 import { UserService } from "src/app/user/user.service";
+import { User } from "src/app/user/user.model";
 
 @Component({
   selector: "msm-login",
@@ -59,10 +60,31 @@ export class LoginComponent {
 
   onLastfmStartButtonClick(): void {
     this.hasClickedLastFmStartButton = true;
-    this.lastFmService.getTopArtists(this.lastFmUsername).subscribe({
-      next: (topArtists) => {
-        this.artistService.setUserTopArtists(topArtists);
-        this.router.navigate(["/artists"]);
+    this.lastFmService.getLastFmUserProfileData(this.lastFmUsername).subscribe({
+      next: (lastFmUserProfileData) => {
+        const userData = {
+          id: this.lastFmUsername,
+          country: lastFmUserProfileData.country,
+        } as User;
+        this.userService.setUser(userData);
+        this.lastFmService.getTopArtists(this.lastFmUsername).subscribe({
+          next: (topArtists) => {
+            this.artistService.setUserTopArtists(topArtists);
+            this.router.navigate(["/artists"]);
+          },
+          error: (err) => {
+            this.hasInitiatedLogin = false;
+            this.hasClickedLastFmButton = false;
+            this.hasClickedLastFmStartButton = false;
+            this.lastFmUsername = "";
+            this.messageService.add({
+              severity: "error",
+              summary: "Communication with LastFM has failed.",
+              detail: "Error: " + err.message,
+              sticky: true,
+            });
+          },
+        });
       },
       error: (err) => {
         this.hasInitiatedLogin = false;
@@ -71,7 +93,7 @@ export class LoginComponent {
         this.lastFmUsername = "";
         this.messageService.add({
           severity: "error",
-          summary: "Communication with LastFM has failed.",
+          summary: "It was not possible to fetch your profile data from Last.fm API.",
           detail: "Error: " + err.message,
           sticky: true,
         });
