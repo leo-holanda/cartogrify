@@ -23,7 +23,7 @@ export class SpotifyAuthService {
 
   requestAuthorization(): void {
     const codeChallenge$ = this.generateCodeChallenge();
-    const scope = "user-top-read";
+    const scope = "user-top-read user-read-private";
 
     const state = this.generateRandomString(16);
     localStorage.setItem("state", state);
