@@ -40,9 +40,9 @@ export class StatisticsService {
           (index) => index === currentUserCountriesCount
         );
 
-        if (currentUserIndex)
+        if (currentUserIndex != -1)
           return ((currentUserIndex / allUsersDiversity.length) * 100).toFixed(0) + "%";
-        return "0";
+        return "0%";
       })
     );
   }
