@@ -70,3 +70,13 @@ export interface LastFmUser {
   url: string;
   type: string;
 }
+
+export interface DiversityIndexResponse {
+  countries_count: number;
+  occurrence_quantity: number;
+}
+
+export interface DiversityIndex {
+  countriesCount: number;
+  occurrenceQuantity: number;
+}
