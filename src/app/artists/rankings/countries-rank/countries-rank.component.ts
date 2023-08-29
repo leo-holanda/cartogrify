@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Artist } from "src/app/artists/artist.model";
 import { CountryCount } from "src/app/country/country.model";
 import { ArtistService } from "../../artist.service";
+import { CountryService } from "src/app/country/country.service";
 
 @Component({
   selector: "ctg-countries-rank",
@@ -9,12 +10,18 @@ import { ArtistService } from "../../artist.service";
   styleUrls: ["./countries-rank.component.scss"],
 })
 export class CountriesRankComponent implements OnInit {
-  @Input() countriesCount!: CountryCount[];
   artists: Artist[] = [];
+  countriesCount: CountryCount[] = [];
 
-  constructor(private artistService: ArtistService) {}
+  constructor(private artistService: ArtistService, private countryService: CountryService) {}
 
   ngOnInit(): void {
-    this.artistService.getUserTopArtists().subscribe((artists) => (this.artists = artists));
+    this.artistService.getUserTopArtists().subscribe((artists) => {
+      this.artists = artists;
+    });
+
+    this.countryService.getCountriesCount().subscribe((countriesCount) => {
+      this.countriesCount = countriesCount;
+    });
   }
 }

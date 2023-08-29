@@ -7,15 +7,9 @@
     [closable]="false"
   ></p-messages>
 
-  <ctg-world-map
-    [countriesCount]="countriesCount"
-    [isMobile]="isMobile"
-    (shouldOpenRankings)="openRankings()"
-  ></ctg-world-map>
+  <ctg-world-map [isMobile]="isMobile" (shouldOpenRankings)="openRankings()"></ctg-world-map>
 
   <ctg-rankings
-    [countriesCount]="countriesCount"
-    [regionsCount]="regionsCount"
     [isMobile]="isMobile"
     [shouldOpenRankings]="shouldOpenRankings"
     (shouldHideRankings)="hideRankings()"

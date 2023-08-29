@@ -1,6 +1,5 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, Subject, map } from "rxjs";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { Artist, ScrapedArtist } from "../artists/artist.model";
 import { environment } from "src/environments/environment.development";
 import {
@@ -24,12 +23,109 @@ import { countryRelatedTerms } from "./country.data";
 })
 export class CountryService {
   geoJSON!: GeoFeatureCollection;
+  countriesCount$ = new BehaviorSubject<CountryCount[]>([]);
+  regionsCount$ = new BehaviorSubject<RegionCount[]>([]);
 
-  constructor(private http: HttpClient, private supabaseService: SupabaseService) {
+  constructor(private supabaseService: SupabaseService) {
     this.geoJSON = topojson.feature(
       countriesJSON as unknown as TopoJSON.Topology,
       countriesJSON.objects.countries as TopoJSON.GeometryCollection
     );
+  }
+
+  getCountriesCount(): Observable<CountryCount[]> {
+    return this.countriesCount$.asObservable();
+  }
+
+  updateCountriesCount(artists: Artist[]): void {
+    const countriesCount = new Map<string, CountryCount>();
+    const unknownCountry: Country = {
+      name: "Unknown",
+      flagCode: "xx",
+      region: "Unknown",
+      subRegion: "Unknown",
+      intermediateRegion: "Unknown",
+      NE_ID: 0,
+    };
+
+    artists.forEach((artist) => {
+      const country = artist.country || unknownCountry;
+      const count = countriesCount.get(country.name)?.count || 0;
+      const countryCount = {
+        country: country,
+        count: count + 1,
+      };
+      countriesCount.set(country.name, countryCount);
+    });
+
+    const sortedCountriesCount = [...countriesCount]
+      .sort((a, b) => b[1].count - a[1].count)
+      .map((country) => country[1]);
+
+    this.countriesCount$.next(sortedCountriesCount);
+  }
+
+  getRegionsCount(): Observable<RegionCount[]> {
+    return this.regionsCount$.asObservable();
+  }
+
+  updateRegionsCount(artists: Artist[]): void {
+    const regionsMap = new Map<string, RegionCount>();
+    const unknownRegion: RegionCount = {
+      name: "Unknown",
+      intermediateRegions: [],
+      count: 0,
+    };
+
+    artists.forEach((artist) => {
+      if (!artist.country || !artist.country.region) {
+        unknownRegion.count += 1;
+        regionsMap.set(unknownRegion.name, unknownRegion);
+        return;
+      }
+
+      const artistRegion = regionsMap.get(artist.country.region);
+      if (!artistRegion) {
+        const newRegion = this.createRegion(artist);
+        regionsMap.set(artist.country.region, newRegion);
+        return;
+      }
+
+      artistRegion.count += 1;
+      const artistIntermediateRegion = artistRegion.intermediateRegions.find(
+        (intermediateRegion) =>
+          intermediateRegion.name === (artist.country?.intermediateRegion || "Unknown")
+      );
+
+      if (artistIntermediateRegion) {
+        artistIntermediateRegion.count += 1;
+
+        const artistSubRegion = artistIntermediateRegion.subRegions.find(
+          (subRegion) => subRegion.name === (artist.country?.subRegion || "Unknown")
+        );
+
+        if (artistSubRegion) {
+          artistSubRegion.count += 1;
+        } else {
+          artistIntermediateRegion.subRegions.push({
+            name: artist.country?.subRegion || "Unknown",
+            count: 1,
+          });
+        }
+
+        regionsMap.set(artist.country.region, artistRegion);
+      } else {
+        const newIntermediateRegion = this.createIntermediateRegion(artist);
+        artistRegion.intermediateRegions.push(newIntermediateRegion);
+        regionsMap.set(artist.country.region, artistRegion);
+      }
+    });
+
+    const sortedRegionsCount = [...regionsMap]
+      .sort((a, b) => b[1].count - a[1].count)
+      .map((region) => region[1]);
+
+    this.regionsCount$.next(sortedRegionsCount);
   }
 
   findArtistsCountryOfOrigin(artistsNames: string[]): Observable<ScrapedArtist> {
@@ -181,92 +277,6 @@ export class CountryService {
 
     if (!mostLikelyCountry) return undefined;
     return this.createCountryFromFeature(mostLikelyCountry);
-  }
-
-  countCountries(artists: Artist[]): CountryCount[] {
-    const countriesCount = new Map<string, CountryCount>();
-    const unknownCountry: Country = {
-      name: "Unknown",
-      flagCode: "xx",
-      region: "Unknown",
-      subRegion: "Unknown",
-      intermediateRegion: "Unknown",
-      NE_ID: 0,
-    };
-
-    artists.forEach((artist) => {
-      const country = artist.country || unknownCountry;
-      const count = countriesCount.get(country.name)?.count || 0;
-      const countryCount = {
-        country: country,
-        count: count + 1,
-      };
-      countriesCount.set(country.name, countryCount);
-    });
-
-    const sortedCountriesCount = [...countriesCount]
-      .sort((a, b) => b[1].count - a[1].count)
-      .map((country) => country[1]);
-
-    return sortedCountriesCount;
-  }
-
-  countRegions(artists: Artist[]): RegionCount[] {
-    const regionsMap = new Map<string, RegionCount>();
-    const unknownRegion: RegionCount = {
-      name: "Unknown",
-      intermediateRegions: [],
-      count: 0,
-    };
-
-    artists.forEach((artist) => {
-      if (!artist.country || !artist.country.region) {
-        unknownRegion.count += 1;
-        regionsMap.set(unknownRegion.name, unknownRegion);
-        return;
-      }
-
-      const artistRegion = regionsMap.get(artist.country.region);
-      if (!artistRegion) {
-        const newRegion = this.createRegion(artist);
-        regionsMap.set(artist.country.region, newRegion);
-        return;
-      }
-
-      artistRegion.count += 1;
-      const artistIntermediateRegion = artistRegion.intermediateRegions.find(
-        (intermediateRegion) =>
-          intermediateRegion.name === (artist.country?.intermediateRegion || "Unknown")
-      );
-
-      if (artistIntermediateRegion) {
-        artistIntermediateRegion.count += 1;
-
-        const artistSubRegion = artistIntermediateRegion.subRegions.find(
-          (subRegion) => subRegion.name === (artist.country?.subRegion || "Unknown")
-        );
-
-        if (artistSubRegion) {
-          artistSubRegion.count += 1;
-        } else {
-          artistIntermediateRegion.subRegions.push({
-            name: artist.country?.subRegion || "Unknown",
-            count: 1,
-          });
-        }
-
-        regionsMap.set(artist.country.region, artistRegion);
-      } else {
-        const newIntermediateRegion = this.createIntermediateRegion(artist);
-        artistRegion.intermediateRegions.push(newIntermediateRegion);
-        regionsMap.set(artist.country.region, artistRegion);
-      }
-    });
-
-    const sortedRegionsCount = [...regionsMap]
-      .sort((a, b) => b[1].count - a[1].count)
-      .map((region) => region[1]);
-    return sortedRegionsCount;
   }
 
   findCountryFlagCode(geoFeature: GeoFeature): string {

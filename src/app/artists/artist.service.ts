@@ -18,6 +18,7 @@ export class ArtistService {
 
   setUserTopArtists(topArtistsNames: string[]): void {
     this.hasRequestedTopArtists = true;
+    this.observeArtistsChanges();
 
     this.supabaseService
       .getBestSuggestionByArtists(topArtistsNames)
@@ -64,6 +65,13 @@ export class ArtistService {
           });
         }
       });
+  }
+
+  observeArtistsChanges(): void {
+    this.userTopArtists$.subscribe((artists) => {
+      this.countryService.updateCountriesCount(artists);
+      this.countryService.updateRegionsCount(artists);
+    });
   }
 
   getUserTopArtists(): Observable<Artist[]> {

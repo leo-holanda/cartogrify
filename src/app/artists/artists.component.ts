@@ -27,8 +27,14 @@ export class ArtistsComponent implements OnInit {
 
     this.artistsService.getUserTopArtists().subscribe((userTopArtists) => {
       this.artists = userTopArtists;
-      this.countriesCount = [...this.countryService.countCountries(userTopArtists)];
-      this.regionsCount = this.countryService.countRegions(userTopArtists);
+    });
+
+    this.countryService.getCountriesCount().subscribe((countriesCount) => {
+      this.countriesCount = countriesCount;
+    });
+
+    this.countryService.getRegionsCount().subscribe((regionsCount) => {
+      this.regionsCount = regionsCount;
     });
 
     this.artistsService

@@ -26,7 +26,9 @@ export class SuggestionsComponent implements OnInit {
   constructor(private countryService: CountryService, private artistService: ArtistService) {}
 
   ngOnInit(): void {
-    this.artistService.getUserTopArtists().subscribe((artists) => (this.artists = artists));
+    this.artistService.getUserTopArtists().subscribe((artists) => {
+      this.artists = artists;
+    });
 
     fromEvent(window, "resize")
       .pipe(debounceTime(250))
