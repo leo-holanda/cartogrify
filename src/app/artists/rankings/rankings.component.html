@@ -25,7 +25,12 @@
 </p-sidebar>
 
 <ng-template #desktopTemplate>
-  <div class="data-wrapper">
+  <div
+    [ngStyle]="{
+      background: mapTheme.background,
+    }"
+    class="data-wrapper"
+  >
     <div class="rating-wrapper">
       <h2 class="rating-title">{{ comparedDiversity.comparedDiversity }}</h2>
       <span class="rating-subtitle">World Traveller Rating</span>

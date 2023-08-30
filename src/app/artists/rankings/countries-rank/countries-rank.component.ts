@@ -3,6 +3,8 @@ import { Artist } from "src/app/artists/artist.model";
 import { CountryCount } from "src/app/country/country.model";
 import { ArtistService } from "../../artist.service";
 import { CountryService } from "src/app/country/country.service";
+import { ThemeService } from "src/app/core/theme.service";
+import { MapTheme } from "../../world-map/world-map.themes";
 
 @Component({
   selector: "ctg-countries-rank",
@@ -12,8 +14,13 @@ import { CountryService } from "src/app/country/country.service";
 export class CountriesRankComponent implements OnInit {
   artists: Artist[] = [];
   countriesCount: CountryCount[] = [];
+  mapTheme!: MapTheme;
 
-  constructor(private artistService: ArtistService, private countryService: CountryService) {}
+  constructor(
+    private artistService: ArtistService,
+    private countryService: CountryService,
+    private themeService: ThemeService
+  ) {}
 
   ngOnInit(): void {
     this.artistService.getUserTopArtists().subscribe((artists) => {
@@ -22,6 +29,10 @@ export class CountriesRankComponent implements OnInit {
 
     this.countryService.getCountriesCount().subscribe((countriesCount) => {
       this.countriesCount = countriesCount;
+    });
+
+    this.themeService.getMapTheme().subscribe((mapTheme) => {
+      this.mapTheme = mapTheme;
     });
   }
 }

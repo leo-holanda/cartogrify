@@ -4,10 +4,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
-  OnInit,
   Output,
-  SimpleChanges,
   ViewChild,
 } from "@angular/core";
 import * as d3 from "d3";
@@ -24,8 +21,10 @@ import { CountryService } from "../../country/country.service";
 import { fromEvent, debounceTime } from "rxjs";
 import * as htmlToImage from "html-to-image";
 import { Artist } from "../artist.model";
-import { colorPalettes } from "./world-map.colors";
 import { ArtistService } from "../artist.service";
+import { mapThemes } from "./world-map.themes";
+import { ThemeService } from "src/app/core/theme.service";
+import { RadioButtonClickEvent } from "primeng/radiobutton";
 
 @Component({
   selector: "ctg-world-map",
@@ -68,14 +67,18 @@ export class WorldMapComponent implements AfterViewInit {
   private mapSvg!: MapSVG;
   private tooltip!: Tooltip;
 
-  colorPalettes = colorPalettes;
-  private currentColorPalette = colorPalettes[0].colors;
+  mapThemes = mapThemes;
+  private currentColorPalette = mapThemes[0].colors;
   private colorScale!: ColorScale;
   mapBackgroundColor = "rgb(156, 192, 249)";
 
   @ViewChild("mapWrapper") mapWrapper!: ElementRef<HTMLElement>;
 
-  constructor(private countryService: CountryService, private artistService: ArtistService) {}
+  constructor(
+    private countryService: CountryService,
+    private artistService: ArtistService,
+    private themeService: ThemeService
+  ) {}
 
   ngAfterViewInit(): void {
     this.addMap();
@@ -99,12 +102,17 @@ export class WorldMapComponent implements AfterViewInit {
       });
   }
 
-  onColorPaletteSelect(event: ListboxClickEvent): void {
+  onMapThemeSelect(event: ListboxClickEvent): void {
     this.currentColorPalette = event.option.colors;
     this.mapBackgroundColor = event.option.background;
+    this.themeService.setMapTheme(event.option);
     this.setColorScale();
     this.setCountriesColorInMap();
     this.addMapLegend();
+  }
+
+  onMapBackgroundColorSelect(event: RadioButtonClickEvent): void {
+    this.themeService.setMapThemeBackground(event.value);
   }
 
   onShareButtonClick(): void {
