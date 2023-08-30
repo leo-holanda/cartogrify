@@ -53,3 +53,27 @@
     margin-top: 0;
   }
 }
+
+.rankings-wrapper {
+  background-color: #303030;
+  border-radius: 1rem;
+
+  .rankings-title {
+    margin: 1rem 0 0 1rem;
+  }
+}
+
+.rating-wrapper {
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: #303030;
+  margin-bottom: 1rem;
+
+  .rating-title {
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+  }
+
+  .rating-subtitle {
+  }
+}

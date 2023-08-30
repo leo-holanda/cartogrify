@@ -26,19 +26,23 @@
 
 <ng-template #desktopTemplate>
   <div class="data-wrapper">
-    <div>
-      <h1>Results</h1>
+    <div class="rating-wrapper">
+      <h2 class="rating-title">{{ comparedDiversity.comparedDiversity }}</h2>
+      <span class="rating-subtitle">World Traveller Rating</span>
     </div>
 
-    <p-tabMenu
-      class="tab-menu"
-      [model]="items"
-      [activeItem]="items[0]"
-      (activeItemChange)="onActiveItemChange($event)"
-    ></p-tabMenu>
+    <div class="rankings-wrapper">
+      <h2 class="rankings-title">Rankings</h2>
+      <p-tabMenu
+        class="tab-menu"
+        [model]="items"
+        [activeItem]="items[0]"
+        (activeItemChange)="onActiveItemChange($event)"
+      ></p-tabMenu>
 
-    <ctg-countries-rank *ngIf="activeItem == DataTypes.COUNTRIES"></ctg-countries-rank>
-    <ctg-regions-rank *ngIf="activeItem == DataTypes.REGIONS"></ctg-regions-rank>
-    <ctg-artists-rank *ngIf="activeItem == DataTypes.ARTISTS"></ctg-artists-rank>
+      <ctg-countries-rank *ngIf="activeItem == DataTypes.COUNTRIES"></ctg-countries-rank>
+      <ctg-regions-rank *ngIf="activeItem == DataTypes.REGIONS"></ctg-regions-rank>
+      <ctg-artists-rank *ngIf="activeItem == DataTypes.ARTISTS"></ctg-artists-rank>
+    </div>
   </div>
 </ng-template>
