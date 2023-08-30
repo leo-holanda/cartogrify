@@ -36,6 +36,37 @@
   .p-sidebar-footer {
     display: none;
   }
+
+  .color-theme-selector {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .map-color-palette {
+    margin-bottom: 0.5rem;
+  }
+
+  .map-background-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+  }
+
+  .map-background-input {
+    margin: 0.5rem 0;
+
+    &:last-child {
+      margin: 0.5rem 0 0 0;
+    }
+
+    label {
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+.palette-colors-array {
+  display: flex;
 }
 
 .tab-menu {
@@ -73,5 +104,28 @@
 
   .rankings-title {
     margin: 1rem 0 0 1rem;
+  }
+}
+
+.actions-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+::ng-deep {
+  .action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: #303030;
+    color: white;
+    border-radius: 1rem;
+
+    .p-button-label {
+      flex: none;
+    }
   }
 }

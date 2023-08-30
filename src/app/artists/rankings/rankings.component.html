@@ -49,5 +49,99 @@
       <ctg-regions-rank *ngIf="activeItem == DataTypes.REGIONS"></ctg-regions-rank>
       <ctg-artists-rank *ngIf="activeItem == DataTypes.ARTISTS"></ctg-artists-rank>
     </div>
+
+    <div class="actions-wrapper">
+      <p-button
+        label="Share with your friends"
+        icon="bx bx-share-alt"
+        styleClass="action-button"
+      ></p-button>
+      <p-button
+        (onClick)="mapThemeOverlayPanel.toggle($event)"
+        label="Customize map"
+        icon="bx bx-palette"
+        styleClass="action-button"
+      ></p-button>
+
+      <p-overlayPanel #mapThemeOverlayPanel>
+        <div class="color-theme-selector">
+          <label class="map-color-palette" for="map-color-palette">
+            <div>Color Palette</div>
+            <div style="color: grey">Provided by ArcGIS Maps SDK</div>
+          </label>
+          <p-listbox
+            [options]="mapThemes"
+            optionLabel="name"
+            [listStyle]="{ 'max-height': '250px' }"
+            (onClick)="onMapThemeSelect($event)"
+          >
+            <ng-template let-palette pTemplate="item">
+              <div>
+                <div>{{ palette.title }}</div>
+                <div class="palette-colors-array">
+                  <div
+                    *ngFor="let color of palette.colors"
+                    style="width: 1rem; height: 1rem"
+                    [ngStyle]="{ background: color }"
+                  ></div>
+                </div>
+              </div> </ng-template
+          ></p-listbox>
+          <div class="map-background-input-wrapper">
+            <label for="background">Background Color</label>
+            <div class="map-background-input">
+              <p-radioButton
+                name="dark-background"
+                value="rgb(50, 50, 50)"
+                [(ngModel)]="mapBackgroundColor"
+                inputId="dark-background"
+                (onClick)="onMapBackgroundColorSelect($event)"
+              ></p-radioButton>
+              <label for="dark-background">Dark</label>
+            </div>
+            <div class="map-background-input">
+              <p-radioButton
+                name="light-background"
+                value="rgb(255, 255, 255)"
+                [(ngModel)]="mapBackgroundColor"
+                inputId="light-background"
+                (onClick)="onMapBackgroundColorSelect($event)"
+              ></p-radioButton>
+              <label for="light-background">Light</label>
+            </div>
+            <div class="map-background-input">
+              <p-radioButton
+                name="blue-background"
+                value="rgb(156, 192, 249)"
+                [(ngModel)]="mapBackgroundColor"
+                inputId="blue-background"
+                (onClick)="onMapBackgroundColorSelect($event)"
+              ></p-radioButton>
+              <label for="blue-background">Light blue</label>
+            </div>
+            <div class="map-background-input">
+              <p-radioButton
+                name="light-brown-background"
+                value="rgb(229, 220, 203)"
+                [(ngModel)]="mapBackgroundColor"
+                inputId="light-brown-background"
+                (onClick)="onMapBackgroundColorSelect($event)"
+              ></p-radioButton>
+              <label for="light-brown-background">Light brown</label>
+            </div>
+            <div class="map-background-input">
+              <p-radioButton
+                name="dark-brown-background"
+                value="rgb(214, 187, 140)"
+                [(ngModel)]="mapBackgroundColor"
+                inputId="dark-brown-background"
+                (onClick)="onMapBackgroundColorSelect($event)"
+              ></p-radioButton>
+              <label for="dark-brown-background">Dark brown</label>
+            </div>
+          </div>
+        </div>
+      </p-overlayPanel>
+    </div>
   </div>
 </ng-template>

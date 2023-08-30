@@ -12,6 +12,10 @@ import { RegionsRankComponent } from "./regions-rank/regions-rank.component";
 import { ArtistsRankComponent } from "./artists-rank/artists-rank.component";
 import { SuggestionsModule } from "./artists-rank/suggestions/suggestions.module";
 import { DialogModule } from "primeng/dialog";
+import { OverlayPanelModule } from "primeng/overlaypanel";
+import { ListboxModule } from "primeng/listbox";
+import { FormsModule } from "@angular/forms";
+import { RadioButtonModule } from "primeng/radiobutton";
 
 @NgModule({
   declarations: [
@@ -29,6 +33,10 @@ import { DialogModule } from "primeng/dialog";
     SidebarModule,
     SuggestionsModule,
     DialogModule,
+    OverlayPanelModule,
+    ListboxModule,
+    FormsModule,
+    RadioButtonModule,
   ],
   providers: [DialogService],
   exports: [RankingsComponent],
