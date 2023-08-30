@@ -80,3 +80,15 @@ export interface DiversityIndex {
   countriesCount: number;
   occurrenceQuantity: number;
 }
+
+export interface DiversityIndexPerCountryResponse {
+  country: string;
+  countries_count: number;
+  occurrence_quantity: number;
+}
+
+export interface DiversityIndexPerCountry {
+  country: string;
+  countriesCount: number;
+  occurrenceQuantity: number;
+}

@@ -5,11 +5,15 @@ import { MenuItem } from "primeng/api";
 import { CountryService } from "../../country/country.service";
 import { ArtistService } from "../artist.service";
 import { StatisticsService } from "src/app/statistics/statistics.service";
-import { ComparedDiversityData } from "src/app/statistics/statistics.model";
+import {
+  ComparedDiversityData,
+  ComparedDiversityInUserCountryData,
+} from "src/app/statistics/statistics.model";
 import { ThemeService } from "src/app/core/theme.service";
 import { MapTheme, mapThemes } from "../world-map/world-map.themes";
 import { ListboxClickEvent } from "primeng/listbox";
 import { RadioButtonClickEvent } from "primeng/radiobutton";
+import { UserService } from "src/app/user/user.service";
 
 enum DataTypes {
   COUNTRIES = "Countries",
@@ -34,6 +38,7 @@ export class RankingsComponent implements OnInit {
   mapBackgroundColor = "";
 
   comparedDiversity!: ComparedDiversityData;
+  comparedDiversityInUserCountry!: ComparedDiversityInUserCountryData;
 
   mapThemes = mapThemes;
   mapTheme = mapThemes[0];
@@ -62,7 +67,8 @@ export class RankingsComponent implements OnInit {
     private artistService: ArtistService,
     private countryService: CountryService,
     private statisticService: StatisticsService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -75,6 +81,13 @@ export class RankingsComponent implements OnInit {
         .getComparedDiversity(this.countriesCount.length)
         .subscribe((comparedDiversity) => {
           this.comparedDiversity = comparedDiversity;
+        });
+
+      const currentUser = this.userService.getUser();
+      this.statisticService
+        .getComparedDiversityPerCountry(this.countriesCount.length, currentUser.country)
+        .subscribe((comparedDiversityInUserCountry) => {
+          this.comparedDiversityInUserCountry = comparedDiversityInUserCountry;
         });
     });
 

@@ -86,14 +86,21 @@
 }
 
 .rating-wrapper {
-  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
   border-radius: 1rem;
-  background-color: #303030;
   margin-bottom: 1rem;
 
   .rating-title {
     margin-top: 0;
     margin-bottom: 0.25rem;
+  }
+
+  .rating-item {
+    background-color: #303030;
+    padding: 1rem;
+    border-radius: 1rem;
   }
 }
 
