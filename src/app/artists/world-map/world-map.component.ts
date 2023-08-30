@@ -92,6 +92,14 @@ export class WorldMapComponent implements AfterViewInit {
       this.updateMap();
     });
 
+    this.themeService.getMapTheme().subscribe((mapTheme) => {
+      this.currentColorPalette = mapTheme.colors;
+      this.mapBackgroundColor = mapTheme.background;
+      this.setColorScale();
+      this.setCountriesColorInMap();
+      this.addMapLegend();
+    });
+
     fromEvent(window, "resize")
       .pipe(debounceTime(250))
       .subscribe(() => {
@@ -103,12 +111,7 @@ export class WorldMapComponent implements AfterViewInit {
   }
 
   onMapThemeSelect(event: ListboxClickEvent): void {
-    this.currentColorPalette = event.option.colors;
-    this.mapBackgroundColor = event.option.background;
     this.themeService.setMapTheme(event.option);
-    this.setColorScale();
-    this.setCountriesColorInMap();
-    this.addMapLegend();
   }
 
   onMapBackgroundColorSelect(event: RadioButtonClickEvent): void {

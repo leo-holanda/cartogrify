@@ -8,6 +8,8 @@ import { StatisticsService } from "src/app/statistics/statistics.service";
 import { ComparedDiversityData } from "src/app/statistics/statistics.model";
 import { ThemeService } from "src/app/core/theme.service";
 import { MapTheme, mapThemes } from "../world-map/world-map.themes";
+import { ListboxClickEvent } from "primeng/listbox";
+import { RadioButtonClickEvent } from "primeng/radiobutton";
 
 enum DataTypes {
   COUNTRIES = "Countries",
@@ -29,8 +31,11 @@ export class RankingsComponent implements OnInit {
   artists: Artist[] = [];
   countriesCount: CountryCount[] = [];
   regionsCount: RegionCount[] = [];
+  mapBackgroundColor = "";
 
   comparedDiversity!: ComparedDiversityData;
+
+  mapThemes = mapThemes;
   mapTheme = mapThemes[0];
 
   selectedData = DataTypes.COUNTRIES;
@@ -92,5 +97,13 @@ export class RankingsComponent implements OnInit {
 
   hideRankings(): void {
     this.shouldHideRankings.emit(true);
+  }
+
+  onMapThemeSelect(event: ListboxClickEvent): void {
+    this.themeService.setMapTheme(event.option);
+  }
+
+  onMapBackgroundColorSelect(event: RadioButtonClickEvent): void {
+    this.themeService.setMapThemeBackground(event.value);
   }
 }

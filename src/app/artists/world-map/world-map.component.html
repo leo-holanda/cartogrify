@@ -131,9 +131,12 @@
   </div>
 </p-dialog>
 <div #mapWrapper class="map-wrapper" [style]="{ background: mapBackgroundColor }">
-  <div [ngStyle]="{ visibility: shareMode ? 'collapse' : 'visible' }" class="map-buttons">
+  <div
+    *ngIf="isMobile"
+    [ngStyle]="{ visibility: shareMode ? 'collapse' : 'visible' }"
+    class="map-buttons"
+  >
     <p-button
-      *ngIf="isMobile"
       (onClick)="sendOpenRankingsEvent()"
       icon="bx bx-bar-chart-alt bx-rotate-90"
       class="sidebar-button"
