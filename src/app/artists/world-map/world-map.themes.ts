@@ -1,8 +1,14 @@
-export const colorPalettes = [
+export interface MapTheme {
+  title: string;
+  colors: string[];
+  background: string;
+}
+
+export const mapThemes: MapTheme[] = [
   {
     title: "Default",
     colors: ["#f1eef6", "#d0d1e6", "#a6bddb", "#74a9cf", "#3690c0", "#0570b0", "#034e7b"],
-    background: "rgb(255, 255, 255)",
+    background: "rgb(156, 192, 249)",
   },
   {
     title: "Blue 2",

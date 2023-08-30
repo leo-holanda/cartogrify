@@ -1,12 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import { Artist } from "../artist.model";
 import { CountryCount, RegionCount } from "../../country/country.model";
 import { MenuItem } from "primeng/api";
-import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
 import { CountryService } from "../../country/country.service";
 import { ArtistService } from "../artist.service";
 import { StatisticsService } from "src/app/statistics/statistics.service";
 import { ComparedDiversityData } from "src/app/statistics/statistics.model";
+import { ThemeService } from "src/app/core/theme.service";
+import { MapTheme, mapThemes } from "../world-map/world-map.themes";
 
 enum DataTypes {
   COUNTRIES = "Countries",
@@ -22,6 +23,7 @@ enum DataTypes {
 export class RankingsComponent implements OnInit {
   @Input() isMobile!: boolean;
   @Input() shouldOpenRankings!: boolean;
+
   @Output() shouldHideRankings = new EventEmitter<boolean>();
 
   artists: Artist[] = [];
@@ -29,6 +31,7 @@ export class RankingsComponent implements OnInit {
   regionsCount: RegionCount[] = [];
 
   comparedDiversity!: ComparedDiversityData;
+  mapTheme = mapThemes[0];
 
   selectedData = DataTypes.COUNTRIES;
   activeItem = DataTypes.COUNTRIES;
@@ -53,7 +56,8 @@ export class RankingsComponent implements OnInit {
   constructor(
     private artistService: ArtistService,
     private countryService: CountryService,
-    private statisticService: StatisticsService
+    private statisticService: StatisticsService,
+    private themeService: ThemeService
   ) {}
 
   ngOnInit(): void {
@@ -71,6 +75,10 @@ export class RankingsComponent implements OnInit {
 
     this.countryService.getRegionsCount().subscribe((regionsCount) => {
       this.regionsCount = regionsCount;
+    });
+
+    this.themeService.getMapTheme().subscribe((mapTheme) => {
+      this.mapTheme = mapTheme;
     });
   }
 

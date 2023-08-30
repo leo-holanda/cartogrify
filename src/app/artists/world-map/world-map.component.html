@@ -159,10 +159,10 @@
           <div style="color: grey">Provided by ArcGIS Maps SDK</div>
         </label>
         <p-listbox
-          [options]="colorPalettes"
+          [options]="mapThemes"
           optionLabel="name"
           [listStyle]="{ 'max-height': '250px' }"
-          (onClick)="onColorPaletteSelect($event)"
+          (onClick)="onMapThemeSelect($event)"
         >
           <ng-template let-palette pTemplate="item">
             <div>
@@ -184,6 +184,7 @@
               value="rgb(50, 50, 50)"
               [(ngModel)]="mapBackgroundColor"
               inputId="dark-background"
+              (onClick)="onMapBackgroundColorSelect($event)"
             ></p-radioButton>
             <label for="dark-background">Dark</label>
           </div>
@@ -193,6 +194,7 @@
               value="rgb(255, 255, 255)"
               [(ngModel)]="mapBackgroundColor"
               inputId="light-background"
+              (onClick)="onMapBackgroundColorSelect($event)"
             ></p-radioButton>
             <label for="light-background">Light</label>
           </div>
@@ -202,6 +204,7 @@
               value="rgb(156, 192, 249)"
               [(ngModel)]="mapBackgroundColor"
               inputId="blue-background"
+              (onClick)="onMapBackgroundColorSelect($event)"
             ></p-radioButton>
             <label for="blue-background">Light blue</label>
           </div>
@@ -211,6 +214,7 @@
               value="rgb(229, 220, 203)"
               [(ngModel)]="mapBackgroundColor"
               inputId="light-brown-background"
+              (onClick)="onMapBackgroundColorSelect($event)"
             ></p-radioButton>
             <label for="light-brown-background">Light brown</label>
           </div>
@@ -220,6 +224,7 @@
               value="rgb(214, 187, 140)"
               [(ngModel)]="mapBackgroundColor"
               inputId="dark-brown-background"
+              (onClick)="onMapBackgroundColorSelect($event)"
             ></p-radioButton>
             <label for="dark-brown-background">Dark brown</label>
           </div>

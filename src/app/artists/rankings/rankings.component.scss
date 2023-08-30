@@ -49,17 +49,8 @@
   padding: 2rem;
   color: white;
 
-  h1 {
+  .data-wrapper-title {
     margin-top: 0;
-  }
-}
-
-.rankings-wrapper {
-  background-color: #303030;
-  border-radius: 1rem;
-
-  .rankings-title {
-    margin: 1rem 0 0 1rem;
   }
 }
 
@@ -73,7 +64,14 @@
     margin-top: 0;
     margin-bottom: 0.25rem;
   }
+}
 
-  .rating-subtitle {
+.rankings-wrapper {
+  background-color: #303030;
+  border-radius: 1rem;
+  overflow-y: auto;
+
+  .rankings-title {
+    margin: 1rem 0 0 1rem;
   }
 }
