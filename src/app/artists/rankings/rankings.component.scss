@@ -98,9 +98,16 @@
   }
 
   .rating-item {
+    display: flex;
+    flex-direction: column;
+    text-wrap: nowrap;
     background-color: #303030;
     padding: 1rem;
     border-radius: 1rem;
+  }
+
+  .rating-icon {
+    margin-bottom: 0.25rem;
   }
 }
 
