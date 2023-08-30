@@ -32,8 +32,16 @@
     class="data-wrapper"
   >
     <div class="rating-wrapper">
-      <h2 class="rating-title">{{ comparedDiversity.comparedDiversity }}</h2>
-      <span class="rating-subtitle">World Traveller Rating</span>
+      <div class="rating-item">
+        <h2 class="rating-title">{{ comparedDiversity.comparedDiversity }}</h2>
+        <span class="rating-subtitle">World Traveller Rating</span>
+      </div>
+      <div class="rating-item">
+        <h2 class="rating-title">
+          {{ comparedDiversityInUserCountry.comparedDiversityInUserCountry }}
+        </h2>
+        <span class="rating-subtitle">Country Traveller Rating</span>
+      </div>
     </div>
 
     <div class="rankings-wrapper">

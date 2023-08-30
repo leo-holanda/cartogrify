@@ -5,6 +5,8 @@ import { environment } from "src/environments/environment";
 import { ScrapedArtist, Suggestion } from "../artists/artist.model";
 import {
   DiversityIndex,
+  DiversityIndexPerCountry,
+  DiversityIndexPerCountryResponse,
   DiversityIndexResponse,
   LastFmTopArtists,
   LastFmUserResponse,
@@ -112,6 +114,25 @@ export class SupabaseService {
             countriesCount: data.countries_count,
             occurrenceQuantity: data.occurrence_quantity,
           } as DiversityIndex;
+        })
+      )
+    );
+  }
+
+  getDiversityIndexesPerCountry(): Observable<DiversityIndexPerCountry[]> {
+    return scheduled(
+      this.supabaseClient.from("diversity_index_per_country").select("*"),
+      asyncScheduler
+    ).pipe(
+      take(1),
+      map((response) => response.data || []),
+      map((data: DiversityIndexPerCountryResponse[]) =>
+        data.map((data) => {
+          return {
+            country: data.country,
+            countriesCount: data.countries_count,
+            occurrenceQuantity: data.occurrence_quantity,
+          } as DiversityIndexPerCountry;
         })
       )
     );

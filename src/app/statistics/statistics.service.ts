@@ -1,14 +1,15 @@
 import { Injectable } from "@angular/core";
 import { SupabaseService } from "../shared/supabase.service";
 import { Observable, map, of } from "rxjs";
-import { DiversityIndex } from "../shared/supabase.model";
-import { ComparedDiversityData } from "./statistics.model";
+import { DiversityIndex, DiversityIndexPerCountry } from "../shared/supabase.model";
+import { ComparedDiversityData, ComparedDiversityInUserCountryData } from "./statistics.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class StatisticsService {
   diversityIndexes!: DiversityIndex[];
+  diversityIndexesPerCountry!: DiversityIndexPerCountry[];
 
   constructor(private supabaseService: SupabaseService) {}
 
@@ -19,6 +20,17 @@ export class StatisticsService {
       map((diversityIndexes) => {
         this.diversityIndexes = diversityIndexes;
         return this.diversityIndexes;
+      })
+    );
+  }
+
+  getDiversityIndexesPerCountry(): Observable<DiversityIndexPerCountry[]> {
+    if (this.diversityIndexesPerCountry != undefined) return of(this.diversityIndexesPerCountry);
+
+    return this.supabaseService.getDiversityIndexesPerCountry().pipe(
+      map((diversityIndexesPerCountry) => {
+        this.diversityIndexesPerCountry = diversityIndexesPerCountry;
+        return this.diversityIndexesPerCountry;
       })
     );
   }
@@ -58,6 +70,44 @@ export class StatisticsService {
         return {
           comparedDiversity,
           totalUsers: allUsersDiversity.length,
+        };
+      })
+    );
+  }
+
+  getComparedDiversityPerCountry(
+    currentUserCountriesCount: number,
+    currentUserCountry: string
+  ): Observable<ComparedDiversityInUserCountryData> {
+    return this.getDiversityIndexesPerCountry().pipe(
+      map((diversityIndexesPerCountry) => {
+        const userCountryDiversity = [];
+        userCountryDiversity.push(currentUserCountriesCount);
+
+        diversityIndexesPerCountry.forEach((index) => {
+          if (index.country == currentUserCountry) {
+            const indexArray = Array(index.occurrenceQuantity).fill(index.countriesCount);
+            userCountryDiversity.push(...indexArray);
+          }
+        });
+
+        userCountryDiversity.sort((a, b) => a - b);
+
+        const currentUserIndex = userCountryDiversity.findIndex(
+          (index) => index === currentUserCountriesCount
+        );
+
+        let comparedDiversityInUserCountry;
+        if (currentUserIndex != -1) {
+          comparedDiversityInUserCountry =
+            ((currentUserIndex / userCountryDiversity.length) * 100).toFixed(0) + "%";
+        } else {
+          comparedDiversityInUserCountry = "0%";
+        }
+
+        return {
+          comparedDiversityInUserCountry,
+          totalUsers: userCountryDiversity.length,
         };
       })
     );
