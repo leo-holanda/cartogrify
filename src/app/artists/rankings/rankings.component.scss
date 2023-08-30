@@ -63,6 +63,10 @@
       margin-left: 0.5rem;
     }
   }
+
+  .expand-stats-button {
+    width: 100%;
+  }
 }
 
 .palette-colors-array {
@@ -87,27 +91,42 @@
 
 .rating-wrapper {
   display: flex;
-  gap: 1rem;
-  justify-content: space-between;
+  flex-flow: column;
+  background: #121212;
+  padding: 1rem;
   border-radius: 1rem;
   margin-bottom: 1rem;
+  color: white;
 
-  .rating-title {
+  .rating-wrapper-title {
+    margin-bottom: 1rem;
     margin-top: 0;
-    margin-bottom: 0.25rem;
   }
 
-  .rating-item {
+  .rating-item-wrapper {
     display: flex;
-    flex-direction: column;
-    text-wrap: nowrap;
-    background-color: #303030;
-    padding: 1rem;
+    gap: 1rem;
+    justify-content: space-between;
     border-radius: 1rem;
-  }
+    margin-bottom: 1rem;
 
-  .rating-icon {
-    margin-bottom: 0.25rem;
+    .rating-title {
+      margin-top: 0;
+      margin-bottom: 0.25rem;
+    }
+
+    .rating-item {
+      display: flex;
+      flex-direction: column;
+      text-wrap: nowrap;
+      background-color: #303030;
+      padding: 1rem;
+      border-radius: 1rem;
+    }
+
+    .rating-icon {
+      margin-bottom: 0.25rem;
+    }
   }
 }
 

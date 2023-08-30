@@ -32,22 +32,29 @@
     class="data-wrapper"
   >
     <div class="rating-wrapper">
-      <div class="rating-item">
-        <span class="bx bx-world rating-icon"></span>
-        <div>
-          <h2 class="rating-title">{{ comparedDiversity.comparedDiversity }}</h2>
-          <span class="rating-subtitle">World Traveller Rating</span>
+      <h2 class="rating-wrapper-title">
+        <i class="bx bx-stats"></i>
+        Stats
+      </h2>
+      <div class="rating-item-wrapper">
+        <div class="rating-item">
+          <span class="bx bx-world rating-icon"></span>
+          <div>
+            <h2 class="rating-title">{{ comparedDiversity.comparedDiversity }}</h2>
+            <span class="rating-subtitle">World Traveller Rating</span>
+          </div>
+        </div>
+        <div class="rating-item">
+          <span class="bx bxs-flag-alt rating-icon"></span>
+          <div>
+            <h2 class="rating-title">
+              {{ comparedDiversityInUserCountry.comparedDiversityInUserCountry }}
+            </h2>
+            <span class="rating-subtitle">Country Traveller Rating</span>
+          </div>
         </div>
       </div>
-      <div class="rating-item">
-        <span class="bx bxs-flag-alt rating-icon"></span>
-        <div>
-          <h2 class="rating-title">
-            {{ comparedDiversityInUserCountry.comparedDiversityInUserCountry }}
-          </h2>
-          <span class="rating-subtitle">Country Traveller Rating</span>
-        </div>
-      </div>
+      <p-button styleClass="expand-stats-button" label="See your full stats"></p-button>
     </div>
 
     <div class="rankings-wrapper">
