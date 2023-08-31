@@ -1,0 +1,29 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+section {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  width: 100%;
+}
+
+.act-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .act-title {
+    width: 50%;
+    font-size: 4rem;
+  }
+}
+
+.act-content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 2/1;
+}

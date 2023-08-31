@@ -202,6 +202,9 @@ export class WorldMapComponent implements AfterViewInit {
         [width + margin, height + margin],
       ])
       .scaleExtent([1, 8])
+      .filter((event) => {
+        return this.isMobile ? true : event.shiftKey;
+      })
       .on("zoom", (event) => {
         d3.select("svg #map").attr("transform", event.transform);
       })
