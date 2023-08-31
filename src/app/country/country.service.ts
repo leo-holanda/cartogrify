@@ -11,6 +11,7 @@ import {
   GeoFeature,
   GeoFeatureCollection,
   PossibleCountry,
+  CountryFromSubRegionCount,
 } from "./country.model";
 import countriesJSON from "../../assets/countries-50m.json";
 import * as topojson from "topojson-client";
@@ -106,19 +107,29 @@ export class CountryService {
 
         if (artistSubRegion) {
           artistSubRegion.count += 1;
-        } else {
-          artistIntermediateRegion.subRegions.push({
-            name: artist.country?.subRegion || "Unknown",
-            count: 1,
-          });
-        }
 
-        regionsMap.set(artist.country.region, artistRegion);
+          const countryFromSubRegion = artistSubRegion.countriesCount.find(
+            (countryCount) => countryCount.name === artist.country?.name
+          );
+
+          if (countryFromSubRegion) {
+            countryFromSubRegion.count += 1;
+          } else {
+            const newCountryCount: CountryFromSubRegionCount = {
+              name: artist.country.name,
+              count: 1,
+            };
+            artistSubRegion.countriesCount.push(newCountryCount);
+          }
+        } else {
+          artistIntermediateRegion.subRegions.push(...this.createSubRegion(artist));
+        }
       } else {
         const newIntermediateRegion = this.createIntermediateRegion(artist);
         artistRegion.intermediateRegions.push(newIntermediateRegion);
-        regionsMap.set(artist.country.region, artistRegion);
       }
+
+      regionsMap.set(artist.country.region, artistRegion);
     });
 
     const sortedRegionsCount = [...regionsMap]
@@ -361,37 +372,33 @@ export class CountryService {
   }
 
   private createRegion(artist: Artist): RegionCount {
-    let artistSubRegion: SubRegionCount | undefined = undefined;
-    artistSubRegion = {
-      name: artist.country!.subRegion || "Unknown",
-      count: 1,
-    };
-
-    let artistsIntermediateRegion: IntermediateRegionCount | undefined = undefined;
-    artistsIntermediateRegion = {
-      name: artist.country!.intermediateRegion || "Unknown",
-      count: 1,
-      subRegions: artistSubRegion ? [artistSubRegion] : [],
-    };
-
     return {
       name: artist.country?.region,
-      intermediateRegions: artistsIntermediateRegion ? [artistsIntermediateRegion] : [],
+      intermediateRegions: [this.createIntermediateRegion(artist)],
       count: 1,
     } as RegionCount;
   }
 
   private createIntermediateRegion(artist: Artist): IntermediateRegionCount {
-    let artistSubRegion: SubRegionCount | undefined = undefined;
-    artistSubRegion = {
-      name: artist.country!.subRegion || "Unknown",
-      count: 1,
-    };
-
     return {
       name: artist.country!.intermediateRegion!,
       count: 1,
-      subRegions: artistSubRegion ? [artistSubRegion] : [],
+      subRegions: this.createSubRegion(artist),
     };
+  }
+
+  private createSubRegion(artist: Artist): SubRegionCount[] {
+    const artistCountryCount: CountryFromSubRegionCount = {
+      name: artist.country!.name,
+      count: 1,
+    };
+
+    const artistSubRegion: SubRegionCount = {
+      name: artist.country!.subRegion || "Unknown",
+      count: 1,
+      countriesCount: [artistCountryCount],
+    };
+
+    return [artistSubRegion];
   }
 }

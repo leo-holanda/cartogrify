@@ -113,17 +113,24 @@ export class ThirdActComponent implements OnInit, AfterViewInit {
     this.userRegionsCount.forEach((region) => {
       const intermediateNodes = region.intermediateRegions.map((region) => {
         const subNodes = region.subRegions.map((region) => {
+          const countriesNodes = region.countriesCount.map((countryCount) => {
+            return {
+              name: countryCount.name + ` (${countryCount.count})`,
+              count: countryCount.count,
+              children: [],
+            };
+          });
+
           return {
             name: region.name + ` (${region.count})`,
             count: region.count,
-            children: [],
+            children: countriesNodes,
           };
         });
 
         return {
           name: region.name + ` (${region.count})`,
           count: region.count,
-
           children: subNodes,
         };
       });
@@ -131,7 +138,6 @@ export class ThirdActComponent implements OnInit, AfterViewInit {
       const node = {
         name: region.name + ` (${region.count})`,
         count: region.count,
-
         children: intermediateNodes,
       };
 

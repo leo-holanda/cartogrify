@@ -12,9 +12,15 @@ export interface CountryCount {
   count: number;
 }
 
+export interface CountryFromSubRegionCount {
+  name: string;
+  count: number;
+}
+
 export interface SubRegionCount {
   name: string;
   count: number;
+  countriesCount: CountryFromSubRegionCount[];
 }
 
 export interface IntermediateRegionCount {
