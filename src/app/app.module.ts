@@ -6,9 +6,10 @@ import { AppComponent } from "./app.component";
 import { HttpClientModule } from "@angular/common/http";
 import { AuthorizationModule } from "./authorization/authorization.module";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { JourneyComponent } from './journey/journey.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, JourneyComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

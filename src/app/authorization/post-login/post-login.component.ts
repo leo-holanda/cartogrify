@@ -46,7 +46,7 @@ export class PostLoginComponent implements OnInit {
             next: () => {
               this.spotifyService.getUserTopArtists().subscribe((topArtists) => {
                 this.artistService.setUserTopArtists(topArtists);
-                this.router.navigate(["/artists"]);
+                this.router.navigate(["/journey"]);
               });
 
               this.spotifyService.getUserProfileData().subscribe((userProfileData) => {
