@@ -73,7 +73,7 @@ export class LoginComponent {
         this.lastFmService.getTopArtists(this.lastFmUsername).subscribe({
           next: (topArtists) => {
             this.artistService.setUserTopArtists(topArtists);
-            this.router.navigate(["/artists"]);
+            this.router.navigate(["/journey"]);
           },
           error: (err) => {
             this.hasInitiatedLogin = false;
@@ -113,7 +113,7 @@ export class LoginComponent {
     this.spotifyService.getUserTopArtists().subscribe({
       next: (topArtists) => {
         this.artistService.setUserTopArtists(topArtists);
-        this.router.navigate(["/artists"]);
+        this.router.navigate(["/journey"]);
       },
       error: this.handleSpotifyError,
     });
