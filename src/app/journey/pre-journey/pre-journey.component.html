@@ -1,0 +1,42 @@
+<main>
+  <div *ngIf="hasArtistsWithoutCountry == undefined" class="loading-wrapper">
+    <h1>Let we fetch your top artists...</h1>
+    <i class="bx bxs-music bx-tada"></i>
+  </div>
+
+  <div class="scraped-artists-wrapper" *ngIf="hasArtistsWithoutCountry">
+    <div class="title-wrapper">
+      <h1 class="title">You listen to some artists that we never heard about!</h1>
+      <h2>
+        Before proceeding, we need to find where they come from. But don't worry, this shouldn't
+        take long.
+      </h2>
+    </div>
+
+    <div class="artists-wrapper">
+      <h2 class="artists-wrapper-title">Your unknown artists</h2>
+      <div
+        class="artists-wrapper-loading"
+        *ngIf="scrapedArtistsData.length == 0; else scrapedArtistList"
+      >
+        <span>Fetching data...</span>
+      </div>
+      <ng-template #scrapedArtistList></ng-template>
+      <div>
+        <div class="artist-item" *ngFor="let scrapedArtistData of scrapedArtistsData">
+          <span
+            class="{{
+              'fi fi-' +
+                (scrapedArtistData.artist.country == null
+                  ? 'xx'
+                  : scrapedArtistData.artist.country.flagCode)
+            }}"
+          ></span>
+          <span>
+            {{ scrapedArtistData.artist.name }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
