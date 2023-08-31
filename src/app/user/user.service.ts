@@ -6,14 +6,14 @@ import { User } from "./user.model";
 })
 export class UserService {
   private _user: User = {
-    country: "",
     id: "",
+    countryCode: 0,
   };
 
   constructor() {}
 
   setUser(user: User): void {
-    this._user.country = user.country;
+    this._user.countryCode = user.countryCode;
     this._user.id = user.id;
   }
 

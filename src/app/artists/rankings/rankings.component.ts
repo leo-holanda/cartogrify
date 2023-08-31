@@ -84,11 +84,6 @@ export class RankingsComponent implements OnInit {
         });
 
       const currentUser = this.userService.getUser();
-      this.statisticService
-        .getComparedDiversityPerCountry(this.countriesCount.length, currentUser.country)
-        .subscribe((comparedDiversityInUserCountry) => {
-          this.comparedDiversityInUserCountry = comparedDiversityInUserCountry;
-        });
     });
 
     this.countryService.getRegionsCount().subscribe((regionsCount) => {

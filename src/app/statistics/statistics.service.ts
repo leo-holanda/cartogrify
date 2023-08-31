@@ -1,42 +1,34 @@
 import { Injectable } from "@angular/core";
 import { SupabaseService } from "../shared/supabase.service";
-import { Observable, map, of } from "rxjs";
-import { DiversityIndex, DiversityIndexPerCountry } from "../shared/supabase.model";
+import { BehaviorSubject, Observable, filter, map, of } from "rxjs";
+import { DiversityIndex } from "../shared/supabase.model";
 import { ComparedDiversityData, ComparedDiversityInUserCountryData } from "./statistics.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class StatisticsService {
-  diversityIndexes!: DiversityIndex[];
-  diversityIndexesPerCountry!: DiversityIndexPerCountry[];
+  hasRequested = false;
+  private diversityIndexes$ = new BehaviorSubject<DiversityIndex[] | undefined>(undefined);
 
   constructor(private supabaseService: SupabaseService) {}
 
-  getDiversityIndexes(): Observable<DiversityIndex[]> {
-    if (this.diversityIndexes != undefined) return of(this.diversityIndexes);
+  getDiversityIndexes(): Observable<DiversityIndex[] | undefined> {
+    if (!this.hasRequested) {
+      this.hasRequested = true;
+      this.supabaseService.getDiversityIndexes().subscribe((diversityIndexes) => {
+        this.diversityIndexes$.next(diversityIndexes);
+      });
+    }
 
-    return this.supabaseService.getDiversityIndexes().pipe(
-      map((diversityIndexes) => {
-        this.diversityIndexes = diversityIndexes;
-        return this.diversityIndexes;
-      })
-    );
-  }
-
-  getDiversityIndexesPerCountry(): Observable<DiversityIndexPerCountry[]> {
-    if (this.diversityIndexesPerCountry != undefined) return of(this.diversityIndexesPerCountry);
-
-    return this.supabaseService.getDiversityIndexesPerCountry().pipe(
-      map((diversityIndexesPerCountry) => {
-        this.diversityIndexesPerCountry = diversityIndexesPerCountry;
-        return this.diversityIndexesPerCountry;
-      })
-    );
+    return this.diversityIndexes$.asObservable();
   }
 
   getComparedDiversity(currentUserCountriesCount: number): Observable<ComparedDiversityData> {
     return this.getDiversityIndexes().pipe(
+      filter(
+        (diversityIndexes): diversityIndexes is DiversityIndex[] => diversityIndexes != undefined
+      ),
       map((diversityIndexes) => {
         /*
           Should I include the current user in this calculation?
@@ -70,44 +62,6 @@ export class StatisticsService {
         return {
           comparedDiversity,
           totalUsers: allUsersDiversity.length,
-        };
-      })
-    );
-  }
-
-  getComparedDiversityPerCountry(
-    currentUserCountriesCount: number,
-    currentUserCountry: string
-  ): Observable<ComparedDiversityInUserCountryData> {
-    return this.getDiversityIndexesPerCountry().pipe(
-      map((diversityIndexesPerCountry) => {
-        const userCountryDiversity = [];
-        userCountryDiversity.push(currentUserCountriesCount);
-
-        diversityIndexesPerCountry.forEach((index) => {
-          if (index.country == currentUserCountry) {
-            const indexArray = Array(index.occurrenceQuantity).fill(index.countriesCount);
-            userCountryDiversity.push(...indexArray);
-          }
-        });
-
-        userCountryDiversity.sort((a, b) => a - b);
-
-        const currentUserIndex = userCountryDiversity.findIndex(
-          (index) => index === currentUserCountriesCount
-        );
-
-        let comparedDiversityInUserCountry;
-        if (currentUserIndex != -1) {
-          comparedDiversityInUserCountry =
-            ((currentUserIndex / userCountryDiversity.length) * 100).toFixed(0) + "%";
-        } else {
-          comparedDiversityInUserCountry = "0%";
-        }
-
-        return {
-          comparedDiversityInUserCountry,
-          totalUsers: userCountryDiversity.length,
         };
       })
     );

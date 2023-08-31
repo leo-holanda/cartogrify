@@ -72,23 +72,13 @@ export interface LastFmUser {
 }
 
 export interface DiversityIndexResponse {
+  country_code: number | undefined;
   countries_count: number;
   occurrence_quantity: number;
 }
 
 export interface DiversityIndex {
-  countriesCount: number;
-  occurrenceQuantity: number;
-}
-
-export interface DiversityIndexPerCountryResponse {
-  country: string;
-  countries_count: number;
-  occurrence_quantity: number;
-}
-
-export interface DiversityIndexPerCountry {
-  country: string;
+  countryCode: number | undefined;
   countriesCount: number;
   occurrenceQuantity: number;
 }

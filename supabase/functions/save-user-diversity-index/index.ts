@@ -23,10 +23,10 @@ serve(async (req: Request) => {
       }
     );
 
-    const userDiversityIndex = await req.json();
+    const userDiversityData = await req.json();
     const { data, error } = await supabaseClient
       .from("diversity_per_user")
-      .upsert(userDiversityIndex);
+      .upsert(userDiversityData);
     if (error) throw error;
 
     return new Response(undefined, {
