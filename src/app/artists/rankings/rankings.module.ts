@@ -8,17 +8,16 @@ import { ButtonModule } from "primeng/button";
 import { DialogService } from "primeng/dynamicdialog";
 import { SidebarModule } from "primeng/sidebar";
 import { RegionsRankComponent } from "./regions-rank/regions-rank.component";
-import { ArtistsRankComponent } from "./artists-rank/artists-rank.component";
-import { SuggestionsModule } from "./artists-rank/suggestions/suggestions.module";
 import { DialogModule } from "primeng/dialog";
 import { OverlayPanelModule } from "primeng/overlaypanel";
 import { ListboxModule } from "primeng/listbox";
 import { FormsModule } from "@angular/forms";
 import { RadioButtonModule } from "primeng/radiobutton";
 import { CountriesRankModule } from "./countries-rank/countries-rank.module";
+import { ArtistsRankModule } from "./artists-rank/artists-rank.module";
 
 @NgModule({
-  declarations: [RankingsComponent, RegionsRankComponent, ArtistsRankComponent],
+  declarations: [RankingsComponent, RegionsRankComponent],
   imports: [
     CommonModule,
     ProgressBarModule,
@@ -26,13 +25,13 @@ import { CountriesRankModule } from "./countries-rank/countries-rank.module";
     MessagesModule,
     ButtonModule,
     SidebarModule,
-    SuggestionsModule,
     DialogModule,
     OverlayPanelModule,
     ListboxModule,
     FormsModule,
     RadioButtonModule,
     CountriesRankModule,
+    ArtistsRankModule,
   ],
   providers: [DialogService],
   exports: [RankingsComponent],

@@ -9,6 +9,8 @@ import { FirstActComponent } from "./first-act/first-act.component";
 import { SecondActComponent } from "./second-act/second-act.component";
 import { ThirdActComponent } from "./third-act/third-act.component";
 import { ThirdActModule } from "./third-act/third-act.module";
+import { FourthActComponent } from "./fourth-act/fourth-act.component";
+import { FourthActModule } from "./fourth-act/fourth-act.module";
 
 @NgModule({
   declarations: [PreJourneyComponent],
@@ -19,7 +21,8 @@ import { ThirdActModule } from "./third-act/third-act.module";
     FirstActModule,
     SecondActModule,
     ThirdActModule,
+    FourthActModule,
   ],
-  exports: [FirstActComponent, SecondActComponent, ThirdActComponent],
+  exports: [FirstActComponent, SecondActComponent, ThirdActComponent, FourthActComponent],
 })
 export class JourneyModule {}
