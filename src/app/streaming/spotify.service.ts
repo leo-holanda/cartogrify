@@ -42,7 +42,7 @@ export class SpotifyService {
         map((response) => {
           return {
             id: response.id,
-            country: this.countryService.getCountryCodeByText(response.country),
+            countryCode: this.countryService.getCountryCodeByText(response.country),
           } as SpotifyUserData;
         })
       );

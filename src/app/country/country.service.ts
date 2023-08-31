@@ -349,7 +349,7 @@ export class CountryService {
     return unknownCountry;
   }
 
-  getCountryCodeByText(countryNameOrAbbreviation: string): string | undefined {
+  getCountryCodeByText(countryNameOrAbbreviation: string): number | undefined {
     const matchedFeature = this.geoJSON.features.find(
       (feature) =>
         feature.properties["NAME"].toLowerCase() == countryNameOrAbbreviation.toLowerCase() ||

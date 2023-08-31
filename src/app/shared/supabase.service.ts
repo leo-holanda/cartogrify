@@ -5,8 +5,6 @@ import { environment } from "src/environments/environment";
 import { ScrapedArtist, Suggestion } from "../artists/artist.model";
 import {
   DiversityIndex,
-  DiversityIndexPerCountry,
-  DiversityIndexPerCountryResponse,
   DiversityIndexResponse,
   LastFmTopArtists,
   LastFmUserResponse,
@@ -72,8 +70,8 @@ export class SupabaseService {
   saveDiversityIndex(user: User, countriesCount: number): void {
     const userData = {
       user_id: user.id,
-      countries_count: countriesCount,
-      user_country: user.country,
+      user_countries_count: countriesCount,
+      user_country_code: user.countryCode,
     };
 
     scheduled(
@@ -103,7 +101,7 @@ export class SupabaseService {
 
   getDiversityIndexes(): Observable<DiversityIndex[]> {
     return scheduled(
-      this.supabaseClient.from("diversity_index_count").select("*"),
+      this.supabaseClient.from("diversity_indexes").select("*"),
       asyncScheduler
     ).pipe(
       take(1),
@@ -111,28 +109,10 @@ export class SupabaseService {
       map((data: DiversityIndexResponse[]) =>
         data.map((data) => {
           return {
+            countryCode: data.country_code,
             countriesCount: data.countries_count,
             occurrenceQuantity: data.occurrence_quantity,
           } as DiversityIndex;
-        })
-      )
-    );
-  }
-
-  getDiversityIndexesPerCountry(): Observable<DiversityIndexPerCountry[]> {
-    return scheduled(
-      this.supabaseClient.from("diversity_index_per_country").select("*"),
-      asyncScheduler
-    ).pipe(
-      take(1),
-      map((response) => response.data || []),
-      map((data: DiversityIndexPerCountryResponse[]) =>
-        data.map((data) => {
-          return {
-            country: data.country,
-            countriesCount: data.countries_count,
-            occurrenceQuantity: data.occurrence_quantity,
-          } as DiversityIndexPerCountry;
         })
       )
     );
