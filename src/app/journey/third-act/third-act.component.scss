@@ -1,0 +1,34 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+section {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  padding: 2rem;
+  width: 100%;
+}
+
+.act-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .act-title {
+    width: 50%;
+    font-size: 3rem;
+  }
+}
+
+.act-content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rating-item {
+  font-size: 4rem;
+  font-weight: bold;
+}

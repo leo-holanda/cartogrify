@@ -7,10 +7,19 @@ import { FirstActModule } from "./first-act/first-act.module";
 import { SecondActModule } from "./second-act/second-act.module";
 import { FirstActComponent } from "./first-act/first-act.component";
 import { SecondActComponent } from "./second-act/second-act.component";
+import { ThirdActComponent } from "./third-act/third-act.component";
+import { ThirdActModule } from "./third-act/third-act.module";
 
 @NgModule({
   declarations: [PreJourneyComponent],
-  imports: [CommonModule, JourneyRoutingModule, WorldMapModule, FirstActModule, SecondActModule],
-  exports: [FirstActComponent, SecondActComponent],
+  imports: [
+    CommonModule,
+    JourneyRoutingModule,
+    WorldMapModule,
+    FirstActModule,
+    SecondActModule,
+    ThirdActModule,
+  ],
+  exports: [FirstActComponent, SecondActComponent, ThirdActComponent],
 })
 export class JourneyModule {}
