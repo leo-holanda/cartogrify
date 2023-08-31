@@ -1,0 +1,54 @@
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.loading-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.scraped-artists-wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .artists-wrapper {
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    color: black;
+
+    .artists-wrapper-title {
+      text-align: start;
+      padding: 1rem;
+      margin: 0;
+      color: black;
+    }
+
+    .artists-wrapper-loading {
+      padding: 1rem;
+    }
+  }
+
+  .artist-item {
+    padding: 1rem;
+  }
+}
+
+.title-wrapper {
+  text-align: start;
+  width: 30%;
+  margin: 2rem 10rem 2rem 2rem;
+
+  .title {
+    font-weight: bold;
+  }
+}

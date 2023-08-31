@@ -6,7 +6,8 @@ import { AppComponent } from "./app.component";
 import { HttpClientModule } from "@angular/common/http";
 import { AuthorizationModule } from "./authorization/authorization.module";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { JourneyComponent } from './journey/journey.component';
+import { JourneyComponent } from "./journey/journey.component";
+import { JourneyModule } from "./journey/journey.module";
 
 @NgModule({
   declarations: [AppComponent, JourneyComponent],
@@ -16,6 +17,7 @@ import { JourneyComponent } from './journey/journey.component';
     HttpClientModule,
     AuthorizationModule,
     BrowserAnimationsModule,
+    JourneyModule,
   ],
   bootstrap: [AppComponent],
 })
