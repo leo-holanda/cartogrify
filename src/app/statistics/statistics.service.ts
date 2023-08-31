@@ -24,6 +24,16 @@ export class StatisticsService {
     return this.diversityIndexes$.asObservable();
   }
 
+  getDiversityIndexesInUserCountry(
+    userCountryCode: number
+  ): Observable<DiversityIndex[] | undefined> {
+    return this.diversityIndexes$.pipe(
+      map((diversityIndexes) => {
+        return diversityIndexes?.filter((index) => index.countryCode == userCountryCode);
+      })
+    );
+  }
+
   getComparedDiversity(currentUserCountriesCount: number): Observable<ComparedDiversityData> {
     return this.getDiversityIndexes().pipe(
       filter(
@@ -49,6 +59,54 @@ export class StatisticsService {
 
         const currentUserIndex = allUsersDiversity.findIndex(
           (index) => index === currentUserCountriesCount
+        );
+
+        let comparedDiversity;
+        if (currentUserIndex != -1) {
+          comparedDiversity =
+            ((currentUserIndex / allUsersDiversity.length) * 100).toFixed(0) + "%";
+        } else {
+          comparedDiversity = "0%";
+        }
+
+        return {
+          comparedDiversity,
+          totalUsers: allUsersDiversity.length,
+        };
+      })
+    );
+  }
+
+  getComparedDiversityInUserCountry(
+    userCountriesCount: number,
+    userCountryCode: number
+  ): Observable<ComparedDiversityData> {
+    return this.getDiversityIndexes().pipe(
+      filter(
+        (diversityIndexes): diversityIndexes is DiversityIndex[] => diversityIndexes != undefined
+      ),
+      map((diversityIndexes) => {
+        /*
+          Should I include the current user in this calculation?
+          I'm comparing the current user against the users from database
+          The current user could be and couldn't be in the database
+          Is it harming the validity of the rating?
+        */
+
+        const allUsersDiversity = [];
+        allUsersDiversity.push(userCountriesCount);
+
+        diversityIndexes.forEach((index) => {
+          if (index.countryCode == userCountryCode) {
+            const indexArray = Array(index.occurrenceQuantity).fill(index.countriesCount);
+            allUsersDiversity.push(...indexArray);
+          }
+        });
+
+        allUsersDiversity.sort((a, b) => a - b);
+
+        const currentUserIndex = allUsersDiversity.findIndex(
+          (index) => index === userCountriesCount
         );
 
         let comparedDiversity;
