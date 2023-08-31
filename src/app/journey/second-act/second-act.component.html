@@ -8,5 +8,25 @@
       World Traveller Rating!
     </h1>
   </div>
-  <div #chartWrapper class="chart-wrapper"></div>
+  <div #worldChartWrapper class="world-chart-wrapper"></div>
+
+  <div *ngIf="false; else userWithoutCountryTemplate" class="act-title-wrapper">
+    <h1 class="act-title">
+      Also, that gives you a
+      <span class="rating-item">
+        {{ comparedDiversityDataInUserCountry?.comparedDiversity || "..." }}
+      </span>
+      Country Traveller Rating!
+    </h1>
+  </div>
+  <div #countryChartWrapper class="country-chart-wrapper"></div>
+
+  <ng-template #userWithoutCountryTemplate>
+    <div class="act-title-wrapper">
+      <h1 class="act-title">Your account doesn't have a country associated to it.</h1>
+    </div>
+    <div class="user-without-country-warning-wrapper">
+      <h2>Generating a Country Traveller Rating and Chart is impossible.</h2>
+    </div>
+  </ng-template>
 </section>

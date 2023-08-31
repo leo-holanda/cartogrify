@@ -4,6 +4,8 @@ import { ComparedDiversityData } from "src/app/statistics/statistics.model";
 import { StatisticsService } from "src/app/statistics/statistics.service";
 import * as d3 from "d3";
 import { DiversityIndex } from "src/app/shared/supabase.model";
+import { UserService } from "src/app/user/user.service";
+import { User } from "src/app/user/user.model";
 
 @Component({
   selector: "ctg-second-act",
@@ -11,38 +13,75 @@ import { DiversityIndex } from "src/app/shared/supabase.model";
   styleUrls: ["./second-act.component.scss"],
 })
 export class SecondActComponent implements OnInit, AfterViewInit {
-  comparedDiversityData: ComparedDiversityData | undefined;
-  diversityIndexes: DiversityIndex[] | undefined;
+  user!: User;
 
-  @ViewChild("chartWrapper") chartWrapper!: ElementRef<HTMLElement>;
+  diversityIndexes: DiversityIndex[] | undefined;
+  comparedDiversityData: ComparedDiversityData | undefined;
+
+  diversityIndexesInUserCountry: DiversityIndex[] | undefined;
+  comparedDiversityDataInUserCountry: ComparedDiversityData | undefined;
+
+  @ViewChild("worldChartWrapper") worldChartWrapper!: ElementRef<HTMLElement>;
+  @ViewChild("countryChartWrapper", { static: false })
+  countryChartWrapper!: ElementRef<HTMLElement>;
 
   constructor(
     private statisticsSevice: StatisticsService,
-    private countryService: CountryService
+    private countryService: CountryService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
+    this.user = this.userService.getUser();
+
     this.countryService.getCountriesCount().subscribe((userCountriesCount) => {
       this.statisticsSevice
         .getComparedDiversity(userCountriesCount.length)
         .subscribe((comparedDiversityData) => {
           this.comparedDiversityData = comparedDiversityData;
         });
+
+      if (this.user.countryCode) {
+        this.statisticsSevice
+          .getComparedDiversityInUserCountry(userCountriesCount.length, this.user.countryCode)
+          .subscribe((comparedDiversityDataInUserCountry) => {
+            this.comparedDiversityDataInUserCountry = comparedDiversityDataInUserCountry;
+          });
+      }
     });
   }
 
   ngAfterViewInit(): void {
     this.statisticsSevice.getDiversityIndexes().subscribe((diversityIndexes) => {
       this.diversityIndexes = diversityIndexes;
-      this.generateChart();
+      this.generateChart(false);
     });
+
+    if (this.user.countryCode) {
+      this.statisticsSevice
+        .getDiversityIndexesInUserCountry(this.user.countryCode)
+        .subscribe((diversityIndexesInUserCountry) => {
+          this.diversityIndexesInUserCountry = diversityIndexesInUserCountry;
+          this.generateChart(true);
+        });
+    }
   }
 
-  generateChart(): void {
-    if (this.diversityIndexes == undefined) return;
+  generateChart(isInUserCountry: boolean): void {
+    let diversityIndexes: DiversityIndex[] | undefined;
+    if (isInUserCountry) diversityIndexes = this.diversityIndexesInUserCountry;
+    else diversityIndexes = this.diversityIndexes;
+    if (diversityIndexes == undefined) return;
 
-    const height = this.chartWrapper.nativeElement.offsetHeight;
-    const width = this.chartWrapper.nativeElement.offsetWidth;
+    let height;
+    let width;
+    if (isInUserCountry) {
+      height = this.countryChartWrapper.nativeElement.offsetHeight;
+      width = this.countryChartWrapper.nativeElement.offsetWidth;
+    } else {
+      height = this.worldChartWrapper.nativeElement.offsetHeight;
+      width = this.worldChartWrapper.nativeElement.offsetWidth;
+    }
 
     const marginTop = 20;
     const marginRight = 20;
@@ -50,7 +89,7 @@ export class SecondActComponent implements OnInit, AfterViewInit {
     const marginLeft = 40;
 
     let totalUsers = 0;
-    this.diversityIndexes.forEach(
+    diversityIndexes.forEach(
       (diversityIndexes) => (totalUsers += diversityIndexes.occurrenceQuantity)
     );
 
@@ -90,7 +129,7 @@ export class SecondActComponent implements OnInit, AfterViewInit {
 
     // Create the SVG container.
     const svg = d3
-      .select(".chart-wrapper")
+      .select(isInUserCountry ? ".country-chart-wrapper" : ".world-chart-wrapper")
       .append("svg")
       .attr("width", width)
       .attr("height", height)
@@ -102,7 +141,7 @@ export class SecondActComponent implements OnInit, AfterViewInit {
       .append("g")
       .attr("fill", "white")
       .selectAll()
-      .data(this.diversityIndexes)
+      .data(diversityIndexes)
       .join("rect")
       .attr("x", (d) => x(d.countriesCount.toString()) || null)
       .attr("y", (d) => y(d.occurrenceQuantity))

@@ -64,11 +64,11 @@ export class LoginComponent {
     this.hasClickedLastFmStartButton = true;
     this.lastFmService.getLastFmUserProfileData(this.lastFmUsername).subscribe({
       next: (lastFmUserProfileData) => {
-        const userData = {
+        const currentUser: User = {
           id: this.lastFmUsername,
           countryCode: this.countryService.getCountryCodeByText(lastFmUserProfileData.country),
-        } as User;
-        this.userService.setUser(userData);
+        };
+        this.userService.setUser(currentUser);
 
         this.lastFmService.getTopArtists(this.lastFmUsername).subscribe({
           next: (topArtists) => {
