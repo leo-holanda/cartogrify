@@ -10,7 +10,10 @@
   </div>
   <div #worldChartWrapper class="world-chart-wrapper"></div>
 
-  <div *ngIf="false; else userWithoutCountryTemplate" class="act-title-wrapper">
+  <div
+    *ngIf="user.countryCode != undefined; else userWithoutCountryTemplate"
+    class="act-title-wrapper"
+  >
     <h1 class="act-title">
       Also, that gives you a
       <span class="rating-item">
