@@ -1,12 +1,15 @@
 <section>
   <div class="act-title-wrapper">
+    <h2 class="act-pre-title">It's more than</h2>
     <h1 class="act-title">
-      That gives you a
       <span class="rating-item">
         {{ comparedDiversityData?.comparedDiversity || "..." }}
       </span>
-      World Traveller Rating!
     </h1>
+    <h3 class="act-post-title">
+      of <span class="count-value">{{ comparedDiversityData?.totalUsers }}</span> cartogrify users
+      around the world!
+    </h3>
   </div>
   <div #worldChartWrapper class="world-chart-wrapper"></div>
 
@@ -14,13 +17,17 @@
     *ngIf="user.countryCode != undefined; else userWithoutCountryTemplate"
     class="act-title-wrapper"
   >
+    <h2 class="act-pre-title">And more than</h2>
     <h1 class="act-title">
-      Also, that gives you a
       <span class="rating-item">
         {{ comparedDiversityDataInUserCountry?.comparedDiversity || "..." }}
       </span>
-      Country Traveller Rating!
     </h1>
+    <h3 class="act-post-title">
+      of <span class="count-value"> {{ comparedDiversityDataInUserCountry?.totalUsers }} </span>
+      cartogrify users in
+      <span class="{{ 'flag fi fi-' + userCountry?.flagCode }}"></span> {{ userCountry?.name }}!
+    </h3>
   </div>
   <div #countryChartWrapper class="country-chart-wrapper"></div>
 
