@@ -6,14 +6,16 @@ import * as d3 from "d3";
 import { DiversityIndex } from "src/app/shared/supabase.model";
 import { UserService } from "src/app/user/user.service";
 import { User } from "src/app/user/user.model";
+import { Country } from "src/app/country/country.model";
 
 @Component({
-  selector: "ctg-second-act",
-  templateUrl: "./second-act.component.html",
-  styleUrls: ["./second-act.component.scss"],
+  selector: "ctg-second-part",
+  templateUrl: "./second-part.component.html",
+  styleUrls: ["./second-part.component.scss"],
 })
-export class SecondActComponent implements OnInit, AfterViewInit {
+export class SecondPartComponent implements OnInit, AfterViewInit {
   user!: User;
+  userCountry!: Country | undefined;
 
   diversityIndexes: DiversityIndex[] | undefined;
   comparedDiversityData: ComparedDiversityData | undefined;
@@ -33,6 +35,7 @@ export class SecondActComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.user = this.userService.getUser();
+    this.userCountry = this.countryService.getCountryByCode(this.user.countryCode);
 
     this.countryService.getCountriesCount().subscribe((userCountriesCount) => {
       this.statisticsSevice

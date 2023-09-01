@@ -4,9 +4,9 @@ import { PreJourneyComponent } from "./pre-journey/pre-journey.component";
 import { WorldMapModule } from "../artists/world-map/world-map.module";
 import { JourneyRoutingModule } from "./journey-routing.module";
 import { FirstPartModule } from "./first-part/first-part.module";
-import { SecondActModule } from "./second-act/second-act.module";
+import { SecondPartModule } from "./second-part/second-part.module";
 import { FirstPartComponent } from "./first-part/first-part.component";
-import { SecondActComponent } from "./second-act/second-act.component";
+import { SecondPartComponent } from "./second-part/second-part.component";
 import { ThirdActComponent } from "./third-act/third-act.component";
 import { ThirdActModule } from "./third-act/third-act.module";
 import { FourthActComponent } from "./fourth-act/fourth-act.component";
@@ -21,14 +21,14 @@ import { FifthActModule } from "./fifth-act/fifth-act.module";
     JourneyRoutingModule,
     WorldMapModule,
     FirstPartModule,
-    SecondActModule,
+    SecondPartModule,
     ThirdActModule,
     FourthActModule,
     FifthActModule,
   ],
   exports: [
     FirstPartComponent,
-    SecondActComponent,
+    SecondPartComponent,
     ThirdActComponent,
     FourthActComponent,
     FifthActModule,
