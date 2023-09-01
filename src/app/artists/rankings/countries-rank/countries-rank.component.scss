@@ -2,7 +2,7 @@
   display: flex;
   overflow-y: auto;
 
-  --ranking-wrapper-padding: 1rem 1rem 0 1rem;
+  --ranking-wrapper-padding: 2rem 2rem 1rem 2rem;
   --ranking-border-radius: 1rem;
   --ranking-width: 100%;
   --ranking-padding: 1rem 0;
@@ -16,11 +16,12 @@
 .ranking-wrapper {
   display: flex;
   flex-flow: column;
-  background-color: #303030;
+  background-color: white;
   padding: var(--ranking-wrapper-padding);
   border-radius: var(--ranking-border-radius);
   overflow-y: auto;
   width: var(--ranking-width);
+  color: black;
 }
 
 .ranking-header {
@@ -29,7 +30,9 @@
   }
 
   .ranking-subtitle {
-    color: grey;
+    color: #585858;
+    margin-top: 0;
+    margin-bottom: 1rem;
   }
 }
 
@@ -60,7 +63,7 @@
     width: 100%;
 
     .table-header-column {
-      color: #ffffff8c;
+      color: black;
       font-size: smaller;
       padding-bottom: var(--ranking-table-header-column);
       text-align: left;

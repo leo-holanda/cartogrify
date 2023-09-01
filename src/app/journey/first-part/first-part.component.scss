@@ -12,12 +12,22 @@ section {
 
 .act-title-wrapper {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
+  margin: 1rem;
+
+  .act-pre-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 2.5rem;
+  }
 
   .act-title {
-    width: 50%;
-    font-size: 3rem;
+    font-size: 4rem;
+    margin: 0;
+  }
+
+  .count-value {
+    font-weight: bold;
   }
 }
 

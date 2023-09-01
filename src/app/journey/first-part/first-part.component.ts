@@ -3,11 +3,11 @@ import { CountryCount } from "src/app/country/country.model";
 import { CountryService } from "src/app/country/country.service";
 
 @Component({
-  selector: "ctg-first-act",
-  templateUrl: "./first-act.component.html",
-  styleUrls: ["./first-act.component.scss"],
+  selector: "ctg-first-part",
+  templateUrl: "./first-part.component.html",
+  styleUrls: ["./first-part.component.scss"],
 })
-export class FirstActComponent implements OnInit {
+export class FirstPartComponent implements OnInit {
   countriesCount: CountryCount[] = [];
 
   constructor(private countryService: CountryService) {}
