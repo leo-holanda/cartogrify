@@ -6,10 +6,9 @@
 
 section {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
   padding: 2rem;
   gap: 6rem;
-  width: 100%;
 }
 
 .act-title-wrapper {
@@ -51,4 +50,12 @@ section {
 .user-without-country-warning-wrapper {
   display: flex;
   align-items: center;
+}
+
+.world-chart-wrapper,
+.country-chart-wrapper {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  color: black;
 }

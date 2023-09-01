@@ -76,8 +76,8 @@ export class SecondPartComponent implements OnInit, AfterViewInit {
     else diversityIndexes = this.diversityIndexes;
     if (diversityIndexes == undefined) return;
 
-    let height;
-    let width;
+    let height: number;
+    let width: number;
     if (isInUserCountry) {
       height = this.countryChartWrapper.nativeElement.offsetHeight;
       width = this.countryChartWrapper.nativeElement.offsetWidth;
@@ -91,10 +91,11 @@ export class SecondPartComponent implements OnInit, AfterViewInit {
     const marginBottom = 30;
     const marginLeft = 40;
 
-    let totalUsers = 0;
-    diversityIndexes.forEach(
-      (diversityIndexes) => (totalUsers += diversityIndexes.occurrenceQuantity)
-    );
+    let highestUserCount = 0;
+    diversityIndexes.forEach((diversityIndexes) => {
+      if (diversityIndexes.occurrenceQuantity > highestUserCount)
+        highestUserCount = diversityIndexes.occurrenceQuantity;
+    });
 
     // Declare the x (horizontal position) scale.
     const x = d3
@@ -127,7 +128,7 @@ export class SecondPartComponent implements OnInit, AfterViewInit {
     // Declare the y (vertical position) scale.
     const y = d3
       .scaleLinear()
-      .domain([0, totalUsers])
+      .domain([0, highestUserCount])
       .range([height - marginBottom - 10, marginTop]);
 
     // Create the SVG container.
@@ -142,21 +143,20 @@ export class SecondPartComponent implements OnInit, AfterViewInit {
     // Add a rect for each bar.
     svg
       .append("g")
-      .attr("fill", "white")
+      .attr("fill", "black")
       .selectAll()
       .data(diversityIndexes)
       .join("rect")
       .attr("x", (d) => x(d.countriesCount.toString()) || null)
       .attr("y", (d) => y(d.occurrenceQuantity))
       .attr("height", (d) => y(0) - y(d.occurrenceQuantity))
-      .attr("width", x.bandwidth())
-      .attr("rx", "0.5rem");
+      .attr("width", x.bandwidth());
 
     // Add the x-axis and label.
     svg
       .append("g")
       .attr("transform", `translate(0,${height - marginBottom})`)
-      .call(d3.axisBottom(x).tickSizeOuter(0));
+      .call(d3.axisBottom(x).ticks(0));
 
     // Add the y-axis and label, and remove the domain line.
     svg
