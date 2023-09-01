@@ -3,9 +3,9 @@ import { CommonModule } from "@angular/common";
 import { PreJourneyComponent } from "./pre-journey/pre-journey.component";
 import { WorldMapModule } from "../artists/world-map/world-map.module";
 import { JourneyRoutingModule } from "./journey-routing.module";
-import { FirstActModule } from "./first-act/first-act.module";
+import { FirstPartModule } from "./first-part/first-part.module";
 import { SecondActModule } from "./second-act/second-act.module";
-import { FirstActComponent } from "./first-act/first-act.component";
+import { FirstPartComponent } from "./first-part/first-part.component";
 import { SecondActComponent } from "./second-act/second-act.component";
 import { ThirdActComponent } from "./third-act/third-act.component";
 import { ThirdActModule } from "./third-act/third-act.module";
@@ -20,14 +20,14 @@ import { FifthActModule } from "./fifth-act/fifth-act.module";
     CommonModule,
     JourneyRoutingModule,
     WorldMapModule,
-    FirstActModule,
+    FirstPartModule,
     SecondActModule,
     ThirdActModule,
     FourthActModule,
     FifthActModule,
   ],
   exports: [
-    FirstActComponent,
+    FirstPartComponent,
     SecondActComponent,
     ThirdActComponent,
     FourthActComponent,
