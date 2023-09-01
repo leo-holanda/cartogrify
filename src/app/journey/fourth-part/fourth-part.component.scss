@@ -6,7 +6,7 @@
 
 section {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr 1fr;
   padding: 2rem;
 }
 
@@ -16,7 +16,6 @@ section {
   justify-content: center;
 
   .act-title {
-    width: 50%;
     font-size: 3rem;
   }
 }
@@ -25,4 +24,19 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.robot-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  vertical-align: super;
+
+  .robot-message {
+    margin: 0;
+  }
+
+  .robot-icon {
+    font-size: 3rem;
+  }
 }
