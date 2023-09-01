@@ -1,6 +1,6 @@
 <div class="ranking-wrapper">
   <div class="ranking-header">
-    <h2 class="ranking-title">Where your music has taken you</h2>
+    <h2 class="ranking-title">Here's your destinations</h2>
   </div>
   <div class="ranking-content">
     <table>
@@ -15,7 +15,7 @@
               <span class="{{ 'flag fi fi-' + countryCount.country.flagCode }}"></span>
             </div>
             <div class="country">
-              <span>{{ countryCount.country.name }}</span>
+              <p class="country-name">{{ countryCount.country.name }}</p>
               <p-progressBar [value]="(countryCount.count / artists.length) * 100"></p-progressBar>
             </div>
           </td>
