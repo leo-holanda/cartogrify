@@ -1,0 +1,55 @@
+<p-dialog header="Make your suggestions" [(visible)]="shouldOpenDialog" [modal]="true">
+  <ctg-suggestions
+    [shouldMakeSuggestions$]="shouldMakeSuggestions$"
+    (shouldCloseDialog)="closeSuggestionDialog()"
+  ></ctg-suggestions>
+
+  <ng-template pTemplate="footer">
+    <div class="confirm-button-wrapper">
+      <p-button
+        (onClick)="onCancelButtonClick()"
+        label="Cancel"
+        icon="bx bx-x"
+        styleClass="p-button-outlined"
+      ></p-button>
+      <p-button
+        (onClick)="onSuggestButtonClick()"
+        label="Suggest"
+        icon="bx bx-check"
+        styleClass="p-button-success"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<section>
+  <div class="act-title-wrapper">
+    <div>
+      <h1 class="act-title">And these were the people whose houses you stayed in!</h1>
+      <div class="robot-wrapper">
+        <i class="bx bxs-bot robot-icon"></i>
+        <div>
+          <p class="robot-message">
+            Cartogrify has a little robot that travels around the world to find where your favourite
+            artists comes from. Sometimes, he catches the wrong plane and his findings become... a
+            little off-target.
+          </p>
+
+          <p>
+            You can help him by suggesting the correct country of origin for the ones he got wrong.
+            He always makes happy noises when this happen!
+          </p>
+
+          <p-button (onClick)="openSuggestionDialog()" label="Make a suggestion"></p-button>
+
+          <p *ngIf="hasHappyNoises">
+            <i>*The robot is making happy noises*</i>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="act-content-wrapper">
+    <ctg-artists-rank></ctg-artists-rank>
+  </div>
+</section>

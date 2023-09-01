@@ -9,8 +9,8 @@ import { FirstPartComponent } from "./first-part/first-part.component";
 import { SecondPartComponent } from "./second-part/second-part.component";
 import { ThirdPartComponent } from "./third-part/third-part.component";
 import { ThirdPartModule } from "./third-part/third-part.module";
-import { FourthActComponent } from "./fourth-act/fourth-act.component";
-import { FourthActModule } from "./fourth-act/fourth-act.module";
+import { FourthPartComponent } from "./fourth-part/fourth-part.component";
+import { FourthPartModule } from "./fourth-part/fourth-part.module";
 import { FifthActComponent } from "./fifth-act/fifth-act.component";
 import { FifthActModule } from "./fifth-act/fifth-act.module";
 
@@ -23,14 +23,14 @@ import { FifthActModule } from "./fifth-act/fifth-act.module";
     FirstPartModule,
     SecondPartModule,
     ThirdPartModule,
-    FourthActModule,
+    FourthPartModule,
     FifthActModule,
   ],
   exports: [
     FirstPartComponent,
     SecondPartComponent,
     ThirdPartComponent,
-    FourthActComponent,
+    FourthPartComponent,
     FifthActModule,
   ],
 })

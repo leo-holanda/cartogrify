@@ -61,9 +61,9 @@ export class SuggestionsComponent implements OnInit {
       return { ...artist, suggestedCountry: undefined } as ArtistWithSuggestion;
     });
 
-    this.countries = this.countryService.geoJSON.features.map((feature) =>
-      this.countryService.createCountryFromFeature(feature)
-    );
+    this.countries = this.countryService.geoJSON.features
+      .map((feature) => this.countryService.createCountryFromFeature(feature))
+      .sort((a, b) => (a.name > b.name ? 1 : -1));
   }
 
   onBulkSuggestDropdownChange(event: DropdownChangeEvent): void {

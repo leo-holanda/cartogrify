@@ -12,10 +12,12 @@
 .ranking-wrapper {
   display: flex;
   flex-flow: column;
-  background-color: #303030;
+  background-color: white;
+  color: black;
   padding: 1rem;
   border-radius: 1rem;
   overflow-y: auto;
+  height: 50vh;
 }
 
 .suggestion-message-icon {
@@ -61,6 +63,7 @@
 
 .ranking-content {
   overflow-y: auto;
+  overflow-x: hidden;
 
   &::-webkit-scrollbar {
     background-color: transparent;
