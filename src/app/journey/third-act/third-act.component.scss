@@ -6,7 +6,6 @@
 
 section {
   display: grid;
-  grid-template-rows: 1fr 1fr;
   padding: 2rem;
   width: 100%;
 }
@@ -17,7 +16,6 @@ section {
   justify-content: center;
 
   .act-title {
-    width: 50%;
     font-size: 3rem;
   }
 }
@@ -31,4 +29,10 @@ section {
 .rating-item {
   font-size: 4rem;
   font-weight: bold;
+}
+
+.tree-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

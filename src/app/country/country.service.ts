@@ -78,6 +78,15 @@ export class CountryService {
       count: 0,
     };
 
+    const unknownCountry: Country = {
+      name: "Unknown",
+      flagCode: "xx",
+      region: "Unknown",
+      subRegion: "Unknown",
+      intermediateRegion: "Unknown",
+      NE_ID: 0,
+    };
+
     artists.forEach((artist) => {
       if (!artist.country || !artist.country.region) {
         unknownRegion.count += 1;
@@ -109,14 +118,14 @@ export class CountryService {
           artistSubRegion.count += 1;
 
           const countryFromSubRegion = artistSubRegion.countriesCount.find(
-            (countryCount) => countryCount.name === artist.country?.name
+            (countryCount) => countryCount.country.NE_ID === artist.country?.NE_ID
           );
 
           if (countryFromSubRegion) {
             countryFromSubRegion.count += 1;
           } else {
             const newCountryCount: CountryFromSubRegionCount = {
-              name: artist.country.name,
+              country: this.getCountryByCode(artist.country.NE_ID) || unknownCountry,
               count: 1,
             };
             artistSubRegion.countriesCount.push(newCountryCount);
@@ -388,8 +397,16 @@ export class CountryService {
   }
 
   private createSubRegion(artist: Artist): SubRegionCount[] {
+    const unknownCountry: Country = {
+      name: "Unknown",
+      flagCode: "xx",
+      region: "Unknown",
+      subRegion: "Unknown",
+      intermediateRegion: "Unknown",
+      NE_ID: 0,
+    };
     const artistCountryCount: CountryFromSubRegionCount = {
-      name: artist.country!.name,
+      country: this.getCountryByCode(artist.country?.NE_ID) || unknownCountry,
       count: 1,
     };
 

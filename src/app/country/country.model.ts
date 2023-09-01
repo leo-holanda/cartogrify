@@ -13,7 +13,7 @@ export interface CountryCount {
 }
 
 export interface CountryFromSubRegionCount {
-  name: string;
+  country: Country;
   count: number;
 }
 
