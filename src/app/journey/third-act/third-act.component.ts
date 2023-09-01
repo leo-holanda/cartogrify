@@ -1,8 +1,12 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { RegionCount } from "src/app/country/country.model";
+import {
+  IntermediateRegionCount,
+  RegionCount,
+  SubRegionCount,
+} from "src/app/country/country.model";
 import { CountryService } from "src/app/country/country.service";
 import * as d3 from "d3";
-import { TreeNode } from "./third-act.types";
+import { TreeLeaf, TreeNode } from "./third-act.types";
 
 @Component({
   selector: "ctg-third-act",
@@ -97,53 +101,67 @@ export class ThirdActComponent implements OnInit, AfterViewInit {
       .attr("dy", "0.31em")
       .attr("x", (d) => (d.children ? -6 : 6))
       .attr("text-anchor", (d) => (d.children ? "end" : "start"))
-      .text((d) => d.data.name)
+      .text((d: any) => {
+        if (d.data.country) return d.data.country.name + ` (${d.data.count})`;
+        return d.data.name;
+      })
       .clone(true)
       .attr("font-size", (d) => (d.children ? "1rem" : "1rem"))
       .attr("fill", "white");
   }
 
   private getRegionsAsTree(): TreeNode {
-    const tree: TreeNode = {
+    const root: TreeNode = {
       name: "World",
       count: Infinity,
       children: [],
     };
 
     this.userRegionsCount.forEach((region) => {
-      const intermediateNodes = region.intermediateRegions.map((region) => {
-        const subNodes = region.subRegions.map((region) => {
-          const countriesNodes = region.countriesCount.map((countryCount) => {
-            return {
-              name: countryCount.name + ` (${countryCount.count})`,
-              count: countryCount.count,
-              children: [],
-            };
-          });
-
-          return {
-            name: region.name + ` (${region.count})`,
-            count: region.count,
-            children: countriesNodes,
-          };
-        });
-
-        return {
-          name: region.name + ` (${region.count})`,
-          count: region.count,
-          children: subNodes,
-        };
-      });
-
-      const node = {
+      const regionNode: TreeNode = {
         name: region.name + ` (${region.count})`,
         count: region.count,
-        children: intermediateNodes,
+        children: this.getIntermediateRegionsAsTree(region),
       };
 
-      tree.children.push(node);
+      root.children.push(regionNode);
     });
 
-    return tree;
+    return root;
+  }
+
+  getIntermediateRegionsAsTree(region: RegionCount): TreeNode[] {
+    const intermediateNodes = region.intermediateRegions.map((intermediateRegion): TreeNode => {
+      return {
+        name: intermediateRegion.name + ` (${intermediateRegion.count})`,
+        count: intermediateRegion.count,
+        children: this.getSubRegionAsTree(intermediateRegion),
+      };
+    });
+
+    return intermediateNodes;
+  }
+
+  private getSubRegionAsTree(intermediateRegion: IntermediateRegionCount): TreeNode[] {
+    const subNodes = intermediateRegion.subRegions.map((subRegion): TreeNode => {
+      return {
+        name: subRegion.name + ` (${subRegion.count})`,
+        count: subRegion.count,
+        children: this.getCountriesNodes(subRegion),
+      };
+    });
+
+    return subNodes;
+  }
+
+  private getCountriesNodes(subRegion: SubRegionCount): TreeLeaf[] {
+    const countriesNodes = subRegion.countriesCount.map((countryCount): TreeLeaf => {
+      return {
+        country: countryCount.country,
+        count: countryCount.count,
+      };
+    });
+
+    return countriesNodes;
   }
 }
