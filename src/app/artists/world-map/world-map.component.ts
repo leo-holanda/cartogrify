@@ -189,10 +189,13 @@ export class WorldMapComponent implements AfterViewInit {
   private addMap() {
     const height = this.mapWrapper.nativeElement.offsetHeight;
     const width = this.mapWrapper.nativeElement.offsetWidth;
-    const margin = 32;
+    const margin = 64;
 
     const geoJSON = this.countryService.geoJSON;
-    const projection = d3.geoNaturalEarth1().fitSize([width - margin, height - margin], geoJSON);
+    const projection = d3
+      .geoNaturalEarth1()
+      .fitSize([width - margin, height - margin], geoJSON)
+      .translate([width / 2, height / 2]);
     const path = d3.geoPath().projection(projection);
 
     const zoom = d3
@@ -203,7 +206,8 @@ export class WorldMapComponent implements AfterViewInit {
       ])
       .scaleExtent([1, 8])
       .filter((event) => {
-        return this.isMobile ? true : event.shiftKey;
+        if (event.type == "wheel") return this.isMobile ? true : event.shiftKey;
+        else return true;
       })
       .on("zoom", (event) => {
         d3.select("svg #map").attr("transform", event.transform);
@@ -301,9 +305,16 @@ export class WorldMapComponent implements AfterViewInit {
       this.mapSvg.selectAll("rect").remove();
 
       const mapMeasures = (document.querySelector("#map") as Element).getBoundingClientRect();
+
+      //USA is the most left positioned country in the map projection that was choosen.
+      //To find the map legend x coordinate, we just need to find USA path x coordinate
+      const usaPathMeasures = (
+        document.querySelector("path[country-flag-code='us']") as Element
+      ).getBoundingClientRect();
+
       const mapViewWidthFactor = mapMeasures.width * 0.001;
-      const legendY = mapMeasures.y + mapMeasures.height - 172 * mapViewWidthFactor;
-      const legendX = 120 * mapViewWidthFactor;
+      const legendY = mapMeasures.height - 172 * mapViewWidthFactor;
+      const legendX = usaPathMeasures.left;
       const fontSize = 12 * mapViewWidthFactor;
       const labelDistance = 20;
       const rectDistanceToCenter = 8;
@@ -323,7 +334,7 @@ export class WorldMapComponent implements AfterViewInit {
         .attr("fill", this.currentColorPalette[this.currentColorPalette.length - 1])
         .attr("font-size", fontSize)
         .attr("class", "label-title")
-        .attr("transform", `translate(${legendX}, ${legendY - 8 * mapViewWidthFactor})`);
+        .attr("transform", `translate(${legendX}, ${legendY - 8})`);
 
       this.mapSvg
         .selectAll(".rect")
@@ -403,7 +414,7 @@ export class WorldMapComponent implements AfterViewInit {
         this.tooltip.html(countryTag);
       })
       .on("mousemove", (event) => {
-        this.tooltip.style("top", event.pageY + "px").style("left", event.pageX + 16 + "px");
+        this.tooltip.style("top", event.offsetY + "px").style("left", event.offsetX + 16 + "px");
       })
       .on("mouseout", () => {
         this.tooltip.style("visibility", "hidden");

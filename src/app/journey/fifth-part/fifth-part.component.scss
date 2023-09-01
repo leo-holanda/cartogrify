@@ -8,16 +8,16 @@ section {
   display: grid;
   grid-template-rows: auto 1fr;
   width: 100%;
+  padding: 2rem;
 }
 
 .act-title-wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
 
   .act-title {
+    margin: 0 0 1rem 0;
     width: 50%;
-    font-size: 4rem;
   }
 }
 
