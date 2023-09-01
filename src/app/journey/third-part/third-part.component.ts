@@ -6,14 +6,14 @@ import {
 } from "src/app/country/country.model";
 import { CountryService } from "src/app/country/country.service";
 import * as d3 from "d3";
-import { TreeLeaf, TreeNode } from "./third-act.types";
+import { TreeLeaf, TreeNode } from "./third-part.types";
 
 @Component({
-  selector: "ctg-third-act",
-  templateUrl: "./third-act.component.html",
-  styleUrls: ["./third-act.component.scss"],
+  selector: "ctg-third-part",
+  templateUrl: "./third-part.component.html",
+  styleUrls: ["./third-part.component.scss"],
 })
-export class ThirdActComponent implements OnInit, AfterViewInit {
+export class ThirdPartComponent implements OnInit, AfterViewInit {
   userRegionsCount: RegionCount[] = [];
 
   @ViewChild("treeWrapper") treeWrapper!: ElementRef<HTMLElement>;
@@ -107,13 +107,19 @@ export class ThirdActComponent implements OnInit, AfterViewInit {
       })
       .clone(true)
       .attr("font-size", (d) => (d.children ? "1rem" : "1rem"))
+      .style("font-weight", (d) => (d.height == 4 ? "900" : ""))
       .attr("fill", "white");
   }
 
   private getRegionsAsTree(): TreeNode {
+    let totalArtists = 0;
+    this.userRegionsCount.forEach((region) => {
+      totalArtists += region.count;
+    });
+
     const root: TreeNode = {
-      name: "World",
-      count: Infinity,
+      name: `World (${totalArtists} artists)`,
+      count: totalArtists,
       children: [],
     };
 
