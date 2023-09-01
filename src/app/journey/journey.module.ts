@@ -11,8 +11,8 @@ import { ThirdPartComponent } from "./third-part/third-part.component";
 import { ThirdPartModule } from "./third-part/third-part.module";
 import { FourthPartComponent } from "./fourth-part/fourth-part.component";
 import { FourthPartModule } from "./fourth-part/fourth-part.module";
-import { FifthActComponent } from "./fifth-act/fifth-act.component";
-import { FifthActModule } from "./fifth-act/fifth-act.module";
+import { FifthPartComponent } from "./fifth-part/fifth-part.component";
+import { FifthPartModule } from "./fifth-part/fifth-part.module";
 
 @NgModule({
   declarations: [PreJourneyComponent],
@@ -24,14 +24,14 @@ import { FifthActModule } from "./fifth-act/fifth-act.module";
     SecondPartModule,
     ThirdPartModule,
     FourthPartModule,
-    FifthActModule,
+    FifthPartModule,
   ],
   exports: [
     FirstPartComponent,
     SecondPartComponent,
     ThirdPartComponent,
     FourthPartComponent,
-    FifthActModule,
+    FifthPartComponent,
   ],
 })
 export class JourneyModule {}

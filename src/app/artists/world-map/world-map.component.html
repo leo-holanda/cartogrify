@@ -130,19 +130,9 @@
     </p-card>
   </div>
 </p-dialog>
+<p *ngIf="!isMobile">Press shift to allow zooming</p>
 <div #mapWrapper class="map-wrapper" [style]="{ background: mapBackgroundColor }">
-  <div
-    *ngIf="isMobile"
-    [ngStyle]="{ visibility: shareMode ? 'collapse' : 'visible' }"
-    class="map-buttons"
-  >
-    <p-button
-      (onClick)="sendOpenRankingsEvent()"
-      icon="bx bx-bar-chart-alt bx-rotate-90"
-      class="sidebar-button"
-      [label]="isMobile ? 'Rankings' : 'See your rankings'"
-      [styleClass]="isMobile ? 'p-button-lg p-button-rounded' : undefined"
-    ></p-button>
+  <div [ngStyle]="{ visibility: shareMode ? 'collapse' : 'visible' }" class="map-buttons">
     <p-button
       (onClick)="onShareButtonClick()"
       [label]="isMobile ? 'Share' : 'Share with your friends'"
