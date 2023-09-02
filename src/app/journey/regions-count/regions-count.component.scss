@@ -5,8 +5,10 @@
 }
 
 section {
-  display: grid;
-  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 2rem;
   width: 100%;
 }
 
@@ -14,10 +16,11 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
+}
 
-  .title {
-    font-size: 3rem;
-  }
+.title {
+  font-size: var(--fs-600);
+  text-align: center;
 }
 
 .content-wrapper {
@@ -26,13 +29,28 @@ section {
   justify-content: center;
 }
 
-.rating-item {
-  font-size: 4rem;
-  font-weight: bold;
-}
-
 .tree-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 640px) {
+  section {
+    gap: 1rem;
+  }
+
+  .title {
+    font-size: var(--fs-200);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1280px) {
+  section {
+    gap: 2rem;
+  }
+
+  .title {
+    font-size: var(--fs-500);
+  }
 }
