@@ -2,11 +2,11 @@ import { Component } from "@angular/core";
 import { Subject } from "rxjs";
 
 @Component({
-  selector: "ctg-fourth-part",
-  templateUrl: "./fourth-part.component.html",
-  styleUrls: ["./fourth-part.component.scss"],
+  selector: "ctg-artists-part",
+  templateUrl: "./artists-part.component.html",
+  styleUrls: ["./artists-part.component.scss"],
 })
-export class FourthPartComponent {
+export class ArtistsPartComponent {
   shouldMakeSuggestions$ = new Subject<boolean>();
   shouldOpenDialog = false;
   hasHappyNoises = false;
