@@ -18,20 +18,22 @@ section {
   flex-direction: column;
   justify-content: center;
   margin: 1rem;
+  gap: 1rem;
+}
 
-  .pre-title {
-    margin: 0 0 0.5rem 0;
-    font-size: 2.5rem;
-  }
+.pre-title {
+  margin: 0;
+  font-size: var(--fs-200);
+}
 
-  .title {
-    font-size: 4rem;
-    margin: 0 0 0.5rem 0;
-  }
+.title {
+  font-size: var(--fs-600);
+  margin: 0;
+}
 
-  .post-title {
-    margin: 0;
-  }
+.post-title {
+  margin: 0;
+  font-size: var(--fs-200);
 }
 
 .count-value {
@@ -45,7 +47,6 @@ section {
 }
 
 .rating-item {
-  font-size: 4rem;
   font-weight: bold;
 }
 
@@ -62,14 +63,17 @@ section {
 
   .pre-title {
     text-align: center;
+    font-size: var(--fs-100);
   }
 
   .title {
     text-align: center;
+    font-size: var(--fs-400);
   }
 
   .post-title {
     text-align: center;
+    font-size: var(--fs-100);
   }
 }
 
