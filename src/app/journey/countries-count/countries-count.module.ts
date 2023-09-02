@@ -1,11 +1,11 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { CountriesRankModule } from "src/app/artists/rankings/countries-rank/countries-rank.module";
-import { FirstPartComponent } from "./first-part.component";
+import { CountriesCountComponent } from "./countries-count.component";
 
 @NgModule({
-  declarations: [FirstPartComponent],
+  declarations: [CountriesCountComponent],
   imports: [CommonModule, CountriesRankModule],
-  exports: [FirstPartComponent],
+  exports: [CountriesCountComponent],
 })
-export class FirstPartModule {}
+export class CountriesCountModule {}
