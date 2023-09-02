@@ -11,7 +11,6 @@
       around the world!
     </h3>
   </div>
-  <div #worldChartWrapper class="world-chart-wrapper"></div>
 
   <div *ngIf="user.countryCode != undefined; else userWithoutCountryTemplate" class="title-wrapper">
     <h2 class="pre-title">And more than</h2>
@@ -26,14 +25,13 @@
       <span class="{{ 'flag fi fi-' + userCountry?.flagCode }}"></span> {{ userCountry?.name }}!
     </h3>
   </div>
-  <div #countryChartWrapper class="country-chart-wrapper"></div>
 
   <ng-template #userWithoutCountryTemplate>
     <div class="title-wrapper">
       <h1 class="title">Your account doesn't have a country associated to it.</h1>
     </div>
     <div class="user-without-country-warning-wrapper">
-      <h2>Generating a Country Traveller Rating and Chart is impossible.</h2>
+      <h2>Your comparison among others users in your country is not possible.</h2>
     </div>
   </ng-template>
 </section>
