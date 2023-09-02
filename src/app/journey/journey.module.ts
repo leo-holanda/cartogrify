@@ -9,10 +9,10 @@ import { CountriesCountComponent } from "./countries-count/countries-count.compo
 import { CountriesStatsComponent } from "./countries-stats/countries-stats.component";
 import { RegionsCountComponent } from "./regions-count/regions-count.component";
 import { RegionsCountModule } from "./regions-count/regions-count.module";
-import { FourthPartComponent } from "./fourth-part/fourth-part.component";
-import { FourthPartModule } from "./fourth-part/fourth-part.module";
 import { FifthPartComponent } from "./fifth-part/fifth-part.component";
 import { FifthPartModule } from "./fifth-part/fifth-part.module";
+import { ArtistsPartModule } from "./artists-part/artists-part.module";
+import { ArtistsPartComponent } from "./artists-part/artists-part.component";
 
 @NgModule({
   declarations: [PreJourneyComponent],
@@ -23,14 +23,14 @@ import { FifthPartModule } from "./fifth-part/fifth-part.module";
     CountriesCountModule,
     CountriesStatsModule,
     RegionsCountModule,
-    FourthPartModule,
+    ArtistsPartModule,
     FifthPartModule,
   ],
   exports: [
     CountriesCountComponent,
     CountriesStatsComponent,
     RegionsCountComponent,
-    FourthPartComponent,
+    ArtistsPartComponent,
     FifthPartComponent,
   ],
 })
