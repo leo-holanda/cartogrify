@@ -2,6 +2,19 @@
 @import "primeng/resources/primeng.css";
 /* You can add global styles to this file, and also import other style files */
 
+:root {
+  --fs--300: clamp(0.58rem, calc(0.58rem + 0vw), 0.58rem);
+  --fs--200: clamp(0.69rem, calc(0.69rem + 0vw), 0.69rem);
+  --fs--100: clamp(0.83rem, calc(0.83rem + 0vw), 0.83rem);
+  --fs-000: clamp(1rem, calc(1rem + 0vw), 1rem);
+  --fs-100: clamp(1.2rem, calc(1.2rem + 0vw), 1.2rem);
+  --fs-200: clamp(1.44rem, calc(1.44rem + 0vw), 1.44rem);
+  --fs-300: clamp(1.73rem, calc(1.73rem + 0vw), 1.73rem);
+  --fs-400: clamp(2.07rem, calc(2.07rem + 0vw), 2.07rem);
+  --fs-500: clamp(2.49rem, calc(2.49rem + 0vw), 2.49rem);
+  --fs-600: clamp(2.99rem, calc(2.99rem + 0vw), 2.99rem);
+}
+
 * {
   font-family: "Nunito", sans-serif;
   font-weight: 500;
