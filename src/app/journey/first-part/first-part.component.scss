@@ -10,18 +10,18 @@ section {
   padding: 2rem;
 }
 
-.act-title-wrapper {
+.title-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin: 1rem;
 
-  .act-pre-title {
+  .pre-title {
     margin: 0 0 0.5rem 0;
     font-size: 2.5rem;
   }
 
-  .act-title {
+  .title {
     font-size: 4rem;
     margin: 0;
   }
@@ -31,7 +31,7 @@ section {
   }
 }
 
-.act-content-wrapper {
+.content-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
