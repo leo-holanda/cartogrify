@@ -67,6 +67,10 @@ section {
   .title {
     text-align: center;
   }
+
+  .post-title {
+    text-align: center;
+  }
 }
 
 @media (min-width: 641px) and (max-width: 1280px) {
@@ -80,6 +84,10 @@ section {
   }
 
   .title {
+    text-align: center;
+  }
+
+  .post-title {
     text-align: center;
   }
 }
