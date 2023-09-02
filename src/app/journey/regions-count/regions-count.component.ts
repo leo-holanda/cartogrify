@@ -7,6 +7,7 @@ import {
 import { CountryService } from "src/app/country/country.service";
 import * as d3 from "d3";
 import { TreeLeaf, TreeNode } from "./regions-count.types";
+import { fromEvent, debounceTime } from "rxjs";
 
 @Component({
   selector: "ctg-regions-count",
@@ -15,6 +16,7 @@ import { TreeLeaf, TreeNode } from "./regions-count.types";
 })
 export class RegionsCountComponent implements OnInit, AfterViewInit {
   userRegionsCount: RegionCount[] = [];
+  isMobile = window.innerWidth < 1280;
 
   @ViewChild("treeWrapper") treeWrapper!: ElementRef<HTMLElement>;
 
@@ -27,21 +29,30 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.drawTree();
+
+    fromEvent(window, "resize")
+      .pipe(debounceTime(250))
+      .subscribe(() => {
+        this.isMobile = window.innerWidth <= 1280;
+        this.drawTree();
+      });
+  }
+
+  private drawTree(): void {
     const treeData = this.getRegionsAsTree();
+    const containerWidth = this.treeWrapper.nativeElement.offsetWidth;
 
-    const width = this.treeWrapper.nativeElement.offsetWidth;
-
-    // Compute the tree height; this approach will allow the height of the
-    // SVG to scale according to the breadth (width) of the tree layout.
     const root = d3.hierarchy(treeData);
-    const dx = 35;
-    const dy = width / (root.height + 1);
+    const nodeWidth = 40;
+    //+ 2 because we need room for labels and the tree sides
+    const nodeHeight = containerWidth / (root.height + 2);
 
     // Create a tree layout.
-    const tree = d3.cluster().nodeSize([dx, dy]);
+    const tree = d3.tree().nodeSize([nodeWidth, nodeHeight]);
 
     // Sort the tree and apply the layout.
-    root.sort((a, b) => d3.ascending(b.data.count, a.data.count));
+    root.sort((a, b) => d3.ascending(a.data.name, b.data.name));
     tree(root as any);
 
     // Compute the extent of the tree. Note that x and y are swapped here
@@ -49,20 +60,22 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
     // tree extends right rather than down.
     let x0 = Infinity;
     let x1 = -x0;
-    root.each((d) => {
-      if ((d as any).x > x1) x1 = (d as any).x;
-      if ((d as any).x < x0) x0 = (d as any).x;
+    root.each((d: any) => {
+      if (d.x > x1) x1 = d.x;
+      if (d.x < x0) x0 = d.x;
     });
 
     // Compute the adjusted height of the tree.
-    const height = x1 - x0 + dx * 2;
+    const height = x1 - x0 + nodeWidth * 2;
 
+    d3.select("#tree").remove();
     const svg = d3
       .select(".tree-wrapper")
       .append("svg")
-      .attr("width", width - 64)
-      .attr("height", height - 64)
-      .attr("viewBox", [-dy / 3, x0 - dx, width, height])
+      .attr("id", "tree")
+      .attr("width", containerWidth)
+      .attr("height", height)
+      .attr("viewBox", [-nodeHeight, x0 - nodeWidth, containerWidth, height])
       .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
 
     const link = svg
@@ -76,10 +89,15 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
       .join("path")
       .attr(
         "d",
-        d3
-          .linkHorizontal()
-          .x((d) => (d as any).y)
-          .y((d) => (d as any).x) as any
+        this.isMobile
+          ? (d3
+              .linkVertical()
+              .x((d) => (d as any).x)
+              .y((d) => (d as any).y) as any)
+          : (d3
+              .linkHorizontal()
+              .x((d) => (d as any).y)
+              .y((d) => (d as any).x) as any)
       );
 
     const node = svg
@@ -89,7 +107,13 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
       .selectAll()
       .data(root.descendants())
       .join("g")
-      .attr("transform", (d) => `translate(${(d as any).y},${(d as any).x})`);
+      .attr(
+        "transform",
+        (d) =>
+          `translate(${this.isMobile ? (d as any).x : (d as any).y},${
+            this.isMobile ? (d as any).y : (d as any).x
+          })`
+      );
 
     node
       .append("circle")
@@ -99,13 +123,18 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
     node
       .append("text")
       .attr("dy", "0.31em")
-      .attr("x", (d) => (d.children ? -6 : 6))
-      .attr("text-anchor", (d) => (d.children ? "end" : "start"))
+      .attr("class", (d) => {
+        if (d.depth == 0) return "root";
+        else if (d.height == 0) return "leaf";
+
+        return "";
+      })
+      .attr("x", (d) => (this.isMobile ? 0 : d.children ? -6 : 6))
+      .attr("text-anchor", (d) => (this.isMobile ? "middle" : d.children ? "end" : "start"))
       .text((d: any) => {
         if (d.data.country) return d.data.country.name + ` (${d.data.count})`;
         return d.data.name;
       })
-      .clone(true)
       .attr("font-size", (d) => (d.children ? "1rem" : "1rem"))
       .style("font-weight", (d) => (d.height == 4 ? "900" : ""))
       .attr("fill", "white");
@@ -127,7 +156,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
       const regionNode: TreeNode = {
         name: region.name + ` (${region.count})`,
         count: region.count,
-        children: this.getIntermediateRegionsAsTree(region),
+        children: this.getSubRegionAsTree(region),
       };
 
       root.children.push(regionNode);
@@ -136,28 +165,20 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
     return root;
   }
 
-  getIntermediateRegionsAsTree(region: RegionCount): TreeNode[] {
-    const intermediateNodes = region.intermediateRegions.map((intermediateRegion): TreeNode => {
-      return {
-        name: intermediateRegion.name + ` (${intermediateRegion.count})`,
-        count: intermediateRegion.count,
-        children: this.getSubRegionAsTree(intermediateRegion),
-      };
-    });
+  private getSubRegionAsTree(region: RegionCount): TreeNode[] {
+    const subRegionNodes = region.intermediateRegions
+      .map((intermediateRegion) => {
+        return intermediateRegion.subRegions.map((subRegion): TreeNode => {
+          return {
+            name: subRegion.name + ` (${subRegion.count})`,
+            count: subRegion.count,
+            children: this.getCountriesNodes(subRegion),
+          };
+        });
+      })
+      .flat();
 
-    return intermediateNodes;
-  }
-
-  private getSubRegionAsTree(intermediateRegion: IntermediateRegionCount): TreeNode[] {
-    const subNodes = intermediateRegion.subRegions.map((subRegion): TreeNode => {
-      return {
-        name: subRegion.name + ` (${subRegion.count})`,
-        count: subRegion.count,
-        children: this.getCountriesNodes(subRegion),
-      };
-    });
-
-    return subNodes;
+    return subRegionNodes;
   }
 
   private getCountriesNodes(subRegion: SubRegionCount): TreeLeaf[] {
