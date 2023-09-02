@@ -6,14 +6,14 @@ import {
 } from "src/app/country/country.model";
 import { CountryService } from "src/app/country/country.service";
 import * as d3 from "d3";
-import { TreeLeaf, TreeNode } from "./third-part.types";
+import { TreeLeaf, TreeNode } from "./regions-count.types";
 
 @Component({
-  selector: "ctg-third-part",
-  templateUrl: "./third-part.component.html",
-  styleUrls: ["./third-part.component.scss"],
+  selector: "ctg-regions-count",
+  templateUrl: "./regions-count.component.html",
+  styleUrls: ["./regions-count.component.scss"],
 })
-export class ThirdPartComponent implements OnInit, AfterViewInit {
+export class RegionsCountComponent implements OnInit, AfterViewInit {
   userRegionsCount: RegionCount[] = [];
 
   @ViewChild("treeWrapper") treeWrapper!: ElementRef<HTMLElement>;

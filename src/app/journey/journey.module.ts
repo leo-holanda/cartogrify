@@ -7,8 +7,8 @@ import { CountriesCountModule } from "./countries-count/countries-count.module";
 import { CountriesStatsModule } from "./countries-stats/countries-stats.module";
 import { CountriesCountComponent } from "./countries-count/countries-count.component";
 import { CountriesStatsComponent } from "./countries-stats/countries-stats.component";
-import { ThirdPartComponent } from "./third-part/third-part.component";
-import { ThirdPartModule } from "./third-part/third-part.module";
+import { RegionsCountComponent } from "./regions-count/regions-count.component";
+import { RegionsCountModule } from "./regions-count/regions-count.module";
 import { FourthPartComponent } from "./fourth-part/fourth-part.component";
 import { FourthPartModule } from "./fourth-part/fourth-part.module";
 import { FifthPartComponent } from "./fifth-part/fifth-part.component";
@@ -22,14 +22,14 @@ import { FifthPartModule } from "./fifth-part/fifth-part.module";
     WorldMapModule,
     CountriesCountModule,
     CountriesStatsModule,
-    ThirdPartModule,
+    RegionsCountModule,
     FourthPartModule,
     FifthPartModule,
   ],
   exports: [
     CountriesCountComponent,
     CountriesStatsComponent,
-    ThirdPartComponent,
+    RegionsCountComponent,
     FourthPartComponent,
     FifthPartComponent,
   ],
