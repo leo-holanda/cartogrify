@@ -40,6 +40,11 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
   }
 
   private drawTree(): void {
+    if (this.isMobile) this.drawVerticalTree();
+    else this.drawHorizontalTree();
+  }
+
+  private drawHorizontalTree(): void {
     const treeData = this.getRegionsAsTree();
     const containerWidth = this.treeWrapper.nativeElement.offsetWidth;
 
@@ -76,6 +81,91 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
       .attr("width", containerWidth)
       .attr("height", height)
       .attr("viewBox", [-nodeHeight, x0 - nodeWidth, containerWidth, height])
+      .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
+
+    const link = svg
+      .append("g")
+      .attr("fill", "none")
+      .attr("stroke", "#555")
+      .attr("stroke-opacity", 0.4)
+      .attr("stroke-width", 1.5)
+      .selectAll()
+      .data(root.links())
+      .join("path")
+      .attr(
+        "d",
+        this.isMobile
+          ? (d3
+              .linkVertical()
+              .x((d) => (d as any).x)
+              .y((d) => (d as any).y) as any)
+          : (d3
+              .linkHorizontal()
+              .x((d) => (d as any).y)
+              .y((d) => (d as any).x) as any)
+      );
+
+    const node = svg
+      .append("g")
+      .attr("stroke-linejoin", "round")
+      .attr("stroke-width", 3)
+      .selectAll()
+      .data(root.descendants())
+      .join("g")
+      .attr(
+        "transform",
+        (d) =>
+          `translate(${this.isMobile ? (d as any).x : (d as any).y},${
+            this.isMobile ? (d as any).y : (d as any).x
+          })`
+      );
+
+    node
+      .append("circle")
+      .attr("fill", (d) => (d.children ? "#555" : "#999"))
+      .attr("r", 2.5);
+
+    node
+      .append("text")
+      .attr("dy", "0.31em")
+      .attr("class", (d) => {
+        if (d.depth == 0) return "root";
+        else if (d.height == 0) return "leaf";
+
+        return "";
+      })
+      .attr("x", (d) => (this.isMobile ? 0 : d.children ? -6 : 6))
+      .attr("text-anchor", (d) => (this.isMobile ? "middle" : d.children ? "end" : "start"))
+      .text((d: any) => {
+        if (d.data.country) return d.data.country.name + ` (${d.data.count})`;
+        return d.data.name;
+      })
+      .attr("font-size", (d) => (d.children ? "1rem" : "1rem"))
+      .style("font-weight", (d) => (d.height == 4 ? "900" : ""))
+      .attr("fill", "white");
+  }
+
+  private drawVerticalTree(): void {
+    const treeData = this.getRegionsAsTree();
+    const containerWidth = this.treeWrapper.nativeElement.offsetWidth;
+    const windowHeight = window.innerHeight;
+
+    const root = d3.hierarchy(treeData);
+    const nodeHeight = windowHeight / root.height + 1;
+    const tree = d3.tree().size([containerWidth, windowHeight]);
+
+    // Sort the tree and apply the layout.
+    root.sort((a, b) => d3.ascending(a.data.name, b.data.name));
+    tree(root as any);
+
+    d3.select("#tree").remove();
+    const svg = d3
+      .select(".tree-wrapper")
+      .append("svg")
+      .attr("id", "tree")
+      .attr("width", containerWidth)
+      .attr("height", windowHeight)
+      .attr("viewBox", [0, -24, containerWidth, windowHeight + nodeHeight])
       .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
 
     const link = svg
