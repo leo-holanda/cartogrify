@@ -9,11 +9,11 @@ import { User } from "src/app/user/user.model";
 import { Country } from "src/app/country/country.model";
 
 @Component({
-  selector: "ctg-second-part",
-  templateUrl: "./second-part.component.html",
-  styleUrls: ["./second-part.component.scss"],
+  selector: "ctg-countries-stats",
+  templateUrl: "./countries-stats.component.html",
+  styleUrls: ["./countries-stats.component.scss"],
 })
-export class SecondPartComponent implements OnInit, AfterViewInit {
+export class CountriesStatsComponent implements OnInit, AfterViewInit {
   user!: User;
   userCountry!: Country | undefined;
 

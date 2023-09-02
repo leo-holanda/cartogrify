@@ -4,9 +4,9 @@ import { PreJourneyComponent } from "./pre-journey/pre-journey.component";
 import { WorldMapModule } from "../artists/world-map/world-map.module";
 import { JourneyRoutingModule } from "./journey-routing.module";
 import { CountriesCountModule } from "./countries-count/countries-count.module";
-import { SecondPartModule } from "./second-part/second-part.module";
+import { CountriesStatsModule } from "./countries-stats/countries-stats.module";
 import { CountriesCountComponent } from "./countries-count/countries-count.component";
-import { SecondPartComponent } from "./second-part/second-part.component";
+import { CountriesStatsComponent } from "./countries-stats/countries-stats.component";
 import { ThirdPartComponent } from "./third-part/third-part.component";
 import { ThirdPartModule } from "./third-part/third-part.module";
 import { FourthPartComponent } from "./fourth-part/fourth-part.component";
@@ -21,14 +21,14 @@ import { FifthPartModule } from "./fifth-part/fifth-part.module";
     JourneyRoutingModule,
     WorldMapModule,
     CountriesCountModule,
-    SecondPartModule,
+    CountriesStatsModule,
     ThirdPartModule,
     FourthPartModule,
     FifthPartModule,
   ],
   exports: [
     CountriesCountComponent,
-    SecondPartComponent,
+    CountriesStatsComponent,
     ThirdPartComponent,
     FourthPartComponent,
     FifthPartComponent,
