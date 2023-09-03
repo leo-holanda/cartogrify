@@ -19,12 +19,12 @@ section {
   flex-direction: column;
   gap: 2rem;
   width: 50%;
+}
 
-  .title {
-    font-size: var(--fs-500);
-    font-weight: bold;
-    margin: 0;
-  }
+.title {
+  font-size: var(--fs-600);
+  font-weight: bold;
+  margin: 0;
 }
 
 .content-wrapper {
@@ -70,6 +70,7 @@ section {
   .title {
     text-align: center;
     width: 75%;
+    font-size: var(--fs-500);
   }
 
   .robot-wrapper {
@@ -90,6 +91,7 @@ section {
 
   .title {
     text-align: center;
+    font-size: var(--fs-400);
   }
 
   .robot-wrapper {

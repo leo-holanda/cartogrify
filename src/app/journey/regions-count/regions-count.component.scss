@@ -10,6 +10,7 @@ section {
   justify-content: center;
   margin: 2rem;
   width: 100%;
+  gap: 2rem;
 }
 
 .title-wrapper {
@@ -21,6 +22,8 @@ section {
 .title {
   font-size: var(--fs-600);
   text-align: center;
+  font-weight: bold;
+  margin: 0;
 }
 
 .content-wrapper {
@@ -35,16 +38,6 @@ section {
   justify-content: center;
 }
 
-@media (max-width: 640px) {
-  section {
-    gap: 1rem;
-  }
-
-  .title {
-    font-size: var(--fs-200);
-  }
-}
-
 @media (min-width: 641px) and (max-width: 1280px) {
   section {
     gap: 2rem;
@@ -52,5 +45,15 @@ section {
 
   .title {
     font-size: var(--fs-500);
+  }
+}
+
+@media (max-width: 640px) {
+  section {
+    gap: 1rem;
+  }
+
+  .title {
+    font-size: var(--fs-400);
   }
 }

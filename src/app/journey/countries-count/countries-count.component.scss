@@ -17,15 +17,17 @@ section {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 0.5rem;
 }
 
 .pre-title {
-  margin: 0 0 0.5rem 0;
+  margin: 0;
   font-size: var(--fs-200);
 }
 
 .title {
   font-size: var(--fs-600);
+  font-weight: bold;
   margin: 0;
 }
 
