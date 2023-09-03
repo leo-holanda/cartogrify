@@ -21,32 +21,11 @@
   height: 100%;
   position: relative;
   border-radius: 1rem;
+}
 
-  .map-buttons {
-    display: flex;
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
-
-    & p-button:first-of-type {
-      margin-right: 1rem;
-    }
-
-    @media (max-width: 768px) {
-      top: unset;
-      right: 16px;
-      bottom: 48px;
-      flex-direction: column;
-      align-items: end;
-      gap: 0;
-
-      & p-button:nth-child(1),
-      p-button:nth-child(2) {
-        margin-right: 0;
-        margin-bottom: 1rem;
-      }
-    }
-  }
+.map-buttons {
+  display: flex;
+  margin-bottom: 1rem;
 }
 
 .palette-colors-array {
@@ -78,6 +57,12 @@
 
     label {
       margin-left: 0.5rem;
+    }
+  }
+
+  .map-buttons {
+    & p-button {
+      margin-right: 1rem;
     }
   }
 }
@@ -132,4 +117,14 @@
 
 .zoom-message {
   color: grey;
+  margin: 0 0 1rem 0;
+}
+
+@media (min-width: 641px) and (max-width: 1280px) {
+}
+
+@media (max-width: 640px) {
+  .map-buttons {
+    justify-content: center;
+  }
 }

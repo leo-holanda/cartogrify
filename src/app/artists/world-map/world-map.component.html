@@ -130,20 +130,19 @@
     </p-card>
   </div>
 </p-dialog>
-<p class="zoom-message" *ngIf="!isMobile">Press shift to allow zooming</p>
-<div #mapWrapper class="map-wrapper" [style]="{ background: mapBackgroundColor }">
-  <div [ngStyle]="{ visibility: shareMode ? 'collapse' : 'visible' }" class="map-buttons">
+<div>
+  <div class="map-buttons">
     <p-button
       (onClick)="onShareButtonClick()"
       [label]="isMobile ? 'Share' : 'Share with your friends'"
       icon="bx bx-share-alt"
-      [styleClass]="isMobile ? 'p-button-lg p-button-rounded' : undefined"
+      styleClass="p-button-rounded"
     ></p-button>
     <p-button
       (onClick)="op.toggle($event)"
       [label]="isMobile ? 'Customize' : 'Customize map'"
       icon="bx bx-palette"
-      [styleClass]="isMobile ? 'p-button-lg p-button-rounded' : undefined"
+      styleClass="p-button-rounded"
     ></p-button>
     <p-overlayPanel #op>
       <div class="color-theme-selector">
@@ -225,4 +224,6 @@
       </div>
     </p-overlayPanel>
   </div>
+  <p class="zoom-message" *ngIf="!isMobile">Press shift to allow zooming</p>
 </div>
+<div #mapWrapper class="map-wrapper" [style]="{ background: mapBackgroundColor }"></div>
