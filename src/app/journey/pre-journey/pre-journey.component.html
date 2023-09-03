@@ -18,6 +18,11 @@
 
     <div class="artists-wrapper">
       <h2 class="artists-wrapper-title">Your unknown artists</h2>
+      <p-progressBar
+        [mode]="progressBarMode"
+        [value]="progressPercentage"
+        styleClass="progress-bar"
+      ></p-progressBar>
       <div class="artists-wrapper-loading" *ngIf="scrapedArtistsData.length == 0">
         <span>Finding where they come from...</span>
       </div>

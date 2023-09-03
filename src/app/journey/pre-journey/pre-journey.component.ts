@@ -16,6 +16,9 @@ export class PreJourneyComponent implements OnInit {
   hasCompletedArtistsSearch = false;
   scrapedArtistsData: ScrapedArtistData[] = [];
 
+  progressBarMode = "indeterminate";
+  progressPercentage = 0;
+
   constructor(private artistService: ArtistService, private router: Router) {}
 
   ngOnInit(): void {
@@ -40,7 +43,10 @@ export class PreJourneyComponent implements OnInit {
         )
       )
       .subscribe((scrapedArtistData) => {
+        this.progressBarMode = "determinate";
         this.scrapedArtistsData.unshift(scrapedArtistData);
+
+        this.progressPercentage = (scrapedArtistData.remanining / scrapedArtistData.total) * 100;
         if (scrapedArtistData.remanining == scrapedArtistData.total) {
           setTimeout(() => {
             this.hasCompletedArtistsSearch = true;
