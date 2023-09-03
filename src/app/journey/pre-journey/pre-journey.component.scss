@@ -26,7 +26,7 @@ main {
 
 .artists-wrapper {
   background: white;
-  padding: 1rem;
+  padding: 2rem;
   border-radius: 12px;
   color: black;
   overflow: hidden;
@@ -36,17 +36,17 @@ main {
 .artists-wrapper-title {
   text-align: start;
   font-size: var(--fs-300);
-  padding: 1rem;
+  padding-bottom: 0.5rem;
   margin: 0;
   color: black;
 }
 
 .artists-wrapper-loading {
-  padding: 1rem;
+  padding-bottom: 1rem;
 }
 
 .artist-item {
-  padding: 1rem;
+  padding: 1rem 1rem 1rem 0;
   font-size: var(--fs-100);
 }
 
@@ -70,6 +70,14 @@ main {
 
 .minor-title {
   font-size: var(--fs-200);
+}
+
+::ng-deep {
+  .progress-bar {
+    height: 1rem;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+  }
 }
 
 @media (min-width: 641px) and (max-width: 1280px) {
