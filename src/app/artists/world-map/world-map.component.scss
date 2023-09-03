@@ -81,8 +81,9 @@
 ::ng-deep {
   .download-options {
     display: flex;
-    justify-content: space-between;
-    gap: 1rem;
+    flex-direction: column;
+    margin-top: 1.5rem;
+    gap: 0.5rem;
 
     & p-button {
       flex: 1;
