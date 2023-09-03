@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { debounceTime, filter, fromEvent } from "rxjs";
-import { Artist, ScrapedArtistData } from "./artist.model";
+import { Artist, ArtistsWithoutCountryStatus, ScrapedArtistData } from "./artist.model";
 import { ArtistService } from "./artist.service";
 import { CountryCount, RegionCount } from "../country/country.model";
 import { CountryService } from "../country/country.service";
@@ -39,14 +39,9 @@ export class ArtistsComponent implements OnInit {
 
     this.artistsService
       .hasArtistsWithoutCountryStatus()
-      .pipe(
-        filter(
-          (hasArtistsWithoutCountry): hasArtistsWithoutCountry is boolean =>
-            hasArtistsWithoutCountry !== undefined
-        )
-      )
-      .subscribe((hasArtistsWithoutCountry) => {
-        if (hasArtistsWithoutCountry) {
+      .pipe(filter((status): status is ArtistsWithoutCountryStatus => status !== undefined))
+      .subscribe((status) => {
+        if (status.hasArtistsWithoutCountry) {
           this.messages = [
             ...this.messages,
             {

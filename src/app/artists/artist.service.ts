@@ -1,5 +1,11 @@
 import { Injectable } from "@angular/core";
-import { Artist, ScrapedArtist, ScrapedArtistData, Suggestion } from "./artist.model";
+import {
+  Artist,
+  ArtistsWithoutCountryStatus,
+  ScrapedArtist,
+  ScrapedArtistData,
+  Suggestion,
+} from "./artist.model";
 import { SupabaseService } from "../shared/supabase.service";
 import { BehaviorSubject, Observable, take } from "rxjs";
 import { CountryService } from "../country/country.service";
@@ -11,7 +17,9 @@ import { UserService } from "../user/user.service";
 export class ArtistService {
   private userTopArtists$ = new BehaviorSubject<Artist[]>([]);
   private scrapedArtists$ = new BehaviorSubject<ScrapedArtistData | undefined>(undefined);
-  private hasArtistsWithoutCountry$ = new BehaviorSubject<boolean | undefined>(undefined);
+  private hasArtistsWithoutCountry$ = new BehaviorSubject<ArtistsWithoutCountryStatus | undefined>(
+    undefined
+  );
 
   private hasRequestedTopArtists = false;
 
@@ -42,7 +50,10 @@ export class ArtistService {
         );
 
         if (artistsWithoutCountry.length == 0) {
-          this.hasArtistsWithoutCountry$.next(false);
+          this.hasArtistsWithoutCountry$.next({
+            hasArtistsWithoutCountry: false,
+            artistsWithoutCountryQuantity: 0,
+          });
           this.countryService
             .getCountriesCount()
             .pipe(take(1))
@@ -51,7 +62,10 @@ export class ArtistService {
               this.supabaseService.saveDiversityIndex(user, countriesCount.length);
             });
         } else {
-          this.hasArtistsWithoutCountry$.next(true);
+          this.hasArtistsWithoutCountry$.next({
+            hasArtistsWithoutCountry: true,
+            artistsWithoutCountryQuantity: artistsWithoutCountry.length,
+          });
           const scrapedArtists: ScrapedArtist[] = [];
 
           this.countryService.findArtistsCountryOfOrigin(artistsWithoutCountry).subscribe({
@@ -101,7 +115,7 @@ export class ArtistService {
     return this.scrapedArtists$.asObservable();
   }
 
-  hasArtistsWithoutCountryStatus(): Observable<boolean | undefined> {
+  hasArtistsWithoutCountryStatus(): Observable<ArtistsWithoutCountryStatus | undefined> {
     return this.hasArtistsWithoutCountry$.asObservable();
   }
 
