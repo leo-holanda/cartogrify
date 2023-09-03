@@ -1,16 +1,14 @@
 <main>
-  <div *ngIf="hasArtistsWithoutCountry == undefined" class="loading-wrapper">
-    <h1>Let's fetch your top artists...</h1>
+  <section *ngIf="hasArtistsWithoutCountry == undefined" class="loading-wrapper">
+    <h1>Fetching your top artists...</h1>
     <i class="bx bxs-music bx-tada"></i>
-  </div>
+  </section>
 
-  <div class="scraped-artists-wrapper" *ngIf="hasArtistsWithoutCountry">
+  <section class="scraped-artists-wrapper" *ngIf="hasArtistsWithoutCountry">
     <div class="title-wrapper">
-      <h1 class="title">You listen to some artists that we never heard about!</h1>
-      <h2>
-        Before proceeding, we need to find where they come from. But don't worry, this shouldn't
-        take long.
-      </h2>
+      <h1 class="title">You listen to some artists that we never heard about</h1>
+      <h2 class="sub-title">Before proceeding, we need to find where they come from</h2>
+      <h3 class="minor-title">But don't worry, this shouldn't take long</h3>
     </div>
 
     <div class="artists-wrapper">
@@ -19,10 +17,10 @@
         class="artists-wrapper-loading"
         *ngIf="scrapedArtistsData.length == 0; else scrapedArtistList"
       >
-        <span>Fetching data...</span>
+        <span>Finding where your top artists come from...</span>
       </div>
       <ng-template #scrapedArtistList></ng-template>
-      <div>
+      <div class="scraped-artist-list">
         <div class="artist-item" *ngFor="let scrapedArtistData of scrapedArtistsData">
           <span
             class="{{
@@ -38,5 +36,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </main>
