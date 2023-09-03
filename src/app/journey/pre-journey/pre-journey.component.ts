@@ -27,8 +27,8 @@ export class PreJourneyComponent implements OnInit {
     this.artistService
       .getScrapedArtists()
       .pipe(filter((status): status is ScrapedArtistData => status !== undefined))
-      .subscribe((scrapedArtist) => {
-        this.scrapedArtistsData.push(scrapedArtist);
+      .subscribe((scrapedArtistData) => {
+        this.scrapedArtistsData.unshift(scrapedArtistData);
       });
   }
 }
