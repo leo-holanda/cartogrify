@@ -50,9 +50,17 @@ section {
   font-weight: bold;
 }
 
-.user-without-country-warning-wrapper {
+.empty-country-title-wrapper {
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 50%;
+}
+
+.empty-country-message {
+  color: grey;
+  font-size: var(--fs-200);
+  width: 50%;
 }
 
 @media (min-width: 641px) and (max-width: 1280px) {
@@ -71,6 +79,11 @@ section {
 
   .post-title {
     text-align: center;
+  }
+
+  .empty-country-message {
+    text-align: center;
+    width: 50%;
   }
 }
 
@@ -93,5 +106,10 @@ section {
   .post-title {
     text-align: center;
     font-size: var(--fs-100);
+  }
+
+  .empty-country-message {
+    font-size: var(--fs-100);
+    text-align: center;
   }
 }
