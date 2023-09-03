@@ -1,11 +1,11 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FifthPartComponent } from "./fifth-part.component";
+import { MapPartComponent } from "./map-part.component";
 import { WorldMapModule } from "src/app/artists/world-map/world-map.module";
 
 @NgModule({
-  declarations: [FifthPartComponent],
+  declarations: [MapPartComponent],
   imports: [CommonModule, WorldMapModule],
-  exports: [FifthPartComponent],
+  exports: [MapPartComponent],
 })
-export class FifthPartModule {}
+export class MapPartModule {}

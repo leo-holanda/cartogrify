@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { FifthPartComponent } from "./fifth-part.component";
+import { MapPartComponent } from "./map-part.component";
 
-describe("FifthPartComponent", () => {
-  let component: FifthPartComponent;
-  let fixture: ComponentFixture<FifthPartComponent>;
+describe("MapPartComponent", () => {
+  let component: MapPartComponent;
+  let fixture: ComponentFixture<MapPartComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [FifthPartComponent],
+      declarations: [MapPartComponent],
     });
-    fixture = TestBed.createComponent(FifthPartComponent);
+    fixture = TestBed.createComponent(MapPartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

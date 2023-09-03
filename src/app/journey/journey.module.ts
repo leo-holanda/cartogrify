@@ -9,8 +9,8 @@ import { CountriesCountComponent } from "./countries-count/countries-count.compo
 import { CountriesStatsComponent } from "./countries-stats/countries-stats.component";
 import { RegionsCountComponent } from "./regions-count/regions-count.component";
 import { RegionsCountModule } from "./regions-count/regions-count.module";
-import { FifthPartComponent } from "./fifth-part/fifth-part.component";
-import { FifthPartModule } from "./fifth-part/fifth-part.module";
+import { MapPartComponent } from "./map-part/map-part.component";
+import { MapPartModule } from "./map-part/map-part.module";
 import { ArtistsPartModule } from "./artists-part/artists-part.module";
 import { ArtistsPartComponent } from "./artists-part/artists-part.component";
 
@@ -24,14 +24,14 @@ import { ArtistsPartComponent } from "./artists-part/artists-part.component";
     CountriesStatsModule,
     RegionsCountModule,
     ArtistsPartModule,
-    FifthPartModule,
+    MapPartModule,
   ],
   exports: [
     CountriesCountComponent,
     CountriesStatsComponent,
     RegionsCountComponent,
     ArtistsPartComponent,
-    FifthPartComponent,
+    MapPartComponent,
   ],
 })
 export class JourneyModule {}
