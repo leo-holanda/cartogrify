@@ -29,3 +29,8 @@ export interface ScrapedArtistData {
   total: number;
   remanining: number;
 }
+
+export interface ArtistsWithoutCountryStatus {
+  hasArtistsWithoutCountry: boolean;
+  artistsWithoutCountryQuantity: number;
+}

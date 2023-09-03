@@ -13,12 +13,14 @@ import { MapPartComponent } from "./map-part/map-part.component";
 import { MapPartModule } from "./map-part/map-part.module";
 import { ArtistsPartModule } from "./artists-part/artists-part.module";
 import { ArtistsPartComponent } from "./artists-part/artists-part.component";
+import { PreJourneyModule } from "./pre-journey/pre-journey.module";
 
 @NgModule({
-  declarations: [PreJourneyComponent],
+  declarations: [],
   imports: [
     CommonModule,
     JourneyRoutingModule,
+    PreJourneyModule,
     WorldMapModule,
     CountriesCountModule,
     CountriesStatsModule,
