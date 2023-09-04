@@ -1,5 +1,14 @@
 <p-toast></p-toast>
 
+<p-sidebar [(visible)]="isSidebarVisible">
+  <h3>Sidebar</h3>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+    laboris nisi ut aliquip ex ea commodo consequat.
+  </p>
+</p-sidebar>
+
 <main>
   <section class="title-wrapper">
     <h1>Explore the origins of the music you love</h1>
@@ -61,3 +70,17 @@
     </div>
   </section>
 </main>
+<footer>
+  <div class="footer-links">
+    <p-button
+      (onClick)="isSidebarVisible = true"
+      label="About"
+      styleClass="p-button-link"
+    ></p-button>
+    <p-button
+      (onClick)="isSidebarVisible = true"
+      label="Privacy Policy"
+      styleClass="p-button-link"
+    ></p-button>
+  </div>
+</footer>

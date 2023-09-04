@@ -1,5 +1,12 @@
 @import "../../../shared/variables.scss";
 
+:host {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  height: 100%;
+}
+
 main {
   height: 100%;
   background: $background;
@@ -9,6 +16,24 @@ main {
   flex-flow: column;
   overflow: hidden;
   padding: 3rem;
+}
+
+footer {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  padding: 0 2rem 2rem 2rem;
+  background-color: #dde5b6;
+  color: black;
+
+  p {
+    margin: 0;
+  }
+}
+
+.footer-links {
+  display: flex;
+  gap: 1rem;
 }
 
 .title-wrapper {

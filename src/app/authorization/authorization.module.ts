@@ -10,6 +10,7 @@ import { ToastModule } from "primeng/toast";
 import { MessageService } from "primeng/api";
 import { DialogModule } from "primeng/dialog";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { SidebarModule } from "primeng/sidebar";
 
 @NgModule({
   declarations: [PostLoginComponent, LoginComponent],
@@ -22,6 +23,7 @@ import { ProgressSpinnerModule } from "primeng/progressspinner";
     ToastModule,
     DialogModule,
     ProgressSpinnerModule,
+    SidebarModule,
   ],
   providers: [MessageService],
 })

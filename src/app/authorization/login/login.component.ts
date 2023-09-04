@@ -20,6 +20,7 @@ export class LoginComponent {
   hasInitiatedLogin = false;
   hasClickedLastFmButton = false;
   hasClickedLastFmStartButton = false;
+  isSidebarVisible = false;
 
   constructor(
     private spotifyAuthService: SpotifyAuthService,
