@@ -351,7 +351,7 @@ export class CountryService {
     if (suggestionsToSave.length > 0) this.supabaseService.saveSuggestions(suggestionsToSave);
   }
 
-  getCountryByCode(countryCode: number | undefined): Country | undefined {
+  getCountryByCode(countryCode: number | undefined): Country {
     const unknownCountry: Country = {
       name: "Unknown",
       flagCode: "xx",

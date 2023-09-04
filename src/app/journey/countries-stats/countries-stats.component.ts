@@ -13,8 +13,7 @@ import { Country } from "src/app/country/country.model";
   styleUrls: ["./countries-stats.component.scss"],
 })
 export class CountriesStatsComponent implements OnInit {
-  user!: User | undefined;
-  userCountry!: Country | undefined;
+  userCountry!: Country;
 
   diversityIndexes: DiversityIndex[] | undefined;
   comparedDiversityData: ComparedDiversityData | undefined;
@@ -29,8 +28,8 @@ export class CountriesStatsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.user = this.userService.getUser();
-    this.userCountry = this.countryService.getCountryByCode(this.user?.countryCode);
+    const user = this.userService.getUser();
+    this.userCountry = this.countryService.getCountryByCode(user?.countryCode);
 
     this.countryService.getCountriesCount().subscribe((userCountriesCount) => {
       this.statisticsSevice.getDiversityIndexes().subscribe((diversityIndexes) => {
@@ -43,7 +42,7 @@ export class CountriesStatsComponent implements OnInit {
           this.comparedDiversityData = comparedDiversityData;
         });
 
-      if (this.userCountry) {
+      if (this.userCountry?.NE_ID != 0) {
         this.statisticsSevice
           .getComparedDiversityInUserCountry(userCountriesCount.length, this.userCountry.NE_ID)
           .subscribe((comparedDiversityDataInUserCountry) => {

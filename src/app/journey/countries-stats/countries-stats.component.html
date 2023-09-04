@@ -11,7 +11,7 @@
   </h3>
 </div>
 
-<div *ngIf="userCountry != undefined; else userWithoutCountryTemplate" class="title-wrapper">
+<div *ngIf="userCountry.NE_ID != 0; else userWithoutCountryTemplate" class="title-wrapper">
   <h2 class="pre-title">And more than</h2>
   <h1 class="title">
     <span class="rating-item">
@@ -28,8 +28,7 @@
 <ng-template #userWithoutCountryTemplate>
   <div class="empty-country-title-wrapper">
     <h2 class="empty-country-message">
-      Your account doesn't have a country associated to it. Comparing you among others users in your
-      country is not possible.
+      Associate your account with a country to allow the comparison with users in your country
     </h2>
   </div>
 </ng-template>
