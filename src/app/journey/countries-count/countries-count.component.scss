@@ -4,6 +4,7 @@
   gap: 4rem;
   padding: 2rem;
   width: 100%;
+  background-color: #9fc088;
 }
 
 .title-wrapper {
@@ -11,6 +12,7 @@
   flex-direction: column;
   justify-content: center;
   gap: 0.5rem;
+  height: 80dvh;
 }
 
 .pre-title {
@@ -22,6 +24,7 @@
   font-size: var(--fs-600);
   font-weight: bold;
   margin: 0;
+  color: #567189;
 }
 
 .count-value {

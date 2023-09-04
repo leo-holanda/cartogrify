@@ -2,6 +2,8 @@
   display: flex;
   flex-flow: column;
   padding: 2rem;
+  background-color: #f6f1e1;
+  color: #723d46;
 }
 
 div {
@@ -9,7 +11,7 @@ div {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height: 50dvh;
+  height: 80dvh;
   gap: 2rem;
 }
 

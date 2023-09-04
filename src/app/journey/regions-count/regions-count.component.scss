@@ -5,6 +5,7 @@
   padding: 2rem;
   width: 100%;
   gap: 2rem;
+  background-color: #5c83ad;
 }
 
 .title-wrapper {
@@ -20,16 +21,11 @@
   margin: 0;
 }
 
-.content-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .tree-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 80dvh;
 }
 
 @media (min-width: 641px) and (max-width: 1280px) {
