@@ -1,37 +1,35 @@
-<section>
-  <div class="title-wrapper">
-    <h2 class="pre-title">That's more than</h2>
-    <h1 class="title">
-      <span class="rating-item">
-        {{ comparedDiversityData?.comparedDiversity || "..." }}
-      </span>
-    </h1>
-    <h3 class="post-title">
-      of <span class="count-value">{{ comparedDiversityData?.totalUsers }}</span> cartogrify users
-      around the world!
-    </h3>
-  </div>
+<div class="title-wrapper">
+  <h2 class="pre-title">That's more than</h2>
+  <h1 class="title">
+    <span class="rating-item">
+      {{ comparedDiversityData?.comparedDiversity || "..." }}
+    </span>
+  </h1>
+  <h3 class="post-title">
+    of <span class="count-value">{{ comparedDiversityData?.totalUsers }}</span> cartogrify users
+    around the world!
+  </h3>
+</div>
 
-  <div *ngIf="user.countryCode != undefined; else userWithoutCountryTemplate" class="title-wrapper">
-    <h2 class="pre-title">And more than</h2>
-    <h1 class="title">
-      <span class="rating-item">
-        {{ comparedDiversityDataInUserCountry?.comparedDiversity || "..." }}
-      </span>
-    </h1>
-    <h3 class="post-title">
-      of <span class="count-value"> {{ comparedDiversityDataInUserCountry?.totalUsers }} </span>
-      cartogrify users in
-      <span class="{{ 'flag fi fi-' + userCountry?.flagCode }}"></span> {{ userCountry?.name }}!
-    </h3>
-  </div>
+<div *ngIf="user.countryCode != undefined; else userWithoutCountryTemplate" class="title-wrapper">
+  <h2 class="pre-title">And more than</h2>
+  <h1 class="title">
+    <span class="rating-item">
+      {{ comparedDiversityDataInUserCountry?.comparedDiversity || "..." }}
+    </span>
+  </h1>
+  <h3 class="post-title">
+    of <span class="count-value"> {{ comparedDiversityDataInUserCountry?.totalUsers }} </span>
+    cartogrify users in
+    <span class="{{ 'flag fi fi-' + userCountry?.flagCode }}"></span> {{ userCountry?.name }}!
+  </h3>
+</div>
 
-  <ng-template #userWithoutCountryTemplate>
-    <div class="empty-country-title-wrapper">
-      <h2 class="empty-country-message">
-        Your account doesn't have a country associated to it. Comparing you among others users in
-        your country is not possible.
-      </h2>
-    </div>
-  </ng-template>
-</section>
+<ng-template #userWithoutCountryTemplate>
+  <div class="empty-country-title-wrapper">
+    <h2 class="empty-country-message">
+      Your account doesn't have a country associated to it. Comparing you among others users in your
+      country is not possible.
+    </h2>
+  </div>
+</ng-template>
