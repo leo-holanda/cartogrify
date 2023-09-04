@@ -1,6 +1,13 @@
 :host {
   display: flex;
+  flex-flow: column;
+  background-color: white;
+  padding: var(--ranking-wrapper-padding);
+  border-radius: var(--ranking-border-radius);
   overflow-y: auto;
+  width: var(--ranking-width);
+  color: black;
+  height: 50vh;
 
   --ranking-wrapper-padding: 2rem 2rem 1rem 2rem;
   --ranking-border-radius: 1rem;
@@ -11,17 +18,6 @@
   --ranking-flag-font-size: 1.75rem;
   --ranking-flag-margin-right: 0.5rem;
   --ranking-artist-count-column: 1rem 0;
-}
-
-.ranking-wrapper {
-  display: flex;
-  flex-flow: column;
-  background-color: white;
-  padding: var(--ranking-wrapper-padding);
-  border-radius: var(--ranking-border-radius);
-  overflow-y: auto;
-  width: var(--ranking-width);
-  color: black;
 }
 
 .ranking-header {

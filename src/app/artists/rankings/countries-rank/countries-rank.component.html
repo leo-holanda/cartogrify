@@ -1,30 +1,28 @@
-<div class="ranking-wrapper">
-  <div class="ranking-header">
-    <h2 class="ranking-title">Here's your destinations</h2>
-  </div>
-  <div class="ranking-content">
-    <table>
-      <thead>
-        <th class="table-header-column">Country</th>
-        <th class="table-header-column">Artists</th>
-      </thead>
-      <tbody>
-        <tr class="table-row" *ngFor="let countryCount of countriesCount; let i = index">
-          <td class="country-column">
-            <div>
-              <span class="{{ 'flag fi fi-' + countryCount.country.flagCode }}"></span>
-            </div>
-            <div class="country">
-              <p class="country-name">{{ countryCount.country.name }}</p>
-              <p-progressBar [value]="(countryCount.count / artists.length) * 100"></p-progressBar>
-            </div>
-          </td>
+<div class="ranking-header">
+  <h2 class="ranking-title">Here's your destinations</h2>
+</div>
+<div class="ranking-content">
+  <table>
+    <thead>
+      <th class="table-header-column">Country</th>
+      <th class="table-header-column">Artists</th>
+    </thead>
+    <tbody>
+      <tr class="table-row" *ngFor="let countryCount of countriesCount; let i = index">
+        <td class="country-column">
+          <div>
+            <span class="{{ 'flag fi fi-' + countryCount.country.flagCode }}"></span>
+          </div>
+          <div class="country">
+            <p class="country-name">{{ countryCount.country.name }}</p>
+            <p-progressBar [value]="(countryCount.count / artists.length) * 100"></p-progressBar>
+          </div>
+        </td>
 
-          <td class="artist-count-column">
-            {{ countryCount.count }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        <td class="artist-count-column">
+          {{ countryCount.count }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
