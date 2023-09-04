@@ -1,14 +1,8 @@
 :host {
   display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-section {
-  display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 2rem;
+  padding: 2rem;
   width: 100%;
   gap: 2rem;
 }
@@ -39,7 +33,7 @@ section {
 }
 
 @media (min-width: 641px) and (max-width: 1280px) {
-  section {
+  :host {
     gap: 2rem;
   }
 
@@ -49,7 +43,7 @@ section {
 }
 
 @media (max-width: 640px) {
-  section {
+  :host {
     gap: 1rem;
   }
 
