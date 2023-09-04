@@ -9,7 +9,6 @@ import {
 import { SupabaseService } from "../shared/supabase.service";
 import { BehaviorSubject, Observable, take } from "rxjs";
 import { CountryService } from "../country/country.service";
-import { UserService } from "../user/user.service";
 
 @Injectable({
   providedIn: "root",
@@ -23,11 +22,7 @@ export class ArtistService {
 
   private hasRequestedTopArtists = false;
 
-  constructor(
-    private supabaseService: SupabaseService,
-    private countryService: CountryService,
-    private userService: UserService
-  ) {}
+  constructor(private supabaseService: SupabaseService, private countryService: CountryService) {}
 
   setUserTopArtists(topArtistsNames: string[]): void {
     this.hasRequestedTopArtists = true;
