@@ -25,15 +25,19 @@ footer {
   padding: 0 2rem 2rem 2rem;
   background-color: #dde5b6;
   color: black;
-
-  p {
-    margin: 0;
-  }
 }
 
 .footer-links {
   display: flex;
-  gap: 1rem;
+}
+
+.footer-link {
+  cursor: pointer;
+  padding: 1rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .title-wrapper {

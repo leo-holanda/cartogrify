@@ -72,15 +72,7 @@
 </main>
 <footer>
   <div class="footer-links">
-    <p-button
-      (onClick)="isSidebarVisible = true"
-      label="About"
-      styleClass="p-button-link"
-    ></p-button>
-    <p-button
-      (onClick)="isSidebarVisible = true"
-      label="Privacy Policy"
-      styleClass="p-button-link"
-    ></p-button>
+    <a class="footer-link" (click)="isSidebarVisible = true">About</a>
+    <a class="footer-link" (click)="isSidebarVisible = true">Privacy Policy</a>
   </div>
 </footer>
