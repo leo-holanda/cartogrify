@@ -1,23 +1,18 @@
 :host {
   display: flex;
+  flex-flow: column;
+  background-color: white;
+  color: black;
+  padding: 2rem;
+  border-radius: 1rem;
   overflow-y: auto;
+  height: 50vh;
 }
 
 ::ng-deep {
   .suggestion-message-wrapper .p-message-warn {
     margin-top: 0;
   }
-}
-
-.ranking-wrapper {
-  display: flex;
-  flex-flow: column;
-  background-color: white;
-  color: black;
-  padding: 1rem;
-  border-radius: 1rem;
-  overflow-y: auto;
-  height: 50vh;
 }
 
 .suggestion-message-icon {
@@ -90,7 +85,7 @@ table {
 
   .table-column {
     white-space: nowrap;
-    padding: 0 1.5rem 1.5rem 0.5rem;
+    padding: 0 1rem 1.5rem 0;
   }
 
   .table-row:last-child {
@@ -98,29 +93,54 @@ table {
       padding-bottom: 0;
     }
   }
+}
 
-  .artist-index {
-    padding: 0 0.5rem 1.5rem 0;
-    text-align: center;
-    font-size: 1.3rem;
-  }
-
-  .artist-data {
-    .artist-name {
-      font-size: 1.2rem;
-    }
-
-    .country-flag {
-      margin-top: 0.25rem;
-    }
-
-    .country-name {
-      font-size: 0.9rem;
-    }
-  }
+.artist-index {
+  padding: 0 1rem 1.5rem 0;
+  text-align: center;
+  font-size: var(--fs-000);
+  font-weight: bold;
 }
 
 .confirm-button-wrapper {
   display: flex;
   justify-content: space-between;
+}
+
+.artist-name {
+  font-size: var(--fs-100);
+}
+
+.country-flag {
+  font-size: var(--fs-000);
+  margin-top: 0.25rem;
+}
+
+.country-name {
+  font-size: var(--fs-000);
+}
+
+@media (min-width: 641px) and (max-width: 1280px) {
+  :host {
+    padding: 1.5rem;
+  }
+
+  .artist-name {
+    font-size: var(--fs-100);
+  }
+
+  .country-name {
+    font-size: var(--fs-000);
+  }
+}
+
+@media (max-width: 640px) {
+  :host {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: var(--fs-200);
+    text-align: center;
+  }
 }

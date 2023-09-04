@@ -1,35 +1,32 @@
-<div class="ranking-wrapper">
-  <div class="ranking-content">
-    <table>
-      <tbody>
-        <tr class="table-row" *ngFor="let artist of artists; let i = index">
-          <td class="table-column artist-index">
-            {{ i + 1 }}
-          </td>
+<div class="ranking-content">
+  <table>
+    <tbody>
+      <tr class="table-row" *ngFor="let artist of artists; let i = index">
+        <td class="table-column artist-index">
+          {{ i + 1 }}
+        </td>
 
-          <td class="table-column">
-            <div class="artist-data">
-              <span class="artist-name">
-                {{ artist.name }}
+        <td class="table-column">
+          <div class="artist-data">
+            <span class="artist-name">
+              {{ artist.name }}
+            </span>
+
+            <div>
+              <span
+                class="{{
+                  'country-flag fi fi-' + (artist.country == null ? 'xx' : artist.country.flagCode)
+                }}"
+              >
               </span>
 
-              <div>
-                <span
-                  class="{{
-                    'country-flag fi fi-' +
-                      (artist.country == null ? 'xx' : artist.country.flagCode)
-                  }}"
-                >
-                </span>
-
-                <span class="country-name">
-                  {{ artist.country?.name || "Unknown" }}
-                </span>
-              </div>
+              <span class="country-name">
+                {{ artist.country?.name || "Unknown" }}
+              </span>
             </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
