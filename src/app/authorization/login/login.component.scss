@@ -142,3 +142,13 @@ button {
   font-size: 2rem;
   margin-right: 0.5rem;
 }
+
+.spotify-button-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.spotify-tester-message {
+  color: black;
+}
