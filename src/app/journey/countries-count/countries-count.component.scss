@@ -5,6 +5,7 @@
   padding: 2rem;
   width: 100%;
   background-color: #9fc088;
+  min-height: 90dvh;
 }
 
 .title-wrapper {
@@ -12,7 +13,6 @@
   flex-direction: column;
   justify-content: center;
   gap: 0.5rem;
-  height: 80dvh;
 }
 
 .pre-title {

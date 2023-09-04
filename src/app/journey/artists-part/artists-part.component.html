@@ -38,11 +38,7 @@
         always makes happy noises when this happen!
       </p>
 
-      <p-button
-        (onClick)="openSuggestionDialog()"
-        label="Make a suggestion"
-        styleClass="p-button-outlined"
-      ></p-button>
+      <p-button (onClick)="openSuggestionDialog()" label="Make a suggestion"></p-button>
 
       <p *ngIf="hasHappyNoises">
         <i>*The robot is making happy noises*</i>
