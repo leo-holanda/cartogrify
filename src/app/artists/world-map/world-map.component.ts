@@ -126,6 +126,9 @@ export class WorldMapComponent implements AfterViewInit {
     this.mapWrapper.nativeElement.style.position = "absolute";
     this.mapWrapper.nativeElement.style.height = this.shareMapResolution.height;
     this.mapWrapper.nativeElement.style.width = this.shareMapResolution.width;
+    this.mapWrapper.nativeElement.style.top = "0";
+    this.mapWrapper.nativeElement.style.left = "0";
+
     this.updateMap();
 
     setTimeout(() => {
@@ -139,6 +142,8 @@ export class WorldMapComponent implements AfterViewInit {
           a.click();
           document.body.removeChild(a);
 
+          this.mapWrapper.nativeElement.style.top = "";
+          this.mapWrapper.nativeElement.style.left = "";
           this.mapWrapper.nativeElement.style.position = "relative";
           this.mapWrapper.nativeElement.style.height = "100%";
           this.mapWrapper.nativeElement.style.width = "100%";
@@ -149,27 +154,6 @@ export class WorldMapComponent implements AfterViewInit {
           console.error("oops, something went wrong!", error);
         });
     }, 500);
-  }
-
-  shareRanking(): void {
-    const rankingWrapper = document.querySelector(".ranking-wrapper") as HTMLElement;
-    const rankingComponent = document.querySelector("ctg-countries-rank") as HTMLElement;
-    this.setRankingStyleVariables(rankingWrapper, rankingComponent, true);
-
-    htmlToImage
-      .toPng(rankingWrapper)
-      .then((dataUrl) => {
-        const a = document.createElement("a");
-        a.href = dataUrl;
-        a.download = "cartogrify_ranking";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        this.setRankingStyleVariables(rankingWrapper, rankingComponent, false);
-      })
-      .catch(function (error) {
-        console.error("oops, something went wrong!", error);
-      });
   }
 
   onChangeDefaultResolutionStatus(): void {
