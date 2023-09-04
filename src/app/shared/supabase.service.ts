@@ -10,6 +10,7 @@ import {
   LastFmUserResponse,
 } from "./supabase.model";
 import { User } from "../user/user.model";
+import { UserService } from "../user/user.service";
 
 @Injectable({
   providedIn: "root",
@@ -17,7 +18,7 @@ import { User } from "../user/user.model";
 export class SupabaseService {
   private supabaseClient!: SupabaseClient;
 
-  constructor() {
+  constructor(private userService: UserService) {
     this.supabaseClient = createClient(environment.SUPABASE_URL, environment.SUPABASE_ANON_KEY);
   }
 
@@ -67,19 +68,23 @@ export class SupabaseService {
     ).subscribe();
   }
 
-  saveDiversityIndex(user: User, countriesCount: number): void {
-    const userData = {
-      user_id: user.id,
-      user_countries_count: countriesCount,
-      user_country_code: user.countryCode,
-    };
+  saveDiversityIndex(countriesCount: number): void {
+    const user = this.userService.getUser();
 
-    scheduled(
-      this.supabaseClient.functions.invoke<Suggestion[]>("save-user-diversity-index", {
-        body: JSON.stringify(userData),
-      }),
-      asyncScheduler
-    ).subscribe();
+    if (user) {
+      const userData = {
+        user_id: user.id,
+        user_countries_count: countriesCount,
+        user_country_code: user.countryCode,
+      };
+
+      scheduled(
+        this.supabaseClient.functions.invoke<Suggestion[]>("save-user-diversity-index", {
+          body: JSON.stringify(userData),
+        }),
+        asyncScheduler
+      ).subscribe();
+    }
   }
 
   getLastFmUserProfileData(userName: string): Observable<LastFmUserResponse> {

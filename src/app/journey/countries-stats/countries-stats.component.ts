@@ -13,7 +13,7 @@ import { Country } from "src/app/country/country.model";
   styleUrls: ["./countries-stats.component.scss"],
 })
 export class CountriesStatsComponent implements OnInit {
-  user!: User;
+  user!: User | undefined;
   userCountry!: Country | undefined;
 
   diversityIndexes: DiversityIndex[] | undefined;
@@ -30,7 +30,7 @@ export class CountriesStatsComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.userService.getUser();
-    this.userCountry = this.countryService.getCountryByCode(this.user.countryCode);
+    this.userCountry = this.countryService.getCountryByCode(this.user?.countryCode);
 
     this.countryService.getCountriesCount().subscribe((userCountriesCount) => {
       this.statisticsSevice.getDiversityIndexes().subscribe((diversityIndexes) => {
@@ -43,15 +43,15 @@ export class CountriesStatsComponent implements OnInit {
           this.comparedDiversityData = comparedDiversityData;
         });
 
-      if (this.user.countryCode) {
+      if (this.userCountry) {
         this.statisticsSevice
-          .getComparedDiversityInUserCountry(userCountriesCount.length, this.user.countryCode)
+          .getComparedDiversityInUserCountry(userCountriesCount.length, this.userCountry.NE_ID)
           .subscribe((comparedDiversityDataInUserCountry) => {
             this.comparedDiversityDataInUserCountry = comparedDiversityDataInUserCountry;
           });
 
         this.statisticsSevice
-          .getDiversityIndexesInUserCountry(this.user.countryCode)
+          .getDiversityIndexesInUserCountry(this.userCountry.NE_ID)
           .subscribe((diversityIndexesInUserCountry) => {
             this.diversityIndexesInUserCountry = diversityIndexesInUserCountry;
           });

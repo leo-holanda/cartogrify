@@ -58,8 +58,7 @@ export class ArtistService {
             .getCountriesCount()
             .pipe(take(1))
             .subscribe((countriesCount) => {
-              const user = this.userService.getUser();
-              this.supabaseService.saveDiversityIndex(user, countriesCount.length);
+              this.supabaseService.saveDiversityIndex(countriesCount.length);
             });
         } else {
           this.hasArtistsWithoutCountry$.next({
@@ -91,8 +90,7 @@ export class ArtistService {
                 .getCountriesCount()
                 .pipe(take(1))
                 .subscribe((countriesCount) => {
-                  const user = this.userService.getUser();
-                  this.supabaseService.saveDiversityIndex(user, countriesCount.length);
+                  this.supabaseService.saveDiversityIndex(countriesCount.length);
                 });
             },
           });

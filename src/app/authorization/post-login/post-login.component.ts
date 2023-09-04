@@ -44,13 +44,15 @@ export class PostLoginComponent implements OnInit {
           this.isAuthorized = true;
           this.spotifyAuthService.requestAccessToken(code).subscribe({
             next: () => {
-              this.spotifyService.getUserTopArtists().subscribe((topArtists) => {
-                this.artistService.setUserTopArtists(topArtists);
-                this.router.navigate(["/journey"]);
-              });
-
-              this.spotifyService.getUserProfileData().subscribe((userProfileData) => {
-                this.userService.setUser(userProfileData);
+              this.spotifyService.getUserProfileData().subscribe({
+                next: (userProfileData) => {
+                  this.userService.setUser(userProfileData);
+                  this.spotifyService.getUserTopArtists().subscribe((topArtists) => {
+                    this.artistService.setUserTopArtists(topArtists);
+                    this.router.navigate(["/journey"]);
+                  });
+                },
+                error: (err) => this.handleSpotifyError(err),
               });
             },
             error: (err) => this.handleSpotifyError(err),

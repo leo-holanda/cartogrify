@@ -11,7 +11,7 @@
   </h3>
 </div>
 
-<div *ngIf="user.countryCode != undefined; else userWithoutCountryTemplate" class="title-wrapper">
+<div *ngIf="userCountry != undefined; else userWithoutCountryTemplate" class="title-wrapper">
   <h2 class="pre-title">And more than</h2>
   <h1 class="title">
     <span class="rating-item">
@@ -21,7 +21,7 @@
   <h3 class="post-title">
     of <span class="count-value"> {{ comparedDiversityDataInUserCountry?.totalUsers }} </span>
     cartogrify users in
-    <span class="{{ 'flag fi fi-' + userCountry?.flagCode }}"></span> {{ userCountry?.name }}!
+    <span class="{{ 'flag fi fi-' + userCountry.flagCode }}"></span> {{ userCountry.name }}!
   </h3>
 </div>
 

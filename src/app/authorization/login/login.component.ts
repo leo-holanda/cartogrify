@@ -45,7 +45,6 @@ export class LoginComponent {
       this.spotifyAuthService.refreshToken().subscribe({
         next: () => {
           this.fetchUserDataFromSpotify();
-          this.setUserProfileData();
         },
         error: (err) => this.handleSpotifyError(err),
       });
@@ -53,7 +52,6 @@ export class LoginComponent {
     }
 
     this.fetchUserDataFromSpotify();
-    this.setUserProfileData();
   }
 
   onLastfmButtonClick(): void {
@@ -111,12 +109,18 @@ export class LoginComponent {
   }
 
   private fetchUserDataFromSpotify(): void {
-    this.spotifyService.getUserTopArtists().subscribe({
-      next: (topArtists) => {
-        this.artistService.setUserTopArtists(topArtists);
-        this.router.navigate(["/journey"]);
+    this.spotifyService.getUserProfileData().subscribe({
+      next: (userProfileData) => {
+        this.userService.setUser(userProfileData);
+        this.spotifyService.getUserTopArtists().subscribe({
+          next: (topArtists) => {
+            this.artistService.setUserTopArtists(topArtists);
+            this.router.navigate(["/journey"]);
+          },
+          error: (err) => this.handleSpotifyError(err),
+        });
       },
-      error: this.handleSpotifyError,
+      error: (err) => this.handleSpotifyError(err),
     });
   }
 
@@ -138,11 +142,5 @@ export class LoginComponent {
     });
 
     this.hasInitiatedLogin = false;
-  }
-
-  private setUserProfileData(): void {
-    this.spotifyService.getUserProfileData().subscribe((userProfileData) => {
-      this.userService.setUser(userProfileData);
-    });
   }
 }
