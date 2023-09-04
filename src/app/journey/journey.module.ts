@@ -14,6 +14,8 @@ import { MapPartModule } from "./map-part/map-part.module";
 import { ArtistsPartModule } from "./artists-part/artists-part.module";
 import { ArtistsPartComponent } from "./artists-part/artists-part.component";
 import { PreJourneyModule } from "./pre-journey/pre-journey.module";
+import { IntroComponent } from "./intro/intro.component";
+import { IntroModule } from "./intro/intro.module";
 
 @NgModule({
   declarations: [],
@@ -27,6 +29,7 @@ import { PreJourneyModule } from "./pre-journey/pre-journey.module";
     RegionsCountModule,
     ArtistsPartModule,
     MapPartModule,
+    IntroModule,
   ],
   exports: [
     CountriesCountComponent,
@@ -34,6 +37,7 @@ import { PreJourneyModule } from "./pre-journey/pre-journey.module";
     RegionsCountComponent,
     ArtistsPartComponent,
     MapPartComponent,
+    IntroComponent,
   ],
 })
 export class JourneyModule {}
