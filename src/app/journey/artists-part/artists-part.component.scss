@@ -6,6 +6,7 @@
   padding: 2rem;
   background-color: #94d2bd;
   color: #494949;
+  min-height: 90dvh;
 }
 
 .title-wrapper {
@@ -15,7 +16,6 @@
   flex-direction: column;
   gap: 2rem;
   width: 50%;
-  min-height: 80dvh;
 }
 
 .title {
@@ -57,6 +57,7 @@
   :host {
     flex-direction: column;
     gap: 2rem;
+    min-height: fit-content;
   }
 
   .title-wrapper {
@@ -79,6 +80,7 @@
   :host {
     flex-direction: column;
     gap: 2rem;
+    min-height: fit-content;
   }
 
   .title-wrapper {
