@@ -3,19 +3,20 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-  --fs--300: clamp(0.58rem, calc(0.58rem + 0vw), 0.58rem);
-  --fs--200: clamp(0.69rem, calc(0.69rem + 0vw), 0.69rem);
-  --fs--100: clamp(0.83rem, calc(0.83rem + 0vw), 0.83rem);
-  --fs-000: clamp(1rem, calc(1rem + 0vw), 1rem);
-  --fs-100: clamp(1.2rem, calc(1.2rem + 0vw), 1.2rem);
-  --fs-200: clamp(1.44rem, calc(1.44rem + 0vw), 1.44rem);
-  --fs-300: clamp(1.73rem, calc(1.73rem + 0vw), 1.73rem);
-  --fs-400: clamp(2.07rem, calc(2.07rem + 0vw), 2.07rem);
-  --fs-500: clamp(2.49rem, calc(2.49rem + 0vw), 2.49rem);
-  --fs-600: clamp(2.99rem, calc(2.99rem + 0vw), 2.99rem);
-  --fs-700: clamp(3.58rem, calc(3.58rem + 0vw), 3.58rem);
-  --fs-800: clamp(4.3rem, calc(4.3rem + 0vw), 4.3rem);
-  --fs-900: clamp(5.16rem, calc(5.16rem + 0vw), 5.16rem);
+  --fs--300: clamp(0.58rem, calc(0.57rem + 0.05vw), 0.65rem);
+  --fs--200: clamp(0.69rem, calc(0.68rem + 0.06vw), 0.78rem);
+  --fs--100: clamp(0.83rem, calc(0.82rem + 0.07vw), 0.94rem);
+  --fs-000: clamp(1rem, calc(0.98rem + 0.09vw), 1.13rem);
+  --fs-100: clamp(1.2rem, calc(1.18rem + 0.11vw), 1.35rem);
+  --fs-200: clamp(1.44rem, calc(1.41rem + 0.13vw), 1.62rem);
+  --fs-300: clamp(1.73rem, calc(1.7rem + 0.15vw), 1.94rem);
+  --fs-400: clamp(2.07rem, calc(2.04rem + 0.18vw), 2.33rem);
+  --fs-500: clamp(2.49rem, calc(2.44rem + 0.22vw), 2.8rem);
+  --fs-600: clamp(2.99rem, calc(2.93rem + 0.27vw), 3.36rem);
+  --fs-700: clamp(3.58rem, calc(3.52rem + 0.32vw), 4.03rem);
+  --fs-800: clamp(4.3rem, calc(4.22rem + 0.38vw), 4.84rem);
+  --fs-900: clamp(5.16rem, calc(5.07rem + 0.46vw), 5.81rem);
+  --fs-1000: clamp(6.19rem, calc(6.08rem + 0.55vw), 6.97rem);
 }
 
 * {
