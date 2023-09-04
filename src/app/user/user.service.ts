@@ -17,7 +17,7 @@ export class UserService {
   }
 
   getUser(): User | undefined {
-    if (this._user?.countryCode && this._user.id) return { ...this._user };
+    if (this._user?.id) return { ...this._user };
     return undefined;
   }
 }
