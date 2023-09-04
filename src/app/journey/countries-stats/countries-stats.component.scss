@@ -42,6 +42,7 @@
 
 .rating-item {
   font-weight: bold;
+  font-size: var(--fs-900);
 }
 
 .empty-country-title-wrapper {
@@ -79,6 +80,10 @@
     text-align: center;
     width: 50%;
   }
+
+  .rating-item {
+    font-size: var(--fs-800);
+  }
 }
 
 @media (max-width: 640px) {
@@ -105,5 +110,9 @@
   .empty-country-message {
     font-size: var(--fs-100);
     text-align: center;
+  }
+
+  .rating-item {
+    font-size: var(--fs-700);
   }
 }
