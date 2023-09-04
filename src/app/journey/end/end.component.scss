@@ -2,6 +2,8 @@
   display: flex;
   flex-flow: column;
   padding: 2rem;
+  background-color: #22577a;
+  color: #eec170;
 }
 
 div {
@@ -9,7 +11,7 @@ div {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height: 50dvh;
+  height: 100dvh;
   gap: 2rem;
 }
 
@@ -26,6 +28,7 @@ h2 {
   text-align: center;
   margin: 0;
   font-size: var(--fs-300);
+  width: 60%;
 }
 
 @media (min-width: 641px) and (max-width: 1280px) {
