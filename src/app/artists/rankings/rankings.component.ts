@@ -82,8 +82,6 @@ export class RankingsComponent implements OnInit {
         .subscribe((comparedDiversity) => {
           this.comparedDiversity = comparedDiversity;
         });
-
-      const currentUser = this.userService.getUser();
     });
 
     this.countryService.getRegionsCount().subscribe((regionsCount) => {

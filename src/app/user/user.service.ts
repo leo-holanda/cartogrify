@@ -5,19 +5,19 @@ import { User } from "./user.model";
   providedIn: "root",
 })
 export class UserService {
-  private _user: User = {
-    id: "",
-    countryCode: 0,
-  };
+  private _user: User | undefined;
 
   constructor() {}
 
   setUser(user: User): void {
-    this._user.countryCode = user.countryCode;
-    this._user.id = user.id;
+    this._user = {
+      countryCode: user.countryCode,
+      id: user.id,
+    };
   }
 
-  getUser(): User {
-    return { ...this._user };
+  getUser(): User | undefined {
+    if (this._user?.countryCode && this._user.id) return { ...this._user };
+    return undefined;
   }
 }
