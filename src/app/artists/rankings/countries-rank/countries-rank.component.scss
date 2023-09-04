@@ -2,39 +2,27 @@
   display: flex;
   flex-flow: column;
   background-color: white;
-  padding: var(--ranking-wrapper-padding);
-  border-radius: var(--ranking-border-radius);
+  padding: 2rem;
+  border-radius: 1rem;
   overflow-y: auto;
-  width: var(--ranking-width);
+  width: fit-content;
   color: black;
   height: 50vh;
-
-  --ranking-wrapper-padding: 2rem 2rem 1rem 2rem;
-  --ranking-border-radius: 1rem;
-  --ranking-width: 100%;
-  --ranking-padding: 1rem 0;
-  --ranking-table-header-column: 0.5rem;
-  --ranking-country-column-padding-bottom: 0.5rem;
-  --ranking-flag-font-size: 1.75rem;
-  --ranking-flag-margin-right: 0.5rem;
-  --ranking-artist-count-column: 1rem 0;
 }
 
-.ranking-header {
-  .ranking-title {
-    margin: 0;
-  }
+.ranking-title {
+  margin: 0;
+  font-size: var(--fs-200);
+}
 
-  .ranking-subtitle {
-    color: #585858;
-    margin-top: 0;
-    margin-bottom: 1rem;
-  }
+.ranking-subtitle {
+  color: #585858;
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 .ranking-content {
   overflow-y: auto;
-  padding: var(--ranking-padding);
 
   &::-webkit-scrollbar {
     background-color: transparent;
@@ -61,8 +49,8 @@
 
     .table-header-column {
       color: black;
-      font-size: smaller;
-      padding-bottom: var(--ranking-table-header-column);
+      font-size: var(--fs--100);
+      padding-bottom: 1rem;
       text-align: left;
 
       &:last-child {
@@ -86,11 +74,11 @@
     .country-column {
       display: flex;
       white-space: nowrap;
-      padding-bottom: var(--ranking-country-column);
+      padding-bottom: 1rem;
 
       .flag {
-        font-size: var(--ranking-flag-font-size);
-        margin-right: var(--ranking-flag-margin-right);
+        font-size: var(--fs-300);
+        margin-right: 0.5rem;
       }
 
       .country {
@@ -101,7 +89,7 @@
       }
 
       .country-name {
-        font-size: 1.2rem;
+        font-size: var(--fs-100);
         margin: 0;
       }
     }
@@ -109,7 +97,24 @@
     .artist-count-column {
       text-align: right;
       vertical-align: bottom;
-      padding: var(--ranking-artist-count-column);
+      padding: 1rem 0;
+      font-size: var(--fs-100);
     }
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1280px) {
+  :host {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  :host {
+    padding: 1rem;
+  }
+
+  .ranking-title {
+    font-size: var(--fs-100);
   }
 }
