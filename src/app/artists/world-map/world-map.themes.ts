@@ -13,12 +13,12 @@ export const mapThemes: MapTheme[] = [
   {
     title: "Watermelon Sugar",
     colors: ["#eeb1b1", "#dd9696", "#cc7b7b", "#b66d7a", "#9f6078", "#895277", "#693f5a"],
-    background: "rgb(50, 50, 50)",
+    background: "rgb(255, 255, 255)",
   },
   {
     title: "Golden Glory",
     colors: ["#e8c29c", "#d8ae84", "#c79a6d", "#b78165", "#a6695c", "#91595c", "#664755"],
-    background: "rgb(50, 50, 50)",
+    background: "rgb(255, 255, 255)",
   },
   {
     title: "Sunburned Skies",
