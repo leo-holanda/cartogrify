@@ -65,6 +65,11 @@
   :host {
     flex-direction: column;
     gap: 2rem;
+    padding: 1.5rem;
+  }
+
+  .empty-country-message {
+    width: 100%;
   }
 
   .pre-title {
@@ -93,6 +98,11 @@
   :host {
     flex-direction: column;
     gap: 1rem;
+    padding: 1rem;
+  }
+
+  .empty-country-message {
+    width: 100%;
   }
 
   .pre-title {
