@@ -7,7 +7,6 @@
   overflow-y: auto;
   width: fit-content;
   color: black;
-  height: 50vh;
 }
 
 .ranking-title {
@@ -24,6 +23,7 @@
 
 .ranking-content {
   overflow-y: auto;
+  max-height: 60dvh;
 
   &::-webkit-scrollbar {
     background-color: transparent;
@@ -51,7 +51,7 @@
     .table-header-column {
       color: #585858;
       font-size: var(--fs--100);
-      padding-bottom: 0.5rem;
+      padding-bottom: 1rem;
       text-align: left;
 
       &:last-child {
@@ -98,7 +98,7 @@
     .artist-count-column {
       text-align: right;
       vertical-align: bottom;
-      padding: 1rem 0;
+      padding: 1rem 0 1.25rem 0;
       font-size: var(--fs-100);
     }
   }
