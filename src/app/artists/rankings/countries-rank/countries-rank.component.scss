@@ -13,6 +13,7 @@
 .ranking-title {
   margin: 0;
   font-size: var(--fs-200);
+  padding-bottom: 1rem;
 }
 
 .ranking-subtitle {
@@ -48,9 +49,9 @@
     padding-right: 1rem;
 
     .table-header-column {
-      color: black;
+      color: #585858;
       font-size: var(--fs--100);
-      padding-bottom: 1rem;
+      padding-bottom: 0.5rem;
       text-align: left;
 
       &:last-child {
