@@ -61,6 +61,10 @@
   width: 50%;
 }
 
+.spotify-policy-message {
+  font-weight: bold;
+}
+
 @media (min-width: 641px) and (max-width: 1280px) {
   :host {
     flex-direction: column;
