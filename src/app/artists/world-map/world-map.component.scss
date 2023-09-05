@@ -79,7 +79,7 @@
   bottom: 16px;
 }
 
-::ng-deep {
+:host ::ng-deep {
   .download-options {
     display: flex;
     flex-direction: column;
@@ -99,10 +99,18 @@
     }
   }
 
+  .p-dialog {
+    max-width: 50%;
+  }
+
   .share-map-buttons {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  .share-map-buttons .p-togglebutton {
+    width: 100%;
   }
 
   .share-map-resolutions-wrapper {
