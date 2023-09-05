@@ -30,6 +30,31 @@ h2 {
   font-size: var(--fs-300);
 }
 
+@-webkit-keyframes mover {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes mover {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+.arrow {
+  font-size: var(--fs-600);
+  text-align: center;
+  -webkit-animation: mover 1s infinite alternate;
+  animation: mover 1s infinite alternate;
+}
+
 @media (min-width: 641px) and (max-width: 1280px) {
   :host {
     padding: 1.5rem;
@@ -55,5 +80,9 @@ h2 {
 
   h2 {
     font-size: var(--fs-100);
+  }
+
+  .arrow {
+    font-size: var(--fs-500);
   }
 }
