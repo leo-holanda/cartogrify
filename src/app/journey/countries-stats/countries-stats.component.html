@@ -1,34 +1,44 @@
-<div class="title-wrapper">
-  <h2 class="pre-title">That's more than</h2>
-  <h1 class="title">
-    <span class="rating-item">
-      {{ comparedDiversityData?.comparedDiversity || "..." }}
-    </span>
-  </h1>
-  <h3 class="post-title">
-    of <span class="count-value">{{ comparedDiversityData?.totalUsers }}</span> cartogrify users
-    around the world!
-  </h3>
-</div>
+<ng-template [ngIf]="userArtistsSource == ArtistsSources.LASTFM" [ngIfElse]="spotifySourceTemplate">
+  <div class="title-wrapper">
+    <h2 class="pre-title">That's more than</h2>
 
-<div *ngIf="userCountry.NE_ID != 0; else userWithoutCountryTemplate" class="title-wrapper">
-  <h2 class="pre-title">And more than</h2>
-  <h1 class="title">
-    <span class="rating-item">
-      {{ comparedDiversityDataInUserCountry?.comparedDiversity || "..." }}
-    </span>
-  </h1>
-  <h3 class="post-title">
-    of <span class="count-value"> {{ comparedDiversityDataInUserCountry?.totalUsers }} </span>
-    cartogrify users in
-    <span class="{{ 'flag fi fi-' + userCountry.flagCode }}"></span> {{ userCountry.name }}!
-  </h3>
-</div>
+    <h1 class="title">
+      <span class="rating-item">
+        {{ comparedDiversityData?.comparedDiversity || "..." }}
+      </span>
+    </h1>
 
-<ng-template #userWithoutCountryTemplate>
-  <div class="empty-country-title-wrapper">
-    <h2 class="empty-country-message">
-      Associate your account with a country to allow the comparison with users in your country.
-    </h2>
+    <h3 class="post-title">
+      of <span class="count-value">{{ comparedDiversityData?.totalUsers }}</span> cartogrify users
+      around the world!
+    </h3>
   </div>
+
+  <div *ngIf="userCountry.NE_ID != 0; else userWithoutCountryTemplate" class="title-wrapper">
+    <h2 class="pre-title">And more than</h2>
+
+    <h1 class="title">
+      <span class="rating-item">
+        {{ comparedDiversityDataInUserCountry?.comparedDiversity || "..." }}
+      </span>
+    </h1>
+
+    <h3 class="post-title">
+      of <span class="count-value"> {{ comparedDiversityDataInUserCountry?.totalUsers }} </span>
+      cartogrify users in
+      <span class="{{ 'flag fi fi-' + userCountry.flagCode }}"></span> {{ userCountry.name }}!
+    </h3>
+  </div>
+
+  <ng-template #userWithoutCountryTemplate>
+    <div class="empty-country-title-wrapper">
+      <h2 class="empty-country-message">
+        Associate your account with a country to allow the comparison with users in your country.
+      </h2>
+    </div>
+  </ng-template>
+</ng-template>
+
+<ng-template #spotifySourceTemplate>
+  <h2>User metrics are not available for Spotify accounts due to Developer Policy terms.</h2>
 </ng-template>

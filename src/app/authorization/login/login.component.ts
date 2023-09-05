@@ -9,6 +9,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { UserService } from "src/app/user/user.service";
 import { User } from "src/app/user/user.model";
 import { CountryService } from "src/app/country/country.service";
+import { ArtistsSources } from "src/app/artists/artist.model";
 
 @Component({
   selector: "msm-login",
@@ -71,6 +72,7 @@ export class LoginComponent {
 
         this.lastFmService.getTopArtists(this.lastFmUsername).subscribe({
           next: (topArtists) => {
+            this.artistService.setSource(ArtistsSources.LASTFM);
             this.artistService.setUserTopArtists(topArtists);
             this.router.navigate(["/journey"]);
           },
@@ -114,6 +116,7 @@ export class LoginComponent {
         this.userService.setUser(userProfileData);
         this.spotifyService.getUserTopArtists().subscribe({
           next: (topArtists) => {
+            this.artistService.setSource(ArtistsSources.SPOTIFY);
             this.artistService.setUserTopArtists(topArtists);
             this.router.navigate(["/journey"]);
           },

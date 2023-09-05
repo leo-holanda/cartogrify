@@ -4,8 +4,9 @@ import { ComparedDiversityData } from "src/app/statistics/statistics.model";
 import { StatisticsService } from "src/app/statistics/statistics.service";
 import { DiversityIndex } from "src/app/shared/supabase.model";
 import { UserService } from "src/app/user/user.service";
-import { User } from "src/app/user/user.model";
 import { Country } from "src/app/country/country.model";
+import { ArtistsSources } from "src/app/artists/artist.model";
+import { ArtistService } from "src/app/artists/artist.service";
 
 @Component({
   selector: "ctg-countries-stats",
@@ -15,6 +16,9 @@ import { Country } from "src/app/country/country.model";
 export class CountriesStatsComponent implements OnInit {
   userCountry!: Country;
 
+  userArtistsSource!: ArtistsSources;
+  ArtistsSources = ArtistsSources;
+
   diversityIndexes: DiversityIndex[] | undefined;
   comparedDiversityData: ComparedDiversityData | undefined;
 
@@ -22,6 +26,7 @@ export class CountriesStatsComponent implements OnInit {
   comparedDiversityDataInUserCountry: ComparedDiversityData | undefined;
 
   constructor(
+    private artistService: ArtistService,
     private statisticsSevice: StatisticsService,
     private countryService: CountryService,
     private userService: UserService
@@ -30,6 +35,7 @@ export class CountriesStatsComponent implements OnInit {
   ngOnInit(): void {
     const user = this.userService.getUser();
     this.userCountry = this.countryService.getCountryByCode(user?.countryCode);
+    this.userArtistsSource = this.artistService.getSource();
 
     this.countryService.getCountriesCount().subscribe((userCountriesCount) => {
       this.statisticsSevice.getDiversityIndexes().subscribe((diversityIndexes) => {
