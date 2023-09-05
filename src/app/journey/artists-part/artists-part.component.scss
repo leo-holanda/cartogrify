@@ -9,6 +9,12 @@
   min-height: 90dvh;
 }
 
+::ng-deep {
+  .suggestion-button button {
+    background-color: #b7e1d4;
+  }
+}
+
 .title-wrapper {
   display: flex;
   align-items: center;
