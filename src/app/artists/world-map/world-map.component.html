@@ -65,7 +65,7 @@
       (onClick)="onShareButtonClick()"
       [label]="isMobile ? 'Share' : 'Share with your friends'"
       icon="bx bx-share-alt"
-      styleClass="p-button-rounded"
+      styleClass="p-button-rounded first-button"
     ></p-button>
     <p-button
       (onClick)="op.toggle($event)"
@@ -153,6 +153,6 @@
       </div>
     </p-overlayPanel>
   </div>
-  <p class="zoom-message" *ngIf="!isMobile">Press shift to allow zooming</p>
+  <p class="zoom-message">Press shift to allow zooming</p>
 </div>
 <div #mapWrapper class="map-wrapper" [style]="{ background: mapBackgroundColor }"></div>

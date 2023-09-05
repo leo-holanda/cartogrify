@@ -62,10 +62,8 @@
     }
   }
 
-  .map-buttons {
-    & p-button {
-      margin-right: 1rem;
-    }
+  .first-button {
+    margin-right: 1rem;
   }
 }
 
@@ -135,6 +133,14 @@
   :host {
     padding: 1.5rem;
   }
+
+  .map-buttons {
+    justify-content: center;
+  }
+
+  .zoom-message {
+    display: none;
+  }
 }
 
 @media (max-width: 640px) {
@@ -144,5 +150,9 @@
 
   .map-buttons {
     justify-content: center;
+  }
+
+  .zoom-message {
+    display: none;
   }
 }
