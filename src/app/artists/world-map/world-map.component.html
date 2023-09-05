@@ -1,14 +1,16 @@
 <p-dialog header="Share your map!" [(visible)]="shareMode" [modal]="true">
+  <p>
+    If the map looks strange while downloading it, don't worry, it's ok. It will go back to normal
+    once the image is ready to download.
+  </p>
   <div class="download-options">
     <div class="share-map-buttons">
       <p-button (onClick)="shareMap()" label="Download map"></p-button>
-      <div>
-        <p-toggleButton
-          (onChange)="onChangeDefaultResolutionStatus()"
-          [onLabel]="'Use default resolution'"
-          offLabel="Change image resolution"
-        ></p-toggleButton>
-      </div>
+      <p-toggleButton
+        (onChange)="onChangeDefaultResolutionStatus()"
+        [onLabel]="'Use default resolution'"
+        offLabel="Change image resolution"
+      ></p-toggleButton>
     </div>
 
     <div class="share-map-resolutions-wrapper" *ngIf="!usesDefaultMapResolution">
