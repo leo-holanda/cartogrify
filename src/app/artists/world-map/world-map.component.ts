@@ -32,7 +32,6 @@ import { RadioButtonClickEvent } from "primeng/radiobutton";
   styleUrls: ["./world-map.component.scss"],
 })
 export class WorldMapComponent implements AfterViewInit {
-  @Input() isMobile!: boolean;
   @Output() shouldOpenRankings = new EventEmitter<boolean>();
 
   artists: Artist[] = [];
@@ -72,6 +71,8 @@ export class WorldMapComponent implements AfterViewInit {
   private colorScale!: ColorScale;
   mapBackgroundColor = "rgb(156, 192, 249)";
 
+  isMobile = window.innerWidth <= 640;
+
   @ViewChild("mapWrapper") mapWrapper!: ElementRef<HTMLElement>;
 
   constructor(
@@ -103,7 +104,7 @@ export class WorldMapComponent implements AfterViewInit {
     fromEvent(window, "resize")
       .pipe(debounceTime(250))
       .subscribe(() => {
-        this.isMobile = window.innerWidth <= 768;
+        this.isMobile = window.innerWidth <= 640;
         setTimeout(() => {
           this.updateMap();
         }, 200);
