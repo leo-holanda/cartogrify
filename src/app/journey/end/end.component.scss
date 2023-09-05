@@ -6,7 +6,7 @@
   color: #eec170;
 }
 
-div {
+.end-part-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,6 +29,11 @@ h2 {
   margin: 0;
   font-size: var(--fs-300);
   width: 60%;
+}
+
+p {
+  text-align: center;
+  margin: 0;
 }
 
 @media (min-width: 641px) and (max-width: 1280px) {
