@@ -11,6 +11,26 @@ export const mapThemes: MapTheme[] = [
     background: "rgb(156, 192, 249)",
   },
   {
+    title: "Watermelon Sugar",
+    colors: ["#eeb1b1", "#dd9696", "#cc7b7b", "#b66d7a", "#9f6078", "#895277", "#693f5a"],
+    background: "rgb(50, 50, 50)",
+  },
+  {
+    title: "Golden Glory",
+    colors: ["#e8c29c", "#d8ae84", "#c79a6d", "#b78165", "#a6695c", "#91595c", "#664755"],
+    background: "rgb(50, 50, 50)",
+  },
+  {
+    title: "Sunburned Skies",
+    colors: ["#c06677", "#cc7678", "#d9867a", "#e09d85", "#e7b48f", "#eecb9a", "#faebc8"],
+    background: "rgb(255, 255, 255)",
+  },
+  {
+    title: "Alligator Armor",
+    colors: ["#c2c5a1", "#acb08a", "#959c73", "#7f8c62", "#6a7d50", "#546d3f", "#325438"],
+    background: "rgb(229, 220, 203)",
+  },
+  {
     title: "Blue 2",
     colors: ["#e6eecf", "#b4d2c6", "#82b6bc", "#69a8b7", "#5a93a8", "#3d6a89", "#1f406a"],
     background: "rgb(255, 255, 255)",
@@ -130,11 +150,7 @@ export const mapThemes: MapTheme[] = [
     colors: ["#d7e1ee", "#cbd6e4", "#bfcbdb", "#b3bfd1", "#df8879", "#c86558", "#991f17"],
     background: "rgb(255, 255, 255)",
   },
-  {
-    title: "Alligator Armor",
-    colors: ["#c2c5a1", "#acb08a", "#959c73", "#7f8c62", "#6a7d50", "#546d3f", "#325438"],
-    background: "rgb(50, 50, 50)",
-  },
+
   {
     title: "Blue 1",
     colors: ["#e8dbeb", "#bac6df", "#8cb1d2", "#75a6cc", "#6193b3", "#3b6e80", "#14484d"],
@@ -210,11 +226,7 @@ export const mapThemes: MapTheme[] = [
     colors: ["#4d8c8c", "#6fa9aa", "#80b7b8", "#99c5b6", "#b2d2b4", "#cbe0b2", "#e3f1d2"],
     background: "rgb(255, 255, 255)",
   },
-  {
-    title: "Golden Glory",
-    colors: ["#e8c29c", "#d8ae84", "#c79a6d", "#b78165", "#a6695c", "#91595c", "#664755"],
-    background: "rgb(50, 50, 50)",
-  },
+
   {
     title: "Green 3",
     colors: ["#f6eff7", "#d0d1e6", "#a6bddb", "#67a9cf", "#3690c0", "#02818a", "#016450"],
@@ -515,11 +527,7 @@ export const mapThemes: MapTheme[] = [
     colors: ["#4d4d41", "#626155", "#77756a", "#9e8998", "#dd83dd", "#e8a3e8", "#ffe1ff"],
     background: "rgb(50, 50, 50)",
   },
-  {
-    title: "Sunburned Skies",
-    colors: ["#c06677", "#cc7678", "#d9867a", "#e09d85", "#e7b48f", "#eecb9a", "#faebc8"],
-    background: "rgb(255, 255, 255)",
-  },
+
   {
     title: "Winter Solstice",
     colors: ["#9972b0", "#a586c2", "#b299d4", "#b1acdb", "#b0bee2", "#afd1e9", "#d2e5f2"],
@@ -553,11 +561,6 @@ export const mapThemes: MapTheme[] = [
   {
     title: "Pink 6",
     colors: ["#3b3734", "#474440", "#54504c", "#6b506b", "#ab3da9", "#eb44e8", "#ff80ff"],
-    background: "rgb(50, 50, 50)",
-  },
-  {
-    title: "Watermelon Sugar",
-    colors: ["#eeb1b1", "#dd9696", "#cc7b7b", "#b66d7a", "#9f6078", "#895277", "#693f5a"],
     background: "rgb(50, 50, 50)",
   },
 ];
