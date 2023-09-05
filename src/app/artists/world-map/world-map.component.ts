@@ -174,7 +174,7 @@ export class WorldMapComponent implements AfterViewInit {
   private addMap() {
     const height = this.mapWrapper.nativeElement.offsetHeight;
     const width = this.mapWrapper.nativeElement.offsetWidth;
-    const margin = 64;
+    const margin = 16;
 
     const geoJSON = this.countryService.geoJSON;
     const projection = d3
