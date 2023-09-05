@@ -65,7 +65,7 @@ export class LoginComponent {
     this.lastFmService.getLastFmUserProfileData(this.lastFmUsername).subscribe({
       next: (lastFmUserProfileData) => {
         const currentUser: User = {
-          id: this.lastFmUsername,
+          id: this.lastFmUsername.toLowerCase(),
           countryCode: this.countryService.getCountryCodeByText(lastFmUserProfileData.country),
         };
         this.userService.setUser(currentUser);
