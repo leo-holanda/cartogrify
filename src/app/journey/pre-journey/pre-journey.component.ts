@@ -47,6 +47,7 @@ export class PreJourneyComponent implements OnInit {
         this.scrapedArtistsData.unshift(scrapedArtistData);
 
         this.progressPercentage = (scrapedArtistData.remanining / scrapedArtistData.total) * 100;
+        this.artistsWithoutCountryQuantity -= 1;
         if (scrapedArtistData.remanining == scrapedArtistData.total) {
           setTimeout(() => {
             this.hasCompletedArtistsSearch = true;
