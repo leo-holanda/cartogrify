@@ -5,6 +5,7 @@ import { ArtistService } from "src/app/artists/artist.service";
 import { SpotifyService } from "src/app/streaming/spotify.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { UserService } from "src/app/user/user.service";
+import { ArtistsSources } from "src/app/artists/artist.model";
 
 @Component({
   selector: "msm-post-login",
@@ -48,6 +49,7 @@ export class PostLoginComponent implements OnInit {
                 next: (userProfileData) => {
                   this.userService.setUser(userProfileData);
                   this.spotifyService.getUserTopArtists().subscribe((topArtists) => {
+                    this.artistService.setSource(ArtistsSources.SPOTIFY);
                     this.artistService.setUserTopArtists(topArtists);
                     this.router.navigate(["/journey"]);
                   });

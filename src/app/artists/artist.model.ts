@@ -34,3 +34,8 @@ export interface ArtistsWithoutCountryStatus {
   hasArtistsWithoutCountry: boolean;
   artistsWithoutCountryQuantity: number;
 }
+
+export enum ArtistsSources {
+  SPOTIFY = "spotify",
+  LASTFM = "lastfm",
+}

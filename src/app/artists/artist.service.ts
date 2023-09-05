@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import {
   Artist,
+  ArtistsSources,
   ArtistsWithoutCountryStatus,
   ScrapedArtist,
   ScrapedArtistData,
@@ -14,6 +15,7 @@ import { CountryService } from "../country/country.service";
   providedIn: "root",
 })
 export class ArtistService {
+  private source!: ArtistsSources;
   private userTopArtists$ = new BehaviorSubject<Artist[]>([]);
   private scrapedArtists$ = new BehaviorSubject<ScrapedArtistData | undefined>(undefined);
   private hasArtistsWithoutCountry$ = new BehaviorSubject<ArtistsWithoutCountryStatus | undefined>(
@@ -114,6 +116,14 @@ export class ArtistService {
 
   getArtistsRequestStatus(): boolean {
     return this.hasRequestedTopArtists;
+  }
+
+  setSource(source: ArtistsSources): void {
+    this.source = source;
+  }
+
+  getSource(): ArtistsSources {
+    return this.source;
   }
 
   private transformSuggestionsInArtists(suggestions: Suggestion[]): Artist[] {
