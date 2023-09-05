@@ -208,7 +208,7 @@ export class CountryService {
           if (tagContent.includes(geoFeatureName) || geoFeatureName.includes(tagContent)) {
             const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
             possibleCountries.set(geoFeatureName, {
-              count: currentCountryCount + 1,
+              count: currentCountryCount + 5,
               geoFeature: currentGeoFeature,
             });
           }
@@ -266,7 +266,7 @@ export class CountryService {
           if (wikiText.includes(currentTerm)) {
             const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
             possibleCountries.set(geoFeatureName, {
-              count: currentCountryCount + 1,
+              count: currentCountryCount + 3,
               geoFeature: currentGeoFeature,
             });
           }
