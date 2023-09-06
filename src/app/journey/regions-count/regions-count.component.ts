@@ -202,7 +202,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
         (d) =>
           `translate(${this.isMobile ? (d as any).x : (d as any).y},${
             this.isMobile ? (d as any).y : (d as any).x
-          })`
+          })${this.isMobile && d.depth != 0 ? ", rotate(-30)" : ""}`
       );
 
     node
