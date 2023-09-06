@@ -420,6 +420,14 @@ export class CountryService {
         return country;
       }
 
+      if (artist["end-area"] && artist["end-area"].type == "Country") {
+        const countryCode = this.getCountryCodeByText(artist["end-area"].name);
+        const country = this.getCountryByCode(countryCode);
+
+        if (country.NE_ID == 0) return undefined;
+        return country;
+      }
+
       return undefined;
     } catch (error) {
       return undefined;
