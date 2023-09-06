@@ -171,7 +171,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
     const link = svg
       .append("g")
       .attr("fill", "none")
-      .attr("stroke", "#555")
+      .attr("stroke", "#f6f1e1")
       .attr("stroke-opacity", 0.4)
       .attr("stroke-width", 1.5)
       .selectAll()
