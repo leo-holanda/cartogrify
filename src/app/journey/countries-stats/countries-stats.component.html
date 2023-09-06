@@ -14,7 +14,7 @@
     </h3>
   </div>
 
-  <div *ngIf="userCountry.NE_ID != 0; else userWithoutCountryTemplate" class="title-wrapper">
+  <div *ngIf="userCountry.NE_ID != -1; else userWithoutCountryTemplate" class="title-wrapper">
     <h2 class="pre-title">And more than</h2>
 
     <h1 class="title">

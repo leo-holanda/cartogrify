@@ -27,6 +27,15 @@ export class CountryService {
   countriesCount$ = new BehaviorSubject<CountryCount[]>([]);
   regionsCount$ = new BehaviorSubject<RegionCount[]>([]);
 
+  unknownCountry: Country = {
+    name: "Unknown",
+    flagCode: "xx",
+    region: "Unknown",
+    subRegion: "Unknown",
+    intermediateRegion: "Unknown",
+    NE_ID: -1,
+  };
+
   constructor(private supabaseService: SupabaseService) {
     this.geoJSON = topojson.feature(
       countriesJSON as unknown as TopoJSON.Topology,
@@ -40,17 +49,9 @@ export class CountryService {
 
   updateCountriesCount(artists: Artist[]): void {
     const countriesCount = new Map<string, CountryCount>();
-    const unknownCountry: Country = {
-      name: "Unknown",
-      flagCode: "xx",
-      region: "Unknown",
-      subRegion: "Unknown",
-      intermediateRegion: "Unknown",
-      NE_ID: 0,
-    };
 
     artists.forEach((artist) => {
-      const country = artist.country || unknownCountry;
+      const country = artist.country || this.unknownCountry;
       const count = countriesCount.get(country.name)?.count || 0;
       const countryCount = {
         country: country,
@@ -76,15 +77,6 @@ export class CountryService {
       name: "Unknown",
       intermediateRegions: [],
       count: 0,
-    };
-
-    const unknownCountry: Country = {
-      name: "Unknown",
-      flagCode: "xx",
-      region: "Unknown",
-      subRegion: "Unknown",
-      intermediateRegion: "Unknown",
-      NE_ID: 0,
     };
 
     artists.forEach((artist) => {
@@ -125,7 +117,7 @@ export class CountryService {
             countryFromSubRegion.count += 1;
           } else {
             const newCountryCount: CountryFromSubRegionCount = {
-              country: this.getCountryByCode(artist.country.NE_ID) || unknownCountry,
+              country: this.getCountryByCode(artist.country.NE_ID) || this.unknownCountry,
               count: 1,
             };
             artistSubRegion.countriesCount.push(newCountryCount);
@@ -361,21 +353,14 @@ export class CountryService {
   }
 
   getCountryByCode(countryCode: number | undefined): Country {
-    const unknownCountry: Country = {
-      name: "Unknown",
-      flagCode: "xx",
-      region: "Unknown",
-      subRegion: "Unknown",
-      intermediateRegion: "Unknown",
-      NE_ID: 0,
-    };
-    if (!countryCode) return unknownCountry;
+    if (!countryCode) return this.unknownCountry;
 
     const matchedFeature = this.geoJSON.features.find(
       (feature) => feature.properties["NE_ID"] == countryCode
     );
     if (matchedFeature) return this.createCountryFromFeature(matchedFeature);
-    return unknownCountry;
+
+    return this.unknownCountry;
   }
 
   getCountryCodeByText(countryNameOrAbbreviation: string): number | undefined {
@@ -389,48 +374,39 @@ export class CountryService {
     return undefined;
   }
 
-  getCountryFromMusicBrainzResponse(response: string): Country | undefined {
+  getCountryFromMusicBrainzResponse(response: string): Country {
     try {
       const responseData = JSON.parse(response);
+      if (responseData.artists.length == 0) return this.unknownCountry;
 
-      if (responseData.artists.length == 0) return undefined;
       const artist = responseData.artists[0];
-
       if (artist.country) {
         const countryCode = this.getCountryCodeByText(responseData.artists[0].country);
         const country = this.getCountryByCode(countryCode);
-
-        if (country.NE_ID == 0) return undefined;
-        return country;
+        if (country.NE_ID != -1) return country;
       }
 
       if (artist.area && artist.area.type == "Country") {
         const countryCode = this.getCountryCodeByText(artist.area.name);
         const country = this.getCountryByCode(countryCode);
-
-        if (country.NE_ID == 0) return undefined;
-        return country;
+        if (country.NE_ID != -1) return country;
       }
 
       if (artist["begin-area"] && artist["begin-area"].type == "Country") {
         const countryCode = this.getCountryCodeByText(artist["begin-area"].name);
         const country = this.getCountryByCode(countryCode);
-
-        if (country.NE_ID == 0) return undefined;
-        return country;
+        if (country.NE_ID != -1) return country;
       }
 
       if (artist["end-area"] && artist["end-area"].type == "Country") {
         const countryCode = this.getCountryCodeByText(artist["end-area"].name);
         const country = this.getCountryByCode(countryCode);
-
-        if (country.NE_ID == 0) return undefined;
-        return country;
+        if (country.NE_ID != -1) return country;
       }
 
-      return undefined;
+      return this.unknownCountry;
     } catch (error) {
-      return undefined;
+      return this.unknownCountry;
     }
   }
 

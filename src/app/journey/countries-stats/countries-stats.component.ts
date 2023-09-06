@@ -48,7 +48,7 @@ export class CountriesStatsComponent implements OnInit {
           this.comparedDiversityData = comparedDiversityData;
         });
 
-      if (this.userCountry?.NE_ID != 0) {
+      if (this.userCountry?.NE_ID != -1) {
         this.statisticsSevice
           .getComparedDiversityInUserCountry(userCountriesCount.length, this.userCountry.NE_ID)
           .subscribe((comparedDiversityDataInUserCountry) => {
