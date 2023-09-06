@@ -155,27 +155,36 @@ export class CountryService {
 
     fetch(environment.PAGE_FINDER_URL, {
       method: "POST",
-      body: artistsNames.join("+"),
+      body: artistsNames.join("###"),
     })
       .then(async (response) => {
         const reader = response.body?.getReader();
 
         if (reader) {
           const textDecoder = new TextDecoder();
-          let data = "";
+          let eventStreamAccumulator = "";
 
           while (true) {
             const { value, done } = await reader.read();
-            data += textDecoder.decode(value);
-            if (data.includes("START_OF_JSON") && data.includes("END_OF_JSON")) {
-              const startIndex = data.indexOf("START_OF_JSON") + START_INDICATOR_OFFSET;
-              const endIndex = data.indexOf("END_OF_JSON");
-              const artist = JSON.parse(data.slice(startIndex, endIndex));
+            eventStreamAccumulator += textDecoder.decode(value);
+
+            if (
+              eventStreamAccumulator.includes("START_OF_JSON") &&
+              eventStreamAccumulator.includes("END_OF_JSON")
+            ) {
+              const startIndex =
+                eventStreamAccumulator.indexOf("START_OF_JSON") + START_INDICATOR_OFFSET;
+              const endIndex = eventStreamAccumulator.indexOf("END_OF_JSON");
+              const { name, data } = JSON.parse(eventStreamAccumulator.slice(startIndex, endIndex));
+
               artists$.next({
-                name: artist.name,
-                country: this.determineCountryOfOrigin(artist.page),
+                name,
+                country: this.getCountryFromMusicBrainzResponse(data),
               });
-              data = data.slice(endIndex + END_INDICATOR_OFFSET);
+
+              eventStreamAccumulator = eventStreamAccumulator.slice(
+                endIndex + END_INDICATOR_OFFSET
+              );
             }
 
             if (done) {
@@ -378,6 +387,43 @@ export class CountryService {
 
     if (matchedFeature) return matchedFeature.properties["NE_ID"];
     return undefined;
+  }
+
+  getCountryFromMusicBrainzResponse(response: string): Country | undefined {
+    try {
+      const responseData = JSON.parse(response);
+
+      if (responseData.artists.length == 0) return undefined;
+      const artist = responseData.artists[0];
+
+      if (artist.country) {
+        const countryCode = this.getCountryCodeByText(responseData.artists[0].country);
+        const country = this.getCountryByCode(countryCode);
+
+        if (country.NE_ID == 0) return undefined;
+        return country;
+      }
+
+      if (artist.area && artist.area.type == "Country") {
+        const countryCode = this.getCountryCodeByText(artist.area.name);
+        const country = this.getCountryByCode(countryCode);
+
+        if (country.NE_ID == 0) return undefined;
+        return country;
+      }
+
+      if (artist["begin-area"] && artist["begin-area"].type == "Country") {
+        const countryCode = this.getCountryCodeByText(artist["begin-area"].name);
+        const country = this.getCountryByCode(countryCode);
+
+        if (country.NE_ID == 0) return undefined;
+        return country;
+      }
+
+      return undefined;
+    } catch (error) {
+      return undefined;
+    }
   }
 
   private createRegion(artist: Artist): RegionCount {
