@@ -12,6 +12,7 @@ import {
   GeoFeatureCollection,
   PossibleCountry,
   CountryFromSubRegionCount,
+  ArtistLocation,
 } from "./country.model";
 import countriesJSON from "../../assets/countries-50m.json";
 import * as topojson from "topojson-client";
@@ -169,9 +170,13 @@ export class CountryService {
               const endIndex = eventStreamAccumulator.indexOf("END_OF_JSON");
               const { name, data } = JSON.parse(eventStreamAccumulator.slice(startIndex, endIndex));
 
+              const { country, secondaryLocation } =
+                this.getArtistLocationFromMusicBrainzResponse(data);
+
               artists$.next({
                 name,
-                country: this.getCountryFromMusicBrainzResponse(data),
+                country,
+                secondaryLocation,
               });
 
               eventStreamAccumulator = eventStreamAccumulator.slice(
@@ -374,39 +379,71 @@ export class CountryService {
     return undefined;
   }
 
-  getCountryFromMusicBrainzResponse(response: string): Country {
+  getArtistLocationFromMusicBrainzResponse(response: string): ArtistLocation {
+    const artistLocation: ArtistLocation = {
+      country: undefined,
+      secondaryLocation: undefined,
+    };
+
     try {
       const responseData = JSON.parse(response);
-      if (responseData.artists.length == 0) return this.unknownCountry;
+      if (responseData.artists.length == 0) return artistLocation;
 
       const artist = responseData.artists[0];
       if (artist.country) {
         const countryCode = this.getCountryCodeByText(responseData.artists[0].country);
         const country = this.getCountryByCode(countryCode);
-        if (country.NE_ID != -1) return country;
+        if (country.NE_ID != -1) {
+          artistLocation.country = country;
+          return artistLocation;
+        }
       }
 
       if (artist.area && artist.area.type == "Country") {
         const countryCode = this.getCountryCodeByText(artist.area.name);
         const country = this.getCountryByCode(countryCode);
-        if (country.NE_ID != -1) return country;
+        if (country.NE_ID != -1) {
+          artistLocation.country = country;
+          return artistLocation;
+        }
       }
 
       if (artist["begin-area"] && artist["begin-area"].type == "Country") {
         const countryCode = this.getCountryCodeByText(artist["begin-area"].name);
         const country = this.getCountryByCode(countryCode);
-        if (country.NE_ID != -1) return country;
+        if (country.NE_ID != -1) {
+          artistLocation.country = country;
+          return artistLocation;
+        }
       }
 
       if (artist["end-area"] && artist["end-area"].type == "Country") {
         const countryCode = this.getCountryCodeByText(artist["end-area"].name);
         const country = this.getCountryByCode(countryCode);
-        if (country.NE_ID != -1) return country;
+        if (country.NE_ID != -1) {
+          artistLocation.country = country;
+          return artistLocation;
+        }
       }
 
-      return this.unknownCountry;
+      if (artist.area) {
+        artistLocation.secondaryLocation = artist.area.name;
+        return artistLocation;
+      }
+
+      if (artist["begin-area"]) {
+        artistLocation.secondaryLocation = artist["begin-area"].name;
+        return artistLocation;
+      }
+
+      if (artist["end-area"]) {
+        artistLocation.secondaryLocation = artist["end-area"].name;
+        return artistLocation;
+      }
+
+      return artistLocation;
     } catch (error) {
-      return this.unknownCountry;
+      return artistLocation;
     }
   }
 

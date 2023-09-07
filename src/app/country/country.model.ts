@@ -58,3 +58,8 @@ export interface PossibleCountry {
   count: number;
   geoFeature: GeoFeature;
 }
+
+export interface ArtistLocation {
+  country: Country | undefined;
+  secondaryLocation: string | undefined;
+}
