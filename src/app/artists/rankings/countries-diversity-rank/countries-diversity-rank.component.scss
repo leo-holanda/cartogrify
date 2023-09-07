@@ -47,6 +47,16 @@
       }
     }
 
+    .table-row {
+      &:last-of-type {
+        & .country-column,
+        .average-column,
+        .index-column {
+          padding-bottom: 0;
+        }
+      }
+    }
+
     .index-column {
       padding: 0 1rem 1rem 0;
       font-size: var(--fs-000);
@@ -93,5 +103,9 @@
 @media (max-width: 640px) {
   :host {
     padding: 1rem;
+  }
+
+  .ranking-title {
+    font-size: var(--fs-100);
   }
 }
