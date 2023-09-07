@@ -5,7 +5,7 @@ import { SpotifyService } from "src/app/streaming/spotify.service";
 import { LastFmService } from "src/app/streaming/last-fm.service";
 import { MessageService } from "primeng/api";
 import { HttpErrorResponse } from "@angular/common/http";
-import { concat } from "rxjs";
+import { concat, switchMap } from "rxjs";
 
 @Component({
   selector: "msm-login",
@@ -36,14 +36,17 @@ export class LoginComponent {
     }
 
     if (this.spotifyAuthService.isTokenExpired()) {
-      concat(this.spotifyAuthService.refreshToken(), this.spotifyService.loadUserData()).subscribe({
-        complete: () => {
-          this.router.navigate(["/journey"]);
-        },
-        error: (err) => {
-          this.handleSpotifyError(err);
-        },
-      });
+      this.spotifyAuthService
+        .refreshToken()
+        .pipe(switchMap(() => this.spotifyService.loadUserData()))
+        .subscribe({
+          complete: () => {
+            this.router.navigate(["/journey"]);
+          },
+          error: (err) => {
+            this.handleSpotifyError(err);
+          },
+        });
 
       return;
     }
