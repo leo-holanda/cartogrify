@@ -1,15 +1,42 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, map, take } from "rxjs";
+import { Observable, concat, map, take, tap } from "rxjs";
 import { SpotifyAccessTokenData } from "../authorization/spotify-auth.service";
 import { SpotifyUserData } from "./spotify.model";
 import { CountryService } from "../country/country.service";
+import { UserService } from "../user/user.service";
+import { ArtistService } from "../artists/artist.service";
+import { ArtistsSources } from "../artists/artist.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class SpotifyService {
-  constructor(private http: HttpClient, private countryService: CountryService) {}
+  constructor(
+    private http: HttpClient,
+    private countryService: CountryService,
+    private userService: UserService,
+    private artistService: ArtistService
+  ) {}
+
+  loadUserData(): Observable<SpotifyUserData | string[]> {
+    const loadUserProfile = this.getUserProfile().pipe(
+      take(1),
+      tap((userProfile) => {
+        this.userService.setUser(userProfile);
+      })
+    );
+
+    const loadUserTopArtists = this.getUserTopArtists().pipe(
+      take(1),
+      tap((userTopArtists) => {
+        this.artistService.setSource(ArtistsSources.SPOTIFY);
+        this.artistService.setUserTopArtists(userTopArtists);
+      })
+    );
+
+    return concat(loadUserProfile, loadUserTopArtists);
+  }
 
   getUserTopArtists(): Observable<string[]> {
     const tokenDataItem = localStorage.getItem("token_data") as string;
@@ -27,7 +54,7 @@ export class SpotifyService {
       );
   }
 
-  getUserProfileData(): Observable<SpotifyUserData> {
+  getUserProfile(): Observable<SpotifyUserData> {
     const tokenDataItem = localStorage.getItem("token_data") as string;
     const tokenData = JSON.parse(tokenDataItem) as SpotifyAccessTokenData;
 
