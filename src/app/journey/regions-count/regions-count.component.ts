@@ -1,9 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import {
-  IntermediateRegionCount,
-  RegionCount,
-  SubRegionCount,
-} from "src/app/country/country.model";
+import { RegionCount, SubRegionCount } from "src/app/country/country.model";
 import { CountryService } from "src/app/country/country.service";
 import * as d3 from "d3";
 import { TreeLeaf, TreeNode } from "./regions-count.types";
@@ -134,14 +130,14 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
 
         return "";
       })
-      .attr("x", (d) => (this.isMobile ? 0 : d.children ? -6 : 6))
+      .attr("x", (d) => (d.children ? -6 : 6))
       .attr("text-anchor", (d) => (this.isMobile ? "middle" : d.children ? "end" : "start"))
       .text((d: any) => {
         if (d.data.country) return d.data.country.name + ` (${d.data.count})`;
         return d.data.name;
       })
-      .attr("font-size", (d) => (d.children ? "1rem" : "1rem"))
-      .style("font-weight", (d) => (d.height == 4 ? "900" : ""))
+      .attr("font-size", (d) => `1.${d.height}rem`)
+      .style("font-weight", (d) => this.getTextFontWeight(d.depth))
       .attr("fill", "white");
   }
 
@@ -219,14 +215,14 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
 
         return "";
       })
-      .attr("x", (d) => (this.isMobile ? 0 : d.children ? -6 : 6))
+      .attr("x", (d) => (d.children ? -6 : 6))
       .attr("text-anchor", (d) => (this.isMobile ? "middle" : d.children ? "end" : "start"))
       .text((d: any) => {
         if (d.data.country) return d.data.country.name + ` (${d.data.count})`;
         return d.data.name;
       })
-      .attr("font-size", (d) => (d.children ? "1rem" : "1rem"))
-      .style("font-weight", (d) => (d.height == 4 ? "900" : ""))
+      .attr("font-size", (d) => `1.${d.height}rem`)
+      .style("font-weight", (d) => this.getTextFontWeight(d.depth))
       .attr("fill", "white");
   }
 
@@ -280,5 +276,12 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
     });
 
     return countriesNodes;
+  }
+
+  private getTextFontWeight(nodeDepth: number): string {
+    if (nodeDepth == 0) return "800";
+    if (nodeDepth == 1) return "700";
+    if (nodeDepth == 2) return "600";
+    return "500";
   }
 }
