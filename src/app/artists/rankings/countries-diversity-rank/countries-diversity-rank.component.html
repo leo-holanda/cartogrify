@@ -1,0 +1,26 @@
+<div class="ranking-content">
+  <table>
+    <thead>
+      <th class="table-header-column">#</th>
+      <th class="table-header-column">Country</th>
+      <th class="table-header-column">Average diversity per user</th>
+    </thead>
+    <tbody>
+      <tr class="table-row" *ngFor="let countryCount of countriesDiversity; let i = index">
+        <td class="index-column">{{ i + 1 }}</td>
+        <td class="country-column">
+          <div>
+            <span class="{{ 'flag fi fi-' + countryCount.flagCode }}"></span>
+          </div>
+          <div class="country">
+            <p class="country-name">{{ countryCount.name }}</p>
+          </div>
+        </td>
+
+        <td class="average-column">
+          {{ (countryCount.totalCountries / countryCount.totalUsers).toFixed(2) }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

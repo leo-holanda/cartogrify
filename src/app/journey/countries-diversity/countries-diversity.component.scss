@@ -1,0 +1,43 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4rem;
+  padding: 2rem;
+  width: 100%;
+  background-color: #f79256;
+  min-height: 90dvh;
+}
+
+h1 {
+  font-size: var(--fs-600);
+  font-weight: bold;
+  margin: 0;
+  color: #472d30;
+  text-align: center;
+}
+
+@media (min-width: 641px) and (max-width: 1280px) {
+  :host {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: var(--fs-500);
+  }
+}
+
+@media (max-width: 640px) {
+  :host {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: var(--fs-200);
+  }
+}

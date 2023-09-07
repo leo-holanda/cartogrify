@@ -1,0 +1,97 @@
+:host {
+  display: flex;
+  flex-flow: column;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  overflow-y: auto;
+  width: fit-content;
+  color: black;
+}
+
+.ranking-content {
+  overflow-y: auto;
+  max-height: 50dvh;
+
+  &::-webkit-scrollbar {
+    background-color: transparent;
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #babac0;
+    border-radius: 1rem;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.808);
+    }
+  }
+
+  table {
+    border-collapse: separate;
+    width: 100%;
+    padding-right: 1rem;
+
+    .table-header-column {
+      color: #585858;
+      font-size: var(--fs--100);
+      padding-bottom: 1rem;
+      text-align: left;
+
+      &:last-child {
+        text-align: right;
+      }
+    }
+
+    .index-column {
+      padding: 0 1rem 1rem 0;
+      font-size: var(--fs-000);
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .country-column {
+      display: flex;
+      white-space: nowrap;
+      padding-bottom: 1rem;
+
+      .flag {
+        font-size: var(--fs-300);
+        margin-right: 0.5rem;
+      }
+
+      .country {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .country-name {
+        font-size: var(--fs-100);
+        margin: 0;
+      }
+    }
+
+    .average-column {
+      text-align: right;
+      padding-bottom: 1rem;
+      font-size: var(--fs-100);
+    }
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1280px) {
+  :host {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  :host {
+    padding: 1rem;
+  }
+}
