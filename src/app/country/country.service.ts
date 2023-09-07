@@ -542,8 +542,11 @@ export class CountryService {
 
   private getArtistFromMusicBrainzResponse(artistName: string, responseData: any): any {
     if (responseData.artists && Array.isArray(responseData.artists)) {
-      const matchedArtist = responseData.artists.find((artist: any) => artist.name == artistName);
-      return matchedArtist;
+      const matchedArtist = responseData.artists.find(
+        (artist: any) => artist.name.toLowerCase() == artistName.toLowerCase()
+      );
+      if (matchedArtist) return matchedArtist;
+      return responseData.artists[0];
     }
 
     return undefined;
