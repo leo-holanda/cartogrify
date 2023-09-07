@@ -49,6 +49,7 @@ export class SuggestionsComponent implements OnInit {
             return {
               name: suggestion.name,
               country: suggestion.suggestedCountry,
+              secondaryLocation: undefined,
             };
           })
         );
