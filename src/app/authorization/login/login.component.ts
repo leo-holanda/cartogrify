@@ -2,12 +2,9 @@ import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { SpotifyAuthService } from "../spotify-auth.service";
 import { SpotifyService } from "src/app/streaming/spotify.service";
-import { ArtistService } from "src/app/artists/artist.service";
 import { LastFmService } from "src/app/streaming/last-fm.service";
 import { MessageService } from "primeng/api";
 import { HttpErrorResponse } from "@angular/common/http";
-import { UserService } from "src/app/user/user.service";
-import { ArtistsSources } from "src/app/artists/artist.model";
 
 @Component({
   selector: "msm-login",
@@ -24,11 +21,9 @@ export class LoginComponent {
   constructor(
     private spotifyAuthService: SpotifyAuthService,
     private spotifyService: SpotifyService,
-    private artistService: ArtistService,
     private lastFmService: LastFmService,
     private router: Router,
-    private messageService: MessageService,
-    private userService: UserService
+    private messageService: MessageService
   ) {}
 
   onSpotifyButtonClick(): void {
@@ -44,7 +39,9 @@ export class LoginComponent {
         next: () => {
           this.fetchUserDataFromSpotify();
         },
-        error: (err) => this.handleSpotifyError(err),
+        error: (err) => {
+          this.handleSpotifyError(err);
+        },
       });
       return;
     }
@@ -60,34 +57,28 @@ export class LoginComponent {
   onLastfmStartButtonClick(): void {
     this.hasClickedLastFmStartButton = true;
     this.lastFmService.loadUserData(this.lastFmUsername).subscribe({
-      error: (err) => {
-        this.resetLogin();
-        this.showLastFmErrorMessage(err);
-      },
       complete: () => {
         this.router.navigate(["/journey"]);
+      },
+      error: (err) => {
+        this.resetLastFmLogin();
+        this.showLastFmErrorMessage(err);
       },
     });
   }
 
   onLastfmUsernameDialogHide(): void {
-    this.resetLogin();
+    this.resetLastFmLogin();
   }
 
   private fetchUserDataFromSpotify(): void {
-    this.spotifyService.getUserProfileData().subscribe({
-      next: (userProfileData) => {
-        this.userService.setUser(userProfileData);
-        this.spotifyService.getUserTopArtists().subscribe({
-          next: (topArtists) => {
-            this.artistService.setSource(ArtistsSources.SPOTIFY);
-            this.artistService.setUserTopArtists(topArtists);
-            this.router.navigate(["/journey"]);
-          },
-          error: (err) => this.handleSpotifyError(err),
-        });
+    this.spotifyService.loadUserData().subscribe({
+      complete: () => {
+        this.router.navigate(["/journey"]);
       },
-      error: (err) => this.handleSpotifyError(err),
+      error: (err) => {
+        this.handleSpotifyError(err);
+      },
     });
   }
 
@@ -101,17 +92,11 @@ export class LoginComponent {
         "It was not possible to get info about the error. Please, report it as a GitHub issue in the repository.";
     }
 
-    this.messageService.add({
-      severity: "error",
-      summary: "Communication with Spotify has failed.",
-      detail: "Error: " + errorMessage,
-      sticky: true,
-    });
-
+    this.showSpotifyErrorMessage(errorMessage);
     this.hasInitiatedLogin = false;
   }
 
-  private resetLogin(): void {
+  private resetLastFmLogin(): void {
     this.hasInitiatedLogin = false;
     this.hasClickedLastFmButton = false;
     this.hasClickedLastFmStartButton = false;
@@ -123,6 +108,15 @@ export class LoginComponent {
       severity: "error",
       summary: "Communication with LastFM has failed.",
       detail: "Error: " + err.message,
+      sticky: true,
+    });
+  }
+
+  private showSpotifyErrorMessage(errorMessage: string): void {
+    this.messageService.add({
+      severity: "error",
+      summary: "Communication with Spotify has failed.",
+      detail: "Error: " + errorMessage,
       sticky: true,
     });
   }
