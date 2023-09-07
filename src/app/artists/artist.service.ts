@@ -64,33 +64,36 @@ export class ArtistService {
           });
           const scrapedArtists: ScrapedArtist[] = [];
 
-          this.countryService.findArtistsCountryOfOrigin(artistsWithoutCountry).subscribe({
-            next: (scrapedArtist) => {
-              scrapedArtists.push(scrapedArtist);
+          this.countryService
+            .findArtistsCountryOfOrigin(artistsWithoutCountry)
+            .pipe(take(artistsWithoutCountry.length))
+            .subscribe({
+              next: (scrapedArtist) => {
+                scrapedArtists.push(scrapedArtist);
 
-              this.scrapedArtists$.next({
-                artist: scrapedArtist,
-                total: artistsWithoutCountry.length,
-                remanining: scrapedArtists.length,
-              });
-
-              const artistsWithOriginalOrder = this.applyOriginalOrder(topArtistsNames, [
-                ...artistsFromDatabase,
-                ...scrapedArtists,
-              ]);
-
-              this.userTopArtists$.next(artistsWithOriginalOrder);
-            },
-            complete: () => {
-              this.supabaseService.saveSuggestions(scrapedArtists);
-              this.countryService
-                .getCountriesCount()
-                .pipe(take(1))
-                .subscribe((countriesCount) => {
-                  this.supabaseService.saveDiversityIndex(countriesCount.length);
+                this.scrapedArtists$.next({
+                  artist: scrapedArtist,
+                  total: artistsWithoutCountry.length,
+                  remanining: scrapedArtists.length,
                 });
-            },
-          });
+
+                const artistsWithOriginalOrder = this.applyOriginalOrder(topArtistsNames, [
+                  ...artistsFromDatabase,
+                  ...scrapedArtists,
+                ]);
+
+                this.userTopArtists$.next(artistsWithOriginalOrder);
+              },
+              complete: () => {
+                this.supabaseService.saveSuggestions(scrapedArtists);
+                this.countryService
+                  .getCountriesCount()
+                  .pipe(take(1))
+                  .subscribe((countriesCount) => {
+                    this.supabaseService.saveDiversityIndex(countriesCount.length);
+                  });
+              },
+            });
         }
       });
   }

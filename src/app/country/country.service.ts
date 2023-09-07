@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, Subject } from "rxjs";
+import { BehaviorSubject, Observable, Subject, catchError, delay, map, of, take } from "rxjs";
 import { Artist, ScrapedArtist } from "../artists/artist.model";
 import { environment } from "src/environments/environment.development";
 import {
@@ -19,6 +19,7 @@ import * as topojson from "topojson-client";
 import * as TopoJSON from "topojson-specification";
 import { SupabaseService } from "../shared/supabase.service";
 import { countryRelatedTerms } from "./country.data";
+import { HttpClient } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
@@ -37,7 +38,7 @@ export class CountryService {
     NE_ID: -1,
   };
 
-  constructor(private supabaseService: SupabaseService) {
+  constructor(private supabaseService: SupabaseService, private http: HttpClient) {
     this.geoJSON = topojson.feature(
       countriesJSON as unknown as TopoJSON.Topology,
       countriesJSON.objects.countries as TopoJSON.GeometryCollection
@@ -173,21 +174,32 @@ export class CountryService {
               const { country, secondaryLocation } =
                 this.getArtistLocationFromMusicBrainzResponse(data);
 
-              artists$.next({
-                name,
-                country,
-                secondaryLocation,
-              });
+              if (country == undefined && secondaryLocation != undefined) {
+                setTimeout(() => {
+                  this.findCountryBySecondaryLocation(secondaryLocation).subscribe(
+                    (countryFromSecondaryLocation) => {
+                      artists$.next({
+                        name,
+                        country: countryFromSecondaryLocation,
+                        secondaryLocation,
+                      });
+                    }
+                  );
+                }, 1000);
+              } else {
+                artists$.next({
+                  name,
+                  country,
+                  secondaryLocation,
+                });
+              }
 
               eventStreamAccumulator = eventStreamAccumulator.slice(
                 endIndex + END_INDICATOR_OFFSET
               );
             }
 
-            if (done) {
-              artists$.complete();
-              break;
-            }
+            if (done) break;
           }
         }
       })
@@ -484,5 +496,47 @@ export class CountryService {
     };
 
     return [artistSubRegion];
+  }
+
+  private findCompleteLocation(secondaryLocation: string): Observable<string | undefined> {
+    return this.http.get(`https://geocode.maps.co/search?q={${secondaryLocation}}`).pipe(
+      take(1),
+      map((response: unknown) => this.getLocationFromResponse(response)),
+      catchError(() => {
+        return of(undefined);
+      })
+    );
+  }
+
+  private findCountryBySecondaryLocation(secondaryLocation: string): Observable<Country> {
+    return this.findCompleteLocation(secondaryLocation).pipe(
+      take(1),
+      map((completeLocation) => {
+        if (completeLocation == undefined) return this.unknownCountry;
+
+        const splittedLocation: string[] = completeLocation
+          .split(",")
+          .map((location: string) => location.toLowerCase().trim());
+
+        const geoFeature = this.geoJSON.features.find((feature) => {
+          return splittedLocation.some((location) => {
+            return (
+              feature.properties["NAME"].toLowerCase().includes(location) ||
+              location.includes(feature.properties["NAME"].toLowerCase())
+            );
+          });
+        });
+
+        if (geoFeature) return this.createCountryFromFeature(geoFeature as GeoFeature);
+        return this.unknownCountry;
+      })
+    );
+  }
+
+  private getLocationFromResponse(response: unknown): string | undefined {
+    if (Array.isArray(response) && response.length > 0)
+      return response[0]["display_name"] || undefined;
+
+    return undefined;
   }
 }
