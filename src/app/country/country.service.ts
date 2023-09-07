@@ -403,7 +403,7 @@ export class CountryService {
       const responseData = JSON.parse(response);
       const artist = this.getArtistFromMusicBrainzResponse(artistName, responseData);
       if (artist.country) {
-        const countryCode = this.getCountryCodeByText(responseData.artists[0].country);
+        const countryCode = this.getCountryCodeByText(artist.country);
         const country = this.getCountryByCode(countryCode);
         if (country.NE_ID != -1) {
           artistLocation.country = country;
