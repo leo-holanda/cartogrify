@@ -171,8 +171,10 @@ export class CountryService {
               const endIndex = eventStreamAccumulator.indexOf("END_OF_JSON");
               const { name, data } = JSON.parse(eventStreamAccumulator.slice(startIndex, endIndex));
 
-              const { country, secondaryLocation } =
-                this.getArtistLocationFromMusicBrainzResponse(data);
+              const { country, secondaryLocation } = this.getArtistLocationFromMusicBrainzResponse(
+                name,
+                data
+              );
 
               if (country == undefined && secondaryLocation != undefined) {
                 setTimeout(() => {
@@ -391,7 +393,7 @@ export class CountryService {
     return undefined;
   }
 
-  getArtistLocationFromMusicBrainzResponse(response: string): ArtistLocation {
+  getArtistLocationFromMusicBrainzResponse(artistName: string, response: string): ArtistLocation {
     const artistLocation: ArtistLocation = {
       country: undefined,
       secondaryLocation: undefined,
@@ -399,9 +401,7 @@ export class CountryService {
 
     try {
       const responseData = JSON.parse(response);
-      if (responseData.artists.length == 0) return artistLocation;
-
-      const artist = responseData.artists[0];
+      const artist = this.getArtistFromMusicBrainzResponse(artistName, responseData);
       if (artist.country) {
         const countryCode = this.getCountryCodeByText(responseData.artists[0].country);
         const country = this.getCountryByCode(countryCode);
@@ -536,6 +536,15 @@ export class CountryService {
   private getLocationFromResponse(response: unknown): string | undefined {
     if (Array.isArray(response) && response.length > 0)
       return response[0]["display_name"] || undefined;
+
+    return undefined;
+  }
+
+  private getArtistFromMusicBrainzResponse(artistName: string, responseData: any): any {
+    if (responseData.artists && Array.isArray(responseData.artists)) {
+      const matchedArtist = responseData.artists.find((artist: any) => artist.name == artistName);
+      return matchedArtist;
+    }
 
     return undefined;
   }
