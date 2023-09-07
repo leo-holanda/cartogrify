@@ -18,6 +18,8 @@ import { IntroComponent } from "./intro/intro.component";
 import { IntroModule } from "./intro/intro.module";
 import { EndComponent } from "./end/end.component";
 import { EndModule } from "./end/end.module";
+import { CountriesDiversityModule } from "./countries-diversity/countries-diversity.module";
+import { CountriesDiversityComponent } from "./countries-diversity/countries-diversity.component";
 
 @NgModule({
   declarations: [],
@@ -33,6 +35,7 @@ import { EndModule } from "./end/end.module";
     MapPartModule,
     IntroModule,
     EndModule,
+    CountriesDiversityModule,
   ],
   exports: [
     CountriesCountComponent,
@@ -42,6 +45,7 @@ import { EndModule } from "./end/end.module";
     MapPartComponent,
     IntroComponent,
     EndComponent,
+    CountriesDiversityComponent,
   ],
 })
 export class JourneyModule {}
