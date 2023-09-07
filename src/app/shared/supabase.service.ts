@@ -54,9 +54,12 @@ export class SupabaseService {
 
   saveSuggestions(scrapedArtists: ScrapedArtist[]): void {
     const suggestions = scrapedArtists.map((scrapedArtist) => {
+      const country_code =
+        scrapedArtist.country?.NE_ID == -1 ? undefined : scrapedArtist.country?.NE_ID;
+
       return {
         artist_name: scrapedArtist.name,
-        country_code: scrapedArtist.country?.NE_ID,
+        country_code: country_code,
       };
     });
 
