@@ -53,7 +53,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
     const tree = d3.tree().nodeSize([nodeWidth, nodeHeight]);
 
     // Sort the tree and apply the layout.
-    root.sort((a, b) => d3.ascending(a.data.name, b.data.name));
+    root.sort((a, b) => d3.descending(a.data.count, b.data.count));
     tree(root as any);
 
     // Compute the extent of the tree. Note that x and y are swapped here
@@ -151,7 +151,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
     const tree = d3.tree().size([containerWidth, windowHeight]);
 
     // Sort the tree and apply the layout.
-    root.sort((a, b) => d3.ascending(a.data.name, b.data.name));
+    root.sort((a, b) => d3.descending(a.data.count, b.data.count));
     tree(root as any);
 
     d3.select("#tree").remove();
