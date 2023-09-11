@@ -1,4 +1,10 @@
-<p-dialog header="Make your suggestions" [(visible)]="shouldOpenDialog" [modal]="true">
+<p-dialog
+  header="Make your suggestions"
+  [(visible)]="shouldOpenDialog"
+  [modal]="true"
+  appendTo="body"
+  [draggable]="false"
+>
   <ctg-suggestions
     [shouldMakeSuggestions$]="shouldMakeSuggestions$"
     (shouldCloseDialog)="closeSuggestionDialog()"
