@@ -188,13 +188,17 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
 
     node
       .append("circle")
-      .attr("fill", (d) => (d.children ? "#555" : "#999"))
-      .attr("r", 2.5);
+      .attr("fill", "#ffffff")
+      .attr("r", 2.5)
+      .attr("opacity", (d) => (d.depth == 0 ? 1 : 0));
 
     node
       .append("text")
       .attr("dy", "0.31em")
-      .attr("x", (d) => (d.children ? -6 : 6))
+      .attr("y", (d) => {
+        if (d.depth == 0) return -14;
+        return 0;
+      })
       .attr("text-anchor", (d) => (this.isMobile ? "middle" : d.children ? "end" : "start"))
       .text((d: any) => {
         if (d.data.country) return d.data.country.name + ` (${d.data.count})`;
