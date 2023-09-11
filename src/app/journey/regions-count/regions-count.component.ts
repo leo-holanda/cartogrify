@@ -79,27 +79,23 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
       .attr("viewBox", [-nodeHeight, x0 - nodeWidth, containerWidth, height])
       .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
 
-    const link = svg
+    svg
       .append("g")
       .attr("fill", "none")
       .attr("stroke", "#FAF8EF")
-      .attr("stroke-opacity", 0.1)
+      .attr("stroke-opacity", 0.2)
       .attr("stroke-width", 2)
       .selectAll()
       .data(root.links())
       .join("path")
       .attr(
         "d",
-        this.isMobile
-          ? (d3
-              .linkVertical()
-              .x((d) => (d as any).x)
-              .y((d) => (d as any).y) as any)
-          : (d3
-              .linkHorizontal()
-              .x((d) => (d as any).y)
-              .y((d) => (d as any).x) as any)
-      );
+        d3
+          .linkHorizontal()
+          .x((d: any) => d.y)
+          .y((d: any) => d.x) as any
+      )
+      .attr("stroke-width", (d: any) => d.source.height + 1);
 
     const node = svg
       .append("g")
@@ -124,12 +120,6 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
     node
       .append("text")
       .attr("dy", "0.31em")
-      .attr("class", (d) => {
-        if (d.depth == 0) return "root";
-        else if (d.height == 0) return "leaf";
-
-        return "";
-      })
       .attr("x", (d) => (d.children ? -6 : 6))
       .attr("text-anchor", (d) => (this.isMobile ? "middle" : d.children ? "end" : "start"))
       .text((d: any) => {
@@ -164,27 +154,22 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
       .attr("viewBox", [0, -24, containerWidth, windowHeight + nodeHeight])
       .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
 
-    const link = svg
+    svg
       .append("g")
       .attr("fill", "none")
       .attr("stroke", "#FAF8EF")
       .attr("stroke-opacity", 0.4)
-      .attr("stroke-width", 2)
       .selectAll()
       .data(root.links())
       .join("path")
       .attr(
         "d",
-        this.isMobile
-          ? (d3
-              .linkVertical()
-              .x((d) => (d as any).x)
-              .y((d) => (d as any).y) as any)
-          : (d3
-              .linkHorizontal()
-              .x((d) => (d as any).y)
-              .y((d) => (d as any).x) as any)
-      );
+        d3
+          .linkVertical()
+          .x((d: any) => d.x)
+          .y((d: any) => d.y) as any
+      )
+      .attr("stroke-width", (d: any) => d.source.height + 1);
 
     const node = svg
       .append("g")
@@ -209,12 +194,6 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
     node
       .append("text")
       .attr("dy", "0.31em")
-      .attr("class", (d) => {
-        if (d.depth == 0) return "root";
-        else if (d.height == 0) return "leaf";
-
-        return "";
-      })
       .attr("x", (d) => (d.children ? -6 : 6))
       .attr("text-anchor", (d) => (this.isMobile ? "middle" : d.children ? "end" : "start"))
       .text((d: any) => {
