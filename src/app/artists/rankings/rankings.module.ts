@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ProgressBarModule } from "primeng/progressbar";
 import { TabMenuModule } from "primeng/tabmenu";
-import { RankingsComponent } from "./rankings.component";
 import { MessagesModule } from "primeng/messages";
 import { ButtonModule } from "primeng/button";
 import { DialogService } from "primeng/dynamicdialog";
@@ -17,7 +16,7 @@ import { CountriesRankModule } from "./countries-rank/countries-rank.module";
 import { ArtistsRankModule } from "./artists-rank/artists-rank.module";
 
 @NgModule({
-  declarations: [RankingsComponent, RegionsRankComponent],
+  declarations: [RegionsRankComponent],
   imports: [
     CommonModule,
     ProgressBarModule,
@@ -34,6 +33,6 @@ import { ArtistsRankModule } from "./artists-rank/artists-rank.module";
     ArtistsRankModule,
   ],
   providers: [DialogService],
-  exports: [RankingsComponent],
+  exports: [],
 })
 export class RankingsModule {}
