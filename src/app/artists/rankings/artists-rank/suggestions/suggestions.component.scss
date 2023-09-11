@@ -4,7 +4,7 @@
   }
 
   .p-tabview-title {
-    text-wrap: wrap !important;
+    white-space: normal !important;
   }
 
   .p-tabview-panels {
@@ -19,22 +19,16 @@
   align-items: center;
   margin-bottom: 1rem;
 
-  .guide {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .guide-item {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-  }
-
   p-dropdown {
     margin-top: 1rem;
     width: 100%;
   }
+}
+
+.dropdown-lock-message {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .table-column {
