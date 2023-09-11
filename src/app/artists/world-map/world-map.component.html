@@ -59,26 +59,33 @@
     </div>
   </div>
 </p-dialog>
+
+<p class="zoom-message">Press shift to allow zooming</p>
+<div #mapWrapper class="map-wrapper" [style]="{ background: mapBackgroundColor }"></div>
+
 <div class="map-extras">
   <div class="map-buttons">
-    <p-button
-      (onClick)="onShareButtonClick()"
-      [label]="isMobile ? 'Share' : 'Share with your friends'"
-      icon="bx bx-share-alt"
-      styleClass="p-button-rounded first-button"
-    ></p-button>
     <p-button
       (onClick)="op.toggle($event)"
       [label]="isMobile ? 'Customize' : 'Customize map'"
       icon="bx bx-palette"
+      styleClass="p-button-rounded first-button"
+    ></p-button>
+
+    <p-button
+      (onClick)="onShareButtonClick()"
+      [label]="isMobile ? 'Share' : 'Share with your friends'"
+      icon="bx bx-share-alt"
       styleClass="p-button-rounded"
     ></p-button>
+
     <p-overlayPanel #op>
       <div class="color-theme-selector">
         <label class="map-color-palette" for="map-color-palette">
           <div>Color Palette</div>
           <div style="color: grey">Provided by ArcGIS Maps SDK</div>
         </label>
+
         <p-listbox
           [options]="mapThemes"
           optionLabel="name"
@@ -95,10 +102,13 @@
                   [ngStyle]="{ background: color }"
                 ></div>
               </div>
-            </div> </ng-template
-        ></p-listbox>
+            </div>
+          </ng-template>
+        </p-listbox>
+
         <div class="map-background-input-wrapper">
           <label for="background">Background Color</label>
+
           <div class="map-background-input">
             <p-radioButton
               name="dark-background"
@@ -109,6 +119,7 @@
             ></p-radioButton>
             <label for="dark-background">Dark</label>
           </div>
+
           <div class="map-background-input">
             <p-radioButton
               name="light-background"
@@ -119,6 +130,7 @@
             ></p-radioButton>
             <label for="light-background">Light</label>
           </div>
+
           <div class="map-background-input">
             <p-radioButton
               name="blue-background"
@@ -129,6 +141,7 @@
             ></p-radioButton>
             <label for="blue-background">Light blue</label>
           </div>
+
           <div class="map-background-input">
             <p-radioButton
               name="light-brown-background"
@@ -139,6 +152,7 @@
             ></p-radioButton>
             <label for="light-brown-background">Light brown</label>
           </div>
+
           <div class="map-background-input">
             <p-radioButton
               name="dark-brown-background"
@@ -153,6 +167,4 @@
       </div>
     </p-overlayPanel>
   </div>
-  <p class="zoom-message">Press shift to allow zooming</p>
 </div>
-<div #mapWrapper class="map-wrapper" [style]="{ background: mapBackgroundColor }"></div>
