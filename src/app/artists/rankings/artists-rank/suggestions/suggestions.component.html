@@ -41,6 +41,7 @@
                   optionLabel="name"
                   placeholder="Select a country"
                   styleClass="suggestion-dropdown"
+                  appendTo="body"
                 >
                   <ng-template pTemplate="selectedItem">
                     <div *ngIf="artistsWithSuggestion[rowIndex].suggestedCountry">
@@ -106,6 +107,7 @@
                   filterBy="name"
                   optionLabel="name"
                   placeholder="Select a Country"
+                  appendTo="body"
                 >
                   <ng-template pTemplate="selectedItem">
                     <div *ngIf="artistsWithSuggestion[rowIndex].suggestedCountry">
@@ -169,6 +171,7 @@
           filterBy="name"
           optionLabel="name"
           placeholder="Select a country to suggest"
+          appendTo="body"
         >
           <ng-template pTemplate="selectedItem">
             <div *ngIf="selectedCountryToBulkSuggest">
