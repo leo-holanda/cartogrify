@@ -13,6 +13,7 @@ main {
   align-items: center;
   justify-content: center;
   text-align: center;
+  margin: 2rem;
 }
 
 .scraped-artists-wrapper {
@@ -122,6 +123,11 @@ main {
   .minor-title {
     font-size: var(--fs-100);
   }
+
+  .loading-wrapper,
+  .-search-end-wrapper {
+    margin: 1.5rem;
+  }
 }
 
 @media (max-width: 640px) {
@@ -147,5 +153,10 @@ main {
 
   .minor-title {
     font-size: var(--fs-000);
+  }
+
+  .loading-wrapper,
+  .-search-end-wrapper {
+    margin: 1rem;
   }
 }
