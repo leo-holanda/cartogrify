@@ -139,25 +139,12 @@
     </p-tabPanel>
 
     <p-tabPanel header="Suggest by bulk" leftIcon="bx bx-group">
-      <div class="bulk-suggest-wrapper">
-        <div class="guide">
-          <div class="guide-item">
-            <p-chip label="1"></p-chip>
-            <span> Mark the checkboxes of the artists you want to make a suggestion. </span>
-          </div>
-          <div class="guide-item">
-            <p-chip label="2"></p-chip>
-            <span> Select the country in the dropdown. </span>
-          </div>
-          <div class="guide-item">
-            <p-chip label="3"></p-chip>
-            <span>
-              The country you selected will be marked as the suggested country for each selected
-              artist.
-            </span>
-          </div>
-        </div>
+      <div *ngIf="selectedArtistsToBulkSuggest.length == 0" class="dropdown-lock-message">
+        <i class="bx bx-error-circle"></i>
+        <span>Mark the checkboxes of the artists you want to make a suggestion!</span>
+      </div>
 
+      <div class="bulk-suggest-wrapper">
         <p-dropdown
           (onChange)="onBulkSuggestDropdownChange($event)"
           [(ngModel)]="selectedCountryToBulkSuggest"
@@ -170,7 +157,7 @@
           styleClass="suggestion-dropdown"
           filterBy="name"
           optionLabel="name"
-          placeholder="Select a country to suggest"
+          placeholder="Select a country suggestion"
           appendTo="body"
         >
           <ng-template pTemplate="selectedItem">
@@ -198,7 +185,7 @@
         selectionMode="multiple"
         [(selection)]="selectedArtistsToBulkSuggest"
         [scrollable]="true"
-        scrollHeight="30vh"
+        scrollHeight="30dvh"
       >
         <ng-template pTemplate="header">
           <tr>
@@ -255,7 +242,7 @@
           selectionMode="multiple"
           [(selection)]="selectedArtistsToBulkSuggest"
           [scrollable]="true"
-          scrollHeight="50vh"
+          scrollHeight="30dvh"
         >
           <ng-template pTemplate="header">
             <tr>
