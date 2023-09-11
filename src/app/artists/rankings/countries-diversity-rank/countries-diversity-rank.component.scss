@@ -68,28 +68,35 @@
       display: flex;
       white-space: nowrap;
       padding-bottom: 1rem;
+    }
 
-      .flag {
-        font-size: var(--fs-300);
-        margin-right: 0.5rem;
-      }
+    .flag {
+      font-size: var(--fs-300);
+      margin-right: 0.5rem;
+    }
 
-      .country {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+    .country {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-      .country-name {
-        font-size: var(--fs-100);
-        margin: 0;
-      }
+    .country-name {
+      font-size: var(--fs-100);
+      margin: 0;
+      white-space: normal;
     }
 
     .average-column {
       text-align: right;
       padding-bottom: 1rem;
       font-size: var(--fs-100);
+    }
+
+    .flag-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 }
