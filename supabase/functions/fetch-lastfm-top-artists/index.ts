@@ -12,7 +12,7 @@ serve(async (req) => {
     const { name } = await req.json();
     const lastFmApiKey = Deno.env.get("LASTFM_API_KEY") ?? "";
     const response = await fetch(
-      `https://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${name}&api_key=${lastFmApiKey}&format=json&limit=40`
+      `https://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${name}&api_key=${lastFmApiKey}&format=json&limit=50`
     );
 
     return new Response(JSON.stringify(await response.json()), {
