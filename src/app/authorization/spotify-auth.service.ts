@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, from, map, of, switchMap, take, tap } from "rxjs";
+import { Observable, concatMap, from, map, of, take, tap } from "rxjs";
 import { environment } from "src/environments/environment";
 
 export interface SpotifyAccessTokenData {
@@ -93,7 +93,7 @@ export class SpotifyAuthService {
     return now >= new Date(tokenData.expires_at);
   }
 
-  refreshToken(): Observable<SpotifyAccessTokenData> {
+  refreshToken(): Observable<boolean> {
     const tokenDataItem = localStorage.getItem("token_data") as string;
     const tokenData = JSON.parse(tokenDataItem) as SpotifyAccessTokenData;
     const refreshToken = tokenData.refresh_token;
@@ -112,12 +112,12 @@ export class SpotifyAuthService {
       })
       .pipe(
         take(1),
-        switchMap((tokenData) => {
+        concatMap((tokenData) => {
           const expiresAt = new Date();
           expiresAt.setSeconds(expiresAt.getSeconds() + tokenData.expires_in);
           tokenData.expires_at = expiresAt;
           localStorage.setItem("token_data", JSON.stringify(tokenData));
-          return of();
+          return of(true);
         })
       );
   }
