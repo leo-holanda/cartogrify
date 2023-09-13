@@ -15,7 +15,7 @@ main {
   justify-content: center;
   flex-flow: column;
   overflow: hidden;
-  padding: 3rem;
+  padding: 2rem;
 }
 
 footer {
@@ -47,21 +47,18 @@ footer {
   margin-bottom: 3rem;
   color: black;
   text-align: center;
-
-  @media (min-width: 768px) {
-    width: 50%;
-  }
+  width: 60%;
 
   & h1 {
     font-family: "Quicksand", cursive;
     font-weight: normal;
-    font-size: clamp(2.5rem, 4vw, 8rem);
+    font-size: var(--fs-700);
     margin: 0;
   }
 
   & h3 {
     margin-top: 0;
-    font-size: clamp(0.65rem, 2vw, 4rem);
+    font-size: var(--fs-400);
   }
 }
 
@@ -72,41 +69,31 @@ button {
   border: none;
 }
 
-.hint {
-  text-align: center;
-  color: black;
-  font-size: clamp(0.8rem, 2vw, 4rem);
-}
-
 .options-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 1rem;
+}
 
-  .option-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    width: 100%;
-    padding: 2rem 4rem;
-    font-size: 2rem;
-    transition: 0.2s;
-    border-radius: 999px;
-  }
+.option-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  width: 100%;
+  padding: 2rem 4rem;
+  font-size: var(--fs-300);
+  transition: 0.2s;
+  border-radius: 999px;
+}
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-
-  .option-input-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-flow: column;
-    margin: 1rem;
-    flex: 1;
-  }
+.option-input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+  margin: 1rem;
+  flex: 1;
 }
 
 .spotify-option {
@@ -149,50 +136,56 @@ button {
 }
 
 .spotify-tester-message {
+  font-size: var(--fs--100);
   color: black;
 }
 
-.message {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 1rem;
-  overflow-y: auto;
-  max-height: 15dvh;
-  display: flex;
-  flex-direction: column;
-  width: 50%;
-
-  &::-webkit-scrollbar {
-    background-color: transparent;
-    width: 0.5rem;
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #babac0;
-    border-radius: 0.5rem;
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.808);
-    }
-  }
-
-  p {
-    margin: 0;
-  }
-}
-
 @media (min-width: 641px) and (max-width: 1280px) {
+  .options-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .title-wrapper h1 {
+    font-size: var(--fs-600);
+  }
+
   .message {
     width: 75%;
+  }
+
+  main {
+    padding: 1.5rem;
+  }
+
+  .option-button {
+    padding: 1.5rem 3rem;
+    font-size: var(--fs-200);
   }
 }
 
 @media (max-width: 640px) {
+  .options-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .title-wrapper h1 {
+    font-size: var(--fs-500);
+  }
+
   .message {
+    width: 100%;
+  }
+
+  main {
+    padding: 1rem;
+  }
+
+  .option-button {
+    padding: 1rem 2rem;
+    font-size: var(--fs-200);
+  }
+
+  .title-wrapper {
     width: 100%;
   }
 }
