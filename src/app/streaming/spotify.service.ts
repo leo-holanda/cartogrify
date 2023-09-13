@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, concat, map, take, tap } from "rxjs";
+import { Observable, concat, map, of, switchMap, take } from "rxjs";
 import { SpotifyAccessTokenData } from "../authorization/spotify-auth.service";
 import { SpotifyUserData } from "./spotify.model";
 import { CountryService } from "../country/country.service";
@@ -22,16 +22,18 @@ export class SpotifyService {
   loadUserData(): Observable<SpotifyUserData | string[]> {
     const loadUserProfile = this.getUserProfile().pipe(
       take(1),
-      tap((userProfile) => {
+      switchMap((userProfile) => {
         this.userService.setUser(userProfile);
+        return of();
       })
     );
 
     const loadUserTopArtists = this.getUserTopArtists().pipe(
       take(1),
-      tap((userTopArtists) => {
+      switchMap((userTopArtists) => {
         this.artistService.setSource(ArtistsSources.SPOTIFY);
         this.artistService.setUserTopArtists(userTopArtists);
+        return of();
       })
     );
 
