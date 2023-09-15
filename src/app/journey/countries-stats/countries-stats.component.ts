@@ -114,7 +114,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
     });
 
     const domainArray = [];
-    for (let index = 0; index <= 50; index++) domainArray.push(index.toString());
+    for (let index = 1; index <= 50; index++) domainArray.push(index.toString());
 
     const x = d3
       .scaleBand()
