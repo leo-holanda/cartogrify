@@ -173,7 +173,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .attr("transform", `translate(0,${height - marginBottom})`)
       .attr("fill", "#b46060")
       .call(d3.axisBottom(x).ticks(0))
-      .call((g) => g.selectAll(".tick text").attr("fill", "#b46060"));
+      .call((g) => g.selectAll(".tick text").attr("fill", "#b46060").style("font-weight", "800"));
 
     // Add the y-axis and label, and remove the domain line.
     svg
