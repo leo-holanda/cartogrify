@@ -179,7 +179,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
     svg
       .append("g")
       .attr("transform", `translate(${marginLeft},0)`)
-      .call(d3.axisLeft(y).ticks(3))
+      .call(d3.axisLeft(y).ticks(10))
       .attr("fill", "#b46060")
       .call((g) => g.select(".domain").remove())
       .call((g) => g.selectAll(".tick line").remove())
