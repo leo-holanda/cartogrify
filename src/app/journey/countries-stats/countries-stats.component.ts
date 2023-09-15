@@ -120,7 +120,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .scaleBand()
       .domain(domainArray)
       .range([marginLeft, width - marginRight])
-      .padding(0.5);
+      .padding(0.25);
 
     const y = d3
       .scaleLinear()
