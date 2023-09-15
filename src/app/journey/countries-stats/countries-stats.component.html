@@ -14,6 +14,8 @@
     </h3>
   </div>
 
+  <div class="world-chart-wrapper" #worldChart></div>
+
   <div *ngIf="userCountry.NE_ID != -1; else userWithoutCountryTemplate" class="title-wrapper">
     <h2 class="pre-title">And more than</h2>
 
@@ -29,6 +31,8 @@
       <span class="{{ 'flag fi fi-' + userCountry.flagCode }}"></span> {{ userCountry.name }}!
     </h3>
   </div>
+
+  <div class="country-chart-wrapper" #countryChart></div>
 
   <ng-template #userWithoutCountryTemplate>
     <div class="empty-country-title-wrapper">

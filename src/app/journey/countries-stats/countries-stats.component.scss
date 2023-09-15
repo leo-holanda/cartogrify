@@ -1,13 +1,13 @@
 :host {
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
   padding: 2rem;
   gap: 4rem;
   width: 100%;
   background-color: #b46060;
   color: #f6e1c3;
-  min-height: 90dvh;
 }
 
 .title-wrapper {
@@ -64,6 +64,15 @@
 .spotify-policy-message {
   font-weight: bold;
   text-align: center;
+}
+
+.world-chart-wrapper,
+.country-chart-wrapper {
+  padding: 1rem;
+  height: 50dvh;
+  width: 100%;
+  background-color: #f6e1c3;
+  border-radius: 16px;
 }
 
 @media (min-width: 641px) and (max-width: 1280px) {
