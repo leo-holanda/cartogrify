@@ -70,7 +70,7 @@
 .country-chart-wrapper {
   padding: 1rem;
   height: 50dvh;
-  width: 100%;
+  width: 63%;
   background-color: #f6e1c3;
   border-radius: 16px;
 }
@@ -105,6 +105,11 @@
 
   .rating-item {
     font-size: var(--fs-800);
+  }
+
+  .world-chart-wrapper,
+  .country-chart-wrapper {
+    width: 100%;
   }
 }
 
@@ -141,5 +146,10 @@
 
   .rating-item {
     font-size: var(--fs-700);
+  }
+
+  .world-chart-wrapper,
+  .country-chart-wrapper {
+    width: 100%;
   }
 }
