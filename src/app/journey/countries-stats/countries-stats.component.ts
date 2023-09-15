@@ -149,7 +149,8 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
           ? this.userCountry.name + " users country diveristy"
           : "World users country diversity"
       )
-      .attr("fill", "#b46060");
+      .attr("fill", "#b46060")
+      .style("font-weight", "800");
 
     // Add bars
     svg
@@ -182,7 +183,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .attr("fill", "#b46060")
       .call((g) => g.select(".domain").remove())
       .call((g) => g.selectAll(".tick line").remove())
-      .call((g) => g.selectAll(".tick text").attr("fill", "#b46060"))
+      .call((g) => g.selectAll(".tick text").attr("fill", "#b46060").style("font-weight", "800"))
       .call((g) =>
         g
           .append("text")
