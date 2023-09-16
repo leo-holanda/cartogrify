@@ -103,7 +103,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
     }
 
     const marginTop = this.isMobile() ? 40 : 72;
-    const marginBottom = this.isMobile() ? 24 : 32;
+    const marginBottom = this.isMobile() ? 24 : 40;
     const marginLeft = this.isMobile() ? 48 : 64;
     const marginRight = this.isMobile() ? 16 : 32;
 
@@ -192,14 +192,20 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .append("g")
       .attr("transform", `translate(0,${height - chartMarginBottom})`)
       .attr("fill", "#b46060")
-      .call(d3.axisBottom(x).ticks(0))
-      .call((g) => g.select(".domain").attr("stroke", "#b46060").attr("stroke-width", "3px"))
+      .call(d3.axisBottom(x).ticks(0).tickSizeOuter(0))
+      .call((g) =>
+        g
+          .select(".domain")
+          .attr("stroke", "#b46060")
+          .attr("stroke-width", "4px")
+          .attr("stroke-linecap", "round")
+      )
       .call((g) => g.selectAll(".tick text").remove())
       .call((g) => {
         g.append("text")
           .attr("x", chartMarginLeft)
           .attr("y", 0)
-          .attr("dy", "1rem")
+          .attr("dy", "1.2rem")
           .attr("text-anchor", "start")
           .attr("fill", "#b46060")
           .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs-000)")
@@ -209,7 +215,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
         g.append("text")
           .attr("x", width - chartMarginRight)
           .attr("y", 0)
-          .attr("dy", "1rem")
+          .attr("dy", "1.2rem")
           .attr("text-anchor", "end")
           .attr("fill", "#b46060")
           .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs-000)")
