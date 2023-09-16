@@ -72,6 +72,7 @@ export class SupabaseService {
   }
 
   saveDiversityIndex(countriesCount: number): void {
+    if (countriesCount == 0) return;
     const user = this.userService.getUser();
 
     if (user) {
