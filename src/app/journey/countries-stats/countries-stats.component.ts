@@ -102,10 +102,8 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       width = this.worldChartWrapper.nativeElement.offsetWidth;
     }
 
-    const marginTop = 20;
-    const marginRight = 20;
-    const marginBottom = 30;
-    const marginLeft = 40;
+    const chartMargin = 64;
+    const labelMargin = 16;
 
     let highestUserCount = 0;
     diversityIndexes.forEach((diversityIndexes) => {
@@ -119,13 +117,13 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
     const x = d3
       .scaleBand()
       .domain(domainArray)
-      .range([marginLeft, width - marginRight])
+      .range([chartMargin, width - chartMargin])
       .padding(0.25);
 
     const y = d3
       .scaleLinear()
       .domain([0, highestUserCount + 1])
-      .range([height - marginBottom - 5, marginTop]);
+      .range([height - chartMargin - 5, chartMargin]);
 
     if (isInUserCountry) d3.select("#countryChartSvg").remove();
     else d3.select("#worldChartSvg").remove();
@@ -142,12 +140,12 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
     svg
       .append("text")
       .attr("x", width / 2)
-      .attr("y", marginTop)
+      .attr("y", labelMargin)
       .attr("text-anchor", "middle")
       .text(
         isInUserCountry
-          ? this.userCountry.name + " users country diveristy"
-          : "World users country diversity"
+          ? "Country diversity of users in " + this.userCountry.name
+          : "Country diversity of users around the world"
       )
       .attr("fill", "#b46060")
       .style("font-weight", "800");
@@ -170,16 +168,18 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
     // Add the x-axis and label.
     svg
       .append("g")
-      .attr("transform", `translate(0,${height - marginBottom})`)
+      .attr("transform", `translate(0,${height - chartMargin})`)
+      .attr("id", "xAxisGroup")
       .attr("fill", "#b46060")
       .call(d3.axisBottom(x).ticks(0))
-      .call((g) => g.selectAll(".tick text").attr("fill", "#b46060").style("font-weight", "800"));
+      .call((g) => g.select(".domain").attr("stroke", "#b46060").attr("stroke-width", "3px"))
+      .call((g) => g.selectAll(".tick text").remove());
 
     // Add the y-axis and label, and remove the domain line.
     const oneThirdHighestUserCount = highestUserCount / 3;
     svg
       .append("g")
-      .attr("transform", `translate(${marginLeft},0)`)
+      .attr("transform", `translate(${chartMargin},0)`)
       .call(
         d3
           .axisLeft(y)
@@ -194,15 +194,36 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .attr("fill", "#b46060")
       .call((g) => g.select(".domain").remove())
       .call((g) => g.selectAll(".tick line").remove())
-      .call((g) => g.selectAll(".tick text").attr("fill", "#b46060").style("font-weight", "800"))
-      .call((g) =>
-        g
-          .append("text")
-          .attr("x", -marginLeft)
-          .attr("y", 5)
-          .attr("fill", "#b46060")
-          .attr("text-anchor", "start")
-          .text("Users")
-      );
+      .call((g) => g.selectAll(".tick text").attr("fill", "#b46060").style("font-weight", "800"));
+
+    svg
+      .append("text")
+      .attr("x", -(height / 2))
+      .attr("y", labelMargin)
+      .attr("transform", "rotate(-90)")
+      .attr("text-anchor", "middle")
+      .attr("fill", "#b46060")
+      .style("font-weight", "800")
+      .text("Users quantity");
+
+    const xAxisGroup = document.querySelector("#xAxisGroup")?.getBoundingClientRect();
+    console.log(xAxisGroup);
+    svg
+      .append("text")
+      .attr("x", chartMargin)
+      .attr("y", height - chartMargin + labelMargin * 1.5)
+      .attr("text-anchor", "start")
+      .attr("fill", "#b46060")
+      .style("font-weight", "800")
+      .text("< Less country diversity");
+
+    svg
+      .append("text")
+      .attr("x", width - chartMargin)
+      .attr("y", height - chartMargin + labelMargin * 1.5)
+      .attr("text-anchor", "end")
+      .attr("fill", "#b46060")
+      .style("font-weight", "800")
+      .text("More country diversity >");
   }
 }
