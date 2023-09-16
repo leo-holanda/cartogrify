@@ -176,10 +176,21 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .call((g) => g.selectAll(".tick text").attr("fill", "#b46060").style("font-weight", "800"));
 
     // Add the y-axis and label, and remove the domain line.
+    const oneThirdHighestUserCount = highestUserCount / 3;
     svg
       .append("g")
       .attr("transform", `translate(${marginLeft},0)`)
-      .call(d3.axisLeft(y).ticks(10))
+      .call(
+        d3
+          .axisLeft(y)
+          .tickValues([
+            0,
+            oneThirdHighestUserCount,
+            oneThirdHighestUserCount * 2,
+            oneThirdHighestUserCount * 3,
+            oneThirdHighestUserCount * 3 + oneThirdHighestUserCount,
+          ])
+      )
       .attr("fill", "#b46060")
       .call((g) => g.select(".domain").remove())
       .call((g) => g.selectAll(".tick line").remove())
