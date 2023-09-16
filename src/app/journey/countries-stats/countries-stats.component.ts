@@ -102,8 +102,19 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       width = this.worldChartWrapper.nativeElement.offsetWidth;
     }
 
-    const chartMargin = 64;
-    const labelMargin = 16;
+    const marginTop = this.isMobile() ? 40 : 72;
+    const marginBottom = this.isMobile() ? 16 : 32;
+    const marginLeft = this.isMobile() ? 48 : 64;
+    const marginRight = this.isMobile() ? 16 : 32;
+
+    const chartMarginTop = marginTop;
+    const chartMarginBottom = marginBottom;
+    const chartMarginLeft = marginLeft;
+    const chartMarginRight = marginRight;
+
+    const labelMarginTop = 16;
+    const labelMarginBottom = 16;
+    const labelMarginLeft = 16;
 
     let highestUserCount = 0;
     diversityIndexes.forEach((diversityIndexes) => {
@@ -117,13 +128,13 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
     const x = d3
       .scaleBand()
       .domain(domainArray)
-      .range([chartMargin, width - chartMargin])
+      .range([chartMarginLeft, width - chartMarginRight])
       .padding(0.25);
 
     const y = d3
       .scaleLinear()
       .domain([0, highestUserCount + 1])
-      .range([height - chartMargin - 5, chartMargin]);
+      .range([height - chartMarginBottom - 5, chartMarginTop]);
 
     if (isInUserCountry) d3.select("#countryChartSvg").remove();
     else d3.select("#worldChartSvg").remove();
@@ -140,7 +151,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
     svg
       .append("text")
       .attr("x", width / 2)
-      .attr("y", labelMargin)
+      .attr("y", labelMarginTop)
       .attr("text-anchor", "middle")
       .text(
         isInUserCountry
@@ -148,7 +159,39 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
           : "Country diversity of users around the world"
       )
       .attr("fill", "#b46060")
+      .attr("font-size", this.isMobile() ? "var(--fs--200)" : "var(--fs-000)")
       .style("font-weight", "800");
+
+    svg
+      .append("text")
+      .attr("x", -(height / 2))
+      .attr("y", labelMarginLeft)
+      .attr("transform", "rotate(-90)")
+      .attr("text-anchor", "middle")
+      .attr("fill", "#b46060")
+      .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs-000)")
+      .style("font-weight", "800")
+      .text("Users quantity");
+
+    svg
+      .append("text")
+      .attr("x", chartMarginLeft)
+      .attr("y", height - chartMarginBottom + labelMarginBottom)
+      .attr("text-anchor", "start")
+      .attr("fill", "#b46060")
+      .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs-000)")
+      .style("font-weight", "800")
+      .text("< Less country diversity");
+
+    svg
+      .append("text")
+      .attr("x", width - chartMarginRight)
+      .attr("y", height - chartMarginBottom + labelMarginBottom)
+      .attr("text-anchor", "end")
+      .attr("fill", "#b46060")
+      .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs-000)")
+      .style("font-weight", "800")
+      .text("More country diversity >");
 
     // Add bars
     svg
@@ -168,7 +211,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
     // Add the x-axis and label.
     svg
       .append("g")
-      .attr("transform", `translate(0,${height - chartMargin})`)
+      .attr("transform", `translate(0,${height - chartMarginBottom})`)
       .attr("id", "xAxisGroup")
       .attr("fill", "#b46060")
       .call(d3.axisBottom(x).ticks(0))
@@ -179,7 +222,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
     const oneThirdHighestUserCount = highestUserCount / 3;
     svg
       .append("g")
-      .attr("transform", `translate(${chartMargin},0)`)
+      .attr("transform", `translate(${chartMarginLeft},0)`)
       .call(
         d3
           .axisLeft(y)
@@ -195,35 +238,9 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .call((g) => g.select(".domain").remove())
       .call((g) => g.selectAll(".tick line").remove())
       .call((g) => g.selectAll(".tick text").attr("fill", "#b46060").style("font-weight", "800"));
+  }
 
-    svg
-      .append("text")
-      .attr("x", -(height / 2))
-      .attr("y", labelMargin)
-      .attr("transform", "rotate(-90)")
-      .attr("text-anchor", "middle")
-      .attr("fill", "#b46060")
-      .style("font-weight", "800")
-      .text("Users quantity");
-
-    const xAxisGroup = document.querySelector("#xAxisGroup")?.getBoundingClientRect();
-    console.log(xAxisGroup);
-    svg
-      .append("text")
-      .attr("x", chartMargin)
-      .attr("y", height - chartMargin + labelMargin * 1.5)
-      .attr("text-anchor", "start")
-      .attr("fill", "#b46060")
-      .style("font-weight", "800")
-      .text("< Less country diversity");
-
-    svg
-      .append("text")
-      .attr("x", width - chartMargin)
-      .attr("y", height - chartMargin + labelMargin * 1.5)
-      .attr("text-anchor", "end")
-      .attr("fill", "#b46060")
-      .style("font-weight", "800")
-      .text("More country diversity >");
+  isMobile(): boolean {
+    return window.innerWidth < 641;
   }
 }
