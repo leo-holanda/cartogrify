@@ -166,8 +166,8 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .attr("text-anchor", "middle")
       .text(
         isInUserCountry
-          ? "Country diversity of users in " + this.userCountry.name
-          : "Country diversity of users around the world"
+          ? "Nationality diversity among users' top artists - " + this.userCountry.name
+          : "Nationality diversity among users' top artists - World"
       )
       .attr("fill", "#b46060")
       .attr("font-size", this.isMobile() ? "var(--fs--200)" : "var(--fs-100)")
@@ -237,7 +237,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
           .attr("fill", "#b46060")
           .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs-000)")
           .style("font-weight", "800")
-          .text("Country diversity");
+          .text("Nationality diversity");
       });
 
     // Add the y-axis and label, and remove the domain line.
