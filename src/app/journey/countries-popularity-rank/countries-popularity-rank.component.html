@@ -3,7 +3,7 @@
     <thead>
       <th class="table-header-column">#</th>
       <th class="table-header-column">Country</th>
-      <th class="table-header-column">Artists</th>
+      <th class="table-header-column">Artists %</th>
     </thead>
     <tbody>
       <tr class="table-row" *ngFor="let countryPopularity of countriesPopularity; let i = index">
@@ -17,8 +17,8 @@
           </div>
         </td>
 
-        <td class="average-column">
-          {{ countryPopularity.popularity }}
+        <td *ngIf="totalArtists != 0" class="average-column">
+          {{ ((countryPopularity.popularity / totalArtists) * 100).toFixed(2) + "%" }}
         </td>
       </tr>
     </tbody>

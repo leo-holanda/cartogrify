@@ -9,6 +9,7 @@ import { CountryService } from "../../country/country.service";
 })
 export class CountriesPopularityRankComponent implements OnInit {
   countriesPopularity: CountryPopularity[] = [];
+  totalArtists = 0;
 
   constructor(private countryService: CountryService) {}
 
@@ -19,6 +20,9 @@ export class CountriesPopularityRankComponent implements OnInit {
   getCountriesPopularityRank(): void {
     this.countryService.getCountriesPopularity().subscribe((countriesPopularity) => {
       this.countriesPopularity = countriesPopularity;
+      countriesPopularity.forEach((country) => {
+        this.totalArtists += country.popularity;
+      });
     });
   }
 }
