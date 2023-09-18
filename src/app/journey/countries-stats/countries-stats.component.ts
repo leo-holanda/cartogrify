@@ -200,7 +200,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
 
     bar
       .append("text")
-      .text((d) => d.countriesCount)
+      .text((d) => d.occurrenceQuantity)
       .attr("x", (d) => (x(d.countriesCount.toString()) || 0) + x.bandwidth() / 2 || null)
       .attr("y", (d) => y(d.occurrenceQuantity) + 12)
       .attr("fill", "#f6e1c3")
