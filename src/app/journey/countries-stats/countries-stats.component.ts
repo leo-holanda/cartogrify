@@ -159,7 +159,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
           : "Country diversity of users around the world"
       )
       .attr("fill", "#b46060")
-      .attr("font-size", this.isMobile() ? "var(--fs--200)" : "var(--fs-000)")
+      .attr("font-size", this.isMobile() ? "var(--fs--200)" : "var(--fs-100)")
       .style("font-weight", "800");
 
     svg
