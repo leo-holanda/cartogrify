@@ -144,7 +144,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
 
     const y = d3
       .scaleLinear()
-      .domain([0, highestUserCount + 1])
+      .domain([0, highestUserCount + Math.ceil(highestUserCount * 0.1)])
       .range([height - chartMarginBottom - 5, chartMarginTop]);
 
     if (isInUserCountry) d3.select("#countryChartSvg").remove();
