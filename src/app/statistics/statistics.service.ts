@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { SupabaseService } from "../shared/supabase.service";
-import { BehaviorSubject, Observable, filter, map, of } from "rxjs";
+import { BehaviorSubject, Observable, filter, map } from "rxjs";
 import { DiversityIndex } from "../shared/supabase.model";
-import { ComparedDiversityData, ComparedDiversityInUserCountryData } from "./statistics.model";
+import { ComparedDiversityData } from "./statistics.model";
 
 @Injectable({
   providedIn: "root",
@@ -40,13 +40,6 @@ export class StatisticsService {
         (diversityIndexes): diversityIndexes is DiversityIndex[] => diversityIndexes != undefined
       ),
       map((diversityIndexes) => {
-        /*
-          Should I include the current user in this calculation?
-          I'm comparing the current user against the users from database
-          The current user could be and couldn't be in the database
-          Is it harming the validity of the rating?
-        */
-
         const allUsersDiversity = [];
         allUsersDiversity.push(currentUserCountriesCount);
 
@@ -60,6 +53,8 @@ export class StatisticsService {
         const currentUserIndex = allUsersDiversity.findIndex(
           (index) => index === currentUserCountriesCount
         );
+
+        allUsersDiversity.splice(currentUserIndex, 1);
 
         let comparedDiversity;
         if (currentUserIndex != -1) {
@@ -86,13 +81,6 @@ export class StatisticsService {
         (diversityIndexes): diversityIndexes is DiversityIndex[] => diversityIndexes != undefined
       ),
       map((diversityIndexes) => {
-        /*
-          Should I include the current user in this calculation?
-          I'm comparing the current user against the users from database
-          The current user could be and couldn't be in the database
-          Is it harming the validity of the rating?
-        */
-
         const allUsersDiversity = [];
         allUsersDiversity.push(userCountriesCount);
 
@@ -108,6 +96,8 @@ export class StatisticsService {
         const currentUserIndex = allUsersDiversity.findIndex(
           (index) => index === userCountriesCount
         );
+
+        allUsersDiversity.splice(currentUserIndex, 1);
 
         let comparedDiversity;
         if (currentUserIndex != -1) {
