@@ -103,7 +103,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
     }
 
     const marginTop = this.isMobile() ? 40 : 72;
-    const marginBottom = this.isMobile() ? 24 : 40;
+    const marginBottom = this.isMobile() ? 32 : 56;
     const marginLeft = this.isMobile() ? 48 : 64;
     const marginRight = this.isMobile() ? 16 : 32;
 
@@ -114,6 +114,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
 
     const labelMarginTop = 16;
     const labelMarginLeft = 16;
+    const labelMarginBottom = this.isMobile() ? 30 : 40;
 
     let highestUserCount = 0;
     diversityIndexes.forEach((diversityIndexes) => {
@@ -192,7 +193,12 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .append("g")
       .attr("transform", `translate(0,${height - chartMarginBottom})`)
       .attr("fill", "#b46060")
-      .call(d3.axisBottom(x).ticks(0).tickSizeOuter(0))
+      .call(
+        d3
+          .axisBottom(x)
+          .tickValues(["1", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50"])
+          .tickSizeOuter(0)
+      )
       .call((g) =>
         g
           .select(".domain")
@@ -200,27 +206,16 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
           .attr("stroke-width", "4px")
           .attr("stroke-linecap", "round")
       )
-      .call((g) => g.selectAll(".tick text").remove())
+      .call((g) => g.selectAll(".tick text").attr("fill", "#b46060").style("font-weight", "800"))
       .call((g) => {
         g.append("text")
-          .attr("x", chartMarginLeft)
-          .attr("y", 0)
-          .attr("dy", "1.2rem")
-          .attr("text-anchor", "start")
+          .attr("x", width / 2)
+          .attr("y", labelMarginBottom)
+          .attr("text-anchor", "middle")
           .attr("fill", "#b46060")
           .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs-000)")
           .style("font-weight", "800")
-          .text("< Less country diversity");
-
-        g.append("text")
-          .attr("x", width - chartMarginRight)
-          .attr("y", 0)
-          .attr("dy", "1.2rem")
-          .attr("text-anchor", "end")
-          .attr("fill", "#b46060")
-          .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs-000)")
-          .style("font-weight", "800")
-          .text("More country diversity >");
+          .text("User country diversity");
       });
 
     // Add the y-axis and label, and remove the domain line.
