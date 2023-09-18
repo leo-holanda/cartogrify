@@ -50,6 +50,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       this.statisticsSevice.getDiversityIndexes().subscribe((diversityIndexes) => {
         this.diversityIndexes = diversityIndexes;
         this.generateChart(false);
+
         fromEvent(window, "resize")
           .pipe(debounceTime(250))
           .subscribe(() => {
@@ -116,10 +117,20 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
     const labelMarginLeft = 16;
     const labelMarginBottom = this.isMobile() ? 30 : 40;
 
+    const distinctDiversityIndexes = new Map<number, DiversityIndex>();
+    diversityIndexes.forEach((index) => {
+      const currentDiversityIndex = distinctDiversityIndexes.get(index.countriesCount);
+      if (currentDiversityIndex == undefined) {
+        distinctDiversityIndexes.set(index.countriesCount, { ...index });
+      } else {
+        currentDiversityIndex.occurrenceQuantity += index.occurrenceQuantity;
+        distinctDiversityIndexes.set(index.countriesCount, currentDiversityIndex);
+      }
+    });
+
     let highestUserCount = 0;
-    diversityIndexes.forEach((diversityIndexes) => {
-      if (diversityIndexes.occurrenceQuantity > highestUserCount)
-        highestUserCount = diversityIndexes.occurrenceQuantity;
+    distinctDiversityIndexes.forEach((value) => {
+      if (value.occurrenceQuantity > highestUserCount) highestUserCount = value.occurrenceQuantity;
     });
 
     const domainArray = [];
@@ -174,8 +185,8 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .text("Users quantity");
 
     // Add bars
-    const bar = svg.selectAll("g").data(diversityIndexes).join("g");
 
+    const bar = svg.selectAll("g").data(distinctDiversityIndexes.values()).join("g");
     bar
       .append("rect")
       .attr("fill", (d: any) => {
