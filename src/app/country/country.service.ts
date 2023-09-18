@@ -20,6 +20,7 @@ import * as TopoJSON from "topojson-specification";
 import { SupabaseService } from "../shared/supabase.service";
 import { countryRelatedTerms } from "./country.data";
 import { HttpClient } from "@angular/common/http";
+import { CountryPopularity } from "../shared/supabase.model";
 
 @Injectable({
   providedIn: "root",
@@ -457,6 +458,27 @@ export class CountryService {
     } catch (error) {
       return artistLocation;
     }
+  }
+
+  getCountriesPopularity(): Observable<CountryPopularity[]> {
+    return this.supabaseService.getCountriesPopularity().pipe(
+      map((countryPopularity) => {
+        return countryPopularity
+          .map((country): CountryPopularity => {
+            return {
+              country: this.getCountryByCode(country.countryCode),
+              popularity: country.popularity,
+            };
+          })
+          .sort((a, b) => {
+            if (a.popularity > b.popularity) return -1;
+            if (a.popularity < b.popularity) return 1;
+            if ((a.country?.name || "") > (b.country?.name || "")) return 1;
+            if ((a.country?.name || "") < (b.country?.name || "")) return -1;
+            return 0;
+          });
+      })
+    );
   }
 
   private createRegion(artist: Artist): RegionCount {

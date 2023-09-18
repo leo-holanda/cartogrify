@@ -1,0 +1,26 @@
+<div class="ranking-content">
+  <table>
+    <thead>
+      <th class="table-header-column">#</th>
+      <th class="table-header-column">Country</th>
+      <th class="table-header-column">Artists</th>
+    </thead>
+    <tbody>
+      <tr class="table-row" *ngFor="let countryPopularity of countriesPopularity; let i = index">
+        <td class="index-column">{{ i + 1 }}</td>
+        <td class="country-column">
+          <div class="flag-wrapper">
+            <span class="{{ 'flag fi fi-' + countryPopularity.country?.flagCode }}"></span>
+          </div>
+          <div class="country">
+            <p class="country-name">{{ countryPopularity.country?.name }}</p>
+          </div>
+        </td>
+
+        <td class="average-column">
+          {{ countryPopularity.popularity }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
