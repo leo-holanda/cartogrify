@@ -174,11 +174,10 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .text("Users quantity");
 
     // Add bars
-    svg
-      .append("g")
-      .selectAll()
-      .data(diversityIndexes)
-      .join("rect")
+    const bar = svg.selectAll("g").data(diversityIndexes).join("g");
+
+    bar
+      .append("rect")
       .attr("fill", (d: any) => {
         if (d.countriesCount == this.userCountriesCount) return "black";
         return "#b46060";
@@ -187,6 +186,16 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .attr("y", (d) => y(d.occurrenceQuantity))
       .attr("height", (d) => y(0) - y(d.occurrenceQuantity))
       .attr("width", x.bandwidth());
+
+    bar
+      .append("text")
+      .text((d) => d.countriesCount)
+      .attr("x", (d) => (x(d.countriesCount.toString()) || 0) + x.bandwidth() / 2 || null)
+      .attr("y", (d) => y(d.occurrenceQuantity) + 12)
+      .attr("fill", "#f6e1c3")
+      .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs--300)")
+      .attr("text-anchor", "middle")
+      .style("font-weight", "800");
 
     // Add the x-axis and label.
     svg
