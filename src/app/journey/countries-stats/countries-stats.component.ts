@@ -235,7 +235,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
           .attr("fill", "#b46060")
           .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs-000)")
           .style("font-weight", "800")
-          .text("User country diversity");
+          .text("Country diversity");
       });
 
     // Add the y-axis and label, and remove the domain line.
