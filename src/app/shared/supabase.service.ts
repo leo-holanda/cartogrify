@@ -1,9 +1,12 @@
 import { Injectable } from "@angular/core";
 import { SupabaseClient, createClient } from "@supabase/supabase-js";
-import { Observable, asyncScheduler, map, scheduled, take } from "rxjs";
+import { Observable, asyncScheduler, map, scheduled, take, tap } from "rxjs";
 import { environment } from "src/environments/environment";
 import { ScrapedArtist, Suggestion } from "../artists/artist.model";
 import {
+  CountryPopularity,
+  CountryPopularityPartial,
+  CountryPopularityResponse,
   DiversityIndex,
   DiversityIndexResponse,
   LastFmTopArtists,
@@ -122,6 +125,25 @@ export class SupabaseService {
             countriesCount: data.countries_count,
             occurrenceQuantity: data.occurrence_quantity,
           } as DiversityIndex;
+        })
+      )
+    );
+  }
+
+  getCountriesPopularity(): Observable<CountryPopularityPartial[]> {
+    return scheduled(
+      this.supabaseClient.from("countries_popularity").select("*"),
+      asyncScheduler
+    ).pipe(
+      take(1),
+      map((response) => response.data || []),
+      tap((data) => console.log(data)),
+      map((data: CountryPopularityResponse[]) =>
+        data.map((data): CountryPopularityPartial => {
+          return {
+            countryCode: data.country_code,
+            popularity: data.popularity,
+          };
         })
       )
     );

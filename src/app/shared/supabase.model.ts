@@ -1,3 +1,5 @@
+import { Country } from "../country/country.model";
+
 export interface LastFmTopArtists {
   topartists?: TopArtists;
   error?: number;
@@ -81,4 +83,19 @@ export interface DiversityIndex {
   countryCode: number | undefined;
   countriesCount: number;
   occurrenceQuantity: number;
+}
+
+export interface CountryPopularityResponse {
+  country_code: number | undefined;
+  popularity: number;
+}
+
+export interface CountryPopularityPartial {
+  countryCode: number | undefined;
+  popularity: number;
+}
+
+export interface CountryPopularity {
+  country: Country | undefined;
+  popularity: number;
 }
