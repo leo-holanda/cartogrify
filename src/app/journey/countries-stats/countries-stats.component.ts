@@ -255,13 +255,14 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .append("rect")
       .attr("width", this.isMobile() ? "0.5rem" : "1rem")
       .attr("height", this.isMobile() ? "0.5rem" : "1rem")
+      .attr("ry", "100%")
       .style("fill", "#539987");
     firstLabel
       .append("text")
       .text("You")
       .attr("dx", this.isMobile() ? "0.75rem" : "1.25rem")
       .attr("dy", this.isMobile() ? "0.25rem" : "0.5rem")
-      .style("font-size", this.isMobile() ? "var(--fs--100)" : "var(--fs-000)")
+      .style("font-size", this.isMobile() ? "var(--fs--200)" : "var(--fs--100)")
       .attr("alignment-baseline", "central");
 
     const firstLabelWidth = firstLabel.node()?.getBoundingClientRect().width || 16;
@@ -271,17 +272,18 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .attr("trasnform", `translate(${firstLabelWidth},0)`)
       .attr("width", this.isMobile() ? "0.5rem" : "1rem")
       .attr("height", this.isMobile() ? "0.5rem" : "1rem")
+      .attr("ry", "100%")
       .style("fill", "#b46060");
     secondLabel
       .append("text")
       .text("Others")
       .attr("dx", this.isMobile() ? "0.75rem" : "1.25rem")
       .attr("dy", this.isMobile() ? "0.25rem" : "0.5rem")
-      .style("font-size", this.isMobile() ? "var(--fs--100)" : "var(--fs-000)")
+      .style("font-size", this.isMobile() ? "var(--fs--200)" : "var(--fs--100)")
       .attr("alignment-baseline", "central");
 
     const labelWidth = label.node()?.getBoundingClientRect().width || 16;
-    label.attr("transform", `translate(${width / 2 - labelWidth / 2}, ${labelMarginTop * 1.5})`);
+    label.attr("transform", `translate(${width / 2 - labelWidth / 2}, ${labelMarginTop * 1.75})`);
   }
 
   isMobile(): boolean {
