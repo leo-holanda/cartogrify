@@ -166,8 +166,8 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .attr("text-anchor", "middle")
       .text(
         isInUserCountry
-          ? "Nationality diversity among users' top artists - " + this.userCountry.name
-          : "Nationality diversity among users' top artists - World"
+          ? `Nationality diversity among users' top artists (${this.userCountry.name})`
+          : "Nationality diversity among users' top artists (World)"
       )
       .attr("fill", "#b46060")
       .attr("font-size", this.isMobile() ? "var(--fs--200)" : "var(--fs-100)")
