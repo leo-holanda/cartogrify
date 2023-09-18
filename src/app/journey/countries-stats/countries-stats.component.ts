@@ -185,12 +185,11 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .text("Users quantity");
 
     // Add bars
-
     const bar = svg.selectAll("g").data(distinctDiversityIndexes.values()).join("g");
     bar
       .append("rect")
       .attr("fill", (d: any) => {
-        if (d.countriesCount == this.userCountriesCount) return "black";
+        if (d.countriesCount == this.userCountriesCount) return "#539987";
         return "#b46060";
       })
       .attr("x", (d) => x(d.countriesCount.toString()) || null)
@@ -249,6 +248,40 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       .call((g) => g.select(".domain").remove())
       .call((g) => g.selectAll(".tick line").remove())
       .call((g) => g.selectAll(".tick text").attr("fill", "#b46060").style("font-weight", "800"));
+
+    const label = svg.append("g");
+    const firstLabel = label.append("g");
+    firstLabel
+      .append("rect")
+      .attr("width", this.isMobile() ? "0.5rem" : "1rem")
+      .attr("height", this.isMobile() ? "0.5rem" : "1rem")
+      .style("fill", "#539987");
+    firstLabel
+      .append("text")
+      .text("You")
+      .attr("dx", this.isMobile() ? "0.75rem" : "1.25rem")
+      .attr("dy", this.isMobile() ? "0.25rem" : "0.5rem")
+      .style("font-size", this.isMobile() ? "var(--fs--100)" : "var(--fs-000)")
+      .attr("alignment-baseline", "central");
+
+    const firstLabelWidth = firstLabel.node()?.getBoundingClientRect().width || 16;
+    const secondLabel = label.append("g").attr("transform", `translate(${firstLabelWidth + 16},0)`);
+    secondLabel
+      .append("rect")
+      .attr("trasnform", `translate(${firstLabelWidth},0)`)
+      .attr("width", this.isMobile() ? "0.5rem" : "1rem")
+      .attr("height", this.isMobile() ? "0.5rem" : "1rem")
+      .style("fill", "#b46060");
+    secondLabel
+      .append("text")
+      .text("Others")
+      .attr("dx", this.isMobile() ? "0.75rem" : "1.25rem")
+      .attr("dy", this.isMobile() ? "0.25rem" : "0.5rem")
+      .style("font-size", this.isMobile() ? "var(--fs--100)" : "var(--fs-000)")
+      .attr("alignment-baseline", "central");
+
+    const labelWidth = label.node()?.getBoundingClientRect().width || 16;
+    label.attr("transform", `translate(${width / 2 - labelWidth / 2}, ${labelMarginTop * 1.5})`);
   }
 
   isMobile(): boolean {
