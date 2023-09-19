@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { WorldMapModule } from "../artists/world-map/world-map.module";
 import { JourneyRoutingModule } from "./journey-routing.module";
-import { CountriesCountModule } from "./countries-count/countries-count.module";
 import { CountriesStatsModule } from "./countries-stats/countries-stats.module";
 import { CountriesCountComponent } from "./countries-count/countries-count.component";
 import { CountriesStatsComponent } from "./countries-stats/countries-stats.component";
@@ -19,6 +18,7 @@ import { EndComponent } from "./end/end.component";
 import { EndModule } from "./end/end.module";
 import { CountriesRanksModule } from "./countries-ranks/countries-ranks.module";
 import { CountriesRanksComponent } from "./countries-ranks/countries-ranks.component";
+import { CountriesCountModule } from "./countries-count/countries-count.module";
 
 @NgModule({
   declarations: [],
