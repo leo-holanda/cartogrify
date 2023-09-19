@@ -32,7 +32,7 @@ export class SpotifyService {
       take(1),
       switchMap((userTopArtists) => {
         this.artistService.setSource(ArtistsSources.SPOTIFY);
-        this.artistService.setUserTopArtists(userTopArtists);
+        this.artistService.setUserTopArtistsNames(userTopArtists);
         return of();
       })
     );
