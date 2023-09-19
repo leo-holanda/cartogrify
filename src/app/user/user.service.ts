@@ -7,8 +7,6 @@ import { User } from "./user.model";
 export class UserService {
   private _user: User | undefined;
 
-  constructor() {}
-
   setUser(user: User): void {
     this._user = {
       countryCode: user.countryCode,
