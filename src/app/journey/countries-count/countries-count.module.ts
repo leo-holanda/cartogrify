@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { CountriesRankModule } from "src/app/artists/rankings/countries-rank/countries-rank.module";
 import { CountriesCountComponent } from "./countries-count.component";
+import { CountriesRankModule } from "src/app/country/countries-rank/countries-rank.module";
 
 @NgModule({
   declarations: [CountriesCountComponent],

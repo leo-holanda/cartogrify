@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Artist } from "src/app/artists/artist.model";
 import { CountryCount } from "src/app/country/country.model";
-import { ArtistService } from "../../artist.service";
 import { CountryService } from "src/app/country/country.service";
 import { ThemeService } from "src/app/core/theme.service";
-import { MapTheme } from "../../world-map/world-map.themes";
+import { ArtistService } from "src/app/artists/artist.service";
+import { MapTheme } from "src/app/artists/world-map/world-map.themes";
 
 @Component({
   selector: "ctg-countries-rank",

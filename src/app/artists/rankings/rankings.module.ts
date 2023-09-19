@@ -12,7 +12,6 @@ import { OverlayPanelModule } from "primeng/overlaypanel";
 import { ListboxModule } from "primeng/listbox";
 import { FormsModule } from "@angular/forms";
 import { RadioButtonModule } from "primeng/radiobutton";
-import { CountriesRankModule } from "./countries-rank/countries-rank.module";
 import { ArtistsRankModule } from "./artists-rank/artists-rank.module";
 
 @NgModule({
@@ -29,7 +28,6 @@ import { ArtistsRankModule } from "./artists-rank/artists-rank.module";
     ListboxModule,
     FormsModule,
     RadioButtonModule,
-    CountriesRankModule,
     ArtistsRankModule,
   ],
   providers: [DialogService],
