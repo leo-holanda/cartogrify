@@ -63,11 +63,12 @@ export class CountryService {
     this.countriesCount$.next(sortedCountriesCount);
   }
 
-  findArtistsCountryOfOrigin(artistsNames: string[]): Observable<ScrapedArtist> {
+  findArtistsCountryOfOrigin(artists: Artist[]): Observable<ScrapedArtist> {
     const START_INDICATOR_OFFSET = 13;
     const END_INDICATOR_OFFSET = 11;
     const artists$ = new Subject<ScrapedArtist>();
 
+    const artistsNames = artists.map((artist) => artist.name);
     fetch(environment.PAGE_FINDER_URL, {
       method: "POST",
       body: artistsNames.join("###"),
