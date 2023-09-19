@@ -8,8 +8,6 @@ import { BehaviorSubject, Observable } from "rxjs";
 export class ThemeService {
   mapTheme = new BehaviorSubject<MapTheme>(mapThemes[0]);
 
-  constructor() {}
-
   getMapTheme(): Observable<MapTheme> {
     return this.mapTheme.asObservable();
   }
