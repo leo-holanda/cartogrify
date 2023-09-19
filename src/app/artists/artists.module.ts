@@ -7,7 +7,6 @@ import { DialogService, DynamicDialogModule } from "primeng/dynamicdialog";
 import { TabMenuModule } from "primeng/tabmenu";
 import { ProgressBarModule } from "primeng/progressbar";
 import { DialogModule } from "primeng/dialog";
-import { WorldMapModule } from "./world-map/world-map.module";
 
 @NgModule({
   declarations: [],
@@ -20,7 +19,6 @@ import { WorldMapModule } from "./world-map/world-map.module";
     DynamicDialogModule,
     ProgressBarModule,
     DialogModule,
-    WorldMapModule,
   ],
   providers: [DialogService],
 })

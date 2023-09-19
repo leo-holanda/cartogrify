@@ -4,7 +4,7 @@ import { CountryCount } from "src/app/country/country.model";
 import { CountryService } from "src/app/country/country.service";
 import { ThemeService } from "src/app/core/theme.service";
 import { ArtistService } from "src/app/artists/artist.service";
-import { MapTheme } from "src/app/artists/world-map/world-map.themes";
+import { MapTheme } from "src/app/world-map/world-map.themes";
 
 @Component({
   selector: "ctg-countries-rank",

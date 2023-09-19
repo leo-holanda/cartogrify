@@ -3,28 +3,27 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Input,
   Output,
   ViewChild,
 } from "@angular/core";
 import * as d3 from "d3";
 import { ListboxClickEvent } from "primeng/listbox";
+import { fromEvent, debounceTime } from "rxjs";
+import * as htmlToImage from "html-to-image";
+import { mapThemes } from "./world-map.themes";
+import { ThemeService } from "src/app/core/theme.service";
+import { RadioButtonClickEvent } from "primeng/radiobutton";
+import { Artist } from "../artists/artist.model";
+import { ArtistService } from "../artists/artist.service";
 import {
+  CountryCount,
   MapSVG,
   ColorScale,
   GeoFeature,
   LabelData,
-  CountryCount,
   Tooltip,
-} from "../../country/country.model";
-import { CountryService } from "../../country/country.service";
-import { fromEvent, debounceTime } from "rxjs";
-import * as htmlToImage from "html-to-image";
-import { Artist } from "../artist.model";
-import { ArtistService } from "../artist.service";
-import { mapThemes } from "./world-map.themes";
-import { ThemeService } from "src/app/core/theme.service";
-import { RadioButtonClickEvent } from "primeng/radiobutton";
+} from "../country/country.model";
+import { CountryService } from "../country/country.service";
 
 @Component({
   selector: "ctg-world-map",

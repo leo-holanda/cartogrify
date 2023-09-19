@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { MapTheme, mapThemes } from "../artists/world-map/world-map.themes";
 import { BehaviorSubject, Observable } from "rxjs";
+import { MapTheme, mapThemes } from "../world-map/world-map.themes";
 
 @Injectable({
   providedIn: "root",
