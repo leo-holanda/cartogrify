@@ -24,13 +24,15 @@ export class ArtistService {
 
   constructor(private supabaseService: SupabaseService, private countryService: CountryService) {}
 
+  toggleArtistsRequestStatus(): void {
+    this.hasRequestedTopArtists = true;
+  }
+
   setUserTopArtistsNames(artistsNames: string[]): void {
     this.userTopArtistsNames = artistsNames;
   }
 
   setUserTopArtists(topArtistsNames: string[]): void {
-    this.hasRequestedTopArtists = true;
-
     this.supabaseService
       .getBestSuggestionByArtists(topArtistsNames)
       .subscribe((bestSuggestions) => {
