@@ -19,7 +19,7 @@ export class LastFmService {
   ) {}
 
   loadUserData(userName: string): Observable<LastFmUser | string[]> {
-    const loadUserProfile = this.getLastFmUserProfileData(userName).pipe(
+    const loadUserProfile$ = this.getLastFmUserProfileData(userName).pipe(
       take(1),
       tap((userProfile) => {
         this.userService.setUser({
@@ -29,18 +29,18 @@ export class LastFmService {
       })
     );
 
-    const loadUserTopArtists = this.getTopArtists(userName).pipe(
+    const loadUserTopArtistsNames$ = this.getTopArtistsNames(userName).pipe(
       take(1),
-      tap((topArtists) => {
+      tap((topArtistsNames) => {
         this.artistService.setSource(ArtistsSources.LASTFM);
-        this.artistService.setUserTopArtistsNames(topArtists);
+        this.artistService.setUserTopArtistsNames(topArtistsNames);
       })
     );
 
-    return concat(loadUserProfile, loadUserTopArtists);
+    return concat(loadUserProfile$, loadUserTopArtistsNames$);
   }
 
-  getTopArtists(userName: string): Observable<string[]> {
+  getTopArtistsNames(userName: string): Observable<string[]> {
     return this.supabaseService.getLastFmUserTopArtists(userName).pipe(
       take(1),
       map((response) => {
