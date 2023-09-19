@@ -1,12 +1,12 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { CountriesDiversityComponent } from "./countries-diversity.component";
+import { CountriesRanksComponent } from "./countries-ranks.component";
 import { CountriesDiversityRankModule } from "src/app/artists/rankings/countries-diversity-rank/countries-diversity-rank.module";
 import { CountriesPopularityRankModule } from "../countries-popularity-rank/countries-popularity-rank.module";
 
 @NgModule({
-  declarations: [CountriesDiversityComponent],
+  declarations: [CountriesRanksComponent],
   imports: [CommonModule, CountriesDiversityRankModule, CountriesPopularityRankModule],
-  exports: [CountriesDiversityComponent],
+  exports: [CountriesRanksComponent],
 })
-export class CountriesDiversityModule {}
+export class CountriesRanksModule {}

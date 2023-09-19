@@ -1,6 +1,5 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { PreJourneyComponent } from "./pre-journey/pre-journey.component";
 import { WorldMapModule } from "../artists/world-map/world-map.module";
 import { JourneyRoutingModule } from "./journey-routing.module";
 import { CountriesCountModule } from "./countries-count/countries-count.module";
@@ -18,8 +17,8 @@ import { IntroComponent } from "./intro/intro.component";
 import { IntroModule } from "./intro/intro.module";
 import { EndComponent } from "./end/end.component";
 import { EndModule } from "./end/end.module";
-import { CountriesDiversityModule } from "./countries-diversity/countries-diversity.module";
-import { CountriesDiversityComponent } from "./countries-diversity/countries-diversity.component";
+import { CountriesRanksModule } from "./countries-ranks/countries-ranks.module";
+import { CountriesRanksComponent } from "./countries-ranks/countries-ranks.component";
 
 @NgModule({
   declarations: [],
@@ -35,7 +34,7 @@ import { CountriesDiversityComponent } from "./countries-diversity/countries-div
     MapPartModule,
     IntroModule,
     EndModule,
-    CountriesDiversityModule,
+    CountriesRanksModule,
   ],
   exports: [
     CountriesCountComponent,
@@ -45,7 +44,7 @@ import { CountriesDiversityComponent } from "./countries-diversity/countries-div
     MapPartComponent,
     IntroComponent,
     EndComponent,
-    CountriesDiversityComponent,
+    CountriesRanksComponent,
   ],
 })
 export class JourneyModule {}
