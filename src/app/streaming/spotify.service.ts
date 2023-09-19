@@ -20,7 +20,7 @@ export class SpotifyService {
   ) {}
 
   loadUserData(): Observable<SpotifyUserData | string[]> {
-    const loadUserProfile = this.getUserProfile().pipe(
+    const loadUserProfile$ = this.getUserProfile().pipe(
       take(1),
       switchMap((userProfile) => {
         this.userService.setUser(userProfile);
@@ -28,19 +28,19 @@ export class SpotifyService {
       })
     );
 
-    const loadUserTopArtists = this.getUserTopArtists().pipe(
+    const loadUserTopArtistsNames$ = this.getUserTopArtistsNames().pipe(
       take(1),
-      switchMap((userTopArtists) => {
+      switchMap((userTopArtistsNames) => {
         this.artistService.setSource(ArtistsSources.SPOTIFY);
-        this.artistService.setUserTopArtistsNames(userTopArtists);
+        this.artistService.setUserTopArtistsNames(userTopArtistsNames);
         return of();
       })
     );
 
-    return concat(loadUserProfile, loadUserTopArtists);
+    return concat(loadUserProfile$, loadUserTopArtistsNames$);
   }
 
-  getUserTopArtists(): Observable<string[]> {
+  getUserTopArtistsNames(): Observable<string[]> {
     const tokenDataItem = localStorage.getItem("token_data") as string;
     const tokenData = JSON.parse(tokenDataItem) as SpotifyAccessTokenData;
 
