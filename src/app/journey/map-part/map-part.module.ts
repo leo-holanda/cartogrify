@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { MapPartComponent } from "./map-part.component";
-import { WorldMapModule } from "src/app/artists/world-map/world-map.module";
+import { WorldMapModule } from "src/app/world-map/world-map.module";
 
 @NgModule({
   declarations: [MapPartComponent],
