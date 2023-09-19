@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Artist } from "src/app/artists/artist.model";
 import { Subject } from "rxjs";
-import { CountryService } from "src/app/country/country.service";
-import { ArtistService } from "../../artist.service";
+import { ArtistService } from "../artist.service";
 
 @Component({
   selector: "ctg-artists-rank",
