@@ -32,6 +32,7 @@ export class LastFmService {
     const loadUserTopArtistsNames$ = this.getTopArtistsNames(userName).pipe(
       take(1),
       tap((topArtistsNames) => {
+        this.artistService.toggleArtistsRequestStatus();
         this.artistService.setSource(ArtistsSources.LASTFM);
         this.artistService.setUserTopArtistsNames(topArtistsNames);
       })

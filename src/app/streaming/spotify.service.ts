@@ -31,6 +31,7 @@ export class SpotifyService {
     const loadUserTopArtistsNames$ = this.getUserTopArtistsNames().pipe(
       take(1),
       switchMap((userTopArtistsNames) => {
+        this.artistService.toggleArtistsRequestStatus();
         this.artistService.setSource(ArtistsSources.SPOTIFY);
         this.artistService.setUserTopArtistsNames(userTopArtistsNames);
         return of();
