@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { RegionCount, SubRegionCount } from "src/app/country/country.model";
-import { CountryService } from "src/app/country/country.service";
 import * as d3 from "d3";
 import { TreeLeaf, TreeNode } from "./regions-count.types";
 import { fromEvent, debounceTime } from "rxjs";
+import { RegionService } from "src/app/region/region.service";
 
 @Component({
   selector: "ctg-regions-count",
@@ -16,10 +16,10 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
 
   @ViewChild("treeWrapper") treeWrapper!: ElementRef<HTMLElement>;
 
-  constructor(private countryService: CountryService) {}
+  constructor(private regionService: RegionService) {}
 
   ngOnInit(): void {
-    this.countryService.getRegionsCount().subscribe((userRegionsCount) => {
+    this.regionService.getUserRegions().subscribe((userRegionsCount) => {
       this.userRegionsCount = userRegionsCount;
     });
   }

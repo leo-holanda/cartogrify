@@ -10,6 +10,7 @@ import {
 import { SupabaseService } from "../shared/supabase.service";
 import { BehaviorSubject, Observable, take } from "rxjs";
 import { CountryService } from "../country/country.service";
+import { RegionService } from "../region/region.service";
 
 @Injectable({
   providedIn: "root",
@@ -24,7 +25,11 @@ export class ArtistService {
 
   private hasRequestedTopArtists = false;
 
-  constructor(private supabaseService: SupabaseService, private countryService: CountryService) {}
+  constructor(
+    private supabaseService: SupabaseService,
+    private countryService: CountryService,
+    private regionService: RegionService
+  ) {}
 
   setUserTopArtists(topArtistsNames: string[]): void {
     this.hasRequestedTopArtists = true;
@@ -101,7 +106,7 @@ export class ArtistService {
   observeArtistsChanges(): void {
     this.userTopArtists$.subscribe((artists) => {
       this.countryService.updateCountriesCount(artists);
-      this.countryService.updateRegionsCount(artists);
+      this.regionService.updateRegionsCount(artists);
     });
   }
 
