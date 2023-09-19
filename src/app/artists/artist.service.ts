@@ -15,6 +15,7 @@ import { CountryService } from "../country/country.service";
 })
 export class ArtistService {
   private source!: ArtistsSources;
+  private userTopArtistsNames: string[] = [];
   private userTopArtists$ = new BehaviorSubject<Artist[]>([]);
   private scrapedArtists$ = new BehaviorSubject<ScrapedArtistData | undefined>(undefined);
   private artistsWithoutCountryQuantity$ = new BehaviorSubject<number | undefined>(undefined);
@@ -22,6 +23,10 @@ export class ArtistService {
   private hasRequestedTopArtists = false;
 
   constructor(private supabaseService: SupabaseService, private countryService: CountryService) {}
+
+  setUserTopArtistsNames(artistsNames: string[]): void {
+    this.userTopArtistsNames = artistsNames;
+  }
 
   setUserTopArtists(topArtistsNames: string[]): void {
     this.hasRequestedTopArtists = true;

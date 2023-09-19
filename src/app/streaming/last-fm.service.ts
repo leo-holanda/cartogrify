@@ -33,7 +33,7 @@ export class LastFmService {
       take(1),
       tap((topArtists) => {
         this.artistService.setSource(ArtistsSources.LASTFM);
-        this.artistService.setUserTopArtists(topArtists);
+        this.artistService.setUserTopArtistsNames(topArtists);
       })
     );
 
