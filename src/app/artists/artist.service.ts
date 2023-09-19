@@ -7,7 +7,7 @@ import {
   Suggestion,
 } from "./artist.model";
 import { SupabaseService } from "../shared/supabase.service";
-import { BehaviorSubject, Observable, map, take } from "rxjs";
+import { BehaviorSubject, Observable, map, of, switchMap, take } from "rxjs";
 import { CountryService } from "../country/country.service";
 
 @Injectable({
@@ -15,7 +15,6 @@ import { CountryService } from "../country/country.service";
 })
 export class ArtistService {
   private source!: ArtistsSources;
-  private userTopArtistsNames: string[] = [];
   private userTopArtists$ = new BehaviorSubject<Artist[]>([]);
   private scrapedArtists$ = new BehaviorSubject<ScrapedArtistData | undefined>(undefined);
   private artistsWithoutCountryQuantity$ = new BehaviorSubject<number | undefined>(undefined);
@@ -28,33 +27,40 @@ export class ArtistService {
     this.hasRequestedTopArtists = true;
   }
 
-  setUserTopArtistsNames(artistsNames: string[]): void {
-    this.userTopArtistsNames = artistsNames;
-    this.loadUserTopArtists();
-  }
-
-  loadUserTopArtists(): void {
-    this.getArtistsFromDatabase().subscribe((artistsFromDatabase) => {
-      this.setUserTopArtists(artistsFromDatabase);
+  setUserTopArtists(userTopArtists: Artist[]): void {
+    this.assignCountriesToKnownArtists(userTopArtists).subscribe((done) => {
+      console.log("oi");
     });
   }
 
-  getArtistsFromDatabase(): Observable<Artist[]> {
-    return this.supabaseService.getBestSuggestionByArtists(this.userTopArtistsNames).pipe(
-      map((bestSuggestions) => this.transformSuggestionsInArtists(bestSuggestions)),
-      map((artistsFromDatabase) =>
-        this.applyOriginalOrder(this.userTopArtistsNames, artistsFromDatabase)
-      )
+  assignCountriesToKnownArtists(userTopArtists: Artist[]): Observable<boolean> {
+    return this.getArtistsFromDatabase(userTopArtists).pipe(
+      switchMap((artistsFromDatabase) => {
+        artistsFromDatabase.forEach((artistFromDatabase) => {
+          const matchedArtist = userTopArtists.find(
+            (topArtist) => topArtist.name == artistFromDatabase.name
+          );
+
+          if (matchedArtist) matchedArtist.country = artistFromDatabase.country;
+        });
+
+        return of(true);
+      })
     );
   }
 
-  setUserTopArtists(artistsFromDatabase: Artist[]): void {
+  getArtistsFromDatabase(userTopArtists: Artist[]): Observable<Artist[]> {
+    const artistsNames = userTopArtists.map((artist) => artist.name);
+
+    return this.supabaseService
+      .getBestSuggestionByArtists(artistsNames)
+      .pipe(map((bestSuggestions) => this.transformSuggestionsInArtists(bestSuggestions)));
+  }
+
+  bla(artistsFromDatabase: Artist[]): void {
     this.userTopArtists$.next(artistsFromDatabase);
 
-    const artistsWithoutCountry = this.findArtistsWithoutCountry(
-      this.userTopArtistsNames,
-      artistsFromDatabase
-    );
+    const artistsWithoutCountry = this.findArtistsWithoutCountry([], artistsFromDatabase);
 
     if (artistsWithoutCountry.length == 0) {
       this.artistsWithoutCountryQuantity$.next(0);
@@ -81,10 +87,10 @@ export class ArtistService {
               remanining: scrapedArtists.length,
             });
 
-            const artistsWithOriginalOrder = this.applyOriginalOrder(this.userTopArtistsNames, [
-              ...artistsFromDatabase,
-              ...scrapedArtists,
-            ]);
+            const artistsWithOriginalOrder = this.applyOriginalOrder(
+              [],
+              [...artistsFromDatabase, ...scrapedArtists]
+            );
 
             this.userTopArtists$.next(artistsWithOriginalOrder);
           },
@@ -123,6 +129,17 @@ export class ArtistService {
 
   getSource(): ArtistsSources {
     return this.source;
+  }
+
+  transformNamesInArtists(artistsNames: string[]): Artist[] {
+    return artistsNames.map((artistName): Artist => this.createArtist(artistName));
+  }
+
+  private createArtist(artistName: string): Artist {
+    return {
+      name: artistName,
+      country: undefined,
+    };
   }
 
   private transformSuggestionsInArtists(suggestions: Suggestion[]): Artist[] {

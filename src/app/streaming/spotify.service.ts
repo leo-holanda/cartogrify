@@ -6,7 +6,7 @@ import { SpotifyUserData } from "./spotify.model";
 import { CountryService } from "../country/country.service";
 import { UserService } from "../user/user.service";
 import { ArtistService } from "../artists/artist.service";
-import { ArtistsSources } from "../artists/artist.model";
+import { Artist, ArtistsSources } from "../artists/artist.model";
 
 @Injectable({
   providedIn: "root",
@@ -28,20 +28,20 @@ export class SpotifyService {
       })
     );
 
-    const loadUserTopArtistsNames$ = this.getUserTopArtistsNames().pipe(
+    const loadUserTopArtists$ = this.getUserTopArtists().pipe(
       take(1),
-      switchMap((userTopArtistsNames) => {
+      switchMap((userTopArtists) => {
         this.artistService.toggleArtistsRequestStatus();
         this.artistService.setSource(ArtistsSources.SPOTIFY);
-        this.artistService.setUserTopArtistsNames(userTopArtistsNames);
+        this.artistService.setUserTopArtists(userTopArtists);
         return of();
       })
     );
 
-    return concat(loadUserProfile$, loadUserTopArtistsNames$);
+    return concat(loadUserProfile$, loadUserTopArtists$);
   }
 
-  getUserTopArtistsNames(): Observable<string[]> {
+  getUserTopArtists(): Observable<Artist[]> {
     const tokenDataItem = localStorage.getItem("token_data") as string;
     const tokenData = JSON.parse(tokenDataItem) as SpotifyAccessTokenData;
 
@@ -53,7 +53,8 @@ export class SpotifyService {
       })
       .pipe(
         take(1),
-        map((response) => response.items.map((artist) => artist.name))
+        map((response) => response.items.map((artist) => artist.name)),
+        map((artistsNames) => this.artistService.transformNamesInArtists(artistsNames))
       );
   }
 
