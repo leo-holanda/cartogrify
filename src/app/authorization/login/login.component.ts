@@ -38,7 +38,7 @@ export class LoginComponent {
       )
       .subscribe({
         complete: () => {
-          this.router.navigate(["/journey"]);
+          this.router.navigate(["/journey/loading"]);
         },
         error: (err) => {
           this.handleSpotifyError(err);
@@ -57,7 +57,7 @@ export class LoginComponent {
     this.hasClickedLastFmStartButton = true;
     this.lastFmService.loadUserData(this.lastFmUsername).subscribe({
       complete: () => {
-        this.router.navigate(["/journey"]);
+        this.router.navigate(["/journey/loading"]);
       },
       error: (err) => {
         this.resetLastFmLogin();
@@ -73,7 +73,7 @@ export class LoginComponent {
   private fetchUserDataFromSpotify(): void {
     this.spotifyService.loadUserData().subscribe({
       complete: () => {
-        this.router.navigate(["/journey"]);
+        this.router.navigate(["/journey/loading"]);
       },
       error: (err) => {
         this.handleSpotifyError(err);

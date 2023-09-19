@@ -42,7 +42,7 @@ export class PostLoginComponent implements OnInit {
             next: () => {
               this.spotifyService.loadUserData().subscribe({
                 complete: () => {
-                  this.router.navigate(["/journey"]);
+                  this.router.navigate(["/journey/loading"]);
                 },
                 error: (err) => {
                   this.handleSpotifyError(err);
