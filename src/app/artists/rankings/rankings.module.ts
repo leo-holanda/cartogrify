@@ -6,7 +6,6 @@ import { MessagesModule } from "primeng/messages";
 import { ButtonModule } from "primeng/button";
 import { DialogService } from "primeng/dynamicdialog";
 import { SidebarModule } from "primeng/sidebar";
-import { RegionsRankComponent } from "./regions-rank/regions-rank.component";
 import { DialogModule } from "primeng/dialog";
 import { OverlayPanelModule } from "primeng/overlaypanel";
 import { ListboxModule } from "primeng/listbox";
@@ -15,7 +14,7 @@ import { RadioButtonModule } from "primeng/radiobutton";
 import { ArtistsRankModule } from "./artists-rank/artists-rank.module";
 
 @NgModule({
-  declarations: [RegionsRankComponent],
+  declarations: [],
   imports: [
     CommonModule,
     ProgressBarModule,
