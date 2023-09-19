@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { filter } from "rxjs";
-import { ArtistsWithoutCountryStatus, ScrapedArtistData } from "src/app/artists/artist.model";
+import { ScrapedArtistData } from "src/app/artists/artist.model";
 import { ArtistService } from "src/app/artists/artist.service";
 
 @Component({
@@ -23,14 +23,14 @@ export class PreJourneyComponent implements OnInit {
 
   ngOnInit(): void {
     this.artistService
-      .hasArtistsWithoutCountryStatus()
-      .pipe(filter((status): status is ArtistsWithoutCountryStatus => status != undefined))
-      .subscribe((status) => {
-        if (!status.hasArtistsWithoutCountry) {
+      .getArtistsWithoutCountryQuantity()
+      .pipe(filter((quantity): quantity is number => quantity != undefined))
+      .subscribe((quantity) => {
+        if (quantity == 0) {
           this.router.navigate(["/journey"]);
         } else {
           this.hasArtistsWithoutCountry = true;
-          this.artistsWithoutCountryQuantity = status.artistsWithoutCountryQuantity;
+          this.artistsWithoutCountryQuantity = quantity;
         }
       });
 

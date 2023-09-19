@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import {
   Artist,
   ArtistsSources,
-  ArtistsWithoutCountryStatus,
   ScrapedArtist,
   ScrapedArtistData,
   Suggestion,
@@ -18,9 +17,7 @@ export class ArtistService {
   private source!: ArtistsSources;
   private userTopArtists$ = new BehaviorSubject<Artist[]>([]);
   private scrapedArtists$ = new BehaviorSubject<ScrapedArtistData | undefined>(undefined);
-  private hasArtistsWithoutCountry$ = new BehaviorSubject<ArtistsWithoutCountryStatus | undefined>(
-    undefined
-  );
+  private artistsWithoutCountryQuantity$ = new BehaviorSubject<number | undefined>(undefined);
 
   private hasRequestedTopArtists = false;
 
@@ -46,10 +43,7 @@ export class ArtistService {
         );
 
         if (artistsWithoutCountry.length == 0) {
-          this.hasArtistsWithoutCountry$.next({
-            hasArtistsWithoutCountry: false,
-            artistsWithoutCountryQuantity: 0,
-          });
+          this.artistsWithoutCountryQuantity$.next(0);
           this.countryService
             .getCountriesCount()
             .pipe(take(1))
@@ -57,10 +51,7 @@ export class ArtistService {
               this.supabaseService.saveDiversityIndex(countriesCount.length);
             });
         } else {
-          this.hasArtistsWithoutCountry$.next({
-            hasArtistsWithoutCountry: true,
-            artistsWithoutCountryQuantity: artistsWithoutCountry.length,
-          });
+          this.artistsWithoutCountryQuantity$.next(artistsWithoutCountry.length);
           const scrapedArtists: ScrapedArtist[] = [];
 
           this.countryService
@@ -105,8 +96,8 @@ export class ArtistService {
     return this.scrapedArtists$.asObservable();
   }
 
-  hasArtistsWithoutCountryStatus(): Observable<ArtistsWithoutCountryStatus | undefined> {
-    return this.hasArtistsWithoutCountry$.asObservable();
+  getArtistsWithoutCountryQuantity(): Observable<number | undefined> {
+    return this.artistsWithoutCountryQuantity$.asObservable();
   }
 
   getArtistsRequestStatus(): boolean {
