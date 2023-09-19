@@ -7,7 +7,7 @@ import {
   Suggestion,
 } from "./artist.model";
 import { SupabaseService } from "../shared/supabase.service";
-import { BehaviorSubject, Observable, take } from "rxjs";
+import { BehaviorSubject, Observable, map, take } from "rxjs";
 import { CountryService } from "../country/country.service";
 
 @Injectable({
@@ -30,69 +30,75 @@ export class ArtistService {
 
   setUserTopArtistsNames(artistsNames: string[]): void {
     this.userTopArtistsNames = artistsNames;
+    this.loadUserTopArtists();
   }
 
-  setUserTopArtists(topArtistsNames: string[]): void {
-    this.supabaseService
-      .getBestSuggestionByArtists(topArtistsNames)
-      .subscribe((bestSuggestions) => {
-        const artistsFromDatabase = this.transformSuggestionsInArtists(bestSuggestions);
-        const artistsWithOriginalOrder = this.applyOriginalOrder(
-          topArtistsNames,
-          artistsFromDatabase
-        );
+  loadUserTopArtists(): void {
+    this.getArtistsFromDatabase().subscribe((artistsFromDatabase) => {
+      this.setUserTopArtists(artistsFromDatabase);
+    });
+  }
 
-        this.userTopArtists$.next(artistsWithOriginalOrder);
+  getArtistsFromDatabase(): Observable<Artist[]> {
+    return this.supabaseService.getBestSuggestionByArtists(this.userTopArtistsNames).pipe(
+      map((bestSuggestions) => this.transformSuggestionsInArtists(bestSuggestions)),
+      map((artistsFromDatabase) =>
+        this.applyOriginalOrder(this.userTopArtistsNames, artistsFromDatabase)
+      )
+    );
+  }
 
-        const artistsWithoutCountry = this.findArtistsWithoutCountry(
-          topArtistsNames,
-          artistsFromDatabase
-        );
+  setUserTopArtists(artistsFromDatabase: Artist[]): void {
+    this.userTopArtists$.next(artistsFromDatabase);
 
-        if (artistsWithoutCountry.length == 0) {
-          this.artistsWithoutCountryQuantity$.next(0);
-          this.countryService
-            .getCountriesCount()
-            .pipe(take(1))
-            .subscribe((countriesCount) => {
-              this.supabaseService.saveDiversityIndex(countriesCount.length);
+    const artistsWithoutCountry = this.findArtistsWithoutCountry(
+      this.userTopArtistsNames,
+      artistsFromDatabase
+    );
+
+    if (artistsWithoutCountry.length == 0) {
+      this.artistsWithoutCountryQuantity$.next(0);
+      this.countryService
+        .getCountriesCount()
+        .pipe(take(1))
+        .subscribe((countriesCount) => {
+          this.supabaseService.saveDiversityIndex(countriesCount.length);
+        });
+    } else {
+      this.artistsWithoutCountryQuantity$.next(artistsWithoutCountry.length);
+      const scrapedArtists: ScrapedArtist[] = [];
+
+      this.countryService
+        .findArtistsCountryOfOrigin(artistsWithoutCountry)
+        .pipe(take(artistsWithoutCountry.length))
+        .subscribe({
+          next: (scrapedArtist) => {
+            scrapedArtists.push(scrapedArtist);
+
+            this.scrapedArtists$.next({
+              artist: scrapedArtist,
+              total: artistsWithoutCountry.length,
+              remanining: scrapedArtists.length,
             });
-        } else {
-          this.artistsWithoutCountryQuantity$.next(artistsWithoutCountry.length);
-          const scrapedArtists: ScrapedArtist[] = [];
 
-          this.countryService
-            .findArtistsCountryOfOrigin(artistsWithoutCountry)
-            .pipe(take(artistsWithoutCountry.length))
-            .subscribe({
-              next: (scrapedArtist) => {
-                scrapedArtists.push(scrapedArtist);
+            const artistsWithOriginalOrder = this.applyOriginalOrder(this.userTopArtistsNames, [
+              ...artistsFromDatabase,
+              ...scrapedArtists,
+            ]);
 
-                this.scrapedArtists$.next({
-                  artist: scrapedArtist,
-                  total: artistsWithoutCountry.length,
-                  remanining: scrapedArtists.length,
-                });
-
-                const artistsWithOriginalOrder = this.applyOriginalOrder(topArtistsNames, [
-                  ...artistsFromDatabase,
-                  ...scrapedArtists,
-                ]);
-
-                this.userTopArtists$.next(artistsWithOriginalOrder);
-              },
-              complete: () => {
-                this.supabaseService.saveSuggestions(scrapedArtists);
-                this.countryService
-                  .getCountriesCount()
-                  .pipe(take(1))
-                  .subscribe((countriesCount) => {
-                    this.supabaseService.saveDiversityIndex(countriesCount.length);
-                  });
-              },
-            });
-        }
-      });
+            this.userTopArtists$.next(artistsWithOriginalOrder);
+          },
+          complete: () => {
+            this.supabaseService.saveSuggestions(scrapedArtists);
+            this.countryService
+              .getCountriesCount()
+              .pipe(take(1))
+              .subscribe((countriesCount) => {
+                this.supabaseService.saveDiversityIndex(countriesCount.length);
+              });
+          },
+        });
+    }
   }
 
   getUserTopArtists(): Observable<Artist[]> {
