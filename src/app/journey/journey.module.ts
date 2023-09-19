@@ -9,7 +9,6 @@ import { RegionsCountComponent } from "./regions-count/regions-count.component";
 import { RegionsCountModule } from "./regions-count/regions-count.module";
 import { MapPartComponent } from "./map-part/map-part.component";
 import { MapPartModule } from "./map-part/map-part.module";
-import { ArtistsPartModule } from "./artists-part/artists-part.module";
 import { ArtistsPartComponent } from "./artists-part/artists-part.component";
 import { PreJourneyModule } from "./pre-journey/pre-journey.module";
 import { IntroComponent } from "./intro/intro.component";
@@ -19,6 +18,7 @@ import { EndModule } from "./end/end.module";
 import { CountriesRanksModule } from "./countries-ranks/countries-ranks.module";
 import { CountriesRanksComponent } from "./countries-ranks/countries-ranks.component";
 import { CountriesCountModule } from "./countries-count/countries-count.module";
+import { ArtistsPartModule } from "./artists-part/artists-part.module";
 
 @NgModule({
   declarations: [],
