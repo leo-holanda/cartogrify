@@ -11,7 +11,7 @@ import {
   LastFmTopArtists,
   LastFmUserResponse,
 } from "./supabase.model";
-import { UserService } from "../user/user.service";
+import { User } from "../user/user.model";
 
 @Injectable({
   providedIn: "root",
@@ -19,7 +19,7 @@ import { UserService } from "../user/user.service";
 export class SupabaseService {
   private supabaseClient!: SupabaseClient;
 
-  constructor(private userService: UserService) {
+  constructor() {
     this.supabaseClient = createClient(environment.SUPABASE_URL, environment.SUPABASE_ANON_KEY);
   }
 
@@ -72,9 +72,8 @@ export class SupabaseService {
     ).subscribe();
   }
 
-  saveDiversityIndex(countriesCount: number): void {
+  saveDiversityIndex(user: User, countriesCount: number): void {
     if (countriesCount == 0) return;
-    const user = this.userService.getUser();
 
     if (user) {
       const userData = {

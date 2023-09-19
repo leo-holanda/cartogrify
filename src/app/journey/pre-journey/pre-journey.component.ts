@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { filter } from "rxjs";
+import { filter, take } from "rxjs";
 import { ScrapedArtistData } from "src/app/artists/artist.model";
 import { ArtistService } from "src/app/artists/artist.service";
+import { CountryService } from "src/app/country/country.service";
+import { UserService } from "src/app/user/user.service";
 
 @Component({
   selector: "ctg-pre-journey",
@@ -19,7 +21,12 @@ export class PreJourneyComponent implements OnInit {
   progressBarMode = "indeterminate";
   progressPercentage = 0;
 
-  constructor(private artistService: ArtistService, private router: Router) {}
+  constructor(
+    private artistService: ArtistService,
+    private router: Router,
+    private countryService: CountryService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.artistService
@@ -27,6 +34,7 @@ export class PreJourneyComponent implements OnInit {
       .pipe(filter((quantity): quantity is number => quantity != undefined))
       .subscribe((quantity) => {
         if (quantity == 0) {
+          this.userService.saveUserDiversityIndex();
           this.router.navigate(["/journey"]);
         } else {
           this.hasArtistsWithoutCountry = true;
@@ -49,6 +57,8 @@ export class PreJourneyComponent implements OnInit {
         this.progressPercentage = (scrapedArtistData.remanining / scrapedArtistData.total) * 100;
         this.artistsWithoutCountryQuantity -= 1;
         if (scrapedArtistData.remanining == scrapedArtistData.total) {
+          this.userService.saveUserDiversityIndex();
+
           setTimeout(() => {
             this.hasCompletedArtistsSearch = true;
 
