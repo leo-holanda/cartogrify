@@ -27,7 +27,7 @@ export class PreJourneyComponent implements OnInit {
       .pipe(filter((status): status is ArtistsWithoutCountryStatus => status != undefined))
       .subscribe((status) => {
         if (!status.hasArtistsWithoutCountry) {
-          this.router.navigate(["/journey/begin"]);
+          this.router.navigate(["/journey"]);
         } else {
           this.hasArtistsWithoutCountry = true;
           this.artistsWithoutCountryQuantity = status.artistsWithoutCountryQuantity;
@@ -53,7 +53,7 @@ export class PreJourneyComponent implements OnInit {
             this.hasCompletedArtistsSearch = true;
 
             setTimeout(() => {
-              this.router.navigate(["/journey/begin"]);
+              this.router.navigate(["/journey"]);
             }, 1000);
           }, 1000);
         }
