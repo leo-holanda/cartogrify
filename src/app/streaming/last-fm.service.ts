@@ -5,7 +5,7 @@ import { LastFmUser } from "../shared/supabase.model";
 import { UserService } from "../user/user.service";
 import { CountryService } from "../country/country.service";
 import { ArtistService } from "../artists/artist.service";
-import { ArtistsSources } from "../artists/artist.model";
+import { Artist, ArtistsSources } from "../artists/artist.model";
 
 @Injectable({
   providedIn: "root",
@@ -18,7 +18,7 @@ export class LastFmService {
     private artistService: ArtistService
   ) {}
 
-  loadUserData(userName: string): Observable<LastFmUser | string[]> {
+  loadUserData(userName: string): Observable<LastFmUser | Artist[]> {
     const loadUserProfile$ = this.getLastFmUserProfileData(userName).pipe(
       take(1),
       tap((userProfile) => {
@@ -29,26 +29,27 @@ export class LastFmService {
       })
     );
 
-    const loadUserTopArtistsNames$ = this.getTopArtistsNames(userName).pipe(
+    const loadUserTopArtistsNames$ = this.getTopArtists(userName).pipe(
       take(1),
-      tap((topArtistsNames) => {
+      tap((topArtists) => {
         this.artistService.toggleArtistsRequestStatus();
         this.artistService.setSource(ArtistsSources.LASTFM);
-        this.artistService.setUserTopArtistsNames(topArtistsNames);
+        this.artistService.setUserTopArtists(topArtists);
       })
     );
 
     return concat(loadUserProfile$, loadUserTopArtistsNames$);
   }
 
-  getTopArtistsNames(userName: string): Observable<string[]> {
+  getTopArtists(userName: string): Observable<Artist[]> {
     return this.supabaseService.getLastFmUserTopArtists(userName).pipe(
       take(1),
       map((response) => {
         if (response.error && response.message) throw new Error(response.message);
         if (response.topartists) return response.topartists.artist.map((artist) => artist.name);
         throw new Error("The LastFM API is in a bad mood. Please, try again later.");
-      })
+      }),
+      map((topArtistsNames) => this.artistService.transformNamesInArtists(topArtistsNames))
     );
   }
 
