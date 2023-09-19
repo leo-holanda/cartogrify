@@ -9,11 +9,6 @@ const routes: Routes = [
       import("./authorization/authorization.module").then((m) => m.AuthorizationModule),
   },
   {
-    path: "artists",
-    loadChildren: () => import("./artists/artists.module").then((m) => m.ArtistsModule),
-    canActivate: [hasRequestedTopArtists],
-  },
-  {
     path: "journey",
     loadChildren: () => import("./journey/journey.module").then((m) => m.JourneyModule),
     canActivate: [hasRequestedTopArtists],
