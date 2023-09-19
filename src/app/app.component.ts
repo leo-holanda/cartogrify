@@ -1,10 +1,8 @@
 import { Component } from "@angular/core";
 
 @Component({
-  selector: "msm-root",
+  selector: "ctg-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
 })
-export class AppComponent {
-  title = "app";
-}
+export class AppComponent {}
