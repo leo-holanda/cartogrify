@@ -4,7 +4,6 @@ import { Observable, asyncScheduler, map, scheduled, take, tap } from "rxjs";
 import { environment } from "src/environments/environment";
 import { ScrapedArtist, Suggestion } from "../artists/artist.model";
 import {
-  CountryPopularity,
   CountryPopularityPartial,
   CountryPopularityResponse,
   DiversityIndex,
@@ -12,7 +11,6 @@ import {
   LastFmTopArtists,
   LastFmUserResponse,
 } from "./supabase.model";
-import { User } from "../user/user.model";
 import { UserService } from "../user/user.service";
 
 @Injectable({
@@ -137,7 +135,6 @@ export class SupabaseService {
     ).pipe(
       take(1),
       map((response) => response.data || []),
-      tap((data) => console.log(data)),
       map((data: CountryPopularityResponse[]) =>
         data.map((data): CountryPopularityPartial => {
           return {
