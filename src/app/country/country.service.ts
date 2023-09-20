@@ -231,7 +231,7 @@ export class CountryService {
     });
   }
 
-  determineLastFmArtistCountry(artist: LastFmArtist): Country | undefined {
+  determineLastFmArtistCountry(artist: LastFmArtist): Country {
     const possibleCountries = new Map<string, PossibleCountry>();
     const artistTags = artist.tags.tag?.map((tag) => tag.name);
     const artistBio = artist.bio.content;
@@ -248,7 +248,7 @@ export class CountryService {
       }
     }
 
-    if (!mostLikelyCountry) return undefined;
+    if (!mostLikelyCountry) return this.unknownCountry;
     return this.createCountryFromFeature(mostLikelyCountry);
   }
 

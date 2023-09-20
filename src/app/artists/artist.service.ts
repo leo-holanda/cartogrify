@@ -13,6 +13,7 @@ import { CountryService } from "../country/country.service";
 import { environment } from "src/environments/environment";
 import { MusicBrainzService } from "../music-brainz/music-brainz.service";
 import { RegionService } from "../region/region.service";
+import { LastFmService } from "../streaming/last-fm.service";
 
 @Injectable({
   providedIn: "root",
@@ -32,7 +33,8 @@ export class ArtistService {
     private supabaseService: SupabaseService,
     private countryService: CountryService,
     private musicBrainzService: MusicBrainzService,
-    private regionService: RegionService
+    private regionService: RegionService,
+    private lastFmService: LastFmService
   ) {
     this.userTopArtists$.subscribe((artists) => {
       this.countryService.updateCountriesCount(artists);
@@ -175,12 +177,32 @@ export class ArtistService {
             this.countryService
               .findCountryBySecondaryLocation(secondaryLocation)
               .subscribe((countryFromSecondaryLocation) => {
-                artists$.next({
-                  name: artistData.name,
-                  country: countryFromSecondaryLocation,
-                  secondaryLocation,
-                });
+                if (countryFromSecondaryLocation.NE_ID == -1) {
+                  this.lastFmService
+                    .getLastFmArtistCountry(artistData.name)
+                    .subscribe((country) => {
+                      artists$.next({
+                        name: artistData.name,
+                        country: country,
+                        secondaryLocation,
+                      });
+                    });
+                } else {
+                  artists$.next({
+                    name: artistData.name,
+                    country: countryFromSecondaryLocation,
+                    secondaryLocation,
+                  });
+                }
               });
+          } else if (country == undefined && secondaryLocation == undefined) {
+            this.lastFmService.getLastFmArtistCountry(artistData.name).subscribe((country) => {
+              artists$.next({
+                name: artistData.name,
+                country: country,
+                secondaryLocation,
+              });
+            });
           } else {
             artists$.next({
               name: artistData.name,
