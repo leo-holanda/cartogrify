@@ -148,7 +148,6 @@ export class ArtistService {
         // eslint-disable-next-line no-constant-condition
         while (true) {
           const { value, done } = await streamReader.read();
-          if (done) break;
 
           streamAccumulatedContent += textDecoder.decode(value);
           if (!this.hasReceivedFullArtistData(streamAccumulatedContent)) continue;
@@ -210,6 +209,8 @@ export class ArtistService {
               secondaryLocation,
             });
           }
+
+          if (done) break;
         }
       })
       .catch((err) => {
