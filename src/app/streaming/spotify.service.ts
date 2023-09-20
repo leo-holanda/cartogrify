@@ -7,6 +7,7 @@ import { CountryService } from "../country/country.service";
 import { UserService } from "../user/user.service";
 import { ArtistService } from "../artists/artist.service";
 import { Artist, ArtistsSources } from "../artists/artist.model";
+import { transformNamesInArtists } from "../artists/artist.helpers";
 
 @Injectable({
   providedIn: "root",
@@ -54,7 +55,7 @@ export class SpotifyService {
       .pipe(
         take(1),
         map((response) => response.items.map((artist) => artist.name)),
-        map((artistsNames) => this.artistService.transformNamesInArtists(artistsNames))
+        map((artistsNames) => transformNamesInArtists(artistsNames))
       );
   }
 
