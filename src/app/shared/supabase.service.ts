@@ -8,6 +8,7 @@ import {
   CountryPopularityResponse,
   DiversityIndex,
   DiversityIndexResponse,
+  LastFmArtistResponse,
   LastFmTopArtists,
   LastFmUserResponse,
 } from "./supabase.model";
@@ -142,6 +143,23 @@ export class SupabaseService {
           };
         })
       )
+    );
+  }
+
+  getLastFmArtistData(artistName: string): Observable<LastFmArtistResponse> {
+    return scheduled(
+      this.supabaseClient.functions.invoke<LastFmArtistResponse>("fetch-lastfm-artist-data", {
+        body: { artistName },
+      }),
+      asyncScheduler
+    ).pipe(
+      take(1),
+      map((response) => {
+        //This is a Supabase Edge Function error
+        if (response.error) throw new Error(response.error);
+        if (!response.data) throw new Error(response.error);
+        return response.data;
+      })
     );
   }
 }
