@@ -1,19 +1,20 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, catchError, map, of, take } from "rxjs";
-import { Artist, MusicBrainzArtistData, ScrapedArtist } from "../artists/artist.model";
+import { Artist, ScrapedArtist } from "../artists/artist.model";
 import {
   Country,
   CountryCount,
   GeoFeature,
   GeoFeatureCollection,
-  ArtistLocation,
+  PossibleCountry,
 } from "./country.model";
 import countriesJSON from "../../assets/countries-50m.json";
 import * as topojson from "topojson-client";
 import * as TopoJSON from "topojson-specification";
 import { SupabaseService } from "../shared/supabase.service";
 import { HttpClient } from "@angular/common/http";
-import { CountryPopularity } from "../shared/supabase.model";
+import { CountryPopularity, LastFmArtist } from "../shared/supabase.model";
+import { countryRelatedTerms } from "./country.data";
 
 @Injectable({
   providedIn: "root",
@@ -180,6 +181,75 @@ export class CountryService {
         return this.unknownCountry;
       })
     );
+  }
+
+  findCountryInArtistTags(tags: string[], possibleCountries: Map<string, PossibleCountry>): void {
+    tags.forEach((tag) => {
+      this.geoJSON.features.forEach((currentGeoFeature: GeoFeature) => {
+        const geoFeatureName = currentGeoFeature.properties["NAME"].toLowerCase();
+        const featureFlag = this.findCountryFlagCode(currentGeoFeature);
+
+        const currentCountryRelatedTerms: string[] = [
+          ...countryRelatedTerms[featureFlag].adjectivals,
+          ...countryRelatedTerms[featureFlag].demonyms,
+          geoFeatureName,
+        ];
+
+        currentCountryRelatedTerms.forEach((currentTerm) => {
+          if (tag.includes(currentTerm) || currentTerm.includes(tag)) {
+            const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
+            possibleCountries.set(geoFeatureName, {
+              count: currentCountryCount + 1,
+              geoFeature: currentGeoFeature,
+            });
+          }
+        });
+      });
+    });
+  }
+
+  findCountryInWikiText(bio: string, possibleCountries: Map<string, PossibleCountry>): void {
+    this.geoJSON.features.find((currentGeoFeature: GeoFeature) => {
+      const featureFlag = this.findCountryFlagCode(currentGeoFeature);
+      const geoFeatureName = currentGeoFeature.properties["NAME"].toLowerCase();
+
+      const currentCountryRelatedTerms: string[] = [
+        ...countryRelatedTerms[featureFlag].adjectivals,
+        ...countryRelatedTerms[featureFlag].demonyms,
+        geoFeatureName,
+      ];
+
+      currentCountryRelatedTerms.forEach((currentTerm) => {
+        if (bio.includes(currentTerm)) {
+          const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
+          possibleCountries.set(geoFeatureName, {
+            count: currentCountryCount + 3,
+            geoFeature: currentGeoFeature,
+          });
+        }
+      });
+    });
+  }
+
+  determineLastFmArtistCountry(artist: LastFmArtist): Country | undefined {
+    const possibleCountries = new Map<string, PossibleCountry>();
+    const artistTags = artist.tags.tag?.map((tag) => tag.name);
+    const artistBio = artist.bio.content;
+
+    if (artistTags) this.findCountryInArtistTags(artistTags, possibleCountries);
+    this.findCountryInWikiText(artistBio, possibleCountries);
+
+    let highestCount = 0;
+    let mostLikelyCountry = undefined;
+    for (const possibleCountry of possibleCountries.values()) {
+      if (possibleCountry.count > highestCount) {
+        highestCount = possibleCountry.count;
+        mostLikelyCountry = possibleCountry.geoFeature;
+      }
+    }
+
+    if (!mostLikelyCountry) return undefined;
+    return this.createCountryFromFeature(mostLikelyCountry);
   }
 
   private findCompleteLocation(secondaryLocation: string): Observable<string | undefined> {

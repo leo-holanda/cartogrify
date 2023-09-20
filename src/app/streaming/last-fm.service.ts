@@ -6,6 +6,7 @@ import { UserService } from "../user/user.service";
 import { CountryService } from "../country/country.service";
 import { ArtistService } from "../artists/artist.service";
 import { Artist, ArtistsSources } from "../artists/artist.model";
+import { Country } from "../country/country.model";
 
 @Injectable({
   providedIn: "root",
@@ -17,7 +18,7 @@ export class LastFmService {
     private countryService: CountryService,
     private artistService: ArtistService
   ) {
-    this.getLastFmArtistData("Djavan").subscribe((data) => {
+    this.getLastFmArtistCountry("Djavan").subscribe((data) => {
       console.log(data);
     });
   }
@@ -76,6 +77,12 @@ export class LastFmService {
         if (response.artist) return response.artist;
         throw new Error("The LastFM API is in a bad mood. Please, try again later.");
       })
+    );
+  }
+
+  getLastFmArtistCountry(artistName: string): Observable<Country | undefined> {
+    return this.getLastFmArtistData(artistName).pipe(
+      map((artistData) => this.countryService.determineLastFmArtistCountry(artistData))
     );
   }
 }
