@@ -6,6 +6,8 @@ import { LastFmService } from "src/app/streaming/last-fm.service";
 import { MessageService } from "primeng/api";
 import { HttpErrorResponse } from "@angular/common/http";
 import { concatMap, of, switchMap, take } from "rxjs";
+import { ArtistService } from "src/app/artists/artist.service";
+import { ArtistsSources } from "src/app/artists/artist.model";
 
 @Component({
   selector: "msm-login",
@@ -24,7 +26,8 @@ export class LoginComponent {
     private spotifyService: SpotifyService,
     private lastFmService: LastFmService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private artistService: ArtistService
   ) {}
 
   onSpotifyButtonClick(): void {
@@ -56,6 +59,11 @@ export class LoginComponent {
   onLastfmStartButtonClick(): void {
     this.hasClickedLastFmStartButton = true;
     this.lastFmService.loadUserData(this.lastFmUsername).subscribe({
+      next: (topArtists) => {
+        this.artistService.toggleArtistsRequestStatus();
+        this.artistService.setSource(ArtistsSources.LASTFM);
+        this.artistService.setUserTopArtists(topArtists);
+      },
       complete: () => {
         this.router.navigate(["/journey/loading"]);
       },
@@ -68,17 +76,6 @@ export class LoginComponent {
 
   onLastfmUsernameDialogHide(): void {
     this.resetLastFmLogin();
-  }
-
-  private fetchUserDataFromSpotify(): void {
-    this.spotifyService.loadUserData().subscribe({
-      complete: () => {
-        this.router.navigate(["/journey/loading"]);
-      },
-      error: (err) => {
-        this.handleSpotifyError(err);
-      },
-    });
   }
 
   private handleSpotifyError(err: HttpErrorResponse): void {

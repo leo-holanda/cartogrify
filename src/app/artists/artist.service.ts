@@ -129,10 +129,6 @@ export class ArtistService {
     return this.source;
   }
 
-  transformNamesInArtists(artistsNames: string[]): Artist[] {
-    return artistsNames.map((artistName): Artist => this.createArtist(artistName));
-  }
-
   findArtistsCountryOfOrigin(artists: Artist[]): Observable<ScrapedArtist> {
     const artists$ = new Subject<ScrapedArtist>();
 
@@ -206,13 +202,6 @@ export class ArtistService {
       streamAccumulatedContent.includes("START_OF_JSON") &&
       streamAccumulatedContent.includes("END_OF_JSON")
     );
-  }
-
-  private createArtist(artistName: string): Artist {
-    return {
-      name: artistName,
-      country: undefined,
-    };
   }
 
   private transformSuggestionsInArtists(suggestions: Suggestion[]): Artist[] {

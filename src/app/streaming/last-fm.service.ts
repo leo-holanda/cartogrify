@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import { SupabaseService } from "../shared/supabase.service";
-import { Observable, concat, map, take, tap } from "rxjs";
+import { Observable, map, switchMap, take } from "rxjs";
 import { LastFmArtist, LastFmUser } from "../shared/supabase.model";
 import { UserService } from "../user/user.service";
 import { CountryService } from "../country/country.service";
 import { ArtistService } from "../artists/artist.service";
-import { Artist, ArtistsSources } from "../artists/artist.model";
+import { Artist } from "../artists/artist.model";
 import { Country } from "../country/country.model";
+import { transformNamesInArtists } from "../artists/artist.helpers";
 
 @Injectable({
   providedIn: "root",
@@ -15,35 +16,24 @@ export class LastFmService {
   constructor(
     private supabaseService: SupabaseService,
     private userService: UserService,
-    private countryService: CountryService,
-    private artistService: ArtistService
+    private countryService: CountryService
   ) {
     this.getLastFmArtistCountry("Djavan").subscribe((data) => {
       console.log(data);
     });
   }
 
-  loadUserData(userName: string): Observable<LastFmUser | Artist[]> {
-    const loadUserProfile$ = this.getLastFmUserProfileData(userName).pipe(
-      take(1),
-      tap((userProfile) => {
+  loadUserData(userName: string): Observable<Artist[]> {
+    return this.getLastFmUserProfileData(userName).pipe(
+      switchMap((userProfile) => {
         this.userService.setUser({
           id: userName,
           countryCode: this.countryService.getCountryCodeByText(userProfile.country),
         });
+
+        return this.getTopArtists(userName);
       })
     );
-
-    const loadUserTopArtistsNames$ = this.getTopArtists(userName).pipe(
-      take(1),
-      tap((topArtists) => {
-        this.artistService.toggleArtistsRequestStatus();
-        this.artistService.setSource(ArtistsSources.LASTFM);
-        this.artistService.setUserTopArtists(topArtists);
-      })
-    );
-
-    return concat(loadUserProfile$, loadUserTopArtistsNames$);
   }
 
   getTopArtists(userName: string): Observable<Artist[]> {
@@ -54,7 +44,7 @@ export class LastFmService {
         if (response.topartists) return response.topartists.artist.map((artist) => artist.name);
         throw new Error("The LastFM API is in a bad mood. Please, try again later.");
       }),
-      map((topArtistsNames) => this.artistService.transformNamesInArtists(topArtistsNames))
+      map((topArtistsNames) => transformNamesInArtists(topArtistsNames))
     );
   }
 
