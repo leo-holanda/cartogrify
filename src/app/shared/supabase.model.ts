@@ -99,3 +99,58 @@ export interface CountryPopularity {
   country: Country | undefined;
   popularity: number;
 }
+
+export interface LastFmArtistResponse {
+  artist?: LastFmArtist;
+  error?: number;
+  message?: string;
+}
+
+export interface LastFmArtist {
+  name: string;
+  url: string;
+  image?: ImageEntity[] | null;
+  streamable: string;
+  ontour: string;
+  stats: Stats;
+  similar: Similar;
+  tags: Tags;
+  bio: Bio;
+}
+export interface ImageEntity {
+  "#text": string;
+  size: string;
+}
+export interface Stats {
+  listeners: string;
+  playcount: string;
+}
+export interface Similar {
+  artist?: ArtistEntity[] | null;
+}
+export interface ArtistEntity {
+  name: string;
+  url: string;
+  image?: ImageEntity[] | null;
+}
+export interface Tags {
+  tag?: TagEntity[] | null;
+}
+export interface TagEntity {
+  name: string;
+  url: string;
+}
+export interface Bio {
+  links: Links;
+  published: string;
+  summary: string;
+  content: string;
+}
+export interface Links {
+  link: Link;
+}
+export interface Link {
+  "#text": string;
+  rel: string;
+  href: string;
+}
