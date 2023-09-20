@@ -4,7 +4,7 @@ import { ArtistsRankComponent } from "./artists-rank.component";
 import { ButtonModule } from "primeng/button";
 import { DialogModule } from "primeng/dialog";
 import { MessagesModule } from "primeng/messages";
-import { SuggestionsModule } from "./suggestions/suggestions.module";
+import { SuggestionsModule } from "../suggestions/suggestions.module";
 
 @NgModule({
   declarations: [ArtistsRankComponent],
