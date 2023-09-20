@@ -175,24 +175,19 @@ export class ArtistService {
           if (country == undefined && secondaryLocation != undefined) {
             this.countryService
               .findCountryBySecondaryLocation(secondaryLocation)
-              .subscribe((countryFromSecondaryLocation) => {
-                if (countryFromSecondaryLocation.NE_ID == -1) {
-                  this.lastFmService
-                    .getLastFmArtistCountry(artistData.name)
-                    .subscribe((country) => {
-                      artists$.next({
-                        name: artistData.name,
-                        country: country,
-                        secondaryLocation,
-                      });
-                    });
-                } else {
-                  artists$.next({
-                    name: artistData.name,
-                    country: countryFromSecondaryLocation,
-                    secondaryLocation,
-                  });
-                }
+              .pipe(
+                switchMap((countryFromSecondaryLocation) => {
+                  if (countryFromSecondaryLocation.NE_ID == -1)
+                    return this.lastFmService.getLastFmArtistCountry(artistData.name);
+                  return of(countryFromSecondaryLocation);
+                })
+              )
+              .subscribe((country) => {
+                artists$.next({
+                  name: artistData.name,
+                  country: country,
+                  secondaryLocation,
+                });
               });
           } else if (country == undefined && secondaryLocation == undefined) {
             this.lastFmService.getLastFmArtistCountry(artistData.name).subscribe((country) => {
