@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Subject, debounceTime, fromEvent } from "rxjs";
+import { Subject, fromEvent } from "rxjs";
 
 @Component({
   selector: "ctg-artists-part",
@@ -11,8 +11,6 @@ export class ArtistsPartComponent implements OnInit {
   shouldOpenDialog = false;
   hasHappyNoises = false;
   isMobile = window.innerWidth <= 1280;
-
-  constructor() {}
 
   ngOnInit(): void {
     fromEvent(window, "resize")
