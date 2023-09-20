@@ -32,7 +32,6 @@ export class UserService {
         .getCountriesCount()
         .pipe(take(1))
         .subscribe((countriesCount) => {
-          console.log("salvei");
           this.supabaseService.saveDiversityIndex(user, countriesCount.length);
         });
     }
