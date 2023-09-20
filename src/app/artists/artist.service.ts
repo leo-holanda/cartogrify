@@ -33,7 +33,9 @@ export class ArtistService {
     private supabaseService: SupabaseService,
     private countryService: CountryService,
     private musicBrainzService: MusicBrainzService
-  ) {}
+  ) {
+    this.userTopArtists$.subscribe((artists) => this.countryService.updateCountriesCount(artists));
+  }
 
   toggleArtistsRequestStatus(): void {
     this.hasRequestedTopArtists = true;
