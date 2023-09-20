@@ -136,23 +136,26 @@ export class ArtistService {
         if (!streamReader) return;
 
         const textDecoder = new TextDecoder();
-        let streamContent = "";
+        let streamAccumulatedContent = "";
         // eslint-disable-next-line no-constant-condition
         while (true) {
           const { value, done } = await streamReader.read();
           if (done) break;
 
-          streamContent += textDecoder.decode(value);
-          if (!this.hasReceivedFullArtistData(streamContent)) continue;
+          streamAccumulatedContent += textDecoder.decode(value);
+          if (!this.hasReceivedFullArtistData(streamAccumulatedContent)) continue;
 
-          const startIndex = streamContent.indexOf("START_OF_JSON") + this.START_INDICATOR_OFFSET;
-          const endIndex = streamContent.indexOf("END_OF_JSON");
+          const startIndex =
+            streamAccumulatedContent.indexOf("START_OF_JSON") + this.START_INDICATOR_OFFSET;
+          const endIndex = streamAccumulatedContent.indexOf("END_OF_JSON");
 
           const rawArtistData: RawMusicBrainzArtistData = JSON.parse(
-            streamContent.slice(startIndex, endIndex)
+            streamAccumulatedContent.slice(startIndex, endIndex)
           );
 
-          streamContent = streamContent.slice(endIndex + this.END_INDICATOR_OFFSET);
+          streamAccumulatedContent = streamAccumulatedContent.slice(
+            endIndex + this.END_INDICATOR_OFFSET
+          );
 
           const artistData = {
             name: rawArtistData.name,
@@ -187,8 +190,11 @@ export class ArtistService {
     return artists$.asObservable();
   }
 
-  private hasReceivedFullArtistData(streamContent: string): boolean {
-    return streamContent.includes("START_OF_JSON") && streamContent.includes("END_OF_JSON");
+  private hasReceivedFullArtistData(streamAccumulatedContent: string): boolean {
+    return (
+      streamAccumulatedContent.includes("START_OF_JSON") &&
+      streamAccumulatedContent.includes("END_OF_JSON")
+    );
   }
 
   private getArtistData(rawArtistData: RawMusicBrainzArtistData): MusicBrainzArtist | undefined {
