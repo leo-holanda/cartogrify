@@ -7,8 +7,9 @@ import {
   Suggestion,
 } from "./artist.model";
 import { SupabaseService } from "../shared/supabase.service";
-import { BehaviorSubject, Observable, concat, concatMap, map, of, switchMap, take } from "rxjs";
+import { BehaviorSubject, Observable, Subject, map, of, switchMap, take } from "rxjs";
 import { CountryService } from "../country/country.service";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -57,8 +58,7 @@ export class ArtistService {
 
     const scrapedArtists: ScrapedArtist[] = [];
 
-    this.countryService
-      .findArtistsCountryOfOrigin(artistsWithoutCountry)
+    this.findArtistsCountryOfOrigin(artistsWithoutCountry)
       .pipe(take(artistsWithoutCountry.length))
       .subscribe({
         next: (scrapedArtist) => {
@@ -115,6 +115,75 @@ export class ArtistService {
 
   transformNamesInArtists(artistsNames: string[]): Artist[] {
     return artistsNames.map((artistName): Artist => this.createArtist(artistName));
+  }
+
+  findArtistsCountryOfOrigin(artists: Artist[]): Observable<ScrapedArtist> {
+    const artists$ = new Subject<ScrapedArtist>();
+
+    const artistsNames = artists.map((artist) => artist.name);
+    fetch(environment.PAGE_FINDER_URL, {
+      method: "POST",
+      body: artistsNames.join("###"),
+    })
+      .then(async (response) => {
+        const reader = response.body?.getReader();
+
+        if (reader) {
+          const textDecoder = new TextDecoder();
+          let eventStreamAccumulator = "";
+          const START_INDICATOR_OFFSET = 13;
+          const END_INDICATOR_OFFSET = 11;
+
+          while (true) {
+            const { value, done } = await reader.read();
+            eventStreamAccumulator += textDecoder.decode(value);
+
+            if (
+              eventStreamAccumulator.includes("START_OF_JSON") &&
+              eventStreamAccumulator.includes("END_OF_JSON")
+            ) {
+              const startIndex =
+                eventStreamAccumulator.indexOf("START_OF_JSON") + START_INDICATOR_OFFSET;
+              const endIndex = eventStreamAccumulator.indexOf("END_OF_JSON");
+              const { name, data } = JSON.parse(eventStreamAccumulator.slice(startIndex, endIndex));
+
+              const { country, secondaryLocation } =
+                this.countryService.getArtistLocationFromMusicBrainzResponse(name, data);
+
+              if (country == undefined && secondaryLocation != undefined) {
+                setTimeout(() => {
+                  this.countryService
+                    .findCountryBySecondaryLocation(secondaryLocation)
+                    .subscribe((countryFromSecondaryLocation) => {
+                      artists$.next({
+                        name,
+                        country: countryFromSecondaryLocation,
+                        secondaryLocation,
+                      });
+                    });
+                }, 1000);
+              } else {
+                artists$.next({
+                  name,
+                  country,
+                  secondaryLocation,
+                });
+              }
+
+              eventStreamAccumulator = eventStreamAccumulator.slice(
+                endIndex + END_INDICATOR_OFFSET
+              );
+            }
+
+            if (done) break;
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    return artists$.asObservable();
   }
 
   private createArtist(artistName: string): Artist {
