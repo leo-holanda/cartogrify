@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, catchError, map, of, take } from "rxjs";
-import { Artist, ScrapedArtist } from "../artists/artist.model";
+import { Artist, MusicBrainzArtistData, ScrapedArtist } from "../artists/artist.model";
 import {
   Country,
   CountryCount,
@@ -136,15 +136,16 @@ export class CountryService {
     return undefined;
   }
 
-  getArtistLocationFromMusicBrainzResponse(artistName: string, response: string): ArtistLocation {
+  getArtistLocation(artistData: MusicBrainzArtistData): ArtistLocation {
     const artistLocation: ArtistLocation = {
       country: undefined,
       secondaryLocation: undefined,
     };
 
+    const artist = artistData.artistDataFromMusicBrainz;
+    if (artist == undefined) return artistLocation;
+
     try {
-      const responseData = JSON.parse(response);
-      const artist = this.getArtistFromMusicBrainzResponse(artistName, responseData);
       if (artist.country) {
         const countryCode = this.getCountryCodeByText(artist.country);
         const country = this.getCountryByCode(countryCode);
@@ -261,18 +262,6 @@ export class CountryService {
   private getLocationFromResponse(response: unknown): string | undefined {
     if (Array.isArray(response) && response.length > 0)
       return response[0]["display_name"] || undefined;
-
-    return undefined;
-  }
-
-  private getArtistFromMusicBrainzResponse(artistName: string, responseData: any): any {
-    if (responseData.artists && Array.isArray(responseData.artists)) {
-      const matchedArtist = responseData.artists.find(
-        (artist: any) => artist.name.toLowerCase() == artistName.toLowerCase()
-      );
-      if (matchedArtist) return matchedArtist;
-      return responseData.artists[0];
-    }
 
     return undefined;
   }

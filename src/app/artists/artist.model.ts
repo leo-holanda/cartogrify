@@ -35,3 +35,26 @@ export enum ArtistsSources {
   SPOTIFY = "spotify",
   LASTFM = "lastfm",
 }
+
+export interface RawMusicBrainzArtistData {
+  name: string;
+  data: string;
+}
+
+export interface MusicBrainzArtistData {
+  name: string;
+  artistDataFromMusicBrainz: MusicBrainzArtist | undefined;
+}
+
+export interface MusicBrainzArtist {
+  name: string;
+  country: string;
+  area: MusicBrainzArea;
+  "begin-area": MusicBrainzArea;
+  "end-area": MusicBrainzArea;
+}
+
+export interface MusicBrainzArea {
+  type: string;
+  name: string;
+}
