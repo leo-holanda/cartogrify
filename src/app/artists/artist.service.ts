@@ -13,6 +13,7 @@ import { SupabaseService } from "../shared/supabase.service";
 import { BehaviorSubject, Observable, Subject, map, of, switchMap, take } from "rxjs";
 import { CountryService } from "../country/country.service";
 import { environment } from "src/environments/environment";
+import { MusicBrainzService } from "../music-brainz/music-brainz.service";
 
 @Injectable({
   providedIn: "root",
@@ -28,7 +29,11 @@ export class ArtistService {
 
   private hasRequestedTopArtists = false;
 
-  constructor(private supabaseService: SupabaseService, private countryService: CountryService) {}
+  constructor(
+    private supabaseService: SupabaseService,
+    private countryService: CountryService,
+    private musicBrainzService: MusicBrainzService
+  ) {}
 
   toggleArtistsRequestStatus(): void {
     this.hasRequestedTopArtists = true;
@@ -159,10 +164,11 @@ export class ArtistService {
 
           const artistData = {
             name: rawArtistData.name,
-            artistDataFromMusicBrainz: this.getArtistData(rawArtistData),
+            artistDataFromMusicBrainz: this.musicBrainzService.getArtistData(rawArtistData),
           };
 
-          const { country, secondaryLocation } = this.countryService.getArtistLocation(artistData);
+          const { country, secondaryLocation } =
+            this.musicBrainzService.getArtistLocation(artistData);
 
           if (country == undefined && secondaryLocation != undefined) {
             this.countryService
@@ -195,24 +201,6 @@ export class ArtistService {
       streamAccumulatedContent.includes("START_OF_JSON") &&
       streamAccumulatedContent.includes("END_OF_JSON")
     );
-  }
-
-  private getArtistData(rawArtistData: RawMusicBrainzArtistData): MusicBrainzArtist | undefined {
-    try {
-      const musicBrainzArtistData = JSON.parse(rawArtistData.data);
-
-      if (musicBrainzArtistData.artists && Array.isArray(musicBrainzArtistData.artists)) {
-        const matchedArtist = musicBrainzArtistData.artists.find(
-          (artist: any) => artist.name.toLowerCase() == rawArtistData.name.toLowerCase()
-        );
-        if (matchedArtist) return matchedArtist;
-        return musicBrainzArtistData.artists[0];
-      }
-
-      return undefined;
-    } catch (error) {
-      return undefined;
-    }
   }
 
   private createArtist(artistName: string): Artist {
