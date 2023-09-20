@@ -2,6 +2,9 @@ import { Injectable } from "@angular/core";
 import {
   Artist,
   ArtistsSources,
+  MusicBrainzArtist,
+  MusicBrainzArtistData,
+  RawMusicBrainzArtistData,
   ScrapedArtist,
   ScrapedArtistData,
   Suggestion,
@@ -19,6 +22,9 @@ export class ArtistService {
   private userTopArtists$ = new BehaviorSubject<Artist[]>([]);
   private scrapedArtists$ = new BehaviorSubject<ScrapedArtistData | undefined>(undefined);
   private artistsWithoutCountryQuantity$ = new BehaviorSubject<number | undefined>(undefined);
+
+  private START_INDICATOR_OFFSET = 13;
+  private END_INDICATOR_OFFSET = 11;
 
   private hasRequestedTopArtists = false;
 
@@ -126,56 +132,51 @@ export class ArtistService {
       body: artistsNames.join("###"),
     })
       .then(async (response) => {
-        const reader = response.body?.getReader();
+        const streamReader = response.body?.getReader();
+        if (!streamReader) return;
 
-        if (reader) {
-          const textDecoder = new TextDecoder();
-          let eventStreamAccumulator = "";
-          const START_INDICATOR_OFFSET = 13;
-          const END_INDICATOR_OFFSET = 11;
+        const textDecoder = new TextDecoder();
+        let streamContent = "";
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          const { value, done } = await streamReader.read();
+          if (done) break;
 
-          while (true) {
-            const { value, done } = await reader.read();
-            eventStreamAccumulator += textDecoder.decode(value);
+          streamContent += textDecoder.decode(value);
+          if (!this.hasReceivedFullArtistData(streamContent)) continue;
 
-            if (
-              eventStreamAccumulator.includes("START_OF_JSON") &&
-              eventStreamAccumulator.includes("END_OF_JSON")
-            ) {
-              const startIndex =
-                eventStreamAccumulator.indexOf("START_OF_JSON") + START_INDICATOR_OFFSET;
-              const endIndex = eventStreamAccumulator.indexOf("END_OF_JSON");
-              const { name, data } = JSON.parse(eventStreamAccumulator.slice(startIndex, endIndex));
+          const startIndex = streamContent.indexOf("START_OF_JSON") + this.START_INDICATOR_OFFSET;
+          const endIndex = streamContent.indexOf("END_OF_JSON");
 
-              const { country, secondaryLocation } =
-                this.countryService.getArtistLocationFromMusicBrainzResponse(name, data);
+          const rawArtistData: RawMusicBrainzArtistData = JSON.parse(
+            streamContent.slice(startIndex, endIndex)
+          );
 
-              if (country == undefined && secondaryLocation != undefined) {
-                setTimeout(() => {
-                  this.countryService
-                    .findCountryBySecondaryLocation(secondaryLocation)
-                    .subscribe((countryFromSecondaryLocation) => {
-                      artists$.next({
-                        name,
-                        country: countryFromSecondaryLocation,
-                        secondaryLocation,
-                      });
-                    });
-                }, 1000);
-              } else {
+          streamContent = streamContent.slice(endIndex + this.END_INDICATOR_OFFSET);
+
+          const artistData = {
+            name: rawArtistData.name,
+            artistDataFromMusicBrainz: this.getArtistData(rawArtistData),
+          };
+
+          const { country, secondaryLocation } = this.countryService.getArtistLocation(artistData);
+
+          if (country == undefined && secondaryLocation != undefined) {
+            this.countryService
+              .findCountryBySecondaryLocation(secondaryLocation)
+              .subscribe((countryFromSecondaryLocation) => {
                 artists$.next({
-                  name,
-                  country,
+                  name: artistData.name,
+                  country: countryFromSecondaryLocation,
                   secondaryLocation,
                 });
-              }
-
-              eventStreamAccumulator = eventStreamAccumulator.slice(
-                endIndex + END_INDICATOR_OFFSET
-              );
-            }
-
-            if (done) break;
+              });
+          } else {
+            artists$.next({
+              name: artistData.name,
+              country,
+              secondaryLocation,
+            });
           }
         }
       })
@@ -184,6 +185,28 @@ export class ArtistService {
       });
 
     return artists$.asObservable();
+  }
+
+  private hasReceivedFullArtistData(streamContent: string): boolean {
+    return streamContent.includes("START_OF_JSON") && streamContent.includes("END_OF_JSON");
+  }
+
+  private getArtistData(rawArtistData: RawMusicBrainzArtistData): MusicBrainzArtist | undefined {
+    try {
+      const musicBrainzArtistData = JSON.parse(rawArtistData.data);
+
+      if (musicBrainzArtistData.artists && Array.isArray(musicBrainzArtistData.artists)) {
+        const matchedArtist = musicBrainzArtistData.artists.find(
+          (artist: any) => artist.name.toLowerCase() == rawArtistData.name.toLowerCase()
+        );
+        if (matchedArtist) return matchedArtist;
+        return musicBrainzArtistData.artists[0];
+      }
+
+      return undefined;
+    } catch (error) {
+      return undefined;
+    }
   }
 
   private createArtist(artistName: string): Artist {
