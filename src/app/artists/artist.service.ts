@@ -2,8 +2,6 @@ import { Injectable } from "@angular/core";
 import {
   Artist,
   ArtistsSources,
-  MusicBrainzArtist,
-  MusicBrainzArtistData,
   RawMusicBrainzArtistData,
   ScrapedArtist,
   ScrapedArtistData,
@@ -14,6 +12,7 @@ import { BehaviorSubject, Observable, Subject, map, of, switchMap, take } from "
 import { CountryService } from "../country/country.service";
 import { environment } from "src/environments/environment";
 import { MusicBrainzService } from "../music-brainz/music-brainz.service";
+import { RegionService } from "../region/region.service";
 
 @Injectable({
   providedIn: "root",
@@ -32,9 +31,13 @@ export class ArtistService {
   constructor(
     private supabaseService: SupabaseService,
     private countryService: CountryService,
-    private musicBrainzService: MusicBrainzService
+    private musicBrainzService: MusicBrainzService,
+    private regionService: RegionService
   ) {
-    this.userTopArtists$.subscribe((artists) => this.countryService.updateCountriesCount(artists));
+    this.userTopArtists$.subscribe((artists) => {
+      this.countryService.updateCountriesCount(artists);
+      this.regionService.updateRegionsCount(artists);
+    });
   }
 
   toggleArtistsRequestStatus(): void {
