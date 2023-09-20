@@ -7,7 +7,7 @@ import {
   Suggestion,
 } from "./artist.model";
 import { SupabaseService } from "../shared/supabase.service";
-import { BehaviorSubject, Observable, map, of, switchMap, take } from "rxjs";
+import { BehaviorSubject, Observable, concat, concatMap, map, of, switchMap, take } from "rxjs";
 import { CountryService } from "../country/country.service";
 
 @Injectable({
@@ -28,41 +28,8 @@ export class ArtistService {
   }
 
   setUserTopArtists(userTopArtists: Artist[]): void {
-    this.assignCountriesToKnownArtists(userTopArtists).subscribe((done) => {
-      this.userTopArtists$.next(userTopArtists);
-
-      const artistsWithoutCountry = userTopArtists.filter((artist) => artist.country == undefined);
-      this.artistsWithoutCountryQuantity$.next(artistsWithoutCountry.length);
-
-      if (artistsWithoutCountry.length > 0) {
-        const scrapedArtists: ScrapedArtist[] = [];
-
-        this.countryService
-          .findArtistsCountryOfOrigin(artistsWithoutCountry)
-          .pipe(take(artistsWithoutCountry.length))
-          .subscribe({
-            next: (scrapedArtist) => {
-              scrapedArtists.push(scrapedArtist);
-
-              this.scrapedArtists$.next({
-                artist: scrapedArtist,
-                total: artistsWithoutCountry.length,
-                remanining: scrapedArtists.length,
-              });
-
-              const matchedArtist = userTopArtists.find(
-                (artist) => artist.name == scrapedArtist.name
-              );
-
-              if (matchedArtist) matchedArtist.country = scrapedArtist.country;
-
-              this.userTopArtists$.next(userTopArtists);
-            },
-            complete: () => {
-              this.supabaseService.saveSuggestions(scrapedArtists);
-            },
-          });
-      }
+    this.assignCountriesToKnownArtists(userTopArtists).subscribe(() => {
+      this.handleArtistsWithoutCountry(userTopArtists);
     });
   }
 
@@ -77,9 +44,41 @@ export class ArtistService {
           if (matchedArtist) matchedArtist.country = artistFromDatabase.country;
         });
 
+        this.userTopArtists$.next(userTopArtists);
         return of(true);
       })
     );
+  }
+
+  handleArtistsWithoutCountry(userTopArtists: Artist[]): void {
+    const artistsWithoutCountry = userTopArtists.filter((artist) => artist.country == undefined);
+    this.artistsWithoutCountryQuantity$.next(artistsWithoutCountry.length);
+    if (!artistsWithoutCountry) return;
+
+    const scrapedArtists: ScrapedArtist[] = [];
+
+    this.countryService
+      .findArtistsCountryOfOrigin(artistsWithoutCountry)
+      .pipe(take(artistsWithoutCountry.length))
+      .subscribe({
+        next: (scrapedArtist) => {
+          scrapedArtists.push(scrapedArtist);
+
+          this.scrapedArtists$.next({
+            artist: scrapedArtist,
+            total: artistsWithoutCountry.length,
+            remanining: scrapedArtists.length,
+          });
+
+          const matchedArtist = userTopArtists.find((artist) => artist.name == scrapedArtist.name);
+          if (matchedArtist) matchedArtist.country = scrapedArtist.country;
+
+          this.userTopArtists$.next(userTopArtists);
+        },
+        complete: () => {
+          this.supabaseService.saveSuggestions(scrapedArtists);
+        },
+      });
   }
 
   getArtistsFromDatabase(userTopArtists: Artist[]): Observable<Artist[]> {
@@ -132,23 +131,5 @@ export class ArtistService {
         country: this.countryService.getCountryByCode(suggestion.country_code),
       } as Artist;
     });
-  }
-
-  private findArtistsWithoutCountry(
-    topArtistsNames: string[],
-    artistsFromDatabase: Artist[]
-  ): string[] {
-    return topArtistsNames.filter(
-      (topArtistName) =>
-        !artistsFromDatabase.some(
-          (artistsFromDatabase) => topArtistName === artistsFromDatabase.name
-        )
-    );
-  }
-
-  private applyOriginalOrder(topArtistsNames: string[], artistsFromDatabase: Artist[]): Artist[] {
-    return topArtistsNames
-      .map((artistName) => artistsFromDatabase.find((artist) => artist.name == artistName))
-      .filter((artist) => artist) as Artist[];
   }
 }
