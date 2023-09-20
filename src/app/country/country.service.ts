@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, Subject, catchError, map, of, take } from "rxjs";
+import { BehaviorSubject, Observable, catchError, map, of, take } from "rxjs";
 import { Artist, ScrapedArtist } from "../artists/artist.model";
-import { environment } from "src/environments/environment.development";
 import {
   Country,
   CountryCount,
@@ -61,77 +60,6 @@ export class CountryService {
       .map((country) => country[1]);
 
     this.countriesCount$.next(sortedCountriesCount);
-  }
-
-  findArtistsCountryOfOrigin(artists: Artist[]): Observable<ScrapedArtist> {
-    const START_INDICATOR_OFFSET = 13;
-    const END_INDICATOR_OFFSET = 11;
-    const artists$ = new Subject<ScrapedArtist>();
-
-    const artistsNames = artists.map((artist) => artist.name);
-    fetch(environment.PAGE_FINDER_URL, {
-      method: "POST",
-      body: artistsNames.join("###"),
-    })
-      .then(async (response) => {
-        const reader = response.body?.getReader();
-
-        if (reader) {
-          const textDecoder = new TextDecoder();
-          let eventStreamAccumulator = "";
-
-          while (true) {
-            const { value, done } = await reader.read();
-            eventStreamAccumulator += textDecoder.decode(value);
-
-            if (
-              eventStreamAccumulator.includes("START_OF_JSON") &&
-              eventStreamAccumulator.includes("END_OF_JSON")
-            ) {
-              const startIndex =
-                eventStreamAccumulator.indexOf("START_OF_JSON") + START_INDICATOR_OFFSET;
-              const endIndex = eventStreamAccumulator.indexOf("END_OF_JSON");
-              const { name, data } = JSON.parse(eventStreamAccumulator.slice(startIndex, endIndex));
-
-              const { country, secondaryLocation } = this.getArtistLocationFromMusicBrainzResponse(
-                name,
-                data
-              );
-
-              if (country == undefined && secondaryLocation != undefined) {
-                setTimeout(() => {
-                  this.findCountryBySecondaryLocation(secondaryLocation).subscribe(
-                    (countryFromSecondaryLocation) => {
-                      artists$.next({
-                        name,
-                        country: countryFromSecondaryLocation,
-                        secondaryLocation,
-                      });
-                    }
-                  );
-                }, 1000);
-              } else {
-                artists$.next({
-                  name,
-                  country,
-                  secondaryLocation,
-                });
-              }
-
-              eventStreamAccumulator = eventStreamAccumulator.slice(
-                endIndex + END_INDICATOR_OFFSET
-              );
-            }
-
-            if (done) break;
-          }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    return artists$.asObservable();
   }
 
   findCountryFlagCode(geoFeature: GeoFeature): string {
@@ -295,17 +223,7 @@ export class CountryService {
     );
   }
 
-  private findCompleteLocation(secondaryLocation: string): Observable<string | undefined> {
-    return this.http.get(`https://geocode.maps.co/search?q={${secondaryLocation}}`).pipe(
-      take(1),
-      map((response: unknown) => this.getLocationFromResponse(response)),
-      catchError(() => {
-        return of(undefined);
-      })
-    );
-  }
-
-  private findCountryBySecondaryLocation(secondaryLocation: string): Observable<Country> {
+  findCountryBySecondaryLocation(secondaryLocation: string): Observable<Country> {
     return this.findCompleteLocation(secondaryLocation).pipe(
       take(1),
       map((completeLocation) => {
@@ -326,6 +244,16 @@ export class CountryService {
 
         if (geoFeature) return this.createCountryFromFeature(geoFeature as GeoFeature);
         return this.unknownCountry;
+      })
+    );
+  }
+
+  private findCompleteLocation(secondaryLocation: string): Observable<string | undefined> {
+    return this.http.get(`https://geocode.maps.co/search?q={${secondaryLocation}}`).pipe(
+      take(1),
+      map((response: unknown) => this.getLocationFromResponse(response)),
+      catchError(() => {
+        return of(undefined);
       })
     );
   }
