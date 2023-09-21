@@ -72,7 +72,7 @@ export class ArtistService {
   handleArtistsWithoutCountry(userTopArtists: Artist[]): void {
     const artistsWithoutCountry = userTopArtists.filter((artist) => artist.country == undefined);
     this.artistsWithoutCountryQuantity$.next(artistsWithoutCountry.length);
-    if (!artistsWithoutCountry) return;
+    if (artistsWithoutCountry.length == 0) return;
 
     const scrapedArtists: ScrapedArtist[] = [];
 
