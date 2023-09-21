@@ -33,22 +33,31 @@ export class LoginComponent {
   onSpotifyButtonClick(): void {
     this.hasInitiatedLogin = true;
 
-    this.spotifyAuthService
-      .refreshToken()
-      .pipe(
-        take(1),
-        concatMap(() => this.spotifyService.loadUserData())
-      )
-      .subscribe({
-        complete: () => {
-          this.router.navigate(["/journey/loading"]);
-        },
-        error: (err) => {
-          this.handleSpotifyError(err);
-        },
-      });
+    if (this.spotifyAuthService.isTokenUndefined()) {
+      this.spotifyAuthService.requestAuthorization();
+      return;
+    }
 
-    return;
+    if (this.spotifyAuthService.isTokenExpired()) {
+      this.spotifyAuthService
+        .refreshToken()
+        .pipe(
+          take(1),
+          concatMap(() => this.spotifyService.loadUserData())
+        )
+        .subscribe({
+          complete: () => {
+            this.router.navigate(["/journey/loading"]);
+          },
+          error: (err) => {
+            this.handleSpotifyError(err);
+          },
+        });
+
+      return;
+    }
+
+    this.fetchUserDataFromSpotify();
   }
 
   onLastfmButtonClick(): void {
@@ -76,6 +85,17 @@ export class LoginComponent {
 
   onLastfmUsernameDialogHide(): void {
     this.resetLastFmLogin();
+  }
+
+  private fetchUserDataFromSpotify(): void {
+    this.spotifyService.loadUserData().subscribe({
+      complete: () => {
+        this.router.navigate(["/journey/loading"]);
+      },
+      error: (err) => {
+        this.handleSpotifyError(err);
+      },
+    });
   }
 
   private handleSpotifyError(err: HttpErrorResponse): void {
