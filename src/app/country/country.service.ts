@@ -195,8 +195,10 @@ export class CountryService {
           geoFeatureName,
         ];
 
+        tag = tag.toLowerCase();
         currentCountryRelatedTerms.forEach((currentTerm) => {
-          if (tag.includes(currentTerm) || currentTerm.includes(tag)) {
+          currentTerm = currentTerm.toLowerCase();
+          if (tag == currentTerm) {
             const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
             possibleCountries.set(geoFeatureName, {
               count: currentCountryCount + 1,
@@ -220,6 +222,7 @@ export class CountryService {
       ];
 
       currentCountryRelatedTerms.forEach((currentTerm) => {
+        currentTerm = currentTerm.toLowerCase();
         if (bio.includes(currentTerm)) {
           const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
           possibleCountries.set(geoFeatureName, {
