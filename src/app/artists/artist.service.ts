@@ -184,20 +184,38 @@ export class ArtistService {
                     return of(countryFromSecondaryLocation);
                   })
                 )
-                .subscribe((country) => {
+                .subscribe({
+                  next: (country) => {
+                    artists$.next({
+                      name: artistData.name,
+                      country: country,
+                      secondaryLocation,
+                    });
+                  },
+                  error: () => {
+                    artists$.next({
+                      name: artistData.name,
+                      country: undefined,
+                      secondaryLocation: undefined,
+                    });
+                  },
+                });
+            } else if (country == undefined && secondaryLocation == undefined) {
+              this.lastFmService.getLastFmArtistCountry(artistData.name).subscribe({
+                next: (country) => {
                   artists$.next({
                     name: artistData.name,
                     country: country,
                     secondaryLocation,
                   });
-                });
-            } else if (country == undefined && secondaryLocation == undefined) {
-              this.lastFmService.getLastFmArtistCountry(artistData.name).subscribe((country) => {
-                artists$.next({
-                  name: artistData.name,
-                  country: country,
-                  secondaryLocation,
-                });
+                },
+                error: () => {
+                  artists$.next({
+                    name: artistData.name,
+                    country: undefined,
+                    secondaryLocation: undefined,
+                  });
+                },
               });
             } else {
               artists$.next({
