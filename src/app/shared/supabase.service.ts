@@ -78,7 +78,7 @@ export class SupabaseService {
 
     if (user) {
       const userData = {
-        user_id: user.id,
+        user_id: user.id.toLowerCase(),
         user_countries_count: countriesCount,
         user_country_code: user.countryCode,
       };
