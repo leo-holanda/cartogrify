@@ -221,15 +221,19 @@ export class CountryService {
         geoFeatureName,
       ];
 
+      const splittedBio = bio.toLowerCase().split(" ");
       currentCountryRelatedTerms.forEach((currentTerm) => {
         currentTerm = currentTerm.toLowerCase();
-        if (bio.includes(currentTerm)) {
-          const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
-          possibleCountries.set(geoFeatureName, {
-            count: currentCountryCount + 3,
-            geoFeature: currentGeoFeature,
-          });
-        }
+
+        splittedBio.forEach((word) => {
+          if (word == currentTerm) {
+            const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
+            possibleCountries.set(geoFeatureName, {
+              count: currentCountryCount + 3,
+              geoFeature: currentGeoFeature,
+            });
+          }
+        });
       });
     });
   }
