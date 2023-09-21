@@ -95,7 +95,8 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
           .x((d: any) => d.y)
           .y((d: any) => d.x) as any
       )
-      .attr("stroke-width", (d: any) => d.source.height + 1);
+      .attr("stroke-width", (d: any) => d.source.height + 1)
+      .attr("stroke-linecap", "round");
 
     const node = svg
       .append("g")
@@ -169,7 +170,8 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
           .x((d: any) => d.x)
           .y((d: any) => d.y) as any
       )
-      .attr("stroke-width", (d: any) => d.source.height + 1);
+      .attr("stroke-width", (d: any) => d.source.height + 1)
+      .attr("stroke-linecap", "round");
 
     const node = svg
       .append("g")
