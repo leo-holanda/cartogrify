@@ -150,61 +150,63 @@ export class ArtistService {
           const { value, done } = await streamReader.read();
 
           streamAccumulatedContent += textDecoder.decode(value);
-          if (!this.hasReceivedFullArtistData(streamAccumulatedContent)) continue;
+          if (
+            streamAccumulatedContent.includes("START_OF_JSON") &&
+            streamAccumulatedContent.includes("END_OF_JSON")
+          ) {
+            const startIndex =
+              streamAccumulatedContent.indexOf("START_OF_JSON") + this.START_INDICATOR_OFFSET;
+            const endIndex = streamAccumulatedContent.indexOf("END_OF_JSON");
 
-          const startIndex =
-            streamAccumulatedContent.indexOf("START_OF_JSON") + this.START_INDICATOR_OFFSET;
-          const endIndex = streamAccumulatedContent.indexOf("END_OF_JSON");
+            const rawArtistData: RawMusicBrainzArtistData = JSON.parse(
+              streamAccumulatedContent.slice(startIndex, endIndex)
+            );
 
-          const rawArtistData: RawMusicBrainzArtistData = JSON.parse(
-            streamAccumulatedContent.slice(startIndex, endIndex)
-          );
+            streamAccumulatedContent = streamAccumulatedContent.slice(
+              endIndex + this.END_INDICATOR_OFFSET
+            );
 
-          streamAccumulatedContent = streamAccumulatedContent.slice(
-            endIndex + this.END_INDICATOR_OFFSET
-          );
+            const artistData = {
+              name: rawArtistData.name,
+              artistDataFromMusicBrainz: this.musicBrainzService.getArtistData(rawArtistData),
+            };
 
-          const artistData = {
-            name: rawArtistData.name,
-            artistDataFromMusicBrainz: this.musicBrainzService.getArtistData(rawArtistData),
-          };
+            const { country, secondaryLocation } =
+              this.musicBrainzService.getArtistLocation(artistData);
 
-          const { country, secondaryLocation } =
-            this.musicBrainzService.getArtistLocation(artistData);
-
-          if (country == undefined && secondaryLocation != undefined) {
-            this.countryService
-              .findCountryBySecondaryLocation(secondaryLocation)
-              .pipe(
-                switchMap((countryFromSecondaryLocation) => {
-                  if (countryFromSecondaryLocation.NE_ID == -1)
-                    return this.lastFmService.getLastFmArtistCountry(artistData.name);
-                  return of(countryFromSecondaryLocation);
-                })
-              )
-              .subscribe((country) => {
+            if (country == undefined && secondaryLocation != undefined) {
+              this.countryService
+                .findCountryBySecondaryLocation(secondaryLocation)
+                .pipe(
+                  switchMap((countryFromSecondaryLocation) => {
+                    if (countryFromSecondaryLocation.NE_ID == -1)
+                      return this.lastFmService.getLastFmArtistCountry(artistData.name);
+                    return of(countryFromSecondaryLocation);
+                  })
+                )
+                .subscribe((country) => {
+                  artists$.next({
+                    name: artistData.name,
+                    country: country,
+                    secondaryLocation,
+                  });
+                });
+            } else if (country == undefined && secondaryLocation == undefined) {
+              this.lastFmService.getLastFmArtistCountry(artistData.name).subscribe((country) => {
                 artists$.next({
                   name: artistData.name,
                   country: country,
                   secondaryLocation,
                 });
               });
-          } else if (country == undefined && secondaryLocation == undefined) {
-            this.lastFmService.getLastFmArtistCountry(artistData.name).subscribe((country) => {
+            } else {
               artists$.next({
                 name: artistData.name,
-                country: country,
+                country,
                 secondaryLocation,
               });
-            });
-          } else {
-            artists$.next({
-              name: artistData.name,
-              country,
-              secondaryLocation,
-            });
+            }
           }
-
           if (done) break;
         }
       })
@@ -213,13 +215,6 @@ export class ArtistService {
       });
 
     return artists$.asObservable();
-  }
-
-  private hasReceivedFullArtistData(streamAccumulatedContent: string): boolean {
-    return (
-      streamAccumulatedContent.includes("START_OF_JSON") &&
-      streamAccumulatedContent.includes("END_OF_JSON")
-    );
   }
 
   private transformSuggestionsInArtists(suggestions: Suggestion[]): Artist[] {
