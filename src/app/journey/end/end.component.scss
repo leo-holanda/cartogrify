@@ -1,12 +1,13 @@
 :host {
   display: flex;
   flex-flow: column;
-  padding: 2rem;
+  padding: 0 2rem;
   background-color: #22577a;
   color: #eec170;
 }
 
 .end-part-wrapper {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,10 +35,24 @@ h2 {
 p {
   text-align: center;
   margin: 0;
+  font-size: var(--fs-000);
 }
 
 .author-info {
-  margin-top: 4rem;
+  margin-top: 2rem;
+  font-size: var(--fs-000);
+}
+
+.end-title {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-direction: column;
+}
+
+.final-message {
+  position: absolute;
+  bottom: 2rem;
 }
 
 @media (min-width: 641px) and (max-width: 1280px) {
@@ -51,6 +66,14 @@ p {
 
   h2 {
     font-size: var(--fs-200);
+  }
+
+  p {
+    font-size: var(--fs--100);
+  }
+
+  .author-info {
+    font-size: var(--fs--100);
   }
 }
 
@@ -66,5 +89,13 @@ p {
   h2 {
     font-size: var(--fs-100);
     width: 100%;
+  }
+
+  p {
+    font-size: var(--fs--100);
+  }
+
+  .author-info {
+    font-size: var(--fs--100);
   }
 }
