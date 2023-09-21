@@ -195,16 +195,19 @@ export class CountryService {
           geoFeatureName,
         ];
 
-        tag = tag.toLowerCase();
+        const splittedTag = tag.toLowerCase().split(" ");
         currentCountryRelatedTerms.forEach((currentTerm) => {
           currentTerm = currentTerm.toLowerCase();
-          if (tag == currentTerm) {
-            const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
-            possibleCountries.set(geoFeatureName, {
-              count: currentCountryCount + 1,
-              geoFeature: currentGeoFeature,
-            });
-          }
+
+          splittedTag.forEach((word) => {
+            if (word == currentTerm) {
+              const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
+              possibleCountries.set(geoFeatureName, {
+                count: currentCountryCount + 1,
+                geoFeature: currentGeoFeature,
+              });
+            }
+          });
         });
       });
     });
