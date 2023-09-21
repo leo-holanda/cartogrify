@@ -211,6 +211,8 @@ export class CountryService {
   }
 
   findCountryInWikiText(bio: string, possibleCountries: Map<string, PossibleCountry>): void {
+    const splittedBio = bio.toLowerCase().split(" ");
+
     this.geoJSON.features.find((currentGeoFeature: GeoFeature) => {
       const featureFlag = this.findCountryFlagCode(currentGeoFeature);
       const geoFeatureName = currentGeoFeature.properties["NAME"].toLowerCase();
@@ -221,10 +223,8 @@ export class CountryService {
         geoFeatureName,
       ];
 
-      const splittedBio = bio.toLowerCase().split(" ");
       currentCountryRelatedTerms.forEach((currentTerm) => {
         currentTerm = currentTerm.toLowerCase();
-
         splittedBio.forEach((word) => {
           if (word == currentTerm) {
             const currentCountryCount = possibleCountries.get(geoFeatureName)?.count || 0;
