@@ -67,7 +67,7 @@ export class LoginComponent {
 
   onLastfmStartButtonClick(): void {
     this.hasClickedLastFmStartButton = true;
-    this.lastFmService.loadUserData(this.lastFmUsername).subscribe({
+    this.lastFmService.loadUserData(this.lastFmUsername.toLowerCase().trim()).subscribe({
       next: (topArtists) => {
         this.artistService.toggleArtistsRequestStatus();
         this.artistService.setSource(ArtistsSources.LASTFM);
