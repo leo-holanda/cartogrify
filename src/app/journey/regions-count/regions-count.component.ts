@@ -55,11 +55,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
       .nodeId((d: any) => d.name)
       .nodeWidth(4)
       .nodePadding(88)
-      .linkSort((a, b) => {
-        if (a.value > b.value) return -1;
-        if (a.value < b.value) return 1;
-        return 0;
-      })
+      .nodeSort(() => null)
       .size([containerWidth - 1, windowHeight - 5]);
 
     const { nodes, links } = sankeyChart({
@@ -126,6 +122,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
         category: "world",
       },
     ];
+
     this.userRegionsCount.forEach((region) => {
       nodes.push(...this.getRegionsNodes(region));
     });
@@ -155,6 +152,18 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
           });
         });
       });
+    });
+
+    countriesNodes.sort((a: any, b: any) => {
+      if (a.value > b.value) return -1;
+      if (a.value < b.value) return 1;
+      return 0;
+    });
+
+    subRegionsNodes.sort((a: any, b: any) => {
+      if (a.value > b.value) return -1;
+      if (a.value < b.value) return 1;
+      return 0;
     });
 
     return [regionNode, ...countriesNodes, ...subRegionsNodes];
