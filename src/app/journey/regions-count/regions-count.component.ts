@@ -41,26 +41,29 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
     const containerWidth = this.treeWrapper.nativeElement.offsetWidth;
     const windowHeight = window.innerHeight;
 
+    d3.select("#sankey").remove();
     const svg = d3
       .select(".tree-wrapper")
       .append("svg")
+      .attr("id", "sankey")
       .attr("width", containerWidth)
       .attr("height", windowHeight)
-      .attr("viewBox", [0, 0, containerWidth, windowHeight])
-      .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
+      .attr("viewBox", [0, 0, containerWidth, windowHeight]);
 
     const sankeyChart = d3Sankey
       .sankey()
       .nodeId((d: any) => d.name)
-      .nodeWidth(15)
-      .nodePadding(10)
+      .nodeWidth(4)
+      .nodePadding(88)
+      .linkSort((a, b) => {
+        if (a.value > b.value) return -1;
+        if (a.value < b.value) return 1;
+        return 0;
+      })
       .extent([
         [1, 5],
         [containerWidth - 1, windowHeight - 5],
       ]);
-
-    console.log(this.getUserRegionsAsNodes());
-    console.log(this.getNodesLinks());
 
     const { nodes, links } = sankeyChart({
       nodes: this.getUserRegionsAsNodes().map((d) => Object.assign({}, d)) as any,
@@ -109,6 +112,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
       .attr("x", (d: any) => (d.x0 < containerWidth / 2 ? d.x1 + 6 : d.x0 - 6))
       .attr("y", (d: any) => (d.y1 + d.y0) / 2)
       .attr("dy", "0.35em")
+      .attr("fill", "white")
       .attr("text-anchor", (d: any) => (d.x0 < containerWidth / 2 ? "start" : "end"))
       .text((d: any) => d.name);
   }
