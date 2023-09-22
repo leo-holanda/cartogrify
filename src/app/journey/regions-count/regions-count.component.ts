@@ -112,7 +112,12 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
       .attr("x", (d: any) => (d.x0 < containerWidth / 2 ? d.x1 + 6 : d.x0 - 6))
       .attr("y", (d: any) => (d.y1 + d.y0) / 2)
       .attr("dy", "0.35em")
-      .attr("fill", "white")
+      .attr("fill", "#686d59")
+      .style("font-weight", (d) => this.getTextFontWeight(d.depth))
+      .attr("font-size", (d) => {
+        return `${1 + (d.height || 0) * 0.3}rem`;
+      })
+
       .attr("text-anchor", (d: any) => (d.x0 < containerWidth / 2 ? "start" : "end"))
       .text((d: any) => d.name);
   }
@@ -197,10 +202,10 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
     return [...subRegionLinks, ...countryLinks];
   }
 
-  private getTextFontWeight(nodeDepth: number): string {
-    if (nodeDepth == 0) return "800";
-    if (nodeDepth == 1) return "700";
-    if (nodeDepth == 2) return "600";
-    return "500";
+  private getTextFontWeight(nodeDepth: number | undefined): string {
+    if (nodeDepth == 0) return "900";
+    if (nodeDepth == 1) return "800";
+    if (nodeDepth == 2) return "700";
+    return "600";
   }
 }
