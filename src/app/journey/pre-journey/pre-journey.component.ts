@@ -35,7 +35,7 @@ export class PreJourneyComponent implements OnInit {
       .subscribe((quantity) => {
         if (quantity == 0) {
           this.userService.saveUserDiversityIndex();
-          this.router.navigate(["/journey"]);
+          this.router.navigate(["/journey"], { replaceUrl: true });
         } else {
           this.hasArtistsWithoutCountry = true;
           this.artistsWithoutCountryQuantity = quantity;
