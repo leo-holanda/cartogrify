@@ -130,7 +130,7 @@
           <button
             pButton
             pRipple
-            [disabled]="lastFmUsername.length == 0"
+            [disabled]="lastFmUsername.length == 0 || hasClickedLastFmStartButton"
             (click)="onLastfmStartButtonClick()"
             class="username-input-button p-button-lg"
           >
