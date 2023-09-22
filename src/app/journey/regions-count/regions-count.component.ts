@@ -23,6 +23,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.regionService.getUserRegions().subscribe((userRegionsCount) => {
       this.userRegionsCount = userRegionsCount;
+      this.userRegionsCount = this.userRegionsCount.filter((region) => region.name != "Unknown");
     });
   }
 
@@ -56,7 +57,10 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
       .nodeWidth(4)
       .nodePadding(88)
       .nodeSort(() => null)
-      .size([containerWidth - 1, windowHeight - 5]);
+      .extent([
+        [1, 5],
+        [containerWidth - 1, windowHeight - 5],
+      ]);
 
     const { nodes, links } = sankeyChart({
       nodes: this.getUserRegionsAsNodes().map((d) => Object.assign({}, d)) as any,
