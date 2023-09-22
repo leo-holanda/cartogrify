@@ -10,3 +10,14 @@ export interface TreeLeaf {
   country: Country;
   count: number;
 }
+
+export interface SankeyNode {
+  name: string;
+  category: string;
+}
+
+export interface SankeyLink {
+  source: string;
+  target: string;
+  value: number;
+}
