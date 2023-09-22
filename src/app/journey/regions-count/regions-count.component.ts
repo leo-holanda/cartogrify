@@ -60,10 +60,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
         if (a.value < b.value) return 1;
         return 0;
       })
-      .extent([
-        [1, 5],
-        [containerWidth - 1, windowHeight - 5],
-      ]);
+      .size([containerWidth - 1, windowHeight - 5]);
 
     const { nodes, links } = sankeyChart({
       nodes: this.getUserRegionsAsNodes().map((d) => Object.assign({}, d)) as any,
