@@ -1,9 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { filter, take } from "rxjs";
+import { filter } from "rxjs";
 import { ScrapedArtistData } from "src/app/artists/artist.model";
 import { ArtistService } from "src/app/artists/artist.service";
-import { CountryService } from "src/app/country/country.service";
 import { UserService } from "src/app/user/user.service";
 
 @Component({
@@ -24,7 +23,6 @@ export class PreJourneyComponent implements OnInit {
   constructor(
     private artistService: ArtistService,
     private router: Router,
-    private countryService: CountryService,
     private userService: UserService
   ) {}
 
@@ -64,7 +62,7 @@ export class PreJourneyComponent implements OnInit {
 
             setTimeout(() => {
               this.router.navigate(["/journey"]);
-            }, 1000);
+            }, 500);
           }, 1000);
         }
       });
