@@ -107,7 +107,10 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
       .selectAll()
       .data(nodes)
       .join("text")
-      .attr("x", (d: any) => (d.x0 < containerWidth / 2 ? d.x1 + 6 : d.x0 - 6))
+      .attr("x", (d: any) => {
+        if (d.depth == 0) return d.x1 + 6;
+        return d.x0 - 6;
+      })
       .attr("y", (d: any) => (d.y1 + d.y0) / 2)
       .attr("dy", "0.35em")
       .attr("fill", "#686d59")
@@ -117,7 +120,10 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
         return `${1 + (d.height || 0) * 0.3}rem`;
       })
 
-      .attr("text-anchor", (d: any) => (d.x0 < containerWidth / 2 ? "start" : "end"))
+      .attr("text-anchor", (d: any) => {
+        if (d.depth == 0) return "start";
+        return "end";
+      })
       .text((d: any) => d.name);
   }
 
