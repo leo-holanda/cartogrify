@@ -29,6 +29,13 @@
   justify-content: center;
 }
 
+p {
+  font-size: var(--fs--100);
+  color: #836547;
+  text-align: center;
+  margin-top: 32px;
+}
+
 @media (min-width: 641px) and (max-width: 1280px) {
   :host {
     gap: 2rem;
