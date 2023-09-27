@@ -102,6 +102,16 @@
   }
 }
 
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+
+  th {
+    background-color: white;
+  }
+}
+
 @media (min-width: 641px) and (max-width: 1280px) {
   :host {
     padding: 1.5rem;
