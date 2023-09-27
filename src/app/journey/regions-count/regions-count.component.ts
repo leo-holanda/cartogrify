@@ -54,8 +54,9 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
     const sankeyChart = d3Sankey
       .sankey()
       .nodeId((d: any) => d.name)
+      .nodeAlign(d3Sankey.sankeyRight)
       .nodeWidth(4)
-      .nodePadding(88)
+      .nodePadding(56)
       .nodeSort(() => null)
       .extent([
         [1, 5],
