@@ -146,4 +146,43 @@ export class StatisticsService {
 
     return this.regionsDiversityIndexes$.asObservable();
   }
+
+  getComparedRegionsDiversity(currentUserRegionsCount: number): Observable<ComparedDiversityData> {
+    return this.getRegionsDiversity().pipe(
+      filter(
+        (diversityIndexes): diversityIndexes is RegionsDiversityIndex[] =>
+          diversityIndexes != undefined
+      ),
+      map((diversityIndexes) => {
+        const usersRegionDiversity = [];
+        usersRegionDiversity.push(currentUserRegionsCount);
+
+        diversityIndexes.forEach((index) => {
+          const indexArray = Array(index.occurrenceQuantity).fill(index.regionsCount);
+          usersRegionDiversity.push(...indexArray);
+        });
+
+        usersRegionDiversity.sort((a, b) => a - b);
+
+        const currentUserIndex = usersRegionDiversity.findIndex(
+          (index) => index === currentUserRegionsCount
+        );
+
+        usersRegionDiversity.splice(currentUserIndex, 1);
+
+        let comparedDiversity;
+        if (currentUserIndex != -1) {
+          comparedDiversity =
+            ((currentUserIndex / usersRegionDiversity.length) * 100).toFixed(0) + "%";
+        } else {
+          comparedDiversity = "0%";
+        }
+
+        return {
+          comparedDiversity,
+          totalUsers: usersRegionDiversity.length,
+        };
+      })
+    );
+  }
 }

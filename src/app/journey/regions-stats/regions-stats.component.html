@@ -1,1 +1,5 @@
-<p>regions-stats works!</p>
+<h3>That's more than</h3>
+<h2>
+  {{ (comparedRegionDiversity | async)?.comparedDiversity }}
+</h2>
+<h3>of {{ (comparedRegionDiversity | async)?.totalUsers }} cartogrify users around the world!</h3>
