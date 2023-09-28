@@ -19,6 +19,8 @@ import { CountriesRanksComponent } from "./countries-ranks/countries-ranks.compo
 import { CountriesCountModule } from "./countries-count/countries-count.module";
 import { ArtistsPartModule } from "./artists-part/artists-part.module";
 import { WorldMapModule } from "../world-map/world-map.module";
+import { RegionsStatsComponent } from "./regions-stats/regions-stats.component";
+import { RegionsStatsModule } from "./regions-stats/regions-stats.module";
 
 @NgModule({
   declarations: [],
@@ -35,6 +37,7 @@ import { WorldMapModule } from "../world-map/world-map.module";
     IntroModule,
     EndModule,
     CountriesRanksModule,
+    RegionsStatsModule,
   ],
   exports: [
     CountriesCountComponent,
@@ -45,6 +48,7 @@ import { WorldMapModule } from "../world-map/world-map.module";
     IntroComponent,
     EndComponent,
     CountriesRanksComponent,
+    RegionsStatsComponent,
   ],
 })
 export class JourneyModule {}
