@@ -8,7 +8,8 @@ import { ComparedDiversityData } from "./statistics.model";
   providedIn: "root",
 })
 export class StatisticsService {
-  hasRequested = false;
+  hasRequestedDiversityIndex = false;
+  hasRequestedRegionDiversityIndex = false;
   private diversityIndexes$ = new BehaviorSubject<DiversityIndex[] | undefined>(undefined);
   private regionsDiversityIndexes$ = new BehaviorSubject<RegionsDiversityIndex[] | undefined>(
     undefined
@@ -17,8 +18,8 @@ export class StatisticsService {
   constructor(private supabaseService: SupabaseService) {}
 
   getDiversityIndexes(): Observable<DiversityIndex[] | undefined> {
-    if (!this.hasRequested) {
-      this.hasRequested = true;
+    if (!this.hasRequestedDiversityIndex) {
+      this.hasRequestedDiversityIndex = true;
       this.supabaseService.getDiversityIndexes().subscribe((diversityIndexes) => {
         this.diversityIndexes$.next(diversityIndexes);
       });
@@ -119,8 +120,8 @@ export class StatisticsService {
   }
 
   getRegionsDiversity(): Observable<RegionsDiversityIndex[] | undefined> {
-    if (!this.hasRequested) {
-      this.hasRequested = true;
+    if (!this.hasRequestedRegionDiversityIndex) {
+      this.hasRequestedRegionDiversityIndex = true;
       this.supabaseService
         .getRegionsDiversityIndexes()
         .pipe(
