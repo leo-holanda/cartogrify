@@ -13,7 +13,9 @@ import { RegionService } from "src/app/region/region.service";
   styleUrls: ["./regions-count.component.scss"],
 })
 export class RegionsCountComponent implements OnInit, AfterViewInit {
-  userRegionsCount: RegionCount[] = [];
+  userRegions: RegionCount[] = [];
+  userRegionsCount = 0;
+  userSubRegionsCount = 0;
   isMobile = window.innerWidth < 1280;
 
   @ViewChild("treeWrapper") treeWrapper!: ElementRef<HTMLElement>;
@@ -21,9 +23,14 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
   constructor(private regionService: RegionService) {}
 
   ngOnInit(): void {
-    this.regionService.getUserRegions().subscribe((userRegionsCount) => {
-      this.userRegionsCount = userRegionsCount;
-      this.userRegionsCount = this.userRegionsCount.filter((region) => region.name != "Unknown");
+    this.regionService.getUserRegions().subscribe((userRegions) => {
+      this.userRegions = userRegions;
+      this.userRegions = this.userRegions.filter((region) => region.name != "Unknown");
+    });
+
+    this.regionService.getRegionsDiversity().subscribe((regionsDiversity) => {
+      this.userRegionsCount = regionsDiversity.regions;
+      this.userSubRegionsCount = regionsDiversity.subRegions;
     });
   }
 
@@ -135,7 +142,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
       },
     ];
 
-    this.userRegionsCount.forEach((region) => {
+    this.userRegions.forEach((region) => {
       nodes.push(...this.getRegionsNodes(region));
     });
 
@@ -183,7 +190,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
 
   private getNodesLinks(): SankeyLink[] {
     const links: SankeyLink[] = [];
-    this.userRegionsCount.forEach((region) => {
+    this.userRegions.forEach((region) => {
       links.push({
         source: "World",
         target: region.name,

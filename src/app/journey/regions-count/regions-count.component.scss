@@ -2,9 +2,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 2rem;
+  padding: 6rem 2rem;
   width: 100%;
-  gap: 2rem;
+  gap: 3rem;
   background-color: #faedcd;
 }
 
@@ -12,14 +12,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
-.title {
+h2 {
   font-size: var(--fs-600);
   text-align: center;
   font-weight: bold;
   margin: 0;
-  padding: 5rem 0 2rem 0;
+  color: #836547;
+}
+
+h3 {
   color: #836547;
 }
 
@@ -38,8 +42,7 @@ p {
 
 @media (min-width: 641px) and (max-width: 1280px) {
   :host {
-    gap: 2rem;
-    padding: 1.5rem;
+    padding: 6rem 1.5rem;
   }
 
   .title {
@@ -49,8 +52,7 @@ p {
 
 @media (max-width: 640px) {
   :host {
-    gap: 1rem;
-    padding: 1rem;
+    padding: 6rem 1rem;
   }
 
   .title {
