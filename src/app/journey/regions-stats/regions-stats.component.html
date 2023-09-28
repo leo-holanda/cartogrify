@@ -1,9 +1,19 @@
 <ng-template [ngIf]="userArtistsSource == artistsSource.LASTFM" [ngIfElse]="spotifySourceTemplate">
-  <h3>That's more than</h3>
-  <h2>
-    {{ (comparedRegionDiversity | async)?.comparedDiversity }}
-  </h2>
-  <h3>of {{ (comparedRegionDiversity | async)?.totalUsers }} cartogrify users around the world!</h3>
+  <div class="title-wrapper">
+    <h2 class="pre-title">That's more than</h2>
+
+    <h1 class="title">
+      <span class="rating-item">
+        {{ (comparedRegionDiversity | async)?.comparedDiversity || "..." }}
+      </span>
+    </h1>
+
+    <h3 class="post-title">
+      of
+      <span class="count-value">{{ (comparedRegionDiversity | async)?.totalUsers }}</span>
+      cartogrify users around the world!
+    </h3>
+  </div>
 
   <div class="world-chart-wrapper" #worldChart></div>
 
