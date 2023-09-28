@@ -43,6 +43,13 @@ export class CountryService {
     return this.countriesCount$.asObservable();
   }
 
+  getCountriesDiversity(): Observable<number> {
+    return this.countriesCount$.pipe(
+      take(1),
+      map((countriesCount) => countriesCount.length)
+    );
+  }
+
   updateCountriesCount(artists: Artist[]): void {
     const countriesCount = new Map<string, CountryCount>();
 
