@@ -132,8 +132,8 @@ export class StatisticsService {
       this.supabaseService
         .getRegionsDiversityIndexes()
         .pipe(
-          map((regionsDiversityIndex) => {
-            return regionsDiversityIndex.filter(
+          map((regionsDiversityIndexes) => {
+            return regionsDiversityIndexes.filter(
               (diversityIndex) =>
                 diversityIndex.regionsCount != null && diversityIndex.countryCode != null
             );
