@@ -154,3 +154,15 @@ export interface Link {
   rel: string;
   href: string;
 }
+
+export interface RegionsDiversityIndexResponse {
+  country_code: number | undefined;
+  regions_count: number;
+  occurrence_quantity: number;
+}
+
+export interface RegionsDiversityIndex {
+  countryCode: number | undefined;
+  regionsCount: number;
+  occurrenceQuantity: number;
+}

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { SupabaseService } from "../shared/supabase.service";
 import { BehaviorSubject, Observable, filter, map } from "rxjs";
-import { DiversityIndex } from "../shared/supabase.model";
+import { DiversityIndex, RegionsDiversityIndex } from "../shared/supabase.model";
 import { ComparedDiversityData } from "./statistics.model";
 
 @Injectable({
@@ -10,6 +10,9 @@ import { ComparedDiversityData } from "./statistics.model";
 export class StatisticsService {
   hasRequested = false;
   private diversityIndexes$ = new BehaviorSubject<DiversityIndex[] | undefined>(undefined);
+  private regionsDiversityIndexes$ = new BehaviorSubject<RegionsDiversityIndex[] | undefined>(
+    undefined
+  );
 
   constructor(private supabaseService: SupabaseService) {}
 
@@ -113,5 +116,26 @@ export class StatisticsService {
         };
       })
     );
+  }
+
+  getRegionsDiversity(): Observable<RegionsDiversityIndex[] | undefined> {
+    if (!this.hasRequested) {
+      this.hasRequested = true;
+      this.supabaseService
+        .getRegionsDiversityIndexes()
+        .pipe(
+          map((regionsDiversityIndex) => {
+            return regionsDiversityIndex.filter(
+              (diversityIndex) =>
+                diversityIndex.regionsCount != null && diversityIndex.countryCode != null
+            );
+          })
+        )
+        .subscribe((regionsDiversityIndex) => {
+          this.regionsDiversityIndexes$.next(regionsDiversityIndex);
+        });
+    }
+
+    return this.regionsDiversityIndexes$.asObservable();
   }
 }
