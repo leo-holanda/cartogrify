@@ -1,47 +1,53 @@
 import { Injectable } from "@angular/core";
 import { SupabaseService } from "../shared/supabase.service";
 import { BehaviorSubject, Observable, filter, map } from "rxjs";
-import { DiversityIndex, RegionsDiversityIndex } from "../shared/supabase.model";
+import { CountryDiversityIndex, RegionsDiversityIndex } from "../shared/supabase.model";
 import { ComparedDiversityData } from "./statistics.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class StatisticsService {
-  hasRequestedDiversityIndex = false;
-  hasRequestedRegionDiversityIndex = false;
-  private diversityIndexes$ = new BehaviorSubject<DiversityIndex[] | undefined>(undefined);
+  hasRequestedCountriesDiversity = false;
+  hasRequestedRegionsDiversity = false;
+
+  private countriesDiversityIndexes$ = new BehaviorSubject<CountryDiversityIndex[] | undefined>(
+    undefined
+  );
   private regionsDiversityIndexes$ = new BehaviorSubject<RegionsDiversityIndex[] | undefined>(
     undefined
   );
 
   constructor(private supabaseService: SupabaseService) {}
 
-  getDiversityIndexes(): Observable<DiversityIndex[] | undefined> {
-    if (!this.hasRequestedDiversityIndex) {
-      this.hasRequestedDiversityIndex = true;
+  getCountriesDiversityIndexes(): Observable<CountryDiversityIndex[] | undefined> {
+    if (!this.hasRequestedCountriesDiversity) {
+      this.hasRequestedCountriesDiversity = true;
       this.supabaseService.getDiversityIndexes().subscribe((diversityIndexes) => {
-        this.diversityIndexes$.next(diversityIndexes);
+        this.countriesDiversityIndexes$.next(diversityIndexes);
       });
     }
 
-    return this.diversityIndexes$.asObservable();
+    return this.countriesDiversityIndexes$.asObservable();
   }
 
-  getDiversityIndexesInUserCountry(
+  getCountriesDiversityIndexesInUserCountry(
     userCountryCode: number
-  ): Observable<DiversityIndex[] | undefined> {
-    return this.diversityIndexes$.pipe(
+  ): Observable<CountryDiversityIndex[] | undefined> {
+    return this.countriesDiversityIndexes$.pipe(
       map((diversityIndexes) => {
         return diversityIndexes?.filter((index) => index.countryCode == userCountryCode);
       })
     );
   }
 
-  getComparedDiversity(currentUserCountriesCount: number): Observable<ComparedDiversityData> {
-    return this.getDiversityIndexes().pipe(
+  getCountriesComparedDiversity(
+    currentUserCountriesCount: number
+  ): Observable<ComparedDiversityData> {
+    return this.getCountriesDiversityIndexes().pipe(
       filter(
-        (diversityIndexes): diversityIndexes is DiversityIndex[] => diversityIndexes != undefined
+        (diversityIndexes): diversityIndexes is CountryDiversityIndex[] =>
+          diversityIndexes != undefined
       ),
       map((diversityIndexes) => {
         const allUsersDiversity = [];
@@ -76,13 +82,14 @@ export class StatisticsService {
     );
   }
 
-  getComparedDiversityInUserCountry(
+  getCountriesComparedDiversityInUserCountry(
     userCountriesCount: number,
     userCountryCode: number
   ): Observable<ComparedDiversityData> {
-    return this.getDiversityIndexes().pipe(
+    return this.getCountriesDiversityIndexes().pipe(
       filter(
-        (diversityIndexes): diversityIndexes is DiversityIndex[] => diversityIndexes != undefined
+        (diversityIndexes): diversityIndexes is CountryDiversityIndex[] =>
+          diversityIndexes != undefined
       ),
       map((diversityIndexes) => {
         const allUsersDiversity = [];
@@ -120,8 +127,8 @@ export class StatisticsService {
   }
 
   getRegionsDiversity(): Observable<RegionsDiversityIndex[] | undefined> {
-    if (!this.hasRequestedRegionDiversityIndex) {
-      this.hasRequestedRegionDiversityIndex = true;
+    if (!this.hasRequestedRegionsDiversity) {
+      this.hasRequestedRegionsDiversity = true;
       this.supabaseService
         .getRegionsDiversityIndexes()
         .pipe(

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { filter } from "rxjs";
 import { CountryService } from "src/app/country/country.service";
-import { DiversityIndex } from "src/app/shared/supabase.model";
+import { CountryDiversityIndex } from "src/app/shared/supabase.model";
 import { StatisticsService } from "src/app/statistics/statistics.service";
 import { CountryDiversityData } from "./countries-diversity-rank.types";
 
@@ -24,10 +24,11 @@ export class CountriesDiversityRankComponent implements OnInit {
 
   getCountriesDiversityRank(): void {
     this.statisticsService
-      .getDiversityIndexes()
+      .getCountriesDiversityIndexes()
       .pipe(
         filter(
-          (diversityIndexes): diversityIndexes is DiversityIndex[] => diversityIndexes != undefined
+          (diversityIndexes): diversityIndexes is CountryDiversityIndex[] =>
+            diversityIndexes != undefined
         )
       )
       .subscribe((diversityIndexes) => {

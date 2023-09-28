@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angula
 import { CountryService } from "src/app/country/country.service";
 import { ComparedDiversityData } from "src/app/statistics/statistics.model";
 import { StatisticsService } from "src/app/statistics/statistics.service";
-import { DiversityIndex } from "src/app/shared/supabase.model";
+import { CountryDiversityIndex } from "src/app/shared/supabase.model";
 import { UserService } from "src/app/user/user.service";
 import { Country } from "src/app/country/country.model";
 import { ArtistsSources } from "src/app/artists/artist.model";
@@ -22,10 +22,10 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
 
   ArtistsSources = ArtistsSources;
 
-  diversityIndexes: DiversityIndex[] | undefined;
+  diversityIndexes: CountryDiversityIndex[] | undefined;
   comparedDiversityData: ComparedDiversityData | undefined;
 
-  diversityIndexesInUserCountry: DiversityIndex[] | undefined;
+  diversityIndexesInUserCountry: CountryDiversityIndex[] | undefined;
   comparedDiversityDataInUserCountry: ComparedDiversityData | undefined;
 
   @ViewChild("worldChart") worldChartWrapper!: ElementRef<HTMLElement>;
@@ -47,7 +47,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.countryService.getCountriesCount().subscribe((userCountriesCount) => {
       this.userCountriesCount = userCountriesCount.length;
-      this.statisticsSevice.getDiversityIndexes().subscribe((diversityIndexes) => {
+      this.statisticsSevice.getCountriesDiversityIndexes().subscribe((diversityIndexes) => {
         this.diversityIndexes = diversityIndexes;
         this.generateChart(false);
 
@@ -59,20 +59,23 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
       });
 
       this.statisticsSevice
-        .getComparedDiversity(userCountriesCount.length)
+        .getCountriesComparedDiversity(userCountriesCount.length)
         .subscribe((comparedDiversityData) => {
           this.comparedDiversityData = comparedDiversityData;
         });
 
       if (this.userCountry?.NE_ID != -1) {
         this.statisticsSevice
-          .getComparedDiversityInUserCountry(userCountriesCount.length, this.userCountry.NE_ID)
+          .getCountriesComparedDiversityInUserCountry(
+            userCountriesCount.length,
+            this.userCountry.NE_ID
+          )
           .subscribe((comparedDiversityDataInUserCountry) => {
             this.comparedDiversityDataInUserCountry = comparedDiversityDataInUserCountry;
           });
 
         this.statisticsSevice
-          .getDiversityIndexesInUserCountry(this.userCountry.NE_ID)
+          .getCountriesDiversityIndexesInUserCountry(this.userCountry.NE_ID)
           .subscribe((diversityIndexesInUserCountry) => {
             this.diversityIndexesInUserCountry = diversityIndexesInUserCountry;
             this.generateChart(true);
@@ -88,7 +91,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
   }
 
   generateChart(isInUserCountry: boolean): void {
-    let diversityIndexes: DiversityIndex[] | undefined;
+    let diversityIndexes: CountryDiversityIndex[] | undefined;
     if (isInUserCountry) diversityIndexes = this.diversityIndexesInUserCountry;
     else diversityIndexes = this.diversityIndexes;
     if (diversityIndexes == undefined) return;
@@ -117,7 +120,7 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
     const labelMarginLeft = 16;
     const labelMarginBottom = this.isMobile() ? 30 : 40;
 
-    const distinctDiversityIndexes = new Map<number, DiversityIndex>();
+    const distinctDiversityIndexes = new Map<number, CountryDiversityIndex>();
     diversityIndexes.forEach((index) => {
       const currentDiversityIndex = distinctDiversityIndexes.get(index.countriesCount);
       if (currentDiversityIndex == undefined) {
