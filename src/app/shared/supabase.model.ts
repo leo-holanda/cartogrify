@@ -73,13 +73,13 @@ export interface LastFmUser {
   type: string;
 }
 
-export interface DiversityIndexResponse {
+export interface CountryDiversityIndexResponse {
   country_code: number | undefined;
   countries_count: number;
   occurrence_quantity: number;
 }
 
-export interface DiversityIndex {
+export interface CountryDiversityIndex {
   countryCode: number | undefined;
   countriesCount: number;
   occurrenceQuantity: number;
