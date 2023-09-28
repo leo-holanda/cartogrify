@@ -13,6 +13,7 @@ import {
   LastFmUserResponse,
 } from "./supabase.model";
 import { User } from "../user/user.model";
+import { RegionsDiversity } from "../region/region.types";
 
 @Injectable({
   providedIn: "root",
@@ -73,7 +74,7 @@ export class SupabaseService {
     ).subscribe();
   }
 
-  saveDiversityIndex(user: User, countriesCount: number): void {
+  saveDiversityIndex(user: User, regionsDiversity: RegionsDiversity, countriesCount: number): void {
     if (countriesCount == 0) return;
 
     if (user) {
@@ -81,6 +82,8 @@ export class SupabaseService {
         user_id: user.id.toLowerCase(),
         user_countries_count: countriesCount,
         user_country_code: user.countryCode,
+        user_regions_count: regionsDiversity.regions,
+        user_subregions_count: regionsDiversity.subRegions,
       };
 
       scheduled(

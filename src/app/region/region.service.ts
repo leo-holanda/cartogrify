@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, map, take } from "rxjs";
 import { Artist } from "../artists/artist.model";
 import {
   RegionCount,
@@ -9,6 +9,7 @@ import {
   Country,
 } from "../country/country.model";
 import { CountryService } from "../country/country.service";
+import { RegionsDiversity } from "./region.types";
 
 @Injectable({
   providedIn: "root",
@@ -99,6 +100,30 @@ export class RegionService {
       .map((region) => region[1]);
 
     this.userRegions$.next(sortedRegionsCount);
+  }
+
+  getRegionsDiversity(): Observable<RegionsDiversity> {
+    return this.userRegions$.pipe(
+      take(1),
+      map((regions) => {
+        return {
+          regions: regions.length,
+          subRegions: this.getSubRegionsDiversity(regions),
+        };
+      })
+    );
+  }
+
+  private getSubRegionsDiversity(regions: RegionCount[]): number {
+    let diversity = 0;
+
+    regions.forEach((region) => {
+      region.intermediateRegions.forEach((intermediateRegion) => {
+        diversity += intermediateRegion.subRegions.length;
+      });
+    });
+
+    return diversity;
   }
 
   private createRegion(artist: Artist): RegionCount {
