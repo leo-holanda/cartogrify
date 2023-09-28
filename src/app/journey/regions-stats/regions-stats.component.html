@@ -3,3 +3,16 @@
   {{ (comparedRegionDiversity | async)?.comparedDiversity }}
 </h2>
 <h3>of {{ (comparedRegionDiversity | async)?.totalUsers }} cartogrify users around the world!</h3>
+
+<h3>And more than</h3>
+<h2>
+  {{ (comparedRegionDiversityInUserCountry | async)?.comparedDiversity }}
+</h2>
+<h3 class="post-title">
+  of
+  <span class="count-value">
+    {{ (comparedRegionDiversityInUserCountry | async)?.totalUsers }}
+  </span>
+  cartogrify users in
+  <span class="{{ 'flag fi fi-' + userCountry.flagCode }}"></span> {{ userCountry.name }}!
+</h3>
