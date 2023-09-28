@@ -36,7 +36,7 @@ export class LastFmService {
       take(1),
       map((response) => {
         if (response.error && response.message) throw new Error(response.message);
-        if (response.topartists) return response.topartists.artist.map((artist) => artist.name);
+        if (response && Array.isArray(response)) return response.map((artist) => artist.name);
         throw new Error("The LastFM API is in a bad mood. Please, try again later.");
       }),
       map((topArtistsNames) => transformNamesInArtists(topArtistsNames))
