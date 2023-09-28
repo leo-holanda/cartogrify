@@ -11,6 +11,8 @@ import {
   LastFmArtistResponse,
   LastFmTopArtists,
   LastFmUserResponse,
+  RegionsDiversityIndex,
+  RegionsDiversityIndexResponse,
 } from "./supabase.model";
 import { User } from "../user/user.model";
 import { RegionsDiversity } from "../region/region.types";
@@ -163,6 +165,25 @@ export class SupabaseService {
         if (!response.data) throw new Error(response.error);
         return response.data;
       })
+    );
+  }
+
+  getRegionsDiversityIndexes(): Observable<RegionsDiversityIndex[]> {
+    return scheduled(
+      this.supabaseClient.from("regions_diversity").select("*"),
+      asyncScheduler
+    ).pipe(
+      take(1),
+      map((response) => response.data || []),
+      map((data: RegionsDiversityIndexResponse[]) =>
+        data.map((data) => {
+          return {
+            countryCode: data.country_code,
+            regionsCount: data.regions_count,
+            occurrenceQuantity: data.occurrence_quantity,
+          } as RegionsDiversityIndex;
+        })
+      )
     );
   }
 }
