@@ -5,6 +5,8 @@
   </h2>
   <h3>of {{ (comparedRegionDiversity | async)?.totalUsers }} cartogrify users around the world!</h3>
 
+  <div class="world-chart-wrapper" #worldChart></div>
+
   <div *ngIf="userCountry.NE_ID != -1; else userWithoutCountryTemplate" class="title-wrapper">
     <h2 class="pre-title">And more than</h2>
 
@@ -23,6 +25,8 @@
       <span class="{{ 'flag fi fi-' + userCountry.flagCode }}"></span> {{ userCountry.name }}!
     </h3>
   </div>
+
+  <div *ngIf="userCountry.NE_ID != -1" class="country-chart-wrapper" #countryChart></div>
 
   <ng-template #userWithoutCountryTemplate>
     <div class="empty-country-title-wrapper">
