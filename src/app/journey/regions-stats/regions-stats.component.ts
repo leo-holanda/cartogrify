@@ -20,6 +20,7 @@ export class RegionsStatsComponent implements OnInit {
 
   userCountry!: Country;
   userArtistsSource!: ArtistsSources;
+  artistsSource = ArtistsSources;
 
   constructor(
     private statisticsService: StatisticsService,
