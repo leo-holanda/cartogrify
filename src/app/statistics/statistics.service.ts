@@ -147,8 +147,30 @@ export class StatisticsService {
     return this.regionsDiversityIndexes$.asObservable();
   }
 
-  getComparedRegionsDiversity(currentUserRegionsCount: number): Observable<ComparedDiversityData> {
+  getRegionsDiversityInUserCountry(userCountryCode: number): Observable<RegionsDiversityIndex[]> {
     return this.getRegionsDiversity().pipe(
+      filter(
+        (diversityIndexes): diversityIndexes is RegionsDiversityIndex[] =>
+          diversityIndexes != undefined
+      ),
+      map((diversityIndexes) => {
+        return diversityIndexes.filter(
+          (diversityIndex) => diversityIndex.countryCode == userCountryCode
+        );
+      })
+    );
+  }
+
+  getComparedRegionsDiversity(
+    currentUserRegionsCount: number,
+    userCountryCode: number | undefined = undefined
+  ): Observable<ComparedDiversityData> {
+    let regionsDiversitySource;
+    if (userCountryCode)
+      regionsDiversitySource = this.getRegionsDiversityInUserCountry(userCountryCode);
+    else regionsDiversitySource = this.getRegionsDiversity();
+
+    return regionsDiversitySource.pipe(
       filter(
         (diversityIndexes): diversityIndexes is RegionsDiversityIndex[] =>
           diversityIndexes != undefined
