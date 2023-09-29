@@ -42,6 +42,49 @@
     #regionsCountryChart
   ></div>
 
+  <div class="title-wrapper">
+    <h2 class="pre-title">That's more than</h2>
+
+    <h1 class="title">
+      <span class="rating-item">
+        {{ (comparedSubRegionDiversity | async)?.comparedDiversity || "..." }}
+      </span>
+    </h1>
+
+    <h3 class="post-title">
+      of
+      <span class="count-value">{{ (comparedSubRegionDiversity | async)?.totalUsers }}</span>
+      cartogrify users around the world!
+    </h3>
+  </div>
+
+  <div class="subregions-world-chart-wrapper" #subRegionsWorldChart></div>
+
+  <div *ngIf="userCountry.NE_ID != -1; else userWithoutCountryTemplate" class="title-wrapper">
+    <h2 class="pre-title">And more than</h2>
+
+    <h1 class="title">
+      <span class="rating-item">
+        {{ (comparedSubRegionDiversityInUserCountry | async)?.comparedDiversity || "..." }}
+      </span>
+    </h1>
+
+    <h3 class="post-title">
+      of
+      <span class="count-value">
+        {{ (comparedSubRegionDiversityInUserCountry | async)?.totalUsers }}
+      </span>
+      cartogrify users in
+      <span class="{{ 'flag fi fi-' + userCountry.flagCode }}"></span> {{ userCountry.name }}!
+    </h3>
+  </div>
+
+  <div
+    *ngIf="userCountry.NE_ID != -1"
+    class="subregions-country-chart-wrapper"
+    #subRegionsCountryChart
+  ></div>
+
   <ng-template #userWithoutCountryTemplate>
     <div class="empty-country-title-wrapper">
       <h2 class="empty-country-message">
