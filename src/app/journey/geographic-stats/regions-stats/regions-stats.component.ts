@@ -5,7 +5,7 @@ import { ArtistService } from "src/app/artists/artist.service";
 import { Country } from "src/app/country/country.model";
 import { CountryService } from "src/app/country/country.service";
 import { RegionService } from "src/app/region/region.service";
-import { RegionsDiversityIndex, SubRegionsDiversityIndex } from "src/app/shared/supabase.model";
+import { RegionsDiversityIndex } from "src/app/shared/supabase.model";
 import { ComparedDiversityData } from "src/app/statistics/statistics.model";
 import { StatisticsService } from "src/app/statistics/statistics.service";
 import { UserService } from "src/app/user/user.service";
@@ -20,21 +20,14 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
   comparedRegionDiversity!: Observable<ComparedDiversityData>;
   comparedRegionDiversityInUserCountry!: Observable<ComparedDiversityData>;
 
-  comparedSubRegionDiversity!: Observable<ComparedDiversityData>;
-  comparedSubRegionDiversityInUserCountry!: Observable<ComparedDiversityData>;
-
   regionsDiversityIndexes!: RegionsDiversityIndex[] | undefined;
   regionsDiversityIndexesInUserCountry!: RegionsDiversityIndex[] | undefined;
-
-  subRegionsDiversityIndexes!: SubRegionsDiversityIndex[] | undefined;
-  subRegionsDiversityIndexesInUserCountry!: SubRegionsDiversityIndex[] | undefined;
 
   userCountry!: Country;
   userArtistsSource!: ArtistsSources;
   artistsSource = ArtistsSources;
 
   userRegionsCount!: number;
-  userSubRegionsCount!: number;
 
   @ViewChild("regionsWorldChart") worldChartWrapper!: ElementRef<HTMLElement>;
   @ViewChild("regionsCountryChart") countryChartWrapper!: ElementRef<HTMLElement>;
@@ -54,7 +47,6 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
 
     this.regionService.getRegionsDiversity().subscribe((diversityData) => {
       this.userRegionsCount = diversityData.regions;
-      this.userSubRegionsCount = diversityData.subRegions;
     });
 
     this.comparedRegionDiversity = this.regionService.getRegionsDiversity().pipe(
@@ -64,29 +56,12 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
       })
     );
 
-    this.comparedSubRegionDiversity = this.regionService.getRegionsDiversity().pipe(
-      take(1),
-      switchMap((diversityData) => {
-        return this.statisticsService.getComparedSubRegionsDiversity(diversityData.regions);
-      })
-    );
-
     if (this.userCountry.NE_ID != -1) {
       this.comparedRegionDiversityInUserCountry = this.regionService.getRegionsDiversity().pipe(
         take(1),
         switchMap((diversityData) => {
           return this.statisticsService.getComparedRegionsDiversity(
             diversityData.regions,
-            this.userCountry.NE_ID
-          );
-        })
-      );
-
-      this.comparedSubRegionDiversityInUserCountry = this.regionService.getRegionsDiversity().pipe(
-        take(1),
-        switchMap((diversityData) => {
-          return this.statisticsService.getComparedSubRegionsDiversity(
-            diversityData.subRegions,
             this.userCountry.NE_ID
           );
         })
