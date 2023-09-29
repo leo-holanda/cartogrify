@@ -48,6 +48,10 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
       this.userRegionsCount = diversityData.regions;
     });
 
+    this.statisticsService.getSubRegionsDiversity().subscribe((data) => {
+      console.log(data);
+    });
+
     this.comparedRegionDiversity = this.regionService.getRegionsDiversity().pipe(
       take(1),
       switchMap((diversityData) => {
