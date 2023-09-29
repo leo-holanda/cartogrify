@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import * as d3 from "d3";
 import { Observable, take, switchMap, fromEvent, debounceTime } from "rxjs";
 import { ArtistsSources } from "src/app/artists/artist.model";
@@ -16,7 +16,7 @@ import { UserService } from "src/app/user/user.service";
   templateUrl: "./sub-regions-stats.component.html",
   styleUrls: ["./sub-regions-stats.component.scss"],
 })
-export class SubRegionsStatsComponent {
+export class SubRegionsStatsComponent implements OnInit, AfterViewInit {
   comparedSubRegionDiversity!: Observable<ComparedDiversityData>;
   comparedSubRegionDiversityInUserCountry!: Observable<ComparedDiversityData>;
 
@@ -29,8 +29,8 @@ export class SubRegionsStatsComponent {
 
   userSubRegionsCount!: number;
 
-  @ViewChild("regionsWorldChart") worldChartWrapper!: ElementRef<HTMLElement>;
-  @ViewChild("regionsCountryChart") countryChartWrapper!: ElementRef<HTMLElement>;
+  @ViewChild("subRegionsWorldChart") worldChartWrapper!: ElementRef<HTMLElement>;
+  @ViewChild("subRegionsCountryChart") countryChartWrapper!: ElementRef<HTMLElement>;
 
   constructor(
     private statisticsService: StatisticsService,
