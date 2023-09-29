@@ -45,6 +45,8 @@ export class CountriesStatsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    if (this.userArtistsSource == ArtistsSources.SPOTIFY) return;
+
     this.countryService.getCountriesCount().subscribe((userCountriesCount) => {
       this.userCountriesCount = userCountriesCount.length;
       this.statisticsSevice.getCountriesDiversityIndexes().subscribe((diversityIndexes) => {
