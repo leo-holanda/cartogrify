@@ -95,6 +95,8 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    if (this.userArtistsSource == ArtistsSources.SPOTIFY) return;
+
     this.statisticsService.getRegionsDiversity().subscribe((regionsDiversity) => {
       this.regionsDiversityIndexes = regionsDiversity;
       this.generateRegionChart(false);

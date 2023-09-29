@@ -70,6 +70,8 @@ export class SubRegionsStatsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    if (this.userArtistsSource == ArtistsSources.SPOTIFY) return;
+
     this.statisticsService.getSubRegionsDiversity().subscribe((subRegionsDiversity) => {
       this.subRegionsDiversityIndexes = subRegionsDiversity;
       this.generateSubRegionsChart(false);
