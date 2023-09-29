@@ -63,7 +63,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
       .nodeId((d: any) => d.name)
       .nodeAlign(d3Sankey.sankeyRight)
       .nodeWidth(4)
-      .nodePadding(56)
+      .nodePadding(this.isMobile ? 28 : 56)
       .nodeSort(() => null)
       .extent([
         [1, 5],
