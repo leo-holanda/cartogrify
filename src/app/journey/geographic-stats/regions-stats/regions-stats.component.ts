@@ -181,7 +181,7 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
           ? `Continents diversity among users' top artists (${this.userCountry.name})`
           : "Continents diversity among users' top artists (World)"
       )
-      .attr("fill", "#836547")
+      .attr("fill", "#70441a")
       .attr("font-size", this.isMobile() ? "var(--fs--200)" : "var(--fs-100)")
       .style("font-weight", "800");
 
@@ -191,7 +191,7 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
       .attr("y", labelMarginLeft)
       .attr("transform", "rotate(-90)")
       .attr("text-anchor", "middle")
-      .attr("fill", "#836547")
+      .attr("fill", "#70441a")
       .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs-000)")
       .style("font-weight", "800")
       .text("Users quantity");
@@ -225,22 +225,22 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
     svg
       .append("g")
       .attr("transform", `translate(0,${height - chartMarginBottom})`)
-      .attr("fill", "#836547")
+      .attr("fill", "#70441a")
       .call(d3.axisBottom(x).tickValues(["1", "2", "3", "4", "5", "6"]).tickSizeOuter(0))
       .call((g) =>
         g
           .select(".domain")
-          .attr("stroke", "#836547")
+          .attr("stroke", "#70441a")
           .attr("stroke-width", "4px")
           .attr("stroke-linecap", "round")
       )
-      .call((g) => g.selectAll(".tick text").attr("fill", "#836547").style("font-weight", "800"))
+      .call((g) => g.selectAll(".tick text").attr("fill", "#70441a").style("font-weight", "800"))
       .call((g) => {
         g.append("text")
           .attr("x", width / 2)
           .attr("y", labelMarginBottom)
           .attr("text-anchor", "middle")
-          .attr("fill", "#836547")
+          .attr("fill", "#70441a")
           .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs-000)")
           .style("font-weight", "800")
           .text("Continents diversity");
@@ -251,10 +251,10 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
       .append("g")
       .attr("transform", `translate(${chartMarginLeft},0)`)
       .call(d3.axisLeft(y))
-      .attr("fill", "#836547")
+      .attr("fill", "#70441a")
       .call((g) => g.select(".domain").remove())
       .call((g) => g.selectAll(".tick line").remove())
-      .call((g) => g.selectAll(".tick text").attr("fill", "#836547").style("font-weight", "800"));
+      .call((g) => g.selectAll(".tick text").attr("fill", "#70441a").style("font-weight", "800"));
 
     const label = svg.append("g");
     const firstLabel = label.append("g");
