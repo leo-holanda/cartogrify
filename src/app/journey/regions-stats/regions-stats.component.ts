@@ -162,9 +162,6 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
       width = this.worldChartWrapper.nativeElement.offsetWidth;
     }
 
-    console.log(this.worldChartWrapper.nativeElement);
-    console.log(this.countryChartWrapper.nativeElement);
-
     const marginTop = this.isMobile() ? 40 : 72;
     const marginBottom = this.isMobile() ? 32 : 56;
     const marginLeft = this.isMobile() ? 48 : 64;
