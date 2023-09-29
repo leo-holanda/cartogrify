@@ -183,7 +183,7 @@ export class SubRegionsStatsComponent implements OnInit, AfterViewInit {
           ? `Regions diversity among users' top artists (${this.userCountry.name})`
           : "Regions diversity among users' top artists (World)"
       )
-      .attr("fill", "#b46060")
+      .attr("fill", "#836547")
       .attr("font-size", this.isMobile() ? "var(--fs--200)" : "var(--fs-100)")
       .style("font-weight", "800");
 
@@ -193,7 +193,7 @@ export class SubRegionsStatsComponent implements OnInit, AfterViewInit {
       .attr("y", labelMarginLeft)
       .attr("transform", "rotate(-90)")
       .attr("text-anchor", "middle")
-      .attr("fill", "#b46060")
+      .attr("fill", "#836547")
       .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs-000)")
       .style("font-weight", "800")
       .text("Users quantity");
@@ -204,7 +204,7 @@ export class SubRegionsStatsComponent implements OnInit, AfterViewInit {
       .append("rect")
       .attr("fill", (d: any) => {
         if (d.subRegionsCount == this.userSubRegionsCount) return "#539987";
-        return "#b46060";
+        return "#e58876";
       })
       .attr("x", (d) => x(d.subRegionsCount.toString()) || null)
       .attr("y", (d) => y(d.occurrenceQuantity))
@@ -227,7 +227,7 @@ export class SubRegionsStatsComponent implements OnInit, AfterViewInit {
     svg
       .append("g")
       .attr("transform", `translate(0,${height - chartMarginBottom})`)
-      .attr("fill", "#b46060")
+      .attr("fill", "#836547")
       .call(
         d3
           .axisBottom(x)
@@ -262,17 +262,17 @@ export class SubRegionsStatsComponent implements OnInit, AfterViewInit {
       .call((g) =>
         g
           .select(".domain")
-          .attr("stroke", "#b46060")
+          .attr("stroke", "#836547")
           .attr("stroke-width", "4px")
           .attr("stroke-linecap", "round")
       )
-      .call((g) => g.selectAll(".tick text").attr("fill", "#b46060").style("font-weight", "800"))
+      .call((g) => g.selectAll(".tick text").attr("fill", "#836547").style("font-weight", "800"))
       .call((g) => {
         g.append("text")
           .attr("x", width / 2)
           .attr("y", labelMarginBottom)
           .attr("text-anchor", "middle")
-          .attr("fill", "#b46060")
+          .attr("fill", "#836547")
           .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs-000)")
           .style("font-weight", "800")
           .text("Regions diversity");
@@ -283,10 +283,10 @@ export class SubRegionsStatsComponent implements OnInit, AfterViewInit {
       .append("g")
       .attr("transform", `translate(${chartMarginLeft},0)`)
       .call(d3.axisLeft(y))
-      .attr("fill", "#b46060")
+      .attr("fill", "#836547")
       .call((g) => g.select(".domain").remove())
       .call((g) => g.selectAll(".tick line").remove())
-      .call((g) => g.selectAll(".tick text").attr("fill", "#b46060").style("font-weight", "800"));
+      .call((g) => g.selectAll(".tick text").attr("fill", "#836547").style("font-weight", "800"));
 
     const label = svg.append("g");
     const firstLabel = label.append("g");
@@ -312,7 +312,7 @@ export class SubRegionsStatsComponent implements OnInit, AfterViewInit {
       .attr("width", this.isMobile() ? "0.5rem" : "1rem")
       .attr("height", this.isMobile() ? "0.5rem" : "1rem")
       .attr("ry", "100%")
-      .style("fill", "#b46060");
+      .style("fill", "#e58876");
     secondLabel
       .append("text")
       .text("Others")
