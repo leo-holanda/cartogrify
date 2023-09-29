@@ -5,7 +5,7 @@
 .stats-selection {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 32px;
   color: black;
   border-radius: 16px;
   width: fit-content;
@@ -16,7 +16,13 @@ p {
   margin: 0 0 8px 0;
 }
 
-@media (max-width: 641px) {
+@media (min-width: 641px) and (max-width: 1280px) {
+  .stats-selection {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 640px) {
   .stats-selection {
     align-items: center;
     left: 0;
