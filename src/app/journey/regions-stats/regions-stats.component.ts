@@ -97,12 +97,12 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.statisticsService.getRegionsDiversity().subscribe((regionsDiversity) => {
       this.regionsDiversityIndexes = regionsDiversity;
-      this.generateChart(false);
+      this.generateRegionChart(false);
 
       fromEvent(window, "resize")
         .pipe(debounceTime(250))
         .subscribe(() => {
-          this.generateChart(false);
+          this.generateRegionChart(false);
         });
     });
 
@@ -122,12 +122,12 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
         .getRegionsDiversityInUserCountry(this.userCountry.NE_ID)
         .subscribe((regionsDiversityInUserCountry) => {
           this.regionsDiversityIndexesInUserCountry = regionsDiversityInUserCountry;
-          this.generateChart(true);
+          this.generateRegionChart(true);
 
           fromEvent(window, "resize")
             .pipe(debounceTime(250))
             .subscribe(() => {
-              this.generateChart(true);
+              this.generateRegionChart(true);
             });
         });
 
@@ -146,7 +146,7 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  generateChart(isInUserCountry: boolean): void {
+  generateRegionChart(isInUserCountry: boolean): void {
     let diversityIndexes: RegionsDiversityIndex[] | undefined;
     if (isInUserCountry) diversityIndexes = this.regionsDiversityIndexesInUserCountry;
     else diversityIndexes = this.regionsDiversityIndexes;
