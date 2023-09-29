@@ -225,8 +225,7 @@ export class StatisticsService {
         .pipe(
           map((subRegionsDiversityIndexes) => {
             return subRegionsDiversityIndexes.filter(
-              (diversityIndex) =>
-                diversityIndex.subRegionsCount != null && diversityIndex.countryCode != null
+              (diversityIndex) => diversityIndex.subRegionsCount != null
             );
           })
         )
