@@ -52,7 +52,7 @@ export class SubRegionsStatsComponent implements OnInit, AfterViewInit {
     this.comparedSubRegionDiversity = this.regionService.getRegionsDiversity().pipe(
       take(1),
       switchMap((diversityData) => {
-        return this.statisticsService.getComparedSubRegionsDiversity(diversityData.regions);
+        return this.statisticsService.getComparedSubRegionsDiversity(diversityData.subRegions);
       })
     );
 
