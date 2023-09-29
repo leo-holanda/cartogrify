@@ -1,1 +1,12 @@
-<p>geographic-stats works!</p>
+<div class="stats-selection">
+  <p>Show stats by</p>
+  <p-selectButton
+    [options]="chartOptions"
+    (onOptionClick)="onSelect($event)"
+    optionLabel="label"
+    optionValue="value"
+  ></p-selectButton>
+</div>
+
+<ctg-regions-stats *ngIf="chartToShow == chartOptions[0].label"></ctg-regions-stats>
+<ctg-sub-regions-stats *ngIf="chartToShow == chartOptions[1].label"></ctg-sub-regions-stats>

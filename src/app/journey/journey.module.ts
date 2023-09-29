@@ -19,10 +19,6 @@ import { CountriesRanksComponent } from "./countries-ranks/countries-ranks.compo
 import { CountriesCountModule } from "./countries-count/countries-count.module";
 import { ArtistsPartModule } from "./artists-part/artists-part.module";
 import { WorldMapModule } from "../world-map/world-map.module";
-import { RegionsStatsComponent } from "./regions-stats/regions-stats.component";
-import { RegionsStatsModule } from "./regions-stats/regions-stats.module";
-import { SubRegionsStatsComponent } from "./sub-regions-stats/sub-regions-stats.component";
-import { SubRegionsStatsModule } from "./sub-regions-stats/sub-regions-stats.module";
 import { GeographicStatsComponent } from "./geographic-stats/geographic-stats.component";
 import { GeographicStatsModule } from "./geographic-stats/geographic-stats.module";
 
@@ -40,8 +36,6 @@ import { GeographicStatsModule } from "./geographic-stats/geographic-stats.modul
     IntroModule,
     EndModule,
     CountriesRanksModule,
-    RegionsStatsModule,
-    SubRegionsStatsModule,
     GeographicStatsModule,
   ],
   exports: [
@@ -53,8 +47,6 @@ import { GeographicStatsModule } from "./geographic-stats/geographic-stats.modul
     IntroComponent,
     EndComponent,
     CountriesRanksComponent,
-    RegionsStatsComponent,
-    SubRegionsStatsComponent,
     GeographicStatsComponent,
   ],
 })
