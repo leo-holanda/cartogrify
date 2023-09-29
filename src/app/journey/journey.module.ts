@@ -23,6 +23,8 @@ import { RegionsStatsComponent } from "./regions-stats/regions-stats.component";
 import { RegionsStatsModule } from "./regions-stats/regions-stats.module";
 import { SubRegionsStatsComponent } from "./sub-regions-stats/sub-regions-stats.component";
 import { SubRegionsStatsModule } from "./sub-regions-stats/sub-regions-stats.module";
+import { GeographicStatsComponent } from "./geographic-stats/geographic-stats.component";
+import { GeographicStatsModule } from "./geographic-stats/geographic-stats.module";
 
 @NgModule({
   imports: [
@@ -40,6 +42,7 @@ import { SubRegionsStatsModule } from "./sub-regions-stats/sub-regions-stats.mod
     CountriesRanksModule,
     RegionsStatsModule,
     SubRegionsStatsModule,
+    GeographicStatsModule,
   ],
   exports: [
     CountriesCountComponent,
@@ -52,6 +55,7 @@ import { SubRegionsStatsModule } from "./sub-regions-stats/sub-regions-stats.mod
     CountriesRanksComponent,
     RegionsStatsComponent,
     SubRegionsStatsComponent,
+    GeographicStatsComponent,
   ],
 })
 export class JourneyModule {}
