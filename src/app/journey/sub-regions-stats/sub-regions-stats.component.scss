@@ -1,0 +1,164 @@
+:host {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem 2rem;
+  gap: 4rem;
+  width: 100%;
+  background-color: #b46060;
+  color: #f6e1c3;
+}
+
+.title-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  margin: 1rem;
+  gap: 1rem;
+}
+
+.pre-title {
+  margin: 0;
+  font-size: var(--fs-200);
+}
+
+.title {
+  font-size: var(--fs-600);
+  margin: 0;
+}
+
+.post-title {
+  margin: 0;
+  font-size: var(--fs-200);
+}
+
+.count-value {
+  font-weight: bold;
+}
+
+.content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rating-item {
+  font-weight: bold;
+  font-size: var(--fs-1000);
+}
+
+.empty-country-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+}
+
+.empty-country-message {
+  color: #f6e1c3;
+  font-size: var(--fs-200);
+  width: 50%;
+}
+
+.spotify-policy-message {
+  font-weight: bold;
+  text-align: center;
+  height: 50dvh;
+  display: flex;
+  align-items: center;
+}
+
+.regions-world-chart-wrapper,
+.regions-country-chart-wrapper,
+.subregions-world-chart-wrapper,
+.subregions-country-chart-wrapper {
+  padding: 1rem;
+  height: 50dvh;
+  width: 70%;
+  background-color: #f6e1c3;
+  border-radius: 16px;
+}
+
+@media (min-width: 641px) and (max-width: 1280px) {
+  :host {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 6rem 1.5rem;
+  }
+
+  .empty-country-message {
+    width: 100%;
+  }
+
+  .pre-title {
+    text-align: center;
+  }
+
+  .title {
+    text-align: center;
+  }
+
+  .post-title {
+    text-align: center;
+  }
+
+  .empty-country-message {
+    text-align: center;
+    width: 50%;
+  }
+
+  .rating-item {
+    font-size: var(--fs-800);
+  }
+
+  .regions-world-chart-wrapper,
+  .regions-country-chart-wrapper,
+  .subregions-world-chart-wrapper,
+  .subregions-country-chart-wrapper {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  :host {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 6rem 1rem;
+  }
+
+  .empty-country-message {
+    width: 100%;
+  }
+
+  .pre-title {
+    text-align: center;
+    font-size: var(--fs-100);
+  }
+
+  .title {
+    text-align: center;
+    font-size: var(--fs-500);
+  }
+
+  .post-title {
+    text-align: center;
+    font-size: var(--fs-100);
+  }
+
+  .empty-country-message {
+    font-size: var(--fs-100);
+    text-align: center;
+  }
+
+  .rating-item {
+    font-size: var(--fs-700);
+  }
+
+  .regions-world-chart-wrapper,
+  .regions-country-chart-wrapper .subregions-world-chart-wrapper,
+  .subregions-country-chart-wrapper {
+    width: 100%;
+  }
+}
