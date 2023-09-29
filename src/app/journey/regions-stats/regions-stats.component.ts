@@ -52,6 +52,12 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
       console.log(data);
     });
 
+    this.statisticsService
+      .getComparedSubRegionsDiversity(this.userCountry.NE_ID)
+      .subscribe((data) => {
+        console.log(data);
+      });
+
     this.comparedRegionDiversity = this.regionService.getRegionsDiversity().pipe(
       take(1),
       switchMap((diversityData) => {

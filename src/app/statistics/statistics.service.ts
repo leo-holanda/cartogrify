@@ -253,4 +253,51 @@ export class StatisticsService {
       })
     );
   }
+
+  getComparedSubRegionsDiversity(
+    currentUserSubRegionsCount: number,
+    userCountryCode: number | undefined = undefined
+  ): Observable<ComparedDiversityData> {
+    let regionsDiversitySource;
+    if (userCountryCode)
+      regionsDiversitySource = this.getSubRegionsDiversityInUserCountry(userCountryCode);
+    else regionsDiversitySource = this.getSubRegionsDiversity();
+
+    return regionsDiversitySource.pipe(
+      filter(
+        (diversityIndexes): diversityIndexes is SubRegionsDiversityIndex[] =>
+          diversityIndexes != undefined
+      ),
+      map((diversityIndexes) => {
+        const usersSubRegionDiversity = [];
+        usersSubRegionDiversity.push(currentUserSubRegionsCount);
+
+        diversityIndexes.forEach((index) => {
+          const indexArray = Array(index.occurrenceQuantity).fill(index.subRegionsCount);
+          usersSubRegionDiversity.push(...indexArray);
+        });
+
+        usersSubRegionDiversity.sort((a, b) => a - b);
+
+        const currentUserIndex = usersSubRegionDiversity.findIndex(
+          (index) => index === currentUserSubRegionsCount
+        );
+
+        usersSubRegionDiversity.splice(currentUserIndex, 1);
+
+        let comparedDiversity;
+        if (currentUserIndex != -1) {
+          comparedDiversity =
+            ((currentUserIndex / usersSubRegionDiversity.length) * 100).toFixed(0) + "%";
+        } else {
+          comparedDiversity = "0%";
+        }
+
+        return {
+          comparedDiversity,
+          totalUsers: usersSubRegionDiversity.length,
+        };
+      })
+    );
+  }
 }
