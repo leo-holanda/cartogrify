@@ -119,7 +119,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
       })
       .attr("y", (d: any) => (d.y1 + d.y0) / 2)
       .attr("dy", "0.35em")
-      .attr("fill", "#686d59")
+      .attr("fill", "#4c5041")
       .style("font-weight", (d) => this.getTextFontWeight(d.depth))
       .attr("font-size", (d) => {
         if (this.isMobile) return `var(--fs--100)`;
