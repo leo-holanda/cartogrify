@@ -224,41 +224,40 @@ export class SubRegionsStatsComponent implements OnInit, AfterViewInit {
     }
 
     // Add the x-axis and label.
+    let tickValues = [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+    ];
+
+    if (this.isMobile()) tickValues = ["1", "4", "8", "12", "16", "20", "24"];
+
     svg
       .append("g")
       .attr("transform", `translate(0,${height - chartMarginBottom})`)
       .attr("fill", "#836547")
-      .call(
-        d3
-          .axisBottom(x)
-          .tickValues([
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-          ])
-          .tickSizeOuter(0)
-      )
+      .call(d3.axisBottom(x).tickValues(tickValues).tickSizeOuter(0))
       .call((g) =>
         g
           .select(".domain")
