@@ -21,6 +21,8 @@ import { ArtistsPartModule } from "./artists-part/artists-part.module";
 import { WorldMapModule } from "../world-map/world-map.module";
 import { GeographicStatsComponent } from "./geographic-stats/geographic-stats.component";
 import { GeographicStatsModule } from "./geographic-stats/geographic-stats.module";
+import { GeographicRankingsModule } from "./geographic-rankings/geographic-rankings.module";
+import { GeographicRankingsComponent } from "./geographic-rankings/geographic-rankings.component";
 
 @NgModule({
   imports: [
@@ -37,6 +39,7 @@ import { GeographicStatsModule } from "./geographic-stats/geographic-stats.modul
     EndModule,
     CountriesRanksModule,
     GeographicStatsModule,
+    GeographicRankingsModule,
   ],
   exports: [
     CountriesCountComponent,
@@ -48,6 +51,7 @@ import { GeographicStatsModule } from "./geographic-stats/geographic-stats.modul
     EndComponent,
     CountriesRanksComponent,
     GeographicStatsComponent,
+    GeographicRankingsComponent,
   ],
 })
 export class JourneyModule {}
