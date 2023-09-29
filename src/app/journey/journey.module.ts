@@ -21,9 +21,10 @@ import { ArtistsPartModule } from "./artists-part/artists-part.module";
 import { WorldMapModule } from "../world-map/world-map.module";
 import { RegionsStatsComponent } from "./regions-stats/regions-stats.component";
 import { RegionsStatsModule } from "./regions-stats/regions-stats.module";
+import { SubRegionsStatsComponent } from "./sub-regions-stats/sub-regions-stats.component";
+import { SubRegionsStatsModule } from "./sub-regions-stats/sub-regions-stats.module";
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule,
     JourneyRoutingModule,
@@ -38,6 +39,7 @@ import { RegionsStatsModule } from "./regions-stats/regions-stats.module";
     EndModule,
     CountriesRanksModule,
     RegionsStatsModule,
+    SubRegionsStatsModule,
   ],
   exports: [
     CountriesCountComponent,
@@ -49,6 +51,7 @@ import { RegionsStatsModule } from "./regions-stats/regions-stats.module";
     EndComponent,
     CountriesRanksComponent,
     RegionsStatsComponent,
+    SubRegionsStatsComponent,
   ],
 })
 export class JourneyModule {}
