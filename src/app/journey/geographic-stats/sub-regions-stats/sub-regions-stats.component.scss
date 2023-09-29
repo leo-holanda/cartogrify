@@ -70,8 +70,6 @@
   align-items: center;
 }
 
-.regions-world-chart-wrapper,
-.regions-country-chart-wrapper,
 .subregions-world-chart-wrapper,
 .subregions-country-chart-wrapper {
   padding: 1rem;
@@ -113,8 +111,6 @@
     font-size: var(--fs-800);
   }
 
-  .regions-world-chart-wrapper,
-  .regions-country-chart-wrapper,
   .subregions-world-chart-wrapper,
   .subregions-country-chart-wrapper {
     width: 100%;
@@ -156,8 +152,7 @@
     font-size: var(--fs-700);
   }
 
-  .regions-world-chart-wrapper,
-  .regions-country-chart-wrapper .subregions-world-chart-wrapper,
+  .subregions-world-chart-wrapper,
   .subregions-country-chart-wrapper {
     width: 100%;
   }

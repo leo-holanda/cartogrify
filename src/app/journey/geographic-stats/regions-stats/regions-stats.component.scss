@@ -71,9 +71,7 @@
 }
 
 .regions-world-chart-wrapper,
-.regions-country-chart-wrapper,
-.subregions-world-chart-wrapper,
-.subregions-country-chart-wrapper {
+.regions-country-chart-wrapper {
   padding: 1rem;
   height: 50dvh;
   width: 70%;
@@ -114,9 +112,7 @@
   }
 
   .regions-world-chart-wrapper,
-  .regions-country-chart-wrapper,
-  .subregions-world-chart-wrapper,
-  .subregions-country-chart-wrapper {
+  .regions-country-chart-wrapper {
     width: 100%;
   }
 }
@@ -157,8 +153,7 @@
   }
 
   .regions-world-chart-wrapper,
-  .regions-country-chart-wrapper .subregions-world-chart-wrapper,
-  .subregions-country-chart-wrapper {
+  .regions-country-chart-wrapper {
     width: 100%;
   }
 }
