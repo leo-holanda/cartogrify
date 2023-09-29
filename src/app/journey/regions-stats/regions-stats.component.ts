@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { Observable, switchMap, take } from "rxjs";
+import { Observable, debounceTime, fromEvent, switchMap, take } from "rxjs";
 import { ArtistsSources } from "src/app/artists/artist.model";
 import { ArtistService } from "src/app/artists/artist.service";
 import { Country } from "src/app/country/country.model";
@@ -72,6 +72,12 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
     this.statisticsService.getRegionsDiversity().subscribe((regionsDiversity) => {
       this.regionsDiversityIndexes = regionsDiversity;
       this.generateChart(false);
+
+      fromEvent(window, "resize")
+        .pipe(debounceTime(250))
+        .subscribe(() => {
+          this.generateChart(false);
+        });
     });
 
     if (this.userCountry.NE_ID != -1) {
@@ -80,6 +86,12 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
         .subscribe((regionsDiversityInUserCountry) => {
           this.regionsDiversityIndexesInUserCountry = regionsDiversityInUserCountry;
           this.generateChart(true);
+
+          fromEvent(window, "resize")
+            .pipe(debounceTime(250))
+            .subscribe(() => {
+              this.generateChart(true);
+            });
         });
     }
   }
