@@ -1,7 +1,11 @@
 import { Injectable } from "@angular/core";
 import { SupabaseService } from "../shared/supabase.service";
 import { BehaviorSubject, Observable, filter, map } from "rxjs";
-import { CountryDiversityIndex, RegionsDiversityIndex } from "../shared/supabase.model";
+import {
+  CountryDiversityIndex,
+  RegionsDiversityIndex,
+  SubRegionsDiversityIndex,
+} from "../shared/supabase.model";
 import { ComparedDiversityData } from "./statistics.model";
 
 @Injectable({
@@ -10,11 +14,15 @@ import { ComparedDiversityData } from "./statistics.model";
 export class StatisticsService {
   hasRequestedCountriesDiversity = false;
   hasRequestedRegionsDiversity = false;
+  hasRequestedSubRegionsDiversity = false;
 
   private countriesDiversityIndexes$ = new BehaviorSubject<CountryDiversityIndex[] | undefined>(
     undefined
   );
   private regionsDiversityIndexes$ = new BehaviorSubject<RegionsDiversityIndex[] | undefined>(
+    undefined
+  );
+  private subRegionsDiversityIndexes$ = new BehaviorSubject<SubRegionsDiversityIndex[] | undefined>(
     undefined
   );
 
@@ -204,6 +212,44 @@ export class StatisticsService {
           comparedDiversity,
           totalUsers: usersRegionDiversity.length,
         };
+      })
+    );
+  }
+
+  getSubRegionsDiversity(): Observable<SubRegionsDiversityIndex[] | undefined> {
+    if (!this.hasRequestedSubRegionsDiversity) {
+      this.hasRequestedSubRegionsDiversity = true;
+
+      this.supabaseService
+        .getSubRegionsDiversityIndexes()
+        .pipe(
+          map((subRegionsDiversityIndexes) => {
+            return subRegionsDiversityIndexes.filter(
+              (diversityIndex) =>
+                diversityIndex.subRegionsCount != null && diversityIndex.countryCode != null
+            );
+          })
+        )
+        .subscribe((subRegionsDiversityIndex) => {
+          this.subRegionsDiversityIndexes$.next(subRegionsDiversityIndex);
+        });
+    }
+
+    return this.subRegionsDiversityIndexes$.asObservable();
+  }
+
+  getSubRegionsDiversityInUserCountry(
+    userCountryCode: number
+  ): Observable<SubRegionsDiversityIndex[]> {
+    return this.getSubRegionsDiversity().pipe(
+      filter(
+        (diversityIndexes): diversityIndexes is SubRegionsDiversityIndex[] =>
+          diversityIndexes != undefined
+      ),
+      map((diversityIndexes) => {
+        return diversityIndexes.filter(
+          (diversityIndex) => diversityIndex.countryCode == userCountryCode
+        );
       })
     );
   }

@@ -166,3 +166,15 @@ export interface RegionsDiversityIndex {
   regionsCount: number;
   occurrenceQuantity: number;
 }
+
+export interface SubRegionsDiversityIndexResponse {
+  country_code: number | undefined;
+  subregions_count: number;
+  occurrence_quantity: number;
+}
+
+export interface SubRegionsDiversityIndex {
+  countryCode: number | undefined;
+  subRegionsCount: number;
+  occurrenceQuantity: number;
+}
