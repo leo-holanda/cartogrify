@@ -1,3 +1,7 @@
+:host {
+  position: relative;
+}
+
 .stats-selection {
   display: flex;
   flex-direction: column;
@@ -5,4 +9,9 @@
   color: black;
   border-radius: 16px;
   width: fit-content;
+  position: absolute;
+}
+
+p {
+  margin-top: 0;
 }
