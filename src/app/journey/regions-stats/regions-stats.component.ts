@@ -28,8 +28,8 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
   artistsSource = ArtistsSources;
   userRegionsCount!: number;
 
-  @ViewChild("worldChart") worldChartWrapper!: ElementRef<HTMLElement>;
-  @ViewChild("countryChart") countryChartWrapper!: ElementRef<HTMLElement>;
+  @ViewChild("regionsWorldChart") worldChartWrapper!: ElementRef<HTMLElement>;
+  @ViewChild("regionsCountryChart") countryChartWrapper!: ElementRef<HTMLElement>;
 
   constructor(
     private statisticsService: StatisticsService,
@@ -47,12 +47,6 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
     this.regionService.getRegionsDiversity().subscribe((diversityData) => {
       this.userRegionsCount = diversityData.regions;
     });
-
-    this.statisticsService
-      .getRegionsDiversityInUserCountry(this.userCountry.NE_ID)
-      .subscribe((regionsDiversityInUserCountry) => {
-        this.regionsDiversityIndexesInUserCountry = regionsDiversityInUserCountry;
-      });
 
     this.comparedRegionDiversity = this.regionService.getRegionsDiversity().pipe(
       take(1),
@@ -79,6 +73,15 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
       this.regionsDiversityIndexes = regionsDiversity;
       this.generateChart(false);
     });
+
+    if (this.userCountry.NE_ID != -1) {
+      this.statisticsService
+        .getRegionsDiversityInUserCountry(this.userCountry.NE_ID)
+        .subscribe((regionsDiversityInUserCountry) => {
+          this.regionsDiversityIndexesInUserCountry = regionsDiversityInUserCountry;
+          this.generateChart(true);
+        });
+    }
   }
 
   generateChart(isInUserCountry: boolean): void {
@@ -96,6 +99,9 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
       height = this.worldChartWrapper.nativeElement.offsetHeight;
       width = this.worldChartWrapper.nativeElement.offsetWidth;
     }
+
+    console.log(this.worldChartWrapper.nativeElement);
+    console.log(this.countryChartWrapper.nativeElement);
 
     const marginTop = this.isMobile() ? 40 : 72;
     const marginBottom = this.isMobile() ? 32 : 56;
@@ -122,8 +128,6 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
       }
     });
 
-    console.log(distinctDiversityIndexes);
-
     let highestUserCount = 0;
     distinctDiversityIndexes.forEach((value) => {
       if (value.occurrenceQuantity > highestUserCount) highestUserCount = value.occurrenceQuantity;
@@ -147,15 +151,13 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
     else d3.select("#regionsWorldChartSvg").remove();
 
     const svg = d3
-      .select(isInUserCountry ? ".country-chart-wrapper" : ".world-chart-wrapper")
+      .select(isInUserCountry ? ".regions-country-chart-wrapper" : ".regions-world-chart-wrapper")
       .append("svg")
       .attr("id", isInUserCountry ? "regionsCountryChartSvg" : "regionsWorldChartSvg")
       .attr("width", width)
       .attr("height", height)
       .attr("viewBox", [0, 0, width, height])
       .attr("style", "max-width: 100%; height: auto;");
-
-    console.log(svg);
 
     svg
       .append("text")
@@ -187,7 +189,7 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
     bar
       .append("rect")
       .attr("fill", (d: any) => {
-        if (d.countriesCount == this.userRegionsCount) return "#539987";
+        if (d.regionsCount == this.userRegionsCount) return "#539987";
         return "#b46060";
       })
       .attr("x", (d) => x(d.regionsCount.toString()) || null)

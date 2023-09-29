@@ -15,7 +15,7 @@
     </h3>
   </div>
 
-  <div class="world-chart-wrapper" #worldChart></div>
+  <div class="regions-world-chart-wrapper" #regionsWorldChart></div>
 
   <div *ngIf="userCountry.NE_ID != -1; else userWithoutCountryTemplate" class="title-wrapper">
     <h2 class="pre-title">And more than</h2>
@@ -36,7 +36,11 @@
     </h3>
   </div>
 
-  <div *ngIf="userCountry.NE_ID != -1" class="country-chart-wrapper" #countryChart></div>
+  <div
+    *ngIf="userCountry.NE_ID != -1"
+    class="regions-country-chart-wrapper"
+    #regionsCountryChart
+  ></div>
 
   <ng-template #userWithoutCountryTemplate>
     <div class="empty-country-title-wrapper">

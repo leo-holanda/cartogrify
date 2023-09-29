@@ -70,8 +70,8 @@
   align-items: center;
 }
 
-.world-chart-wrapper,
-.country-chart-wrapper {
+.regions-world-chart-wrapper,
+.regions-country-chart-wrapper {
   padding: 1rem;
   height: 50dvh;
   width: 70%;
@@ -111,8 +111,8 @@
     font-size: var(--fs-800);
   }
 
-  .world-chart-wrapper,
-  .country-chart-wrapper {
+  .regions-world-chart-wrapper,
+  .regions-country-chart-wrapper {
     width: 100%;
   }
 }
@@ -152,8 +152,8 @@
     font-size: var(--fs-700);
   }
 
-  .world-chart-wrapper,
-  .country-chart-wrapper {
+  .regions-world-chart-wrapper,
+  .regions-country-chart-wrapper {
     width: 100%;
   }
 }
