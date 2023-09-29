@@ -496,6 +496,7 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
             "21",
             "22",
             "23",
+            "24",
           ])
           .tickSizeOuter(0)
       )
