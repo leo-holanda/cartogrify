@@ -4,7 +4,7 @@ import * as d3 from "d3";
 import * as d3Sankey from "d3-sankey";
 
 import { SankeyLink, SankeyNode } from "./regions-count.types";
-import { fromEvent, debounceTime } from "rxjs";
+import { fromEvent, debounceTime, count } from "rxjs";
 import { RegionService } from "src/app/region/region.service";
 
 @Component({
@@ -24,8 +24,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.regionService.getUserRegions().subscribe((userRegions) => {
-      this.userRegions = userRegions;
-      this.userRegions = this.userRegions.filter((region) => region.name != "Unknown");
+      this.userRegions = this.removeCircularLinks(userRegions);
     });
 
     this.regionService.getRegionsDiversity().subscribe((regionsDiversity) => {
@@ -232,5 +231,22 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
     if (nodeDepth == 1) return "800";
     if (nodeDepth == 2) return "700";
     return "600";
+  }
+
+  private removeCircularLinks(userRegions: RegionCount[]): RegionCount[] {
+    return [...userRegions].map((region) => {
+      region.intermediateRegions = region.intermediateRegions.map((intermediateRegion) => {
+        intermediateRegion.subRegions = intermediateRegion.subRegions.map((subRegion) => {
+          if (subRegion.name == "Unknown") subRegion.name += " region";
+          subRegion.countriesCount = subRegion.countriesCount.map((country) => {
+            if (country.country.name == "Unknown") country.country.name += " country";
+            return country;
+          });
+          return subRegion;
+        });
+        return intermediateRegion;
+      });
+      return region;
+    });
   }
 }
