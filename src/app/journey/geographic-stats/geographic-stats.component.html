@@ -1,4 +1,4 @@
-<div class="stats-selection">
+<div *ngIf="userArtistsSource == artistsSource.LASTFM" class="stats-selection">
   <p>Show stats by</p>
   <p-selectButton
     [options]="chartOptions"
