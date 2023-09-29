@@ -178,8 +178,8 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
       .attr("text-anchor", "middle")
       .text(
         isInUserCountry
-          ? `Regions diversity among users' top artists (${this.userCountry.name})`
-          : "Regions diversity among users' top artists (World)"
+          ? `Continents diversity among users' top artists (${this.userCountry.name})`
+          : "Continents diversity among users' top artists (World)"
       )
       .attr("fill", "#b46060")
       .attr("font-size", this.isMobile() ? "var(--fs--200)" : "var(--fs-100)")
@@ -243,7 +243,7 @@ export class RegionsStatsComponent implements OnInit, AfterViewInit {
           .attr("fill", "#b46060")
           .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs-000)")
           .style("font-weight", "800")
-          .text("Regions diversity");
+          .text("Continents diversity");
       });
 
     // Add the y-axis and label, and remove the domain line.
