@@ -20,11 +20,10 @@ h2 {
   text-align: center;
   font-weight: bold;
   margin: 0;
-  color: #836547;
 }
 
 h3 {
-  color: #836547;
+  color: #4c5041;
 }
 
 .tree-wrapper {
@@ -35,9 +34,23 @@ h3 {
 
 p {
   font-size: var(--fs--100);
-  color: #836547;
+  color: #4c5041;
   text-align: center;
   margin-top: 32px;
+}
+
+.regions-count {
+  background: #fab16c;
+  padding: 16px;
+  border-radius: 16px;
+  color: #4c5041;
+}
+
+.subregions-count {
+  background: #e58876;
+  padding: 16px;
+  border-radius: 16px;
+  color: #4c5041;
 }
 
 @media (min-width: 641px) and (max-width: 1280px) {
