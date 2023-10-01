@@ -142,8 +142,7 @@ export class StatisticsService {
         .pipe(
           map((regionsDiversityIndexes) => {
             return regionsDiversityIndexes.filter(
-              (diversityIndex) =>
-                diversityIndex.regionsCount != null && diversityIndex.countryCode != null
+              (diversityIndex) => diversityIndex.regionsCount != null
             );
           })
         )
