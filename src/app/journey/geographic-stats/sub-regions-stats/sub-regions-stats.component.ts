@@ -217,7 +217,10 @@ export class SubRegionsStatsComponent implements OnInit, AfterViewInit {
         .text((d) => d.occurrenceQuantity)
         .attr("x", (d) => (x(d.subRegionsCount.toString()) || 0) + x.bandwidth() / 2 || null)
         .attr("y", (d) => y(d.occurrenceQuantity) + 12)
-        .attr("fill", "#f6e1c3")
+        .attr("fill", (d) => {
+          if (d.subRegionsCount == this.userSubRegionsCount) return "#f6e1c3";
+          return "#5d271c";
+        })
         .attr("font-size", this.isMobile() ? "var(--fs--300)" : "var(--fs--300)")
         .attr("text-anchor", "middle")
         .style("font-weight", "800");
