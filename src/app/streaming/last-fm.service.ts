@@ -6,7 +6,6 @@ import { UserService } from "../user/user.service";
 import { CountryService } from "../country/country.service";
 import { Artist } from "../artists/artist.model";
 import { Country } from "../country/country.model";
-import { transformNamesInArtists } from "../artists/artist.helpers";
 
 @Injectable({
   providedIn: "root",
@@ -39,7 +38,7 @@ export class LastFmService {
         if (response && Array.isArray(response)) return response.map((artist) => artist.name);
         throw new Error("The LastFM API is in a bad mood. Please, try again later.");
       }),
-      map((topArtistsNames) => transformNamesInArtists(topArtistsNames))
+      map((topArtistsNames) => this.transformNamesInArtists(topArtistsNames))
     );
   }
 
@@ -69,5 +68,17 @@ export class LastFmService {
     return this.getLastFmArtistData(artistName).pipe(
       map((artistData) => this.countryService.determineLastFmArtistCountry(artistData))
     );
+  }
+
+  private transformNamesInArtists(artistsNames: string[]): Artist[] {
+    return artistsNames.map((artistName): Artist => this.createArtist(artistName));
+  }
+
+  private createArtist(artistName: string): Artist {
+    return {
+      name: artistName,
+      country: undefined,
+      url: undefined,
+    };
   }
 }
