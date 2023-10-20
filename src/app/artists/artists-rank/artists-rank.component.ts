@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Artist } from "src/app/artists/artist.model";
+import { Artist, ArtistsSources } from "src/app/artists/artist.model";
 import { Subject } from "rxjs";
 import { ArtistService } from "../artist.service";
 
@@ -10,15 +10,19 @@ import { ArtistService } from "../artist.service";
 })
 export class ArtistsRankComponent implements OnInit {
   artists: Artist[] = [];
+  userArtistsSource!: ArtistsSources;
 
   shouldMakeSuggestions$ = new Subject<boolean>();
   isMessageActive = true;
   shouldOpenDialog = false;
 
+  artistsSources = ArtistsSources;
+
   constructor(private artistService: ArtistService) {}
 
   ngOnInit(): void {
     this.artistService.getUserTopArtists().subscribe((artists) => {
+      this.userArtistsSource = this.artistService.getSource();
       this.artists = artists;
     });
   }

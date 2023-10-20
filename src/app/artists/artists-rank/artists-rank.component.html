@@ -25,7 +25,12 @@
               </span>
             </div>
           </div>
-          <a class="artist-link" [href]="artist.url" title="PLAY ON SPOTIFY">
+          <a
+            *ngIf="userArtistsSource == artistsSources.SPOTIFY"
+            class="artist-link"
+            [href]="artist.url"
+            title="PLAY ON SPOTIFY"
+          >
             <img src="../../../assets/spotify_logo.png" alt="Spotify logo" class="spotify-logo" />
           </a>
         </td>
