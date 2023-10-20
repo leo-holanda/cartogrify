@@ -7,7 +7,6 @@ import { CountryService } from "../country/country.service";
 import { UserService } from "../user/user.service";
 import { ArtistService } from "../artists/artist.service";
 import { Artist, ArtistsSources } from "../artists/artist.model";
-import { transformNamesInArtists } from "../artists/artist.helpers";
 
 @Injectable({
   providedIn: "root",
@@ -57,7 +56,7 @@ export class SpotifyService {
       )
       .pipe(
         take(1),
-        map((response) => transformNamesInArtists(response.items))
+        map((response) => this.transformResponseItemsInArtists(response.items))
       );
   }
 
@@ -80,5 +79,17 @@ export class SpotifyService {
           } as SpotifyUserData;
         })
       );
+  }
+
+  private transformResponseItemsInArtists(responseItems: SpotifyApi.ArtistObjectFull[]): Artist[] {
+    return responseItems.map((artist): Artist => this.createArtist(artist));
+  }
+
+  private createArtist(artist: SpotifyApi.ArtistObjectFull): Artist {
+    return {
+      name: artist.name,
+      country: undefined,
+      url: artist.external_urls.spotify,
+    };
   }
 }
