@@ -1,11 +1,3 @@
-.logout-info {
-  margin-top: 32px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 16px;
-}
-
 :host {
   display: flex;
   flex-flow: column;
@@ -64,6 +56,20 @@ p {
   align-items: center;
   position: absolute;
   bottom: 2rem;
+}
+
+.disconnect-info {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.logout-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 @media (min-width: 641px) and (max-width: 1280px) {
