@@ -8,6 +8,6 @@ export function createArtist(artist: SpotifyApi.ArtistObjectFull): Artist {
   return {
     name: artist.name,
     country: undefined,
-    url: artist.href,
+    url: artist.external_urls.spotify,
   };
 }
