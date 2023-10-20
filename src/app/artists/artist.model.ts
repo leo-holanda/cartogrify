@@ -3,6 +3,7 @@ import { Country } from "../country/country.model";
 export interface Artist {
   name: string;
   country: Country | undefined;
+  url: string | undefined;
 }
 
 export interface ArtistWithSuggestion extends Artist {

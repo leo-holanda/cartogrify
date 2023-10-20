@@ -57,8 +57,7 @@ export class SpotifyService {
       )
       .pipe(
         take(1),
-        map((response) => response.items.map((artist) => artist.name)),
-        map((artistsNames) => transformNamesInArtists(artistsNames))
+        map((response) => transformNamesInArtists(response.items))
       );
   }
 
