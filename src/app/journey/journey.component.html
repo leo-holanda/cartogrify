@@ -1,9 +1,9 @@
 <ctg-intro></ctg-intro>
 <ctg-countries-count></ctg-countries-count>
-<ctg-countries-stats></ctg-countries-stats>
+<ctg-countries-stats *ngIf="artistSource == artistsSources.LASTFM"></ctg-countries-stats>
 <ctg-map-part></ctg-map-part>
-<ctg-countries-ranks></ctg-countries-ranks>
+<ctg-countries-ranks *ngIf="artistSource == artistsSources.LASTFM"></ctg-countries-ranks>
 <ctg-regions-count></ctg-regions-count>
-<ctg-geographic-stats></ctg-geographic-stats>
+<ctg-geographic-stats *ngIf="artistSource == artistsSources.LASTFM"></ctg-geographic-stats>
 <ctg-artists-part></ctg-artists-part>
 <ctg-end></ctg-end>
