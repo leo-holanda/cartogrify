@@ -18,7 +18,7 @@
       </a>
     </p>
 
-    <div *ngIf="artistSource == artistsSource.SPOTIFY" class="logout-info">
+    <div *ngIf="artistSource == artistsSource.SPOTIFY" class="disconnect-info">
       <p>
         You can disconnect your Spotify account from Cartogrify
         <a
@@ -28,7 +28,11 @@
           >here</a
         >.
       </p>
-      <p-button (onClick)="logout()" label="Log out"></p-button>
+
+      <div class="logout-info">
+        <p>If you want to try with another account or just log out, click in</p>
+        <p-button (onClick)="logout()" label="Log out"></p-button>
+      </div>
     </div>
 
     <p class="author-info">
