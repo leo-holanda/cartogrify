@@ -102,6 +102,12 @@ table {
   font-weight: bold;
 }
 
+.artist-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .confirm-button-wrapper {
   display: flex;
   justify-content: space-between;
@@ -119,6 +125,16 @@ table {
 
 .country-name {
   font-size: var(--fs-000);
+}
+
+.spotify-logo {
+  width: 2vw;
+  margin-left: 16px;
+}
+
+.artist-link {
+  display: flex;
+  align-items: center;
 }
 
 @media (min-width: 641px) and (max-width: 1280px) {

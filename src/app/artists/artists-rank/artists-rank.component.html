@@ -6,7 +6,7 @@
           {{ i + 1 }}
         </td>
 
-        <td class="table-column">
+        <td class="table-column artist-row">
           <div class="artist-data">
             <span class="artist-name">
               {{ artist.name }}
@@ -25,6 +25,9 @@
               </span>
             </div>
           </div>
+          <a class="artist-link" [href]="artist.url" title="Listen to this artist on Spotify">
+            <img src="../../../assets/spotify_logo.png" alt="Spotify logo" class="spotify-logo" />
+          </a>
         </td>
       </tr>
     </tbody>
