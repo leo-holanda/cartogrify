@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  OnInit,
   Output,
   ViewChild,
 } from "@angular/core";
@@ -13,7 +14,7 @@ import * as htmlToImage from "html-to-image";
 import { mapThemes } from "./world-map.themes";
 import { ThemeService } from "src/app/core/theme.service";
 import { RadioButtonClickEvent } from "primeng/radiobutton";
-import { Artist } from "../artists/artist.model";
+import { Artist, ArtistsSources } from "../artists/artist.model";
 import { ArtistService } from "../artists/artist.service";
 import {
   CountryCount,
@@ -30,10 +31,11 @@ import { CountryService } from "../country/country.service";
   templateUrl: "./world-map.component.html",
   styleUrls: ["./world-map.component.scss"],
 })
-export class WorldMapComponent implements AfterViewInit {
+export class WorldMapComponent implements OnInit, AfterViewInit {
   @Output() shouldOpenRankings = new EventEmitter<boolean>();
 
   artists: Artist[] = [];
+  artistsSource!: ArtistsSources;
   countriesCount: CountryCount[] = [];
 
   shareMode = false;
@@ -79,6 +81,10 @@ export class WorldMapComponent implements AfterViewInit {
     private artistService: ArtistService,
     private themeService: ThemeService
   ) {}
+
+  ngOnInit(): void {
+    this.artistsSource = this.artistService.getSource();
+  }
 
   ngAfterViewInit(): void {
     this.addMap();
@@ -212,18 +218,20 @@ export class WorldMapComponent implements AfterViewInit {
       .attr("viewBox", [0, 0, width, height])
       .call(zoom as any);
 
-    d3.select("#tooltip").remove();
-    this.tooltip = d3
-      .select(".map-wrapper")
-      .append("div")
-      .attr("id", "tooltip")
-      .style("position", "absolute")
-      .style("visibility", "hidden")
-      .style("background-color", "white")
-      .style("border", "solid")
-      .style("border-width", "1px")
-      .style("border-radius", "5px")
-      .style("padding", "10px");
+    if (this.artistsSource == ArtistsSources.LASTFM) {
+      d3.select("#tooltip").remove();
+      this.tooltip = d3
+        .select(".map-wrapper")
+        .append("div")
+        .attr("id", "tooltip")
+        .style("position", "absolute")
+        .style("visibility", "hidden")
+        .style("background-color", "white")
+        .style("border", "solid")
+        .style("border-width", "1px")
+        .style("border-radius", "5px")
+        .style("padding", "10px");
+    }
 
     this.mapSvg
       .append("g")
@@ -371,6 +379,8 @@ export class WorldMapComponent implements AfterViewInit {
         return this.colorScale(currentCountry ? currentCountry.count : 0);
       })
       .on("mouseenter", (event) => {
+        if (this.artistsSource == ArtistsSources.SPOTIFY) return;
+
         const countryName = event.srcElement.getAttribute("country-name");
         const countryFlagCode = event.srcElement.getAttribute("country-flag-code");
         const artistsFromCountry = this.artists
@@ -398,9 +408,11 @@ export class WorldMapComponent implements AfterViewInit {
         this.tooltip.html(countryTag);
       })
       .on("mousemove", (event) => {
+        if (this.artistsSource == ArtistsSources.SPOTIFY) return;
         this.tooltip.style("top", event.offsetY + "px").style("left", event.offsetX + 16 + "px");
       })
       .on("mouseout", () => {
+        if (this.artistsSource == ArtistsSources.SPOTIFY) return;
         this.tooltip.style("visibility", "hidden");
       });
   }
