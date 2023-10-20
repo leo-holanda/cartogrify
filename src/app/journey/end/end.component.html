@@ -21,7 +21,18 @@
       </a>
     </p>
 
-    <p-button styleClass="logout-button" (onClick)="logout()" label="Log out"></p-button>
+    <div *ngIf="artistSource == artistsSource.SPOTIFY" class="logout-info">
+      <p>
+        You can disconnect your Spotify account from Cartogrify
+        <a
+          href="https://www.spotify.com/br-en/account/apps/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >here</a
+        >.
+      </p>
+      <p-button (onClick)="logout()" label="Log out"></p-button>
+    </div>
 
     <p class="author-info">
       Created by <a href="https://github.com/leo-holanda" target="_blank">Leo</a>

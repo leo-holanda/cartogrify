@@ -1,7 +1,9 @@
-::ng-deep {
-  .logout-button {
-    margin-top: 32px;
-  }
+.logout-info {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 16px;
 }
 
 :host {
