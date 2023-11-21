@@ -1,19 +1,16 @@
 :host {
-  display: flex;
-  flex-flow: column;
   padding: 0 2rem;
   background-color: #22577a;
   color: #eec170;
 }
 
-.end-part-wrapper {
-  position: relative;
+main {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   height: 100dvh;
-  gap: 2rem;
+  gap: 16px;
 }
 
 h1 {
@@ -35,11 +32,15 @@ h2 {
 p {
   text-align: center;
   margin: 0;
-  font-size: var(--fs-000);
+  font-size: var(--fs--100);
+}
+
+strong {
+  text-align: center;
 }
 
 .author-info {
-  margin-top: 2rem;
+  margin: 32px;
   font-size: var(--fs-000);
 }
 
@@ -48,28 +49,21 @@ p {
   align-items: center;
   gap: 2rem;
   flex-direction: column;
+  margin: auto;
 }
 
 .final-message {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  position: absolute;
-  bottom: 2rem;
+  gap: 32px;
 }
 
-.disconnect-info {
-  margin-top: 32px;
+.question-and-answer {
   display: flex;
+  flex-flow: column;
   align-items: center;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.logout-info {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+  gap: 8px;
+  font-size: var(--fs--100);
 }
 
 @media (min-width: 641px) and (max-width: 1280px) {

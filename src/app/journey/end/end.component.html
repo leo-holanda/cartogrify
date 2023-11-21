@@ -1,26 +1,25 @@
-<div class="end-part-wrapper">
-  <div class="end-title">
+<main>
+  <section class="end-title">
     <h1>And we have come to the end of your journey</h1>
+
     <h2>
       May your travels continue, for there is new and exciting music waiting to be discovered in
       every corner of the world!
     </h2>
-  </div>
-  <div class="final-message">
-    <p>Do you have a feature suggestion, want to report a bug or just share your opinion?</p>
-    <p>
-      Please, leave a comment in the
-      <a
-        href="https://www.reddit.com/r/lastfm/comments/16asjsw/i_made_a_web_app_that_compares_how/"
-        target="_blank"
-      >
-        Cartogrify reddit post.
-      </a>
-    </p>
+  </section>
 
-    <div *ngIf="artistSource == artistsSource.SPOTIFY" class="disconnect-info">
+  <section class="final-message">
+    <div class="question-and-answer">
+      <strong
+        >Do you have a feature suggestion, want to report a bug or just share your opinion?</strong
+      >
+      <p>Send a message to @carrilero4 at Discord!</p>
+    </div>
+
+    <div class="question-and-answer" *ngIf="artistSource == artistsSource.SPOTIFY">
+      <strong>Do you want to disconnect your Spotify account from Cartogrify?</strong>
       <p>
-        You can disconnect your Spotify account from Cartogrify
+        Click
         <a
           href="https://www.spotify.com/br-en/account/apps/"
           target="_blank"
@@ -28,15 +27,17 @@
           >here</a
         >.
       </p>
-
-      <div class="logout-info">
-        <p>If you want to try with another account or just log out, click in</p>
-        <p-button (onClick)="logout()" label="Log out"></p-button>
-      </div>
     </div>
 
-    <p class="author-info">
-      Created by <a href="https://github.com/leo-holanda" target="_blank">Leo</a>
-    </p>
-  </div>
-</div>
+    <div class="question-and-answer" *ngIf="artistSource == artistsSource.SPOTIFY">
+      <strong>Do you want to try with another account or just log out?</strong>
+      <p-button label="small" size="small" (onClick)="logout()" label="Log out"></p-button>
+    </div>
+  </section>
+
+  <p class="author-info">
+    Made with
+    <img alt="love" src="https://icongr.am/octicons/heart-fill.svg?size=18&color=eec170" /> by
+    <a href="https://github.com/leo-holanda" target="_blank">Leo</a>
+  </p>
+</main>
