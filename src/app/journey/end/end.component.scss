@@ -9,7 +9,6 @@ main {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height: 100dvh;
   gap: 16px;
 }
 
@@ -47,15 +46,18 @@ strong {
 .end-title {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 2rem;
   flex-direction: column;
   margin: auto;
+  height: 90dvh;
 }
 
 .final-message {
   display: flex;
   flex-direction: column;
   gap: 32px;
+  margin: 32px;
 }
 
 .question-and-answer {
