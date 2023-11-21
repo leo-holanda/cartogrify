@@ -46,7 +46,7 @@ export class RegionsCountComponent implements OnInit, AfterViewInit {
 
   private drawSankey(): void {
     const containerWidth = this.treeWrapper.nativeElement.offsetWidth;
-    const windowHeight = window.innerHeight;
+    const windowHeight = window.innerHeight * 1.5;
 
     d3.select("#sankey").remove();
     const svg = d3
