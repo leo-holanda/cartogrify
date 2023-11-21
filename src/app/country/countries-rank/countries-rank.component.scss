@@ -54,6 +54,10 @@
     width: 100%;
     padding-right: 1rem;
 
+    td {
+      padding-right: 8px;
+    }
+
     .table-header-column {
       color: #585858;
       font-size: var(--fs--100);
