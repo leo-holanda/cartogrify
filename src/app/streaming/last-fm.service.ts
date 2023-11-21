@@ -23,6 +23,7 @@ export class LastFmService {
         this.userService.setUser({
           id: userName,
           countryCode: this.countryService.getCountryCodeByText(userProfile.country),
+          name: userProfile.realname || "Unknown",
         });
 
         return this.getTopArtists(userName);

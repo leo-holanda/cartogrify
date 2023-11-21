@@ -21,6 +21,7 @@ export class UserService {
     this._user = {
       countryCode: user.countryCode,
       id: user.id,
+      name: user.name,
     };
   }
 

@@ -72,11 +72,12 @@ export class SpotifyService {
       })
       .pipe(
         take(1),
-        map((response) => {
+        map((response): SpotifyUserData => {
           return {
             id: response.id,
-            countryCode: this.countryService.getCountryCodeByText(response.country),
-          } as SpotifyUserData;
+            countryCode: this.countryService.getCountryCodeByText(response.country) || -1,
+            name: response.display_name || "Unknown",
+          };
         })
       );
   }
