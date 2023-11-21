@@ -98,21 +98,21 @@
         flex-direction: column;
         justify-content: space-between;
       }
-
-      .country-name {
-        white-space: initial;
-        font-size: var(--fs-100);
-        margin: 0;
-      }
-    }
-
-    .artist-count-column {
-      text-align: right;
-      vertical-align: bottom;
-      padding: 1rem 0 1rem 0;
-      font-size: var(--fs-100);
     }
   }
+}
+
+.country-name {
+  white-space: initial;
+  font-size: var(--fs-100);
+  margin: 0;
+}
+
+.artist-count-column {
+  text-align: right;
+  vertical-align: bottom;
+  padding: 1rem 0 1rem 0;
+  font-size: var(--fs-100);
 }
 
 thead {
@@ -138,5 +138,10 @@ thead {
 
   .ranking-title {
     font-size: var(--fs-100);
+  }
+
+  .country-name,
+  .artist-count-column {
+    font-size: var(--fs-000);
   }
 }
