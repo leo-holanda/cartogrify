@@ -266,7 +266,7 @@ export class WorldMapComponent implements OnInit, AfterViewInit {
         .attr(
           "transform",
           `translate(${mapWrapperMeasures.width / 2}, ${
-            mapMeasures.y + mapMeasures.height + 24 * mapViewWidthFactor
+            mapMeasures.y + mapMeasures.height + 16 * mapViewWidthFactor
           })`
         );
     }, 100);
