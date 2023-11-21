@@ -9,7 +9,7 @@ import { Subject, fromEvent } from "rxjs";
 export class ArtistsPartComponent implements OnInit {
   shouldMakeSuggestions$ = new Subject<boolean>();
   shouldOpenDialog = false;
-  hasHappyNoises = false;
+  hasMadeSuggestion = false;
   isMobile = window.innerWidth <= 1280;
 
   ngOnInit(): void {
@@ -30,7 +30,7 @@ export class ArtistsPartComponent implements OnInit {
 
   onSuggestButtonClick(): void {
     this.shouldMakeSuggestions$.next(true);
-    this.hasHappyNoises = true;
+    this.hasMadeSuggestion = true;
   }
 
   closeSuggestionDialog(): void {

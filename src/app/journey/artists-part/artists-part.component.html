@@ -45,12 +45,13 @@
       </p>
 
       <p-button
+        *ngIf="!hasMadeSuggestion"
         class="suggestion-button"
         (onClick)="openSuggestionDialog()"
         label="Make a suggestion"
       ></p-button>
 
-      <p *ngIf="hasHappyNoises">
+      <p class="robot-noises-message" *ngIf="hasMadeSuggestion">
         <i>*The robot is making happy noises*</i>
       </p>
     </div>
@@ -76,12 +77,13 @@
     </p>
 
     <p-button
+      *ngIf="!hasMadeSuggestion"
       class="suggestion-button"
       (onClick)="openSuggestionDialog()"
       label="Make a suggestion"
     ></p-button>
 
-    <p *ngIf="hasHappyNoises">
+    <p class="robot-noises-message" *ngIf="hasMadeSuggestion">
       <i>*The robot is making happy noises*</i>
     </p>
   </div>
