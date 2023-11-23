@@ -88,8 +88,9 @@ main {
   font-size: var(--fs-300);
 }
 
-.minor-title {
-  font-size: var(--fs-200);
+.suggestions-tip {
+  font-size: var(--fs-000);
+  color: grey;
 }
 
 ::ng-deep {
