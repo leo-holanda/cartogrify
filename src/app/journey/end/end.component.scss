@@ -66,6 +66,13 @@ strong {
   font-size: var(--fs--100);
 }
 
+.kofi-link-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
 @media (min-width: 641px) and (max-width: 1280px) {
   .end-title {
     padding: 32px;
