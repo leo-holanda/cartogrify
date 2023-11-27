@@ -95,11 +95,20 @@ export class RegionService {
       regionsMap.set(artist.country.region, artistRegion);
     });
 
-    const sortedRegionsCount = [...regionsMap]
-      .sort((a, b) => b[1].count - a[1].count)
-      .map((region) => region[1]);
+    const regionsCount = [...regionsMap].map((region) => region[1]);
 
-    this.userRegions$.next(sortedRegionsCount);
+    regionsCount.sort((a, b) => b.count - a.count);
+    regionsCount.forEach((region) => {
+      region.intermediateRegions.sort((a, b) => b.count - a.count);
+      region.intermediateRegions.forEach((intermediateRegion) => {
+        intermediateRegion.subRegions.sort((a, b) => b.count - a.count);
+        intermediateRegion.subRegions.forEach((subRegion) => {
+          subRegion.countriesCount.sort((a, b) => b.count - a.count);
+        });
+      });
+    });
+
+    this.userRegions$.next(regionsCount);
   }
 
   getRegionsDiversity(): Observable<RegionsDiversity> {
