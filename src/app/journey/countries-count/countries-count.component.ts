@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { ArtistsSources } from "src/app/artists/artist.model";
+import { ArtistService } from "src/app/artists/artist.service";
 import { CountryCount } from "src/app/country/country.model";
 import { CountryService } from "src/app/country/country.service";
 
@@ -9,10 +11,14 @@ import { CountryService } from "src/app/country/country.service";
 })
 export class CountriesCountComponent implements OnInit {
   countriesCount: CountryCount[] = [];
+  source!: ArtistsSources;
 
-  constructor(private countryService: CountryService) {}
+  artistsSources = ArtistsSources;
+
+  constructor(private countryService: CountryService, private artistService: ArtistService) {}
 
   ngOnInit(): void {
+    this.source = this.artistService.getSource();
     this.countryService.getCountriesCount().subscribe((countriesCount) => {
       this.countriesCount = countriesCount;
     });

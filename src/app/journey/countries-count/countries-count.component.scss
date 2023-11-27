@@ -1,11 +1,20 @@
 :host {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   gap: 64px;
   padding: 2rem;
   width: 100%;
   background-color: #9fc088;
   min-height: 90dvh;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 128px;
+  height: 90%;
 }
 
 .title-wrapper {
@@ -39,11 +48,42 @@
   justify-content: center;
 }
 
+.message-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.message-icon {
+  color: #364958;
+}
+
+.artist-quantity-message {
+  text-align: center;
+  color: #364958;
+}
+
+.message-icon,
+.artist-quantity-message {
+  font-size: var(--fs-000);
+}
+
 @media (min-width: 641px) and (max-width: 1280px) {
   :host {
     flex-direction: column;
     gap: 48px;
     padding: 1.5rem;
+  }
+
+  .wrapper {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .message-icon,
+  .artist-quantity-message {
+    font-size: var(--fs--100);
   }
 
   .pre-title {
@@ -67,6 +107,16 @@
     flex-direction: column;
     gap: 32px;
     padding: 1rem;
+  }
+
+  .wrapper {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .message-icon,
+  .artist-quantity-message {
+    font-size: var(--fs--100);
   }
 
   .pre-title {
