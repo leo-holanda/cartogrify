@@ -1,27 +1,57 @@
-# App
+# Cartogrify
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.3.
+> A web app that compares how internationally diverse your music taste is among users from all over the world. Only for Spotify\* and Last.fm users.
 
-## Development server
+<img src="demo.gif" width="100%" />
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+🌐 Check it at [https://cartogrify.web.app/](https://cartogrify.web.app/).
 
-## Code scaffolding
+## Contents
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- [Features](#features)
+- [Installation](#installation)
+- [Contributing](#contributing)
+- [Built with](#built-with)
+- [Deployed at](#deployed-at)
+- [License](#contributing)
 
-## Build
+## Features
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+\*Some features are disabled for Spotify users to comply with the developer policy.
 
-## Running unit tests
+For Spotify and Last.fm users
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- Shows from which countries your top artists come from
+- Creates a shareable world map highlighting their country of origin
+- Creates a Sankey diagram showing how your music is divided between the world's regions
+- Shows your top 50 artists
 
-## Running end-to-end tests
+Only for Last.fm users
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- Compares how many different countries and regions your top artists come from among users from all over the world and from your country
+- Generates a diversity and popularity ranks for countries
 
-## Further help
+## Installation
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Thinking about a way to make this easy for you.
+
+## Contributing
+
+Feel free to submit any issues or enhancement requests! I will do my best to fix or implement it. Already have a solution? Pull requests are also welcome!
+
+## Built with
+
+- TypeScript
+- Angular 16
+- [PrimeNG](https://primeng.org/)
+- [D3.js](https://d3js.org/)
+
+## Deployed at
+
+- AWS
+- Supabase
+- Firebase
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
